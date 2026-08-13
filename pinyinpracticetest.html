@@ -1,0 +1,427 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <title>My Custom Pinyin Trainer</title> 
+    <style> 
+        body { 
+            font-family: sans-serif; 
+            text-align: center; 
+            background: #f4f4f9; 
+            padding: 50px; 
+        } 
+        #box { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 12px; 
+            display: inline-block; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            min-width: 380px;
+            max-width: 600px;
+        } 
+        #char { 
+            font-size: 80px; 
+            margin: 0 0 20px 0; 
+            font-weight: bold; 
+            color: #333; 
+        } 
+        input { 
+            font-size: 24px; 
+            padding: 10px; 
+            text-align: center; 
+            border: 2px solid #ccc; 
+            border-radius: 6px; 
+            outline: none; 
+            width: 250px; 
+            display: block; 
+            margin: 0 auto 15px auto; 
+        } 
+        input.correct { 
+            border-color: #4caf50; 
+            background: #e8f5e9; 
+        } 
+        /* Button Layout Group */ 
+        .btn-group { 
+            margin: 15px 0; 
+            display: flex; 
+            justify-content: center; 
+            gap: 10px; 
+        } 
+        button { 
+            font-size: 16px; 
+            padding: 10px 18px; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: background 0.2s; 
+            display: inline-block; 
+        } 
+        /* Orange Play Audio Button Style */ 
+        #audioBtn { 
+            background-color: #ff9800; 
+            color: white; 
+        } 
+        #audioBtn:hover { 
+            background-color: #e68a00; 
+        } 
+        /* Blue Reveal Button Style */ 
+        #revealBtn { 
+            background-color: #007bff; 
+            color: white; 
+        } 
+        #revealBtn:hover { 
+            background-color: #0056b3; 
+        } 
+        /* Red Text Style for Revealed Answer */ 
+        #pinyinReveal { 
+            font-size: 24px; 
+            color: #ff5722; 
+            font-weight: bold; 
+            margin: 10px 0; 
+            min-height: 35px; 
+        } 
+        /* Tone Guide Container using Block 1 Font Style rules */ 
+        #toneKey { 
+            margin-top: 25px; 
+            border-top: 1px dashed #ccc; 
+            padding-top: 15px; 
+            font-size: 14px; 
+            color: #888; 
+            line-height: 1.6; 
+            text-align: center; 
+            display: block; 
+        } 
+        .guide-title { 
+            margin-bottom: 5px; 
+        } 
+        .code-inline { 
+            background: #eee; 
+            padding: 2px 6px; 
+            border-radius: 4px; 
+            font-family: monospace; 
+            font-size: 13px; 
+            color: #666; 
+        } 
+        .hidden { 
+            display: none !important; 
+        } 
+        .csv-container { 
+            border: 2px dashed #bbb; 
+            background: #fdfdfd; 
+            border-radius: 8px; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+        } 
+        .csv-container textarea { 
+            width: 90%; 
+            height: 100px; 
+            font-size: 14px; 
+            font-family: monospace; 
+            padding: 8px; 
+            border-radius: 6px; 
+            border: 1px solid #ccc; 
+            margin-top: 10px; 
+            resize: vertical; 
+        } 
+        #vocabListContainer { 
+            max-height: 150px; 
+            overflow-y: auto; 
+            border: 1px solid #ddd; 
+            border-radius: 6px; 
+            padding: 10px; 
+            margin-bottom: 20px; 
+            text-align: left; 
+            background: #fafafa; 
+        } 
+        .vocab-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 6px 10px; 
+            border-bottom: 1px solid #eee; 
+        } 
+        .vocab-item:last-child { 
+            border-bottom: none; 
+        } 
+        .delete-btn { 
+            background-color: #dc3545; 
+            color: white;
+            padding: 4px 8px; 
+            font-size: 12px; 
+        } 
+        .delete-btn:hover { 
+            background-color: #bd2130; 
+        } 
+        #statusLog { 
+            font-size: 13px; 
+            color: #dc3545; 
+            margin-top: 8px; 
+            font-weight: bold; 
+        } 
+    </style> 
+</head> 
+<body> 
+
+<div id="box"> 
+    <!-- SETUP SCREEN --> 
+    <div id="setupScreen"> 
+        <h2>Pinyin Trainer Setup</h2> 
+        <p style="color: #666; font-size: 14px; margin-bottom: 20px;">Paste your spreadsheet rows below, then click Import.</p> 
+        <div class="csv-container"> 
+            <strong>Paste CSV Content:</strong> 
+            <textarea id="csvTextInput" placeholder="你好,nǐhǎo&#10;谢谢,xièxie&#10;再见,zàijiàn"></textarea> 
+            <button id="importCsvBtn" style="background-color: #28a745; color: white; margin-top: 10px;">Import CSV Content</button> 
+            <div id="statusLog"></div> 
+        </div> 
+        <div style="font-size: 14px; font-weight: bold; margin-bottom: 5px; text-align: left;">Saved Library Content:</div> 
+        <div id="vocabListContainer"></div> 
+    </div> 
+
+    <!-- GAMEPLAY SCREEN --> 
+    <div id="gameScreen" class="hidden"> 
+        <div id="char"></div> 
+        <input type="text" id="input" autofocus autocomplete="off" placeholder="Type pinyin..." lang="en"> 
+        
+        <!-- Red Answer Text Placeholder Box --> 
+        <div id="pinyinReveal"></div> 
+
+        <!-- Control Buttons --> 
+        <div class="btn-group"> 
+            <button id="audioBtn" type="button">🔊 Play Audio</button> 
+            <button id="revealBtn" type="button">Reveal Answer</button> 
+        </div> 
+
+        <!-- Restored Tone Chart Content using Block 1 Text Properties --> 
+        <div id="toneKey"> 
+            <div class="guide-title">Type regular letters, then press 1-4 for tones:</div> 
+            <div><b>a</b> &rarr; <span class="code-inline">a1=ā</span>, <span class="code-inline">a2=á</span>, <span class="code-inline">a3=ǎ</span>, <span class="code-inline">a4=à</span></div> 
+            <div><b>e</b> &rarr; <span class="code-inline">e1=ē</span>, <span class="code-inline">e2=é</span>, <span class="code-inline">e3=ě</span>, <span class="code-inline">e4=è</span></div> 
+            <div><b>i</b> &rarr; <span class="code-inline">i1=ī</span>, <span class="code-inline">i2=í</span>, <span class="code-inline">i3=ǐ</span>, <span class="code-inline">i4=ì</span></div> 
+            <div><b>o</b> &rarr; <span class="code-inline">o1=ō</span>, <span class="code-inline">o2=ó</span>, <span class="code-inline">o3=ǒ</span>, <span class="code-inline">o4=ò</span></div> 
+            <div><b>u</b> &rarr; <span class="code-inline">u1=ū</span>, <span class="code-inline">u2=ú</span>, <span class="code-inline">u3=ǔ</span>, <span class="code-inline">u4=ù</span></div> 
+            <div><b>v</b> &rarr; <span class="code-inline">v1=ǖ</span>, <span class="code-inline">v2=ǘ</span>, <span class="code-inline">v3=ǚ</span>, <span class="code-inline">v4=ǜ</span></div> 
+        </div> 
+    </div> 
+</div> 
+
+<script> 
+    let vocab = []; 
+    let currentIdx = 0; 
+
+    const demoVocab = [ 
+        {word: "你好", pinyin: "nǐhǎo"}, 
+        {word: "谢谢", pinyin: "xièxie"}, 
+        {word: "再见", pinyin: "zàijiàn"}, 
+        {word: "苹果", pinyin: "píngguǒ"} 
+    ]; 
+
+    const setupScreen = document.getElementById('setupScreen'); 
+    const gameScreen = document.getElementById('gameScreen'); 
+    const vocabListContainer = document.getElementById('vocabListContainer'); 
+    const csvTextInput = document.getElementById('csvTextInput'); 
+    const importCsvBtn = document.getElementById('importCsvBtn'); 
+    const statusLog = document.getElementById('statusLog'); 
+    const charEl = document.getElementById('char'); 
+    const inputEl = document.getElementById('input'); 
+    const toneKeyEl = document.getElementById('toneKey'); 
+    const audioBtn = document.getElementById('audioBtn'); 
+    const revealBtn = document.getElementById('revealBtn'); 
+    const pinyinRevealEl = document.getElementById('pinyinReveal'); 
+
+    // Direct tone lookup array matrices 
+    const toneMatrix = { 
+        'a': ['ā', 'á', 'ǎ', 'à'], 
+        'e': ['ē', 'é', 'ě', 'è'], 
+        'i': ['ī', 'í', 'ǐ', 'ì'], 
+        'o': ['ō', 'ó', 'ǒ', 'ò'], 
+        'u': ['ū', 'ú', 'ǔ', 'ù'], 
+        'v': ['ǖ', 'ǘ', 'ǚ', 'ǜ'], 
+        'ü': ['ǖ', 'ǘ', 'ǚ', 'ǜ'] 
+    }; 
+
+    function initApp() { 
+        try { 
+            const stored = localStorage.getItem('pinyin_trainer_vocab'); 
+            if (stored) { 
+                vocab = JSON.parse(stored); 
+            } else { 
+                vocab = [...demoVocab]; 
+                saveToStorage(); 
+            } 
+        } catch (e) { 
+            vocab = [...demoVocab]; 
+            saveToStorage(); 
+        } 
+        renderVocabList(); 
+    } 
+
+    function saveToStorage() { 
+        localStorage.setItem('pinyin_trainer_vocab', JSON.stringify(vocab)); 
+    } 
+
+    function renderVocabList() { 
+        vocabListContainer.innerHTML = ""; 
+        if (!vocab || vocab.length === 0) { 
+            vocabListContainer.innerHTML = `<div style="color:#aaa; text-align:center; padding: 20px 0;">Library is empty. Paste data above!</div>`; 
+            return; 
+        } 
+        vocab.forEach((item, index) => { 
+            const row = document.createElement('div'); 
+            row.className = "vocab-item"; 
+            row.innerHTML = ` 
+                <span><strong>${item.word}</strong> — <span style="color:#666;">${item.pinyin}</span></span> 
+                <button class="delete-btn" onclick="deleteWord(${index})">Delete</button> 
+            `; 
+            vocabListContainer.appendChild(row); 
+        }); 
+    } 
+
+    importCsvBtn.addEventListener('click', () => { statusLog.style.color = "#dc3545";
+statusLog.textContent = "";
+const textData = csvTextInput.value.trim();
+if (!textData) {
+    statusLog.textContent = "Please paste vocabulary rows into the text area first!";
+    return;
+}
+let cleanText = textData.replace(/^\uFEFF/, '');
+const sourceLines = cleanText.split(/\r\n|\r|\n/);
+
+// Reset old array items on a completely new import interaction sequence
+vocab = [];
+let addedCount = 0;
+for (let i = 0; i < sourceLines.length; i++) {
+    let textRow = sourceLines[i].trim();
+    if (!textRow) continue;
+    let separatorSymbol = ",";
+    if (textRow.includes(";")) separatorSymbol = ";";
+    if (textRow.includes("\t")) separatorSymbol = "\t";
+    let separationPoint = textRow.indexOf(separatorSymbol);
+    if (separationPoint !== -1) {
+        let extractedWord = textRow.substring(0, separationPoint).trim();
+        let extractedPinyin = textRow.substring(separationPoint + 1).trim();
+        if (extractedWord && extractedPinyin) {
+            vocab.push({ word: extractedWord, pinyin: extractedPinyin });
+            addedCount++;
+        }
+    }
+}
+if (addedCount === 0) {
+    statusLog.textContent = "Could not parse data! Format must be: hanzi,pinyin";
+    initApp();
+    return;
+}
+saveToStorage();
+renderVocabList();
+csvTextInput.value = "";
+
+// AUTOMATIC INSTANT LAUNCH ENGINE
+shuffle(vocab);
+currentIdx = 0;
+setupScreen.classList.add('hidden');
+gameScreen.classList.remove('hidden');
+loadWord();
+});
+
+window.deleteWord = function(index) {
+    vocab.splice(index, 1);
+    saveToStorage();
+    renderVocabList();
+};
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function loadWord() {
+    if (currentIdx >= vocab.length) {
+        charEl.textContent = "🎉 Done!";
+        inputEl.style.display = 'none';
+        audioBtn.style.display = 'none';
+        revealBtn.style.display = 'none';
+        toneKeyEl.style.display = 'none';
+        pinyinRevealEl.style.display = 'none';
+        return;
+    }
+    charEl.textContent = vocab[currentIdx].word;
+    inputEl.value = "";
+    inputEl.className = "";
+    pinyinRevealEl.textContent = "";
+    inputEl.focus();
+}
+
+// Web Speech Synthesis engine
+function speakCurrentWord() {
+    if (currentIdx >= vocab.length) return;
+    window.speechSynthesis.cancel();
+    const text = vocab[currentIdx].word;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'zh-CN';
+    window.speechSynthesis.speak(utterance);
+}
+
+// Audio Button click event
+audioBtn.addEventListener('click', speakCurrentWord);
+
+// Reveal Button click event with duplicate safeguard from script 1
+revealBtn.addEventListener('click', () => {
+    if (currentIdx >= vocab.length) return;
+    
+    // 1. Show the correct answer
+    pinyinRevealEl.textContent = vocab[currentIdx].pinyin;
+    
+    // 2. Clear out whatever the user typed so they can copy the answer
+    inputEl.value = "";
+    
+    // 3. Extract the current word object
+    const missedWord = vocab[currentIdx];
+    
+    // 4. Duplicate safeguard check before pushing to the back
+    const lastWordInDeck = vocab[vocab.length - 1];
+    if (lastWordInDeck !== missedWord) {
+        vocab.push(missedWord);
+    }
+    
+    // 5. Keep focus in the input box for typing
+    inputEl.focus();
+});
+
+// Directly compares what is visually typed in the input box against the target vocab pinyin
+function checkUserAnswer() {
+    let userGuess = inputEl.value.toLowerCase().replace(/\s+/g, '');
+    let target = vocab[currentIdx].pinyin.toLowerCase().replace(/\s+/g, '');
+    
+    if (userGuess === target) {
+        inputEl.className = "correct";
+        currentIdx++;
+        setTimeout(loadWord, 200); // 200ms delay so you see the green highlight
+    }
+}
+
+// Keydown interception handles numbers 1-4
+inputEl.addEventListener('keydown', (e) => {
+    if (['1', '2', '3', '4'].includes(e.key)) {
+        e.preventDefault(); // Stop the raw number character from printing
+        let val = inputEl.value;
+        let toneIndex = parseInt(e.key) - 1;
+        
+        // Look backward to find the last base vowel typed to attach the accent mark
+        for (let i = val.length - 1; i >= 0; i--) {
+            let lastChar = val[i].toLowerCase();
+            if (toneMatrix[lastChar]) {
+                let updatedChar = toneMatrix[lastChar][toneIndex];
+                inputEl.value = val.substring(0, i) + updatedChar + val.substring(i + 1);
+                // Fire answer verification
+                checkUserAnswer();
+                break;
+            }
+        }
+    }
+});
+
+// Track normal non-number keystrokes cleanly
+inputEl.addEventListener('input', checkUserAnswer);
+
+initApp();
