@@ -1046,7 +1046,7 @@ function speak(text, lang){
   window.speechSynthesis.speak(u);
 }
 function mpSpeakCurrent(){
-  if(mpDeck[mpIdx]) speak(mpDeck[mpIdx].ch);
+  if(mpDeck[mpIdx]) speakDelayed(mpDeck[mpIdx].ch);
 }
 
 /* Feather-style icons replacing the old emoji glyphs — always placed after
@@ -1313,7 +1313,7 @@ function mpCheck(){
     // character. See Settings → Practice → Audio on correct answer.
     if(loadSettings().mpAudioOnCorrect){
       const wordChars = Array.from(item.context || item.ch);
-      if(wordChars[wordChars.length - 1] === item.ch) speak(item.context || item.ch);
+      if(wordChars[wordChars.length - 1] === item.ch) speakDelayed(item.context || item.ch);
     }
     setTimeout(mpNext, 900);
   } else {
@@ -1450,8 +1450,27 @@ function mpGetFolderDeck(){
 function mpGetDeckForMode(){
   if(mpMode === 'rapid') return getReadingDeck();
   if(mpMode === 'focused'){
+    // A focus tag is a standalone signal, independent of which collection
+    // (if any) the word currently sits in — getReadingDeck() alone only
+    // covers the general Word Bank (or the default deck when that's empty),
+    // so filtering just that missed a character focused from a word that
+    // only lives in a folder. Search the general Word Bank, every folder,
+    // and the default deck instead, same shape as getReadingDeck() builds.
     const focusedSet = new Set(getFocusedCharsIn('reading'));
-    return getReadingDeck().filter(c => focusedSet.has(c.ch));
+    const chars = []; const seen = new Set();
+    loadWordBank().concat(loadFolders().flatMap(loadFolderWords)).forEach(w=>{
+      const sylls = (w.py||'').trim().split(/\s+/);
+      Array.from(w.hz).forEach((ch, i)=>{
+        if(/[一-鿿]/.test(ch) && focusedSet.has(ch) && !seen.has(ch)){
+          const decomposed = decomposeSyllable(sylls[i] || (Array.from(w.hz).length===1 ? sylls[0] : ''));
+          if(decomposed){ seen.add(ch); chars.push({ch, initial:decomposed.initial, final:decomposed.final, tone:decomposed.tone, context:w.hz, mean: w.en && w.en!=='—' ? w.en : ''}); }
+        }
+      });
+    });
+    mpVocab.forEach(item=>{
+      if(focusedSet.has(item.ch) && !seen.has(item.ch)){ seen.add(item.ch); chars.push(item); }
+    });
+    return mpFilterOutKnown(chars);
   }
   if(mpMode === 'folders') return mpGetFolderDeck();
   return [];

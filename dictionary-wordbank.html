@@ -299,7 +299,16 @@ p.lede{color:var(--ink-soft); font-size:16px; max-width:640px; margin:10px 0 0;}
   border-radius:2px; background:rgba(255,255,255,0.6); resize:vertical; margin-bottom:10px;}
 .import-status{font-size:12.5px; color:var(--jade-dark); font-weight:600; min-height:18px; opacity:0; transition:opacity .3s;}
 
-.mass-toolbar{display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:14px; font-size:13px; color:var(--ink-soft);}
+/* margin-right: the toolbar's own trailing content (All Vocab + Delete) and
+   each word row's trailing content (the Copy-to select + audio button, plus
+   .dict-entry's own 20px right padding) are different widths — both groups
+   are pinned flush right (this row via margin-left:auto on .wb-tag-filter-row,
+   each word row via .dict-meta{justify-content:flex-end}), so without this
+   the two same-width tag button groups don't actually land in the same
+   column. Empirically matched against their real rendered widths, not
+   derived from a formula — re-check (and re-tune this one value) any time
+   either trailing group's own width changes, e.g. an icon added to Delete. */
+.mass-toolbar{display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:14px; margin-right:-8px; font-size:13px; color:var(--ink-soft);}
 .mass-select-all{display:flex; align-items:center; gap:7px; cursor:pointer; font-weight:600;}
 .dict-check{width:16px; height:16px; accent-color:var(--seal); cursor:pointer; flex-shrink:0;}
 .wb-tag-filter-row{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-left:auto;}
@@ -347,16 +356,29 @@ p.lede{color:var(--ink-soft); font-size:16px; max-width:640px; margin:10px 0 0;}
 .folder-create-row{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
 .folder-create-row input{flex:1; min-width:180px; max-width:280px; padding:8px 12px; border:1.5px solid var(--paper-shadow); border-radius:2px; font-family:inherit; font-size:13.5px; background:rgba(255,255,255,0.6);}
 .folder-pill-list{display:flex; flex-wrap:wrap; gap:8px;}
-.folder-pill{display:inline-flex; align-items:center; gap:8px; background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:20px; padding:6px 14px; font-size:13px; font-weight:600;
-  font-family:inherit; cursor:pointer; color:var(--ink);}
+/* A folder pill is now a container, not itself a button — .folder-pill-toggle
+   (the label+count) and .folder-pill-delete (only rendered once the pill is
+   active) are separate sibling buttons inside it. Nesting a delete button
+   inside the toggle button would be invalid HTML (buttons can't nest) and
+   unpredictable across browsers, which is what a big separate "Delete
+   folder" button appearing below the whole pill list was working around. */
+.folder-pill{display:inline-flex; align-items:center; gap:2px; background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:20px;
+  padding:2px; font-size:13px; font-weight:600; color:var(--ink); transition:background .12s, border-color .12s;}
 .folder-pill:hover{border-color:var(--seal);}
 .folder-pill.active{background:var(--seal); border-color:var(--seal); color:#fff;}
 .folder-pill.active .count{color:rgba(255,255,255,0.8);}
 .folder-pill .count{color:var(--ink-soft); font-weight:500; font-size:12px;}
+.folder-pill-toggle{background:none; border:none; padding:4px 6px 4px 12px; margin:0; font:inherit; font-weight:inherit; color:inherit; cursor:pointer; display:inline-flex; align-items:center; gap:8px;}
+.folder-pill-delete{
+  background:none; border:none; padding:0; margin:0; color:inherit; opacity:0.7; cursor:pointer;
+  width:20px; height:20px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:15px; line-height:1;
+}
+.folder-pill-delete:hover{opacity:1; background:rgba(255,255,255,0.3);}
 .folder-empty-note{font-size:13px; color:var(--ink-soft);}
 .dict-folder-select{font-size:11.5px; padding:4px 8px; border:1px solid var(--paper-shadow); border-radius:20px; background:rgba(255,255,255,0.6); color:var(--ink-soft); font-family:inherit; cursor:pointer;}
 .btn.ghost.small.danger{border-color:var(--seal); color:var(--seal);}
 .btn.ghost.small.danger:hover{background:var(--seal); color:#fff;}
+.btn-icon{width:1em; height:1em; vertical-align:-0.15em; margin-left:6px; flex-shrink:0;}
 
 /* ---------- FOCUS TAGS (per-skill: Writing / Typing / Reading / Hearing) ---------- */
 .focus-tags{display:flex; align-items:center; gap:4px; flex-shrink:0;}
@@ -366,6 +388,8 @@ p.lede{color:var(--ink-soft); font-size:16px; max-width:640px; margin:10px 0 0;}
   color:var(--ink-soft); padding:0; font-family:var(--sans); flex-shrink:0; transition:background .12s, border-color .12s;
 }
 .focus-tag:hover{border-color:var(--ink); color:var(--ink);}
+.focus-tag:disabled{cursor:not-allowed; opacity:0.4;}
+.focus-tag:disabled:hover{border-color:var(--paper-shadow); color:var(--ink-soft);}
 .focus-tag.active{color:#fff; border-color:transparent;}
 .focus-tag.active:hover{filter:brightness(1.08);}
 .ft-writing.active{background:var(--seal);}
@@ -407,10 +431,10 @@ p.lede{color:var(--ink-soft); font-size:16px; max-width:640px; margin:10px 0 0;}
 /* ---------- IMPORT OPTIONS ---------- */
 .import-options{display:flex; flex-direction:column; gap:10px; margin:14px 0; padding:14px 16px; background:rgba(255,255,255,0.3); border:1px dashed var(--paper-shadow); border-radius:2px;}
 .import-option-row{display:flex; align-items:center; gap:8px; font-size:13.5px; font-weight:600; cursor:pointer;}
-.import-suboption{display:flex; align-items:center; gap:8px; margin-left:24px; font-size:13px;}
+.import-suboption{display:flex; align-items:center; gap:8px; margin-left:24px; font-size:13px; flex-wrap:wrap;}
 .import-suboption select, .import-suboption input[type=text]{
   font-size:12.5px; padding:6px 9px; border:1.5px solid var(--paper-shadow); border-radius:2px;
-  background:rgba(255,255,255,0.6); font-family:inherit;
+  background:rgba(255,255,255,0.6); font-family:inherit; min-width:0; max-width:100%;
 }
 
 /* ---------- MODAL (used for the "add to Word Bank?" subscribe prompt) ---------- */
@@ -845,7 +869,6 @@ footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:c
     <button class="btn small" onclick="handleCreateFolder()">Create folder</button>
   </div>
   <div class="folder-pill-list" id="folderPillList"></div>
-  <div id="folderCardActions"></div>
 </div>
 
 <div class="wb-note" style="margin-bottom:14px;">
@@ -862,7 +885,7 @@ footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:c
   <span id="wbSelCount">0 selected</span>
   <div class="wb-tag-filter-row" id="wbTagFilterRow"></div>
   <span id="wbFolderActions"></span>
-  <button class="btn ghost small danger" id="wbDeleteSelectedBtn" disabled onclick="wbDeleteSelected()">Delete selected</button>
+  <button class="btn ghost small danger" id="wbDeleteSelectedBtn" disabled onclick="wbDeleteSelected()">Delete<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="8" y1="12" x2="16" y2="12"></line></svg></button>
 </div>
 <div class="dict-list" id="wbList"></div>
 
@@ -992,7 +1015,7 @@ function loadAllFolderWords(){
 function loadFolderWords(name){
   return loadAllFolderWords()[name] || [];
 }
-// The "Show all words" view: every folder's vocab plus the general Word
+// The "All Vocab" view: every folder's vocab plus the general Word
 // Bank, merged into one list. A word can exist as an independent copy in
 // several collections at once (see the note above) — de-duped here by hz so
 // it only ever shows one card, keeping whichever copy (py/en) was seen
@@ -1227,13 +1250,21 @@ function processImportedEntries(entries, sourceLabel){
 }
 function handleCsvFile(e){
   const file = e.target.files[0];
-  if(!file) return;
+  e.target.value = ''; // clear now, not just on success, so re-picking the same file always re-fires onchange
+  if(!file){ showWbStatus('No file was picked.'); return; }
   const reader = new FileReader();
   reader.onload = function(ev){
-    processImportedEntries(parseListText(String(ev.target.result)), `Imported from ${file.name}`);
+    // Strip a leading UTF-8 BOM some mobile export tools (Files app, Numbers,
+    // etc.) prepend — parseListText's line trim already strips it too, but
+    // this is the actual data path being exercised here, not the parser.
+    const raw = String(ev.target.result);
+    const text = raw.charCodeAt(0) === 0xFEFF ? raw.slice(1) : raw;
+    processImportedEntries(parseListText(text), `Imported from ${file.name}`);
+  };
+  reader.onerror = function(){
+    showWbStatus(`Couldn't read "${file.name}" — try again, or paste the list into the box below instead.`);
   };
   reader.readAsText(file);
-  e.target.value = '';
 }
 function handlePasteImport(){
   const area = document.getElementById('wbPasteArea');
@@ -1253,9 +1284,9 @@ function handleCreateFolder(){
 }
 // Which folder (if any) the Word Bank list below is currently filtered to —
 // empty string means "just the general Word Bank" (the default landing
-// view), '__all__' means the merged Show all words view (every folder plus
+// view), '__all__' means the merged All Vocab view (every folder plus
 // the general Word Bank, see loadAllWordsAggregate). Clicking a folder pill
-// toggles that one folder; clicking "Show all words" sets '__all__'.
+// toggles that one folder; clicking "All Vocab" sets '__all__'.
 let wbFolderFilter = '';
 // Multi-select for bulk delete — hz values, scoped to whatever collection is
 // currently shown; cleared whenever that collection changes so a stale
@@ -1315,14 +1346,11 @@ function renderFolderManager(){
     list.innerHTML = folders.map(f=>{
       const count = loadFolderWords(f).length;
       const active = wbFolderFilter === f;
-      return `<button type="button" class="folder-pill${active?' active':''}" onclick="toggleFolderFilter('${f}')">${f} <span class="count">(${count})</span></button>`;
+      const deleteBtn = active
+        ? `<button type="button" class="folder-pill-delete" title="Delete &quot;${f}&quot;" aria-label="Delete &quot;${f}&quot;" onclick="event.stopPropagation(); handleDeleteFolder('${f}')">×</button>`
+        : '';
+      return `<div class="folder-pill${active?' active':''}"><button type="button" class="folder-pill-toggle" onclick="toggleFolderFilter('${f}')">${f} <span class="count">(${count})</span></button>${deleteBtn}</div>`;
     }).join('');
-  }
-  const actions = document.getElementById('folderCardActions');
-  if(actions){
-    actions.innerHTML = wbFolderFilter
-      ? `<button class="btn ghost small danger" style="margin-top:12px;" onclick="handleDeleteFolder('${wbFolderFilter}')">Delete "${wbFolderFilter}"</button>`
-      : '';
   }
   renderImportFolderSelect();
 }
@@ -1535,22 +1563,36 @@ function focusTagsHTML(hz){
     return {cat, active, charBased};
   });
   const hyper = states.every(function(s){ return s.active; });
+  const anyColoredActive = states.some(function(s){ return s.active; });
   const tags = states.map(function(s){
     return `<button class="focus-tag ft-${s.cat.key} ${s.active?'active':''}" title="${s.cat.label}" onclick="onToggleWordFocusTag('${hz}','${s.cat.key}',${s.charBased})">${s.cat.short}</button>`;
   }).join('');
   const knownActive = isFocusedIn(hz, KNOWN_TAG.key);
-  const knownTag = `<button class="focus-tag ft-known ${knownActive?'active':''}" title="${KNOWN_TAG.label}" onclick="onToggleWordFocusTag('${hz}','${KNOWN_TAG.key}',false)">${KNOWN_TAG.short}</button>`;
+  // K can't be turned on while any of W/T/R/H is already lit — it means
+  // "already confident", which a live focus tag directly contradicts. Same
+  // rule as onToggleWordFocusTag's own guard, just surfaced here as a
+  // disabled button instead of a click that silently does nothing.
+  const knownTitle = (!knownActive && anyColoredActive) ? 'Remove the other focus tags first to mark this Known' : KNOWN_TAG.label;
+  const knownTag = `<button class="focus-tag ft-known ${knownActive?'active':''}" ${(!knownActive && anyColoredActive) ? 'disabled' : ''} title="${knownTitle}" onclick="onToggleWordFocusTag('${hz}','${KNOWN_TAG.key}',false)">${KNOWN_TAG.short}</button>`;
   const hyperBadge = hyper ? '<span class="hyperfocus-badge" title="Hyperfocus — focused in every category"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>' : '';
   return `<div class="focus-tags">${tags}${hyperBadge}${knownTag}</div>`;
 }
 function onToggleWordFocusTag(hz, category, charBased){
-  // Known (K) means "already confident in this word" — actively re-focusing
-  // it on any other skill tag contradicts that, so turning one of those ON
-  // (not off) while K is set clears K automatically instead of leaving both
-  // lit at once.
+  // Known (K) and the four skill tags (W/T/R/H) are mutually exclusive in
+  // both directions: turning a skill tag ON clears K automatically (below),
+  // and K can't be turned ON at all while any skill tag is still active —
+  // the button itself is rendered disabled for that case (see
+  // focusTagsHTML), this is just the matching guard against any other path
+  // reaching this function.
   if(category !== KNOWN_TAG.key){
     const turningOn = charBased ? !isEntryFocused(hz, category) : !isFocusedIn(hz, category);
     if(turningOn && isFocusedIn(hz, KNOWN_TAG.key)) setFocusCategory(hz, KNOWN_TAG.key, false);
+  } else if(!isFocusedIn(hz, KNOWN_TAG.key)){
+    const anyColoredActive = FOCUS_CATEGORIES.some(function(cat){
+      const catCharBased = cat.key === 'writing' || cat.key === 'reading';
+      return catCharBased ? isEntryFocused(hz, cat.key) : isFocusedIn(hz, cat.key);
+    });
+    if(anyColoredActive) return;
   }
   if(charBased) toggleEntryFocus(hz, category); else toggleFocusCategory(hz, category);
   renderWordBankView();
@@ -1582,11 +1624,14 @@ function renderWbTagFilterRow(){
   const row = document.getElementById('wbTagFilterRow');
   if(!row) return;
   const allTags = FOCUS_CATEGORIES.concat([KNOWN_TAG]);
+  // Reuses .focus-tags (not just .wb-tag-filter-row's own wider gap) so this
+  // button group is pixel-for-pixel the same width as the tags on each word
+  // row below — required for the two to actually line up in a column.
   const buttons = allTags.map(cat=>
     `<button class="focus-tag ft-${cat.key} ${wbTagFilter.has(cat.key)?'active':''}" title="Filter: ${cat.label}" onclick="toggleWbTagFilter('${cat.key}')">${cat.short}</button>`
   ).join('');
   const clearBtn = wbTagFilter.size ? `<button class="btn ghost small" onclick="clearWbTagFilter()">Clear filter</button>` : '';
-  row.innerHTML = buttons + clearBtn;
+  row.innerHTML = `<div class="focus-tags">${buttons}</div>${clearBtn}`;
 }
 function wbToggleSelect(hz, checked){
   if(checked) wbSelectedSet.add(hz); else wbSelectedSet.delete(hz);
@@ -1642,7 +1687,7 @@ function renderWordBankView(){
     ? `${all.length} word${all.length===1?'':'s'} in "${wbFolderFilter}"`
     : `${bank.length} word${bank.length===1?'':'s'} saved`;
   document.getElementById('wbFolderActions').innerHTML =
-    `<button class="btn ghost small" ${isAll?'disabled':''} onclick="showAllWords()">Show all words</button>`;
+    `<button class="btn ghost small" ${isAll?'disabled':''} onclick="showAllWords()">All Vocab</button>`;
 
   const searchRaw = (document.getElementById('wbSearchInput')?.value || '').trim();
   const searchLower = searchRaw.toLowerCase();
@@ -1688,7 +1733,7 @@ function renderWordBankView(){
           ${copyTargets.map(t=>`<option value="${t.value}">${t.label}</option>`).join('')}
           <option value="__new__">+ New folder…</option>
         </select>
-        <button class="speak-btn" onclick="speak('${w.hz}')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="#8A8A8A" fill="#8A8A8A"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#3B82F6"></path></svg></button>
+        <button class="speak-btn" onclick="speakDelayed('${w.hz}')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="#8A8A8A" fill="#8A8A8A"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#3B82F6"></path></svg></button>
       </div>
     </div>`).join('');
   updateWbSelCount();

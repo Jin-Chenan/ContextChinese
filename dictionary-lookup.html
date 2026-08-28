@@ -1132,7 +1132,7 @@ function renderDictionary(){
       <div class="dict-meta">
         ${dictListTagsHTML(d.hz, listMembership)}
         <span class="dict-pos">${d.pos}</span>
-        <button class="speak-btn" onclick="speak('${d.hz}')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="#8A8A8A" fill="#8A8A8A"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#3B82F6"></path></svg></button>
+        <button class="speak-btn" onclick="speakDelayed('${d.hz}')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="#8A8A8A" fill="#8A8A8A"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#3B82F6"></path></svg></button>
         ${saved ? `<span class="saved-badge" title="Already in your Word Bank">✓</span>` :
           `<button class="add-btn" title="Add to word bank" onclick="dictQuickAdd('${d.hz}')">+</button>`}
       </div>
@@ -1234,7 +1234,7 @@ function renderSuggestedWords(){
         <div class="suggested-from">From ${s.from.join(' + ')} in your Word Bank</div>
       </div>
       <div class="suggested-actions">
-        <button class="speak-btn" onclick="speak('${s.hz}')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="#8A8A8A" fill="#8A8A8A"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#3B82F6"></path></svg></button>
+        <button class="speak-btn" onclick="speakDelayed('${s.hz}')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="#8A8A8A" fill="#8A8A8A"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#3B82F6"></path></svg></button>
         <button class="add-btn" title="Add to Word Bank" onclick="handleAddSuggestion('${s.hz}')">+</button>
         <button class="btn ghost small" onclick="handleDismissSuggestion('${s.hz}')">Not now</button>
       </div>
@@ -1270,7 +1270,7 @@ function renderCharSuggestions(){
         <div class="char-parts">${parts}</div>
       </div>
       <div class="char-actions">
-        <button class="speak-btn" onclick="speak('${c.hz}')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="#8A8A8A" fill="#8A8A8A"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#3B82F6"></path></svg></button>
+        <button class="speak-btn" onclick="speakDelayed('${c.hz}')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="#8A8A8A" fill="#8A8A8A"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#3B82F6"></path></svg></button>
         <button class="add-btn" title="Add to Word Bank" onclick="handleAddCharSuggestion('${c.hz}')">+</button>
         <button class="btn ghost small" onclick="handleDismissCharSuggestion('${c.hz}')">Not now</button>
       </div>

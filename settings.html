@@ -74,7 +74,6 @@
 :root[data-theme="dark"] .read-card,
 :root[data-theme="dark"] .translate-card,
 :root[data-theme="dark"] .hw-target-wrap,
-:root[data-theme="dark"] .tw-target-wrap,
 :root[data-theme="dark"] .search-bar,
 :root[data-theme="dark"] .settings-card,
 :root[data-theme="dark"] .account-status,
@@ -334,17 +333,8 @@ p.lede{color:var(--ink-soft); font-size:16px; max-width:640px; margin:10px 0 0;}
 
 .test-writer-card{
   margin-top:18px; padding:20px; border:1px solid var(--paper-shadow); border-radius:4px;
-  display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center;
+  display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center;
 }
-.tw-target-wrap{position:relative; width:160px; height:160px; margin:0 auto; border:2px solid var(--paper-shadow); background:rgba(255,255,255,0.55);}
-.tw-target-wrap::before{content:''; position:absolute; left:50%; top:0; bottom:0; width:1px; background:var(--paper-shadow); opacity:0.8; z-index:1;}
-.tw-target-wrap::after{content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:var(--paper-shadow); opacity:0.8; z-index:1;}
-.tw-diag{position:absolute; top:50%; left:50%; width:141.5%; height:0; border-top:1px dashed var(--paper-shadow); opacity:0.55; z-index:1;}
-.tw-diag1{transform:translate(-50%,-50%) rotate(45deg);}
-.tw-diag2{transform:translate(-50%,-50%) rotate(-45deg);}
-#twTarget{position:relative; z-index:2;}
-.test-writer-status{font-size:13px; color:var(--ink-soft); max-width:280px; margin:0;}
-
 .account-status{
   display:flex; align-items:center; gap:12px; padding:14px 16px; background:rgba(255,255,255,0.4);
   border:1px solid var(--paper-shadow); border-radius:2px; margin-bottom:16px;
@@ -624,11 +614,19 @@ footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:c
       </div>
     </div>
 
-    <div class="settings-subhead">Audio on Correct Answer</div>
-    <p class="settings-sub">Speaks the word aloud when it's completed correctly — for a multi-character word, only once its last character is done, and always the whole word rather than just that character.</p>
+    <div class="settings-row">
+      <div>
+        <div class="settings-row-label">Audio Delay After Input</div>
+        <div class="settings-row-desc">How long to wait, in ms, before speaking — after a correct answer in Writing/Typing/Match Pinyin, and after tapping a word's audio button in Search or Word Bank.</div>
+      </div>
+      <div class="settings-control">
+        <input type="number" class="settings-input" id="audioDelayInput" min="0" max="1000" step="50" onchange="onSettingNumber('audioDelayAfterInput', this.value, 0, 1000)">
+      </div>
+    </div>
+
     <div class="settings-row" style="border-top:none; padding-top:0;">
       <div>
-        <div class="settings-row-label">Type Pinyin</div>
+        <div class="settings-row-label">Type Pinyin Audio</div>
         <div class="settings-row-desc">Speak the word once its pinyin is typed correctly.</div>
       </div>
       <div class="settings-control">
@@ -641,7 +639,7 @@ footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:c
     </div>
     <div class="settings-row">
       <div>
-        <div class="settings-row-label">Match Pinyin</div>
+        <div class="settings-row-label">Match Pinyin Audio</div>
         <div class="settings-row-desc">Speak the word once its initial, final, and tone are matched correctly.</div>
       </div>
       <div class="settings-control">
@@ -654,7 +652,7 @@ footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:c
     </div>
     <div class="settings-row">
       <div>
-        <div class="settings-row-label">Writing Practice</div>
+        <div class="settings-row-label">Writing Pinyin Audio</div>
         <div class="settings-row-desc">Speak the word once it's drawn correctly. Doesn't apply to Strokes or Radicals practice.</div>
       </div>
       <div class="settings-control">
@@ -737,13 +735,7 @@ footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:c
     </div>
 
     <div class="test-writer-card">
-      <div class="tw-target-wrap" id="twTargetWrap">
-        <div class="tw-diag tw-diag1"></div>
-        <div class="tw-diag tw-diag2"></div>
-        <div id="twTarget"></div>
-      </div>
-      <p class="test-writer-status" id="twStatus">See how these settings feel to write with before you save them.</p>
-      <button class="btn ghost small" onclick="twLoadNew()">Test Writer</button>
+      <a class="btn ghost small" href="hanzi-writing.html?test=1">Test Writer</a>
     </div>
   </div>
 
@@ -1030,6 +1022,7 @@ function loadSettingsIntoUI(){
   document.getElementById('hanziToneColorsToggle').checked = s.hanziToneColors;
   document.getElementById('excludeKnownToggle').checked = s.excludeKnownFromPractice;
   document.getElementById('forceStopAudioToggle').checked = s.forceStopAudioOnNext;
+  document.getElementById('audioDelayInput').value = s.audioDelayAfterInput;
   document.getElementById('ptAudioToggle').checked = s.ptAudioOnCorrect;
   document.getElementById('mpAudioToggle').checked = s.mpAudioOnCorrect;
   document.getElementById('hwAudioToggle').checked = s.hwAudioOnCorrect;
@@ -1118,60 +1111,8 @@ function onResetSettings(){
   flashSaved();
 }
 
-/* ================= TEST WRITER (Practice → Hanzi Writing Practice) =================
-   A small live sandbox so a staged-but-unsaved change to hint/leniency/fade/
-   brush-width can be felt immediately, the same way the speech-rate Test
-   button lets you hear a staged speech rate before saving it. Reads settings
-   through getWritingPracticeOptions()/loadSettings() (settings.js), which are
-   already override-aware, so it always reflects whatever is currently staged. */
-const TW_CHARS = ['你','好','我','是','学','中','国','人','大','小','爱','水','火','山','门','天','日','月','木','手'];
-let twWriter = null;
-let twLastChar = null;
-function twPickChar(){
-  let ch;
-  do{ ch = TW_CHARS[Math.floor(Math.random()*TW_CHARS.length)]; }while(ch === twLastChar && TW_CHARS.length > 1);
-  twLastChar = ch;
-  return ch;
-}
-function twLoadNew(){
-  const target = document.getElementById('twTarget');
-  const status = document.getElementById('twStatus');
-  if(typeof HanziWriter === 'undefined'){
-    status.textContent = 'Stroke library failed to load — check your internet connection.';
-    return;
-  }
-  target.innerHTML = '';
-  const ch = twPickChar();
-  const opts = (typeof getWritingPracticeOptions === 'function') ? getWritingPracticeOptions() : {showHintAfterMisses:3, leniency:1, strokeFadeDuration:400};
-  const widthScale = loadSettings().hwDrawingWidthScale || 1;
-  const boxSize = 160;
-  const inkColor = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#22241F';
-  try{
-    twWriter = HanziWriter.create('twTarget', ch, {
-      width: boxSize, height: boxSize, padding: 10,
-      strokeAnimationSpeed: 1, delayBetweenStrokes: 200,
-      strokeColor: inkColor, radicalColor: '#AE3B1C', outlineColor: '#cbbb96',
-      drawingWidth: Math.round(24 * Math.sqrt(boxSize / 280) * widthScale),
-      showOutline: false, showCharacter: false,
-      strokeFadeDuration: opts.strokeFadeDuration,
-    });
-    status.textContent = 'Draw the character shown.';
-    twWriter.quiz({
-      showHintAfterMisses: opts.showHintAfterMisses,
-      leniency: opts.leniency,
-      onComplete: function(summaryData){
-        const mistakes = summaryData && typeof summaryData.totalMistakes === 'number' ? summaryData.totalMistakes : 0;
-        status.textContent = `Nice! Completed with ${mistakes} mistake${mistakes===1?'':'s'} — click Test Writer to try another.`;
-      }
-    });
-  }catch(err){
-    status.textContent = `No stroke data available for "${ch}" — click Test Writer to try another.`;
-  }
-}
-
 loadSettingsIntoUI();
 refreshAccountUI();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3/dist/hanzi-writer.min.js"></script>
 </body>
 </html>

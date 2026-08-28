@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>html{visibility:hidden;}</style>
+<!-- Test Writer (?test=1): stays hidden past auth-guard's own normal reveal
+     (which fires almost immediately, well before the body below has even
+     parsed) until hwInit() has finished setting up the fullscreen, no-chrome
+     view — otherwise the normal header/banner/small-practice-box layout
+     flashes on screen for a moment first. See hwInit() for the matching
+     classList.remove('hw-test-pending') that reveals it once ready. -->
+<style>html.hw-test-pending{visibility:hidden !important;}</style>
+<script>if(/[?&]test=1(&|$)/.test(location.search)) document.documentElement.classList.add('hw-test-pending');</script>
 <title>Hanzi — Writing Practice — Context Chinese</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -732,7 +740,23 @@ p.lede{color:var(--ink-soft); font-size:16px; max-width:640px; margin:10px 0 0;}
   .hw-wrap:not(.is-fullscreen) .hw-center-col{display:flex; flex-direction:column; align-items:center; grid-column:2;}
   .hw-wrap:not(.is-fullscreen) .hw-controls{grid-column:3; margin-top:0; align-items:stretch;}
   .hw-wrap:not(.is-fullscreen) .hw-controls-row{flex-direction:column; align-items:stretch;}
+  /* Settings → Test Writer (hanzi-writing.html?test=1): no mode selector to
+     show (it's always the same fixed 16-character set), so the mode-panel
+     column collapses out entirely rather than leaving a dead gap on desktop. */
+  .hw-wrap.hw-test-mode:not(.is-fullscreen){grid-template-columns:minmax(0,1fr) minmax(170px,230px);}
+  .hw-wrap.hw-test-mode:not(.is-fullscreen) .hw-center-col{grid-column:1;}
+  .hw-wrap.hw-test-mode:not(.is-fullscreen) .hw-controls{grid-column:2;}
 }
+/* Test Writer: the fullscreen practice area IS the whole page — nothing else
+   (nav, the page's own heading, footer) ever shows, on top of the
+   is-fullscreen view's own position:fixed already covering them visually.
+   body (not html) carries this class — html itself is still momentarily
+   wearing hw-test-pending (see <head>) at the point hwInit adds it. */
+body.hw-test-active header.top, body.hw-test-active #hwSectionHead, body.hw-test-active footer{display:none;}
+.hw-wrap.hw-test-mode .hw-mode-panel{display:none;}
+.hw-wrap.hw-test-mode.is-fullscreen{grid-template-columns:minmax(0,1fr) minmax(210px,340px);}
+.hw-wrap.hw-test-mode.is-fullscreen .hw-center-col{grid-column:1;}
+.hw-wrap.hw-test-mode.is-fullscreen .hw-controls{grid-column:2;}
 
 /* ---------- DIALOGUE ---------- */
 .dialogue-list{display:flex; flex-direction:column; gap:12px;}
@@ -900,7 +924,7 @@ footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:c
 
 <main>
 
-<div class="section-head">
+<div class="section-head" id="hwSectionHead">
   <div class="eyebrow">Writing Practice · 汉字</div>
   <p class="lede">Write each character from memory, no hints shown — choose Rapid Fire for your whole Word Bank, Focused for just the hard ones, or pick specific Folders to drill.</p>
 </div>
@@ -991,7 +1015,7 @@ function speak(text, lang){
 // word (never a single mid-word character), unlike the automatic
 // audio-on-correct setting which waits for a word's last character.
 function hwSpeakCurrent(){
-  if(hwCurrent) speak(hwCurrent.context || hwCurrent.ch);
+  if(hwCurrent) speakDelayed(hwCurrent.context || hwCurrent.ch);
 }
 
 /* Feather-style icons replacing the old emoji glyphs — always placed after
@@ -1733,6 +1757,7 @@ function hwSetFullscreenState(makeFull){
 }
 
 function hwUpdateFullscreenBtn(){
+  if(hwTestMode) return; // that button is a "Back to Settings" link there, not a fullscreen toggle
   const btn = document.getElementById('hwFullscreenBtn');
   if(!btn) return;
   const label = hwIsFullscreen ? 'Exit full screen' : 'Full screen this practice area';
@@ -1765,7 +1790,10 @@ function hwRebuildWriterAtCurrentSize(){
       // hwCharDataLoaderFor) — every real character gets this key omitted
       // entirely, so HanziWriter's own default remote loader runs unchanged.
       ...(hwCharDataLoaderFor(hwCurrent.ch) ? {charDataLoader: hwCharDataLoaderFor(hwCurrent.ch)} : {}),
-      showOutline:false, showCharacter:false,
+      // Test Writer shows a faint outline throughout — it's meant to be
+      // traced, not recalled from memory, since the point is feeling out the
+      // grading settings rather than testing the word itself.
+      showOutline: hwMode === 'test', showCharacter:false,
       strokeFadeDuration: (typeof getWritingPracticeOptions === 'function') ? getWritingPracticeOptions().strokeFadeDuration : 400,
     });
     if(hwSuccess){
@@ -1785,12 +1813,47 @@ document.addEventListener('webkitfullscreenchange', hwOnNativeFullscreenChange);
 document.addEventListener('mozfullscreenchange', hwOnNativeFullscreenChange);
 document.addEventListener('MSFullscreenChange', hwOnNativeFullscreenChange);
 
+let hwTestMode = false;
 function hwInit(){
-  hwMode = 'rapid';
   hwSelectedFolders = [];
   hwPendingUndo = null;
+  hwTestMode = new URLSearchParams(location.search).get('test') === '1';
+  if(hwTestMode){
+    document.getElementById('hwWrap').classList.add('hw-test-mode');
+    document.body.classList.add('hw-test-active');
+    // The corner button no longer toggles fullscreen — test mode never
+    // leaves it, there's no non-fullscreen view of this page left to show —
+    // it goes straight back to Settings instead, with no in-between page.
+    const fsBtn = document.getElementById('hwFullscreenBtn');
+    if(fsBtn){
+      fsBtn.outerHTML = `<a class="hw-fullscreen-btn" id="hwFullscreenBtn" href="settings.html" style="text-decoration:none; font-size:20px;" title="Back to Settings" aria-label="Back to Settings">←</a>`;
+    }
+    hwStartTestMode();
+    // Straight into full screen — no gesture to anchor a real Fullscreen API
+    // request this early (page just loaded), so hwToggleFullscreen's own
+    // catch/reject handling falls back to the CSS-only .is-fullscreen view
+    // automatically, same as it would for a browser that has no Fullscreen
+    // API at all. Called after hwStartTestMode (not before) so hwCurrent is
+    // already set — the resize this triggers rebuilds the existing writer at
+    // the new size rather than an untested "nothing loaded yet" path.
+    hwToggleFullscreen();
+    // Reveal only now that the fullscreen, chrome-free, back-linked view is
+    // fully set up — see the matching hw-test-pending class added in <head>.
+    document.documentElement.classList.remove('hw-test-pending');
+    return;
+  }
+  hwMode = 'rapid';
   hwRenderFocusedLink();
   hwSetMode('rapid');
+}
+// Settings → Test Writer: always the same fixed 16-character set (hwFallbackChars)
+// regardless of Word Bank/folders/focused state — a stable, predictable sandbox
+// for feeling out the grading settings, not a real practice session, so it
+// deliberately never reads or writes any of that real data.
+function hwStartTestMode(){
+  hwMode = 'test';
+  hwSetRoundSummaryVisible(false);
+  hwRebuildQueue();
 }
 
 function hwSetMode(mode){
@@ -1853,11 +1916,35 @@ function hwGetDeckForMode(){
   // characters of the very same multi-character word.
   if(hwMode === 'strokes') return hwStrokesList.map((c,i)=>({ch:c.ch, context:c.ch+'#'+i, py:c.py, mean:c.mean, idx:0}));
   if(hwMode === 'radicals') return hwRadicalsList.map((c,i)=>({ch:c.ch, context:c.ch+'#'+i, py:c.py, mean:c.mean, idx:0}));
+  if(hwMode === 'test') return hwFallbackChars.map(c=>({ch:c.ch, context:c.ch, py:c.py, mean:c.mean, idx:0}));
   if(hwMode === 'rapid') return getWritingDeck();
   if(hwMode === 'focused'){
-    const full = getWritingDeck();
+    // A focus tag is a standalone signal, independent of which collection
+    // (if any) the word currently sits in — getWritingDeck() alone only
+    // covers the general Word Bank (or the fallback set when that's empty),
+    // so filtering just that missed a character focused from a word that
+    // only lives in a folder. Search the general Word Bank, every folder,
+    // and the fallback set instead, each word counted once even if it
+    // appears in more than one of those places.
     const focusedSet = new Set(loadFocusedChars());
-    return full.filter(c=>focusedSet.has(c.ch));
+    const seenContext = new Set();
+    const chars = [];
+    loadWordBank().concat(loadFolders().flatMap(loadFolderWords)).forEach(w=>{
+      if(seenContext.has(w.hz)) return;
+      seenContext.add(w.hz);
+      Array.from(w.hz).forEach((ch, idx)=>{
+        if(/[一-鿿]/.test(ch) && focusedSet.has(ch)){
+          chars.push({ch, context:w.hz, py:w.py, mean: w.en && w.en!=='—' ? w.en : '', idx});
+        }
+      });
+    });
+    hwFallbackChars.forEach(c=>{
+      if(focusedSet.has(c.ch) && !seenContext.has(c.ch)){
+        seenContext.add(c.ch);
+        chars.push({ch:c.ch, context:c.ch, py:c.py, mean:c.mean, idx:0});
+      }
+    });
+    return chars;
   }
   if(hwMode === 'folders'){
     const bank = hwSelectedFolders.flatMap(loadFolderWords);
@@ -1911,6 +1998,7 @@ function hwRebuildQueue(){
   let desc = '';
   if(hwMode==='strokes') desc = `Practicing all ${totalWordsInDeck} basic strokes`;
   else if(hwMode==='radicals') desc = `Practicing all ${totalWordsInDeck} radicals`;
+  else if(hwMode==='test') desc = `Testing your settings on ${totalWordsInDeck} characters`;
   else if(hwMode==='rapid') desc = `Studying all ${totalWordsInDeck} word${totalWordsInDeck===1?'':'s'} in your Word Bank` + (focusedWordsInDeck ? ` · ${focusedWordsInDeck} focused` : '');
   else if(hwMode==='focused') desc = `Studying ${totalWordsInDeck} focused word${totalWordsInDeck===1?'':'s'}`;
   else if(hwMode==='folders') desc = `Studying ${totalWordsInDeck} word${totalWordsInDeck===1?'':'s'} from: ${hwSelectedFolders.join(', ')}`;
@@ -1931,8 +2019,10 @@ function hwAdvance(){
     if(hwRoundWordsSeen.size){
       slot.innerHTML = renderRoundSummaryHTML({
         wordsSeen: hwRoundWordsSeen, mistakes: hwRoundMistakes, startTime: hwRoundStartTime,
-        subtitle: 'Pick a mode above to start a fresh session.'
-      });
+        subtitle: hwTestMode ? 'Go back to Settings, save a change, then start over to feel the difference.' : 'Pick a mode above to start a fresh session.'
+      }) + (hwTestMode ? `<div style="margin-top:14px; display:flex; gap:10px; justify-content:center;"><button class="btn small" onclick="hwStartTestMode()">Start over</button><a class="btn ghost small" href="settings.html">← Back to Settings</a></div>` : '');
+    } else if(hwTestMode){
+      slot.innerHTML = `<div class="hw-empty">🎉 You've been through all 16 characters! <button class="btn small" onclick="hwStartTestMode()">Start over</button> <a class="btn ghost small" href="settings.html">← Back to Settings</a></div>`;
     } else {
       slot.innerHTML = `<div class="hw-empty">🎉 You've been through every word this round! Pick a mode above to start a fresh session.</div>`;
     }
@@ -1960,7 +2050,7 @@ function hwLoadChar(){
   // speakable text — no audio button there. Radicals are real characters
   // (with real pronunciations) so they keep it.
   const audioBtn = hwMode === 'strokes' ? '' : `<button class="audio-btn" onclick="hwSpeakCurrent()" title="Play audio" aria-label="Play audio"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="#8A8A8A" fill="#8A8A8A"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#3B82F6"></path></svg></button>`;
-  document.getElementById('hwContext').innerHTML = `<span class="hw-context-row">${hwCurrent.py}${audioBtn}</span><span class="hw-mean">${meanPart}</span>`;
+  document.getElementById('hwContext').innerHTML = `<span class="hw-context-row"><span class="hw-py-text">${hwCurrent.py}</span>${audioBtn}</span><span class="hw-mean">${meanPart}</span>`;
   // Word progress, not character progress — a word already in progress
   // (its first character was reached earlier) doesn't advance the count
   // again just because we're now on its 2nd or 3rd character.
@@ -1979,7 +2069,10 @@ function hwLoadChar(){
       // hwCharDataLoaderFor) — every real character gets this key omitted
       // entirely, so HanziWriter's own default remote loader runs unchanged.
       ...(hwCharDataLoaderFor(hwCurrent.ch) ? {charDataLoader: hwCharDataLoaderFor(hwCurrent.ch)} : {}),
-      showOutline:false,
+      // Test Writer shows a faint outline throughout — it's meant to be
+      // traced, not recalled from memory, since the point is feeling out the
+      // grading settings rather than testing the word itself.
+      showOutline: hwMode === 'test',
       showCharacter:false,
       strokeFadeDuration: (typeof getWritingPracticeOptions === 'function') ? getWritingPracticeOptions().strokeFadeDuration : 400,
     });
@@ -2036,7 +2129,7 @@ function hwStartQuiz(){
         const charIdx = (typeof hwCurrent.idx === 'number') ? hwCurrent.idx : wordChars.length - 1;
         if(charIdx === wordChars.length - 1){
           const wordToSpeak = hwCurrent.context || hwCurrent.ch;
-          setTimeout(function(){ speak(wordToSpeak); }, 300);
+          speakDelayed(wordToSpeak);
         }
       }
       // Settings → "Auto-advance multi-character words": only between
@@ -2245,7 +2338,10 @@ function hwRenderControls(){
   const wrap = document.getElementById('hwControls');
   if(!hwCurrent){ wrap.innerHTML = ''; return; }
   const resolved = hwRevealed || hwSuccess;
-  const focusBtn = (hwPendingUndo && hwPendingUndo.type==='focus')
+  // Test Writer never marks anything Focused — it's a sandbox for the
+  // settings themselves, not a real practice session, and shouldn't leak
+  // into your real Focused Characters list.
+  const focusBtn = hwMode === 'test' ? '' : (hwPendingUndo && hwPendingUndo.type==='focus')
     ? `<button class="btn undo small" onclick="hwUndo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em; height:1em; vertical-align:-0.15em; margin-right:6px;"><polyline points="9 10 4 15 9 20"></polyline><path d="M20 4v7a4 4 0 0 1-4 4H4"></path></svg>Undo</button>`
     : `<button class="btn ghost small" onclick="hwFocus()">Focus${ICON_BOOKMARK}</button>`;
   const shuffleAllowed = hwSuccess && hwIsLastCharOfWord(hwCurrent);

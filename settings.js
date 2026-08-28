@@ -23,6 +23,7 @@ const DEFAULT_SETTINGS = {
   mpAudioOnCorrect: false,     // Match Pinyin: speak the word aloud once its last character is matched correctly
   hwAudioOnCorrect: false,     // Writing Practice: speak the word aloud once its last character is drawn correctly
   forceStopAudioOnNext: false, // Cuts off any still-playing audio the moment the next card is displayed, in Type Pinyin, Match Pinyin, and Writing Practice
+  audioDelayAfterInput: 300,   // ms to wait before speaking — after a correct answer in Writing/Typing/Match Pinyin, and after tapping a word's own audio button in Search or Word Bank
 };
 
 // window.__ccSettingsOverride is set only by settings.html, to live-preview
@@ -42,6 +43,17 @@ function saveSettings(patch){
 }
 function resetSettings(){
   try{ localStorage.removeItem('ccSettings'); }catch(e){}
+}
+
+// Settings → Pronunciation & Audio → "Audio Delay After Input". Wraps each
+// page's own speak() (duplicated per-page, not shared, but identical in
+// signature everywhere) with the configured delay — used for audio that
+// follows a correct answer (Writing/Typing/Match Pinyin) and for a word's
+// own audio button in Search/Word Bank, rather than every speak() call
+// sitewide (e.g. Dialogue/Learn playback stays immediate).
+function speakDelayed(text, lang){
+  const delay = loadSettings().audioDelayAfterInput || 0;
+  setTimeout(function(){ speak(text, lang); }, delay);
 }
 
 /* ---------- theme ---------- */
@@ -139,14 +151,20 @@ const TONE_MARK = {
   'Ī':1,'Í':2,'Ǐ':3,'Ì':4, 'Ō':1,'Ó':2,'Ǒ':3,'Ò':4,
   'Ū':1,'Ú':2,'Ǔ':3,'Ù':4, 'Ǖ':1,'Ǘ':2,'Ǚ':3,'Ǜ':4,
 };
-// .hw-context-row (not .hw-context itself) is the actual host for the pinyin
+// .hw-py-text (not .hw-context itself) is the actual host for the pinyin
 // text node now that Writing Practice wraps it with an audio button — this
 // only walks an element's own direct childNodes (see colorizeTonesIn below),
 // so with the button in play the text has to be listed at the level it
 // actually lives at, or the glyph-fix/tone-color pass silently never reaches
 // it and the raw tone-marked characters fall back to the browser's default
-// font instead of the site's font-matched rendering.
-const PINYIN_HOSTS = '.py, .dict-py, .converse-py, .translate-reveal, .hw-context, .hw-context-row, ' +
+// font instead of the site's font-matched rendering. It's its own span
+// (rather than reusing .hw-context-row, the flex row it and the audio button
+// share) specifically so tone-mark decomposition — which can split one text
+// node into several sibling nodes/spans, see wrapPinyinGlyphFixes — never
+// spills those extra nodes out as siblings of the audio button, where the
+// row's flex `gap` would then land between them as an unintended gap inside
+// the pinyin word itself instead of just between the word and the button.
+const PINYIN_HOSTS = '.py, .dict-py, .converse-py, .translate-reveal, .hw-context, .hw-py-text, ' +
   '.trainer-reveal, .quiz-pinyin, .tone-key-grid, .dictate-feedback .py, ' +
   '#conversePy, #revealPy, #dictatePy, .syl-result';
 

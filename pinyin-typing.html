@@ -1005,7 +1005,7 @@ function speak(text, lang){
   window.speechSynthesis.speak(u);
 }
 function ptSpeakCurrent(){
-  if(ptVocab[ptIdx]) speak(ptVocab[ptIdx].hz);
+  if(ptVocab[ptIdx]) speakDelayed(ptVocab[ptIdx].hz);
 }
 // 1-2 character words fit fine at the card's normal font-size, but a 3+
 // character word (single-line only, see #ptCharGlyph{white-space:nowrap})
@@ -1245,8 +1245,20 @@ function ptBuildRapidFireQueue(deckItems){
 function ptGetDeckForMode(){
   if(ptMode === 'rapid') return ptGetDeck();
   if(ptMode === 'focused'){
+    // A focus tag is a standalone signal, independent of which collection
+    // (if any) the word currently sits in — ptGetDeck() alone only covers
+    // the general Word Bank (or the default deck when that's empty), so
+    // filtering just that missed a word focused only from within a folder.
+    // Search the general Word Bank and every folder instead, each word
+    // counted once even if it appears in more than one of those places.
     const focusedHz = new Set(getFocusedCharsIn('typing'));
-    return ptGetDeck().filter(w => focusedHz.has(w.hz));
+    const seen = new Set();
+    const all = loadWordBank().concat(loadFolders().flatMap(loadFolderWords)).filter(w=>{
+      if(seen.has(w.hz)) return false;
+      seen.add(w.hz);
+      return true;
+    });
+    return ptFilterOutKnown(all.filter(w => focusedHz.has(w.hz)).map(w=>({hz:w.hz, py:w.py, en:w.en})));
   }
   if(ptMode === 'folders'){
     return ptFilterOutKnown(ptSelectedFolders.flatMap(loadFolderWords).map(w=>({hz:w.hz, py:w.py, en:w.en})));
@@ -1472,7 +1484,7 @@ function ptCheckAnswer(){
     // Each deck entry is already a whole word (never split into
     // per-character turns here), so this always speaks the complete word —
     // see Settings → Practice → Audio on correct answer.
-    if(loadSettings().ptAudioOnCorrect) speak(ptVocab[ptIdx].hz);
+    if(loadSettings().ptAudioOnCorrect) speakDelayed(ptVocab[ptIdx].hz);
     ptIdx++;
     setTimeout(ptLoadWord, 250);
     return;
