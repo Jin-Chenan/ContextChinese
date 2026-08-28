@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>html{visibility:hidden;}</style>
+<title>Zhuyin — Bopomofo Chart — Context Chinese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDE4D2;
+  --paper-deep:#E1D4B9;
+  --paper-shadow:#cbbb96;
+  --ink:#22241F;
+  --ink-soft:#514E42;
+  --seal:#AE3B1C;
+  --seal-dark:#8C2E15;
+  --jade:#3E6B5B;
+  --jade-dark:#2E5346;
+  --gold:#A9832E;
+  --slate:#4C6169;
+  --paper-rgb:237,228,210;
+  --radius:2px;
+  --serif-cn:'Noto Serif SC', serif;
+  --serif-en:'Zilla Slab', 'Noto Serif', serif;
+  --sans:'Inter', sans-serif;
+  --tone-1:#c0392b;
+  --tone-2:#27974f;
+  --tone-3:#2d6bd6;
+  --tone-4:#9b3fc4;
+  --tone-0:#6b6b6b;
+}
+
+/* ---------- dark mode ---------- */
+:root[data-theme="dark"]{
+  --paper:#1C1B18;
+  --paper-deep:#242220;
+  --paper-shadow:#3A352C;
+  --ink:#EDE6D6;
+  --ink-soft:#B9AF9C;
+  --seal:#E2703F;
+  --seal-dark:#C8592C;
+  --jade:#5FA98D;
+  --jade-dark:#3E8068;
+  --gold:#D9AE5C;
+  --slate:#93A9B1;
+  --paper-rgb:28,27,24;
+  --tone-1:#ff8a72;
+  --tone-2:#6bd98f;
+  --tone-3:#7fb0ff;
+  --tone-4:#d79bf5;
+  --tone-0:#b9af9c;
+}
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .dict-search,
+:root[data-theme="dark"] .dict-entry,
+:root[data-theme="dark"] .dict-filter,
+:root[data-theme="dark"] .import-card,
+:root[data-theme="dark"] .dialogue-card,
+:root[data-theme="dark"] .tone-card,
+:root[data-theme="dark"] .trainer-card,
+:root[data-theme="dark"] .route-card,
+:root[data-theme="dark"] .word-card,
+:root[data-theme="dark"] .radical-face.front,
+:root[data-theme="dark"] .flash-face.front,
+:root[data-theme="dark"] .province-chip,
+:root[data-theme="dark"] .province-detail,
+:root[data-theme="dark"] .tone-desc-panel,
+:root[data-theme="dark"] .converse-card,
+:root[data-theme="dark"] .dictate-card,
+:root[data-theme="dark"] .read-card,
+:root[data-theme="dark"] .translate-card,
+:root[data-theme="dark"] .hw-target-wrap,
+:root[data-theme="dark"] .search-bar,
+:root[data-theme="dark"] .settings-card,
+:root[data-theme="dark"] .quiz-box{
+  background:rgba(0,0,0,0.28) !important;
+}
+:root[data-theme="dark"] .dict-search input,
+:root[data-theme="dark"] .trainer-input,
+:root[data-theme="dark"] .converse-input,
+:root[data-theme="dark"] .dictate-input,
+:root[data-theme="dark"] .import-textarea,
+:root[data-theme="dark"] .search-bar input,
+:root[data-theme="dark"] .settings-select,
+:root[data-theme="dark"] .settings-input{
+  background:rgba(0,0,0,0.25) !important;
+}
+:root[data-theme="dark"] .keycap{
+  background:linear-gradient(160deg, #2c2a25 0%, #201f1b 100%) !important;
+}
+
+/* ---------- tone colouring ---------- */
+.tone-c-1{color:var(--tone-1);}
+.tone-c-2{color:var(--tone-2);}
+.tone-c-3{color:var(--tone-3);}
+.tone-c-4{color:var(--tone-4);}
+.tone-c-0{color:var(--tone-0);}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(0,0,0,0.025) 0, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(0,0,0,0.03) 0, transparent 50%);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.5;
+}
+::selection{background:var(--seal); color:var(--paper);}
+a{color:inherit;}
+button{font-family:inherit;}
+:focus-visible{outline:2px solid var(--seal); outline-offset:2px;}
+
+/* ---------- layout shell ---------- */
+.wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+header.top{
+  position:sticky; top:0; z-index:50;
+  background:rgba(var(--paper-rgb),0.94);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--paper-shadow);
+}
+.top-inner{display:flex; align-items:flex-start; justify-content:space-between; padding:14px 28px; max-width:1120px; margin:0 auto; gap:20px;}
+.brand{display:flex; align-items:center; gap:12px; cursor:pointer; user-select:none; flex-shrink:0;}
+.seal-mark{
+  width:38px; height:38px; background:var(--seal); color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif-cn); font-size:22px; font-weight:700;
+  border-radius:3px; transform:rotate(-3deg);
+  box-shadow:2px 2px 0 rgba(0,0,0,0.15);
+  flex-shrink:0;
+}
+.brand-text{display:flex; flex-direction:column; line-height:1.1;}
+.brand-text b{font-family:var(--serif-en); font-size:19px; letter-spacing:0.3px; white-space:nowrap;}
+.brand-text span{font-size:11px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;}
+
+nav.tabs{display:flex; flex-wrap:wrap; gap:2px;}
+.nav-item{position:relative;}
+.tab-btn{
+  background:none; border:none; cursor:pointer;
+  padding:8px 12px; font-size:13.5px; font-weight:600; color:var(--ink-soft);
+  border-radius:2px; letter-spacing:0.2px; white-space:nowrap;
+  transition:color .15s, background .15s;
+}
+.tab-btn .cn{font-family:var(--serif-cn); margin-right:5px; font-weight:600;}
+.tab-btn:hover{color:var(--ink); background:rgba(0,0,0,0.05);}
+.tab-btn.active{color:var(--paper); background:var(--ink);}
+
+.dropdown{
+  position:absolute; top:100%; left:0; margin-top:6px; background:var(--paper);
+  border:1px solid var(--paper-shadow); box-shadow:4px 6px 0 rgba(0,0,0,0.1);
+  width:0; min-width:0; display:flex; flex-direction:column; z-index:60;
+  opacity:0; max-height:0; overflow:hidden; pointer-events:none;
+  transform:translateY(-6px);
+  transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease .28s, min-width 0s ease .28s;
+  padding:0 4px;
+}
+.nav-item.open .dropdown{opacity:1; max-height:480px; width:auto; min-width:200px; transform:translateY(0); pointer-events:auto; padding:4px; transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease, min-width 0s ease;}
+.nav-item.open .tab-btn{color:var(--ink); background:rgba(0,0,0,0.06);}
+.tab-btn .caret{display:inline-block; margin-left:5px; font-size:10px; transition:transform .2s ease; opacity:0.6;}
+.nav-item.open .tab-btn .caret{transform:rotate(180deg);}
+.dropdown-link{
+  padding:10px 14px; text-align:left; background:none; border:none; cursor:pointer;
+  font-size:13px; font-weight:600; color:var(--ink-soft); white-space:nowrap; border-radius:2px;
+  text-decoration:none;
+}
+.dropdown-link:hover{background:rgba(0,0,0,0.06); color:var(--ink);}
+.dropdown-link.active{color:var(--seal);}
+
+@media (max-width:920px){
+  .top-inner{flex-direction:column; align-items:flex-start; position:relative;}
+  nav.tabs{width:100%; overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px;}
+  /* The gear/settings nav-item is a direct sibling of nav.tabs in .top-inner
+     (not nested inside it), so once .top-inner stacks into a column here it
+     falls onto its own row below the whole nav strip. Pin it to the
+     top-right corner instead, next to the brand row, freeing that row and
+     matching where it already sits on desktop's single-row layout. */
+  .top-inner > .nav-item{position:absolute; top:14px; right:28px;}
+}
+
+main{max-width:1120px; margin:0 auto; padding:40px 28px 100px;}
+section.view{display:none; animation:fadein .35s ease;}
+section.view.active{display:block;}
+@keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+.subview{display:none;}
+.subview.active{display:block;}
+
+.section-head{margin-bottom:28px; position:relative;}
+.eyebrow{
+  font-family:var(--sans); font-size:12px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--seal); display:flex; align-items:center; gap:8px;
+}
+.eyebrow::before{content:''; width:22px; height:2px; background:var(--seal);}
+h1.headline{
+  font-family:var(--serif-en); font-weight:700; font-size:44px; margin:6px 0 10px;
+  letter-spacing:-0.5px;
+}
+h1.headline .cn{font-family:var(--serif-cn); color:var(--seal); font-weight:700;}
+p.lede{color:var(--ink-soft); font-size:16px; max-width:640px; margin:10px 0 0;}
+.brush-rule{width:100%; height:3px; margin:26px 0; background:
+  linear-gradient(90deg, var(--ink) 0%, var(--ink) 60%, transparent 60%),
+  linear-gradient(90deg, var(--seal) 65%, transparent 65%);
+  background-size:100% 3px, 20% 3px; background-repeat:no-repeat;
+  opacity:0.85;
+}
+
+.subnav{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:30px;}
+.subnav-pill{
+  padding:8px 16px; border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4);
+  border-radius:20px; font-size:13px; font-weight:600; color:var(--ink-soft); cursor:pointer;
+}
+.subnav-pill:hover{border-color:var(--ink); color:var(--ink);}
+.subnav-pill.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+.card{
+  background:rgba(255,255,255,0.35);
+  border:1px solid var(--paper-shadow);
+  border-radius:var(--radius);
+  padding:22px;
+}
+.grid{display:grid; gap:16px;}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+@media (max-width:800px){.grid-2,.grid-3,.grid-4{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:520px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+
+.btn{
+  background:var(--ink); color:var(--paper); border:none; cursor:pointer;
+  padding:10px 18px; font-weight:600; font-size:13.5px; border-radius:2px;
+  letter-spacing:0.3px; transition:transform .12s, background .12s;
+}
+.btn:hover{background:var(--seal-dark);}
+.btn:active{transform:scale(0.97);}
+.btn:disabled{opacity:0.4; cursor:not-allowed;}
+.btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+.btn.ghost:hover{background:var(--ink); color:var(--paper);}
+.btn.small{padding:6px 12px; font-size:12px;}
+
+/* ---------- HOME ---------- */
+.hero{position:relative; padding:20px 0 10px;}
+.hero-grid{display:grid; grid-template-columns:1.2fr 1fr; gap:40px; align-items:center;}
+@media (max-width:820px){.hero-grid{grid-template-columns:1fr;}}
+.hero h1{font-family:var(--serif-en); font-size:52px; line-height:1.05; margin:0 0 18px; font-weight:700;}
+.hero h1 .cn{font-family:var(--serif-cn); color:var(--seal); display:block; font-size:64px; margin-bottom:6px;}
+.hero p{font-size:17px; color:var(--ink-soft); max-width:480px; margin-bottom:26px;}
+.hero-seals{position:relative; height:340px;}
+.float-seal{
+  position:absolute; font-family:var(--serif-cn); font-weight:700;
+  color:var(--paper); display:flex; align-items:center; justify-content:center;
+  border-radius:3px; box-shadow:3px 3px 0 rgba(0,0,0,0.15);
+}
+.route-cards{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:44px;}
+@media (max-width:900px){.route-cards{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:480px){.route-cards{grid-template-columns:1fr;}}
+.route-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px;
+  padding:20px; cursor:pointer; text-align:left; transition:transform .15s, box-shadow .15s, border-color .15s;
+  display:flex; flex-direction:column; gap:8px;
+}
+.route-card:hover{transform:translateY(-3px); box-shadow:4px 6px 0 rgba(0,0,0,0.08); border-color:var(--ink);}
+.route-card .cn-big{font-family:var(--serif-cn); font-size:30px; color:var(--seal); font-weight:700;}
+.route-card b{font-family:var(--serif-en); font-size:17px;}
+.route-card span{font-size:13px; color:var(--ink-soft);}
+
+/* ---------- DICTIONARY ---------- */
+.dict-search{display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.5); border:1.5px solid var(--ink);
+  border-radius:2px; padding:10px 16px; max-width:460px; margin-bottom:8px;}
+.dict-search input{border:none; background:none; outline:none; font-size:15px; width:100%; font-family:var(--sans);}
+.dict-filters{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 20px;}
+.dict-filter{
+  border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4); padding:6px 13px;
+  border-radius:20px; font-size:12.5px; cursor:pointer; font-weight:600; color:var(--ink-soft);
+}
+.dict-filter:hover{border-color:var(--ink); color:var(--ink);}
+.dict-filter.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+.import-card{background:rgba(255,255,255,0.4); border:1px dashed var(--paper-shadow); border-radius:2px; padding:18px 20px; margin:0 0 26px;}
+.import-card h4{margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:1.2px; color:var(--gold);}
+.import-hint{font-size:12.5px; color:var(--ink-soft); margin:0 0 12px; line-height:1.6;}
+.import-hint code{background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:3px; padding:1px 5px; font-family:monospace; font-size:11px;}
+.import-row{display:flex; align-items:center; gap:12px; margin-bottom:10px; flex-wrap:wrap;}
+.import-or{font-size:12.5px; color:var(--ink-soft);}
+.file-label{cursor:pointer;}
+.import-textarea{width:100%; font-family:var(--sans); font-size:13px; padding:10px 12px; border:1.5px solid var(--paper-shadow);
+  border-radius:2px; background:rgba(255,255,255,0.6); resize:vertical; margin-bottom:10px;}
+.import-status{font-size:12.5px; color:var(--jade-dark); font-weight:600; min-height:18px; opacity:0; transition:opacity .3s;}
+
+.mass-toolbar{display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:14px; font-size:13px; color:var(--ink-soft);}
+.mass-select-all{display:flex; align-items:center; gap:7px; cursor:pointer; font-weight:600;}
+.dict-check{width:16px; height:16px; accent-color:var(--seal); cursor:pointer; flex-shrink:0;}
+
+.dict-count{font-size:12.5px; color:var(--ink-soft); margin-bottom:14px;}
+.dict-list{display:flex; flex-direction:column; gap:10px;}
+.dict-entry{
+  display:flex; align-items:center; gap:18px; background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow);
+  border-radius:2px; padding:16px 20px;
+}
+.dict-hz{font-family:var(--serif-cn); font-size:34px; font-weight:700; color:var(--seal); min-width:52px; text-align:center;}
+.dict-mid{flex:1; min-width:0;}
+.dict-py{font-family:var(--serif-en); font-weight:700; font-size:16px;}
+.dict-en{font-size:13.5px; color:var(--ink-soft); margin-top:2px;}
+.dict-meta{display:flex; align-items:center; gap:10px; flex-shrink:0;}
+.dict-pos{font-size:10.5px; text-transform:uppercase; letter-spacing:0.8px; color:var(--gold); border:1px solid var(--gold);
+  border-radius:20px; padding:3px 9px; white-space:nowrap;}
+.dict-empty{padding:40px 20px; text-align:center; color:var(--ink-soft); font-size:14px;}
+.add-btn{width:28px; height:28px; border-radius:50%; border:1.5px solid var(--jade); color:var(--jade-dark);
+  background:none; font-size:16px; font-weight:700; cursor:pointer; line-height:1; flex-shrink:0;}
+.add-btn:hover{background:var(--jade); color:#fff;}
+.wb-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap; gap:10px;}
+.wb-note{background:rgba(62,107,91,0.1); border-left:3px solid var(--jade); padding:12px 16px; font-size:13px; color:var(--ink-soft); margin-bottom:20px;}
+
+/* ---------- TONES ---------- */
+.tone-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:14px;}
+@media (max-width:900px){.tone-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:560px){.tone-grid{grid-template-columns:repeat(2,1fr);}}
+.tone-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); padding:18px 14px;
+  border-radius:2px; text-align:center; cursor:pointer; transition:border-color .15s, transform .15s;
+}
+.tone-card:hover{border-color:var(--seal); transform:translateY(-2px);}
+.tone-num{font-family:var(--serif-en); font-weight:700; font-size:13px; color:var(--ink-soft);}
+.tone-svg{margin:8px auto;}
+.tone-mark{font-family:var(--serif-cn); font-size:34px; font-weight:700; color:var(--seal);}
+.tone-name{font-weight:600; font-size:13.5px; margin-top:4px;}
+.tone-example{font-size:12px; color:var(--ink-soft); margin-top:6px;}
+.tone-desc-panel{
+  margin-top:22px; padding:20px; background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow);
+  border-radius:2px; min-height:60px;
+}
+
+/* ---------- QUIZ ---------- */
+.quiz-box{background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow); padding:24px; border-radius:2px; margin-top:20px;}
+.quiz-prompt{font-family:var(--serif-cn); font-size:46px; text-align:center; margin:6px 0 4px; font-weight:700;}
+.quiz-pinyin{text-align:center; color:var(--ink-soft); font-size:15px; margin-bottom:18px;}
+.quiz-opts{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; max-width:520px; margin:0 auto;}
+@media (max-width:520px){.quiz-opts{grid-template-columns:repeat(3,1fr);}}
+.quiz-opt{
+  padding:12px 4px; text-align:center; border:1.5px solid var(--ink); background:transparent;
+  cursor:pointer; font-weight:700; border-radius:2px; font-size:15px;
+}
+.quiz-opt:hover{background:var(--ink); color:var(--paper);}
+.quiz-opt.correct{background:var(--jade); border-color:var(--jade); color:#fff;}
+.quiz-opt.wrong{background:var(--seal); border-color:var(--seal); color:#fff;}
+.quiz-status{text-align:center; margin-top:16px; font-size:14px; color:var(--ink-soft); min-height:20px;}
+.quiz-score{text-align:center; font-weight:700; font-family:var(--serif-en); font-size:15px;}
+
+/* ---------- PINYIN SYLLABLE BUILDER ---------- */
+.syl-builder{display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start;}
+.syl-col{flex:1; min-width:220px;}
+.syl-col h4{font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--ink-soft); margin:0 0 10px;}
+.chip-grid{display:flex; flex-wrap:wrap; gap:9px;}
+.chip{
+  border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4); padding:6px 11px;
+  border-radius:20px; font-size:13px; cursor:pointer; font-weight:600;
+}
+.chip:hover{border-color:var(--ink);}
+.chip.picked{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+.syl-result{
+  background:var(--ink); color:var(--paper); border-radius:2px; padding:26px; text-align:center;
+  font-family:var(--serif-en); font-size:34px; font-weight:700; min-width:220px; align-self:stretch;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+}
+.syl-result small{font-size:12px; font-weight:400; color:#c9c2ac; letter-spacing:1px; text-transform:uppercase;}
+
+.word-list{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:10px;}
+@media (max-width:760px){.word-list{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:480px){.word-list{grid-template-columns:1fr;}}
+.word-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:14px;
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+}
+.word-card .hz{font-family:var(--serif-cn); font-size:22px; font-weight:700;}
+.word-card .py{font-size:12.5px; color:var(--ink-soft);}
+.speak-btn{
+  background:none; border:1.5px solid var(--ink); border-radius:50%; width:32px; height:32px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.speak-btn:hover{background:var(--ink); color:var(--paper);}
+
+/* ---------- PINYIN TRAINER ---------- */
+.trainer-card{
+  background:rgba(255,255,255,0.45); border:1px solid var(--paper-shadow); border-radius:2px;
+  padding:38px 34px; max-width:460px; margin:0 auto; text-align:center;
+}
+.trainer-char{
+  font-family:var(--serif-cn); font-size:72px; font-weight:700; color:var(--ink);
+  margin-bottom:20px; min-height:88px; display:flex; align-items:center; justify-content:center;
+}
+.trainer-input{
+  font-family:var(--serif-en); font-size:20px; padding:12px 16px; text-align:center; width:100%;
+  border:2px solid var(--paper-shadow); border-radius:2px; outline:none; background:rgba(255,255,255,0.6);
+  color:var(--ink); transition:border-color .15s, background .15s; font-weight:600;
+}
+.trainer-input:focus{border-color:var(--ink);}
+.trainer-input.correct{border-color:var(--jade); background:rgba(62,107,91,0.14); color:var(--jade-dark);}
+.trainer-reveal{
+  font-family:var(--serif-en); font-size:19px; font-weight:700; color:var(--seal); min-height:28px; margin:14px 0 2px;
+}
+.trainer-controls{display:flex; gap:10px; justify-content:center; margin-top:16px; flex-wrap:wrap;}
+.trainer-progress{margin-top:20px; font-size:12px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;}
+.trainer-done{font-family:var(--serif-en); font-size:24px; font-weight:700; padding:20px 0 8px;}
+.trainer-done-sub{font-size:14px; color:var(--ink-soft); margin-bottom:18px;}
+
+.tone-key{margin:28px auto 0; max-width:560px; border-top:1px dashed var(--paper-shadow); padding-top:18px;}
+.tone-key-title{font-size:12px; text-transform:uppercase; letter-spacing:1.2px; color:var(--ink-soft); text-align:center; margin-bottom:12px;}
+.tone-key-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:9px; font-size:12.5px; color:var(--ink-soft); text-align:center;}
+@media (max-width:620px){.tone-key-grid{grid-template-columns:repeat(2,1fr);}}
+.tone-key-grid b{font-family:var(--serif-cn); color:var(--seal); margin-right:4px; font-size:14px;}
+.tone-key-grid code{background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:3px; padding:1px 5px; font-size:11px; font-family:monospace;}
+.bank-notice{background:rgba(169,131,46,0.12); border-left:3px solid var(--gold); padding:10px 16px; font-size:12.5px; color:var(--ink-soft); margin-bottom:20px;}
+
+/* ---------- TYPEWRITER KEYCAPS (zhuyin keyboard + pinyin initials/finals) ---------- */
+.keyboard{display:flex; flex-direction:column; gap:12px; align-items:center; margin:22px 0;}
+.keyboard-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+.keycap{
+  width:62px; height:62px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(160deg, #f6f0e0 0%, #e7ddc2 100%);
+  border:1px solid var(--paper-shadow);
+  box-shadow:0 3px 0 var(--paper-shadow), 0 6px 9px rgba(0,0,0,0.18), inset 0 1px 1px rgba(255,255,255,0.7);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent;
+  transition:transform .08s ease, box-shadow .08s ease, background .1s ease;
+  position:relative; padding:0;
+}
+.keycap:hover{transform:translateY(-2px); box-shadow:0 5px 0 var(--paper-shadow), 0 10px 14px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.7);}
+.keycap:active{transform:translateY(2px); box-shadow:0 1px 0 var(--paper-shadow), 0 2px 4px rgba(0,0,0,0.15), inset 0 1px 2px rgba(0,0,0,0.15);}
+.keycap.picked{background:linear-gradient(160deg, var(--ink) 0%, #34372f 100%); color:var(--paper); border-color:var(--ink); transform:translateY(2px); box-shadow:0 1px 0 var(--ink), 0 2px 4px rgba(0,0,0,0.25), inset 0 1px 2px rgba(0,0,0,0.2);}
+.keycap .kc-main{font-family:var(--serif-cn); font-size:23px; font-weight:700; line-height:1; color:var(--seal);}
+.keycap.picked .kc-main{color:var(--paper);}
+.keycap .kc-sub{font-family:var(--serif-en); font-size:9.5px; color:var(--ink-soft); margin-top:3px; letter-spacing:0.5px;}
+.keycap.picked .kc-sub{color:#c9c2ac;}
+.keycap.small{width:52px; height:52px;}
+.keycap.small .kc-main{font-family:var(--serif-en); font-size:13px; font-weight:700; color:var(--ink);}
+.keycap.small.picked .kc-main{color:var(--paper);}
+.keyboard-note{font-size:12.5px; color:var(--ink-soft); text-align:center; max-width:520px; margin:4px auto 0;}
+
+/* ---------- STROKES ---------- */
+.stroke-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+@media (max-width:760px){.stroke-grid{grid-template-columns:repeat(2,1fr);}}
+.stroke-card{background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:16px; text-align:center;}
+.stroke-card svg{margin:4px 0 8px;}
+.stroke-card b{font-family:var(--serif-cn); font-size:15px; display:block;}
+.stroke-card span{font-size:11.5px; color:var(--ink-soft);}
+.rules-list{list-style:none; margin:24px 0 0; padding:0; display:grid; gap:10px;}
+.rules-list li{
+  display:flex; gap:12px; align-items:flex-start; background:rgba(255,255,255,0.35);
+  border:1px solid var(--paper-shadow); padding:12px 16px; border-radius:2px; font-size:14px;
+}
+.rules-list b{font-family:var(--serif-en); color:var(--seal); min-width:22px;}
+
+/* ---------- RADICALS ---------- */
+.search-bar{
+  display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.5); border:1.5px solid var(--ink);
+  border-radius:2px; padding:8px 14px; max-width:320px; margin-bottom:20px;
+}
+.search-bar input{border:none; background:none; outline:none; font-size:14px; width:100%; font-family:var(--sans);}
+.radical-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:12px;}
+@media (max-width:800px){.radical-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:520px){.radical-grid{grid-template-columns:repeat(2,1fr);}}
+.radical-card{perspective:800px; height:118px; cursor:pointer;}
+.radical-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;}
+.radical-card.flipped .radical-inner{transform:rotateY(180deg);}
+.radical-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:2px; border:1px solid var(--paper-shadow);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; padding:8px; text-align:center;
+}
+.radical-face.front{background:rgba(255,255,255,0.4);}
+.radical-face.front .ch{font-family:var(--serif-cn); font-size:34px; font-weight:700; color:var(--seal);}
+.radical-face.front .py{font-size:11px; color:var(--ink-soft); margin-top:4px;}
+.radical-face.back{background:var(--ink); color:var(--paper); transform:rotateY(180deg);}
+.radical-face.back .mean{font-weight:700; font-size:13px;}
+.radical-face.back .ex{font-size:11px; margin-top:6px; color:#c9c2ac;}
+
+/* ---------- CHARACTERS flashcards ---------- */
+.deck-wrap{display:flex; flex-direction:column; align-items:center; gap:18px;}
+.flashcard{width:280px; height:280px; perspective:1000px; cursor:pointer;}
+.flash-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;}
+.flashcard.flipped .flash-inner{transform:rotateY(180deg);}
+.flash-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:4px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow:5px 6px 0 rgba(0,0,0,0.12);
+}
+.flash-face.front{background:rgba(255,255,255,0.55); border:1px solid var(--paper-shadow);}
+.flash-face.front .ch{font-family:var(--serif-cn); font-size:100px; font-weight:700;}
+.flash-face.back{background:var(--ink); color:var(--paper); transform:rotateY(180deg);}
+.flash-face.back .py{font-family:var(--serif-en); font-size:26px; font-weight:700;}
+.flash-face.back .mean{margin-top:10px; font-size:15px; color:#d9d2ba;}
+.flash-face.back .strokes{margin-top:16px; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--gold);}
+.deck-controls{display:flex; gap:10px; align-items:center;}
+.deck-progress{font-size:12.5px; color:var(--ink-soft); font-weight:600;}
+
+/* ---------- WRITING PRACTICE ---------- */
+.hw-wrap{display:flex; flex-direction:column; align-items:center;}
+.hw-target-wrap{position:relative; width:280px; height:280px; margin:0 auto; border:2px solid var(--paper-shadow); background:rgba(255,255,255,0.55);}
+.hw-target-wrap::before{content:''; position:absolute; left:50%; top:0; bottom:0; width:1px; background:var(--paper-shadow); opacity:0.8; z-index:1;}
+.hw-target-wrap::after{content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:var(--paper-shadow); opacity:0.8; z-index:1;}
+.hw-diag{position:absolute; top:50%; left:50%; width:396px; height:0; border-top:1px dashed var(--paper-shadow); opacity:0.55; z-index:1;}
+.hw-diag1{transform:translate(-50%,-50%) rotate(45deg);}
+.hw-diag2{transform:translate(-50%,-50%) rotate(-45deg);}
+#hwTarget{position:relative; z-index:2;}
+.hw-context{text-align:center; font-size:14px; color:var(--ink-soft); margin:16px 0 2px;}
+.hw-progress{text-align:center; font-size:12px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase; margin-bottom:6px;}
+.hw-controls{display:flex; gap:10px; justify-content:center; margin-top:20px; flex-wrap:wrap;}
+.hw-result{text-align:center; font-size:14px; font-weight:600; color:var(--jade-dark); min-height:20px; margin-top:14px;}
+.hw-empty{text-align:center; padding:50px 20px; color:var(--ink-soft); font-size:14px;}
+
+/* ---------- DIALOGUE ---------- */
+.dialogue-list{display:flex; flex-direction:column; gap:12px;}
+.dialogue-card{border:1px solid var(--paper-shadow); border-radius:2px; background:rgba(255,255,255,0.4); overflow:hidden;}
+.dialogue-header{display:flex; align-items:center; justify-content:space-between; padding:16px 20px; cursor:pointer;}
+.dialogue-header b{font-family:var(--serif-en); font-size:17px;}
+.dialogue-header .icon{font-family:var(--serif-cn); font-size:22px; color:var(--seal); margin-right:10px;}
+.dialogue-body{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+.dialogue-card.open .dialogue-body{max-height:900px;}
+.dialogue-body-inner{padding:0 20px 20px;}
+.line{display:flex; gap:14px; padding:10px 0; border-top:1px dashed var(--paper-shadow);}
+.line:first-child{border-top:none;}
+.line .who{
+  flex-shrink:0; width:26px; height:26px; border-radius:50%; background:var(--ink); color:var(--paper);
+  display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;
+}
+.line.b .who{background:var(--seal);}
+.line-text .hz{font-family:var(--serif-cn); font-size:18px; font-weight:600;}
+.line-text .py{font-size:12.5px; color:var(--ink-soft); margin-top:2px;}
+.line-text .en{font-size:12.5px; color:var(--slate); margin-top:2px; display:none;}
+.show-en .line-text .en{display:block;}
+.toggle-en-btn{margin-bottom:16px;}
+
+/* ---------- ZHUYIN ---------- */
+.zhuyin-table{width:100%; border-collapse:collapse; font-size:13.5px;}
+.zhuyin-table th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--ink-soft); padding:6px 10px; border-bottom:2px solid var(--ink);}
+.zhuyin-table td{padding:6px 10px; border-bottom:1px solid var(--paper-shadow);}
+.zy-symbol{font-family:var(--serif-cn); font-size:20px; color:var(--seal); font-weight:700; cursor:pointer;}
+.zy-symbol:hover{text-decoration:underline;}
+.zhuyin-note{background:rgba(255,255,255,0.4); border-left:3px solid var(--gold); padding:14px 18px; font-size:13.5px; margin-top:20px; color:var(--ink-soft);}
+
+/* ---------- GEOGRAPHY ---------- */
+.province-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+@media (max-width:820px){.province-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:560px){.province-grid{grid-template-columns:repeat(2,1fr);}}
+.province-chip{
+  background:rgba(255,255,255,0.4); border:1.5px solid var(--paper-shadow); border-radius:2px; padding:16px 10px;
+  text-align:center; cursor:pointer; transition:border-color .15s, background .15s;
+}
+.province-chip:hover{border-color:var(--seal);}
+.province-chip.active{background:var(--ink); border-color:var(--ink); color:var(--paper);}
+.province-chip .cn{font-family:var(--serif-cn); font-size:20px; font-weight:700; display:block;}
+.province-chip .en{font-size:11px; color:inherit; opacity:0.75;}
+.province-detail{margin-top:24px; background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow); border-radius:2px; padding:28px;}
+.pd-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:6px;}
+.pd-head .cn{font-family:var(--serif-cn); font-size:36px; font-weight:700; color:var(--seal);}
+.pd-head .en{font-family:var(--serif-en); font-size:20px; color:var(--ink-soft);}
+.pd-sub{color:var(--ink-soft); font-size:14px; margin-bottom:20px;}
+.pd-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:20px;}
+@media (max-width:700px){.pd-grid{grid-template-columns:1fr;}}
+.pd-block h4{font-size:11.5px; text-transform:uppercase; letter-spacing:1.2px; color:var(--gold); margin:0 0 10px;}
+.tag-row{display:flex; flex-wrap:wrap; gap:6px;}
+.tag{background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:20px; padding:5px 12px; font-size:12.5px;}
+.pd-list{list-style:none; margin:0; padding:0; display:grid; gap:6px; font-size:13.5px;}
+.pd-list li{padding-left:14px; position:relative;}
+.pd-list li::before{content:'—'; position:absolute; left:0; color:var(--seal);}
+
+/* ---------- HISTORY ---------- */
+.timeline{position:relative; margin-top:10px; padding-left:26px;}
+.timeline::before{content:''; position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:var(--paper-shadow);}
+.dyn-item{position:relative; padding-bottom:22px; cursor:pointer;}
+.dyn-item::before{
+  content:''; position:absolute; left:-26px; top:6px; width:12px; height:12px; border-radius:50%;
+  background:var(--paper); border:2.5px solid var(--ink);
+}
+.dyn-item.open::before{background:var(--seal); border-color:var(--seal);}
+.dyn-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;}
+.dyn-head .cn{font-family:var(--serif-cn); font-size:24px; font-weight:700;}
+.dyn-head .period{font-size:12.5px; color:var(--ink-soft); font-family:var(--serif-en); font-weight:600;}
+.dyn-body{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+.dyn-item.open .dyn-body{max-height:400px;}
+.dyn-body-inner{padding:12px 0 4px; font-size:14px; color:var(--ink-soft); max-width:640px;}
+.dyn-body-inner ul{margin:10px 0 0; padding-left:18px;}
+.dyn-body-inner li{margin-bottom:4px;}
+
+footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:center; font-size:12.5px; color:var(--ink-soft);}
+
+</style>
+<script src="settings.js?v=4"></script>
+<script src="auth-guard.js?v=2"></script>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html" style="text-decoration:none;">
+      <div class="seal-mark">境</div>
+      <div class="brand-text"><b>Context Chinese</b><span data-i18n="brand.tagline">Learn Chinese</span></div>
+    </a>
+    <nav class="tabs" id="navTabs" style="flex:1 1 auto;">
+
+      <div class="nav-item" data-nav-cat="learn">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">学习</span><span class="i18n-label" data-i18n="nav.learn">Learn</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="learn-read.html" data-i18n="learn.read">Read</a>
+          <a class="dropdown-link" href="learn-dictate.html" data-i18n="learn.dictate">Dictate</a>
+          <a class="dropdown-link" href="learn-translate.html" data-i18n="learn.translate">Translate</a>
+          <a class="dropdown-link" href="dialogue.html" data-i18n="learn.converse">Converse</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="dictionary">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">词典</span><span class="i18n-label" data-i18n="nav.dictionary">Dictionary</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="dictionary-lookup.html" data-i18n="dict.search">Search</a>
+          <a class="dropdown-link" href="dictionary-wordbank.html" data-i18n="dict.wordbank">Word Bank</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="hanzi">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">汉字</span><span class="i18n-label" data-i18n="nav.hanzi">Hanzi</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="hanzi-strokes.html" data-i18n="hanzi.strokes">Strokes</a>
+          <a class="dropdown-link" href="hanzi-radicals.html" data-i18n="hanzi.radicals">Radicals</a>
+          <a class="dropdown-link" href="hanzi-writing.html" data-i18n="hanzi.writing">Writing Practice</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="pinyin">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">拼音</span><span class="i18n-label" data-i18n="nav.pinyin">Pinyin</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="pinyin-tones.html" data-i18n="pinyin.tones">Tones</a>
+          <a class="dropdown-link" href="pinyin-syllable.html" data-i18n="pinyin.components">Pinyin Components</a>
+          <a class="dropdown-link" href="pinyin-match.html" data-i18n="pinyin.match">Match Pinyin</a>
+          <a class="dropdown-link" href="pinyin-typing.html" data-i18n="pinyin.typing">Type Pinyin</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="zhuyin">
+        <button class="tab-btn active" onclick="toggleNavDropdown(event)"><span class="cn">注音</span><span class="i18n-label" data-i18n="nav.zhuyin">Zhuyin</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link active" href="zhuyin.html" data-i18n="zhuyin.chart">Bopomofo Chart</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="geography">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">地理</span><span class="i18n-label" data-i18n="nav.geography">Geography</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="geography.html" data-i18n="geography.provinces">Provinces and Administrative Regions</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="history">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">历史</span><span class="i18n-label" data-i18n="nav.history">History</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="history.html" data-i18n="history.dynasties">Dynasties</a>
+          <a class="dropdown-link" href="post-imperial.html" data-i18n="history.postimperial">Post-Imperial</a>
+          <a class="dropdown-link" href="modern-day.html" data-i18n="history.modern">Modern Day</a>
+        </div>
+      </div>
+
+
+    </nav>
+
+      <div class="nav-item" style="flex-shrink:0;">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)" style="line-height:1; display:inline-flex; align-items:center; justify-content:center;" title="More"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+        <div class="dropdown" style="left:auto; right:0;">
+          <a class="dropdown-link" href="settings.html" data-i18n="gear.settings">Settings</a>
+          <a class="dropdown-link" href="help.html" data-i18n="gear.help">Help</a>
+          <button class="dropdown-link" onclick="signOutUser()" data-i18n="gear.logout">Logout</button>
+        </div>
+      </div>
+  </div>
+</header>
+
+<main>
+
+<div class="section-head">
+  <div class="eyebrow">Bopomofo Chart · 注音</div>
+  <p class="lede">Zhuyin (also called Bopomofo, ㄅㄆㄇㄈ) is a phonetic system still used to teach reading in Taiwan, playing the same role that pinyin plays in mainland China. Tap a symbol to hear it.</p>
+</div>
+
+<div class="keyboard" id="zhuyinKeyboard"></div>
+<div class="keyboard-note">Laid out exactly like a real Zhuyin (Bopomofo) IME keyboard — the small letter under each key is the Latin key it sits on when typing Zhuyin on a QWERTY keyboard. Tap a key to hear it.</div>
+<div class="zhuyin-note">Zhuyin and pinyin represent the same underlying sounds of Mandarin — they're two different ways of writing down pronunciation. Mainland China, Singapore and most learners abroad use pinyin (the Latin alphabet); Taiwan primarily uses zhuyin in schools and on phone keyboards.</div>
+
+</main>
+
+<footer>境 Context Chinese — a learning companion for Mandarin sound, script, geography and history.</footer>
+
+<script>
+/* ================= NAV DROPDOWN (click to open, does not navigate) ================= */
+function toggleNavDropdown(e){
+  const item = e.currentTarget.closest('.nav-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.nav-item.open').forEach(n=>{
+    n.classList.remove('open');
+    const dd = n.querySelector('.dropdown');
+    if(dd){ dd.style.position=''; dd.style.left=''; dd.style.top=''; }
+  });
+  if(!wasOpen){
+    item.classList.add('open');
+    // Below 920px the nav scrolls horizontally (nav.tabs{overflow-x:auto}).
+    // Anchoring the dropdown with position:fixed here — instead of the
+    // default position:absolute under the button — lets it escape that
+    // scroll container's clipping without ever touching its overflow
+    // property, so opening/closing a dropdown never resets the nav's
+    // scroll position back to the start.
+    if(window.matchMedia('(max-width:920px)').matches){
+      const dd = item.querySelector('.dropdown');
+      const btnRect = e.currentTarget.getBoundingClientRect();
+      dd.style.position = 'fixed';
+      dd.style.top = (btnRect.bottom + 6) + 'px';
+      const maxLeft = window.innerWidth - 208; // dropdown min-width 200px + 8px margin
+      dd.style.left = Math.max(8, Math.min(btnRect.left, maxLeft)) + 'px';
+    }
+  }
+}
+document.addEventListener('click', (e)=>{
+  if(e.target.closest('.dropdown-link') || !e.target.closest('.nav-item')){
+    document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+  }
+});
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='Escape') document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+});
+
+/* ================= SPEECH ================= */
+function speak(text, lang){
+  if(!('speechSynthesis' in window) || !text || text==='—') return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang || 'zh-CN';
+  u.rate = (typeof getSpeechRate === 'function') ? getSpeechRate() : 0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+function shuffle(array){
+  for(let i=array.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function stripTones(s){
+  const map = {'ā':'a','á':'a','ǎ':'a','à':'a','ē':'e','é':'e','ě':'e','è':'e','ī':'i','í':'i','ǐ':'i','ì':'i',
+    'ō':'o','ó':'o','ǒ':'o','ò':'o','ū':'u','ú':'u','ǔ':'u','ù':'u','ǖ':'u','ǘ':'u','ǚ':'u','ǜ':'u','ü':'u'};
+  return s.toLowerCase().split('').map(c=>map[c]||c).join('');
+}
+
+/* ================= WORD BANK (persisted via localStorage, shared across pages) =================
+   Note: localStorage is scoped per-origin. If these files are opened directly from disk (file://),
+   most browsers share storage across files in the same folder, but this can vary — hosting the
+   site (even a simple local server) guarantees the Word Bank stays in sync across every page. */
+let wordBankMem = [];
+function loadWordBank(){
+  try{
+    const raw = localStorage.getItem('ccWordBank');
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return wordBankMem; }
+}
+function saveWordBank(arr){
+  wordBankMem = arr;
+  try{ localStorage.setItem('ccWordBank', JSON.stringify(arr)); }catch(e){}
+}
+function addToWordBank(entries){
+  const bank = loadWordBank();
+  const existing = new Set(bank.map(w=>w.hz));
+  let added=0, skipped=0;
+  entries.forEach(e=>{
+    if(!e || !e.hz) return;
+    if(existing.has(e.hz)){ skipped++; return; }
+    existing.add(e.hz);
+    bank.push({hz:e.hz, py:e.py||'—', en:e.en||'—', folder:''});
+    added++;
+  });
+  saveWordBank(bank);
+  return {added, skipped, total:bank.length};
+}
+function removeFromWordBankRaw(hz){
+  saveWordBank(loadWordBank().filter(w=>w.hz!==hz));
+}
+function clearWordBankRaw(){
+  saveWordBank([]);
+}
+
+/* ---- folders: organize Word Bank entries into named study groups ---- */
+function loadFolders(){
+  try{ const raw = localStorage.getItem('ccFolders'); return raw ? JSON.parse(raw) : []; }catch(e){ return []; }
+}
+function saveFolders(arr){
+  try{ localStorage.setItem('ccFolders', JSON.stringify(arr)); }catch(e){}
+}
+function createFolder(name){
+  name = (name||'').trim();
+  if(!name) return loadFolders();
+  const folders = loadFolders();
+  if(!folders.includes(name)){ folders.push(name); saveFolders(folders); }
+  return folders;
+}
+function deleteFolder(name){
+  saveFolders(loadFolders().filter(f=>f!==name));
+  saveWordBank(loadWordBank().map(w => w.folder===name ? Object.assign({}, w, {folder:''}) : w));
+}
+function setWordFolder(hz, folderName){
+  saveWordBank(loadWordBank().map(w => w.hz===hz ? Object.assign({}, w, {folder:folderName||''}) : w));
+}
+
+</script>
+
+<script>
+const zyKeyboardRows = [
+  [['ㄅ','1','b','b'],['ㄉ','2','d','d'],['ˇ','3','3rd tone',''],['ˋ','4','4th tone',''],['ㄓ','5','zh','zh'],['ˊ','6','2nd tone',''],['˙','7','neutral tone',''],['ㄚ','8','a','a'],['ㄞ','9','ai','ai'],['ㄢ','0','an','an']],
+  [['ㄆ','Q','p','p'],['ㄊ','W','t','t'],['ㄍ','E','g','g'],['ㄐ','R','j','j'],['ㄔ','T','ch','ch'],['ㄗ','Y','z','z'],['ㄧ','U','i','i'],['ㄛ','I','o','o'],['ㄟ','O','ei','ei'],['ㄣ','P','en','en']],
+  [['ㄇ','A','m','m'],['ㄋ','S','n','n'],['ㄎ','D','k','k'],['ㄑ','F','q','q'],['ㄕ','G','sh','sh'],['ㄘ','H','c','c'],['ㄨ','J','u','u'],['ㄜ','K','e','e'],['ㄠ','L','ao','ao'],['ㄤ',';','ang','ang']],
+  [['ㄈ','Z','f','f'],['ㄌ','X','l','l'],['ㄏ','C','h','h'],['ㄒ','V','x','x'],['ㄖ','B','r','r'],['ㄙ','N','s','s'],['ㄩ','M','ü','v'],['ㄝ',',','ê','ê'],['ㄡ','.','ou','ou'],['ㄥ','/','eng','eng']],
+];
+function renderZhuyinKeyboard(){
+  document.getElementById('zhuyinKeyboard').innerHTML = zyKeyboardRows.map(row => `
+    <div class="keyboard-row">
+      ${row.map(([zy,key,title,spoken])=>`
+        <button class="keycap" title="${title}" onclick="${spoken ? `speak('${spoken}','zh-CN')` : ''}">
+          <span class="kc-main">${zy}</span>
+          <span class="kc-sub">${key}</span>
+        </button>`).join('')}
+    </div>`).join('');
+}
+renderZhuyinKeyboard();
+</script>
+</body>
+</html>
