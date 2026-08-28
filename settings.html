@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>html{visibility:hidden;}</style>
+<title>Settings — Context Chinese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDE4D2;
+  --paper-deep:#E1D4B9;
+  --paper-shadow:#cbbb96;
+  --ink:#22241F;
+  --ink-soft:#514E42;
+  --seal:#AE3B1C;
+  --seal-dark:#8C2E15;
+  --jade:#3E6B5B;
+  --jade-dark:#2E5346;
+  --gold:#A9832E;
+  --slate:#4C6169;
+  --plum:#7A4C9E;
+  --paper-rgb:237,228,210;
+  --radius:2px;
+  --serif-cn:'Noto Serif SC', serif;
+  --serif-en:'Zilla Slab', 'Noto Serif', serif;
+  --sans:'Inter', sans-serif;
+  --tone-1:#c0392b;
+  --tone-2:#27974f;
+  --tone-3:#2d6bd6;
+  --tone-4:#9b3fc4;
+  --tone-0:#6b6b6b;
+}
+
+/* ---------- dark mode ---------- */
+:root[data-theme="dark"]{
+  --paper:#1C1B18;
+  --paper-deep:#242220;
+  --paper-shadow:#3A352C;
+  --ink:#EDE6D6;
+  --ink-soft:#B9AF9C;
+  --seal:#E2703F;
+  --seal-dark:#C8592C;
+  --jade:#5FA98D;
+  --jade-dark:#3E8068;
+  --gold:#D9AE5C;
+  --slate:#93A9B1;
+  --plum:#B98AE3;
+  --paper-rgb:28,27,24;
+  --tone-1:#ff8a72;
+  --tone-2:#6bd98f;
+  --tone-3:#7fb0ff;
+  --tone-4:#d79bf5;
+  --tone-0:#b9af9c;
+}
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .dict-search,
+:root[data-theme="dark"] .dict-entry,
+:root[data-theme="dark"] .dict-filter,
+:root[data-theme="dark"] .import-card,
+:root[data-theme="dark"] .dialogue-card,
+:root[data-theme="dark"] .tone-card,
+:root[data-theme="dark"] .trainer-card,
+:root[data-theme="dark"] .route-card,
+:root[data-theme="dark"] .word-card,
+:root[data-theme="dark"] .radical-face.front,
+:root[data-theme="dark"] .flash-face.front,
+:root[data-theme="dark"] .province-chip,
+:root[data-theme="dark"] .province-detail,
+:root[data-theme="dark"] .tone-desc-panel,
+:root[data-theme="dark"] .converse-card,
+:root[data-theme="dark"] .dictate-card,
+:root[data-theme="dark"] .read-card,
+:root[data-theme="dark"] .translate-card,
+:root[data-theme="dark"] .hw-target-wrap,
+:root[data-theme="dark"] .search-bar,
+:root[data-theme="dark"] .settings-card,
+:root[data-theme="dark"] .account-status,
+:root[data-theme="dark"] .quiz-box{
+  background:rgba(0,0,0,0.28) !important;
+}
+:root[data-theme="dark"] .dict-search input,
+:root[data-theme="dark"] .trainer-input,
+:root[data-theme="dark"] .converse-input,
+:root[data-theme="dark"] .dictate-input,
+:root[data-theme="dark"] .import-textarea,
+:root[data-theme="dark"] .search-bar input,
+:root[data-theme="dark"] .settings-select,
+:root[data-theme="dark"] .settings-input{
+  background:rgba(0,0,0,0.25) !important;
+}
+:root[data-theme="dark"] .keycap{
+  background:linear-gradient(160deg, #2c2a25 0%, #201f1b 100%) !important;
+}
+
+/* ---------- tone colouring ---------- */
+.tone-c-1{color:var(--tone-1);}
+.tone-c-2{color:var(--tone-2);}
+.tone-c-3{color:var(--tone-3);}
+.tone-c-4{color:var(--tone-4);}
+.tone-c-0{color:var(--tone-0);}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(0,0,0,0.025) 0, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(0,0,0,0.03) 0, transparent 50%);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.5;
+}
+::selection{background:var(--seal); color:var(--paper);}
+a{color:inherit;}
+button{font-family:inherit;}
+:focus-visible{outline:2px solid var(--seal); outline-offset:2px;}
+
+/* ---------- layout shell ---------- */
+.wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+header.top{
+  position:sticky; top:0; z-index:50;
+  background:rgba(var(--paper-rgb),0.94);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--paper-shadow);
+}
+.top-inner{display:flex; align-items:flex-start; justify-content:space-between; padding:14px 28px; max-width:1120px; margin:0 auto; gap:20px;}
+.brand{display:flex; align-items:center; gap:12px; cursor:pointer; user-select:none; flex-shrink:0;}
+.seal-mark{
+  width:38px; height:38px; background:var(--seal); color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif-cn); font-size:22px; font-weight:700;
+  border-radius:3px; transform:rotate(-3deg);
+  box-shadow:2px 2px 0 rgba(0,0,0,0.15);
+  flex-shrink:0;
+}
+.brand-text{display:flex; flex-direction:column; line-height:1.1;}
+.brand-text b{font-family:var(--serif-en); font-size:19px; letter-spacing:0.3px; white-space:nowrap;}
+.brand-text span{font-size:11px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;}
+
+nav.tabs{display:flex; flex-wrap:wrap; gap:2px;}
+.nav-item{position:relative;}
+.tab-btn{
+  background:none; border:none; cursor:pointer;
+  padding:8px 12px; font-size:13.5px; font-weight:600; color:var(--ink-soft);
+  border-radius:2px; letter-spacing:0.2px; white-space:nowrap;
+  transition:color .15s, background .15s;
+}
+.tab-btn .cn{font-family:var(--serif-cn); margin-right:5px; font-weight:600;}
+.tab-btn:hover{color:var(--ink); background:rgba(0,0,0,0.05);}
+.tab-btn.active{color:var(--paper); background:var(--ink);}
+
+.dropdown{
+  position:absolute; top:100%; left:0; margin-top:6px; background:var(--paper);
+  border:1px solid var(--paper-shadow); box-shadow:4px 6px 0 rgba(0,0,0,0.1);
+  width:0; min-width:0; display:flex; flex-direction:column; z-index:60;
+  opacity:0; max-height:0; overflow:hidden; pointer-events:none;
+  transform:translateY(-6px);
+  transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease .28s, min-width 0s ease .28s;
+  padding:0 4px;
+}
+.nav-item.open .dropdown{opacity:1; max-height:480px; width:auto; min-width:200px; transform:translateY(0); pointer-events:auto; padding:4px; transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease, min-width 0s ease;}
+.nav-item.open .tab-btn{color:var(--ink); background:rgba(0,0,0,0.06);}
+.tab-btn .caret{display:inline-block; margin-left:5px; font-size:10px; transition:transform .2s ease; opacity:0.6;}
+.nav-item.open .tab-btn .caret{transform:rotate(180deg);}
+.dropdown-link{
+  padding:10px 14px; text-align:left; background:none; border:none; cursor:pointer;
+  font-size:13px; font-weight:600; color:var(--ink-soft); white-space:nowrap; border-radius:2px;
+  text-decoration:none;
+}
+.dropdown-link:hover{background:rgba(0,0,0,0.06); color:var(--ink);}
+.dropdown-link.active{color:var(--seal);}
+
+@media (max-width:920px){
+  .top-inner{flex-direction:column; align-items:flex-start; position:relative;}
+  nav.tabs{width:100%; overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px;}
+  /* The gear/settings nav-item is a direct sibling of nav.tabs in .top-inner
+     (not nested inside it), so once .top-inner stacks into a column here it
+     falls onto its own row below the whole nav strip. Pin it to the
+     top-right corner instead, next to the brand row, freeing that row and
+     matching where it already sits on desktop's single-row layout. */
+  .top-inner > .nav-item{position:absolute; top:14px; right:28px;}
+}
+
+main{max-width:1120px; margin:0 auto; padding:40px 28px 100px;}
+
+.section-head{margin-bottom:28px; position:relative;}
+.eyebrow{
+  font-family:var(--sans); font-size:12px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--seal); display:flex; align-items:center; gap:8px;
+}
+.eyebrow::before{content:''; width:22px; height:2px; background:var(--seal);}
+h1.headline{
+  font-family:var(--serif-en); font-weight:700; font-size:44px; margin:6px 0 10px;
+  letter-spacing:-0.5px;
+}
+h1.headline .cn{font-family:var(--serif-cn); color:var(--seal); font-weight:700;}
+p.lede{color:var(--ink-soft); font-size:16px; max-width:640px; margin:10px 0 0;}
+
+.btn{
+  background:var(--ink); color:var(--paper); border:none; cursor:pointer;
+  padding:10px 18px; font-weight:600; font-size:13.5px; border-radius:2px;
+  letter-spacing:0.3px; transition:transform .12s, background .12s;
+}
+.btn:hover{background:var(--seal-dark);}
+.btn:active{transform:scale(0.97);}
+.btn:disabled{opacity:0.4; cursor:not-allowed;}
+.btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+.btn.ghost:hover{background:var(--ink); color:var(--paper);}
+.btn.small{padding:6px 12px; font-size:12px;}
+.btn.danger{background:var(--seal); color:#fff;}
+.btn.danger:hover{background:var(--seal-dark);}
+
+/* ---------- SETTINGS ---------- */
+.settings-grid{display:flex; flex-direction:column; gap:22px; max-width:720px;}
+.settings-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:24px 26px;
+}
+.settings-card h3{
+  margin:0 0 4px; font-family:var(--serif-en); font-size:19px; font-weight:700;
+}
+.settings-sub{font-size:13px; color:var(--ink-soft); margin:0 0 18px;}
+/* Marks a subsection within a card that now bundles what used to be several
+   separate cards (e.g. Appearance folding in Language/Script/Navigation/
+   Tones) — a visual divider so the merge doesn't read as one flat list. */
+.settings-subhead{
+  font-family:var(--serif-en); font-size:15px; font-weight:700;
+  /* margin-top:6px + the preceding row's own 14px bottom padding = 20px
+     above the line, matching padding-top:20px below it — same 20px on both
+     sides of the divider, instead of the 40px/20px split a flat 26px margin
+     used to produce. */
+  margin:6px 0 4px; padding-top:20px; border-top:1px solid var(--paper-shadow);
+}
+.settings-row{
+  display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  padding:14px 0; border-top:1px dashed var(--paper-shadow);
+}
+.settings-row:first-of-type{border-top:none; padding-top:0;}
+/* Solid line + 20px padding-top, matching the Script/Navigation divider —
+   see .nav-order-row:last-child above for the matching 20px on this row's
+   own top side. */
+#toneColorsRow{border-top:1px solid var(--paper-shadow); padding-top:20px;}
+.settings-row-label{font-size:14px; font-weight:600;}
+.settings-row-desc{font-size:12.5px; color:var(--ink-soft); margin-top:3px; max-width:400px;}
+/* The "Known" tag badge, matching .focus-tag.ft-known.active in Word Bank. */
+.known-badge{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:20px; height:20px; border-radius:4px; background:var(--plum); color:#fff;
+  font-size:10px; font-weight:700; font-family:var(--sans); vertical-align:middle; margin:0 1px;
+}
+.settings-control{flex-shrink:0; display:flex; align-items:center; gap:10px;}
+
+.nav-order-list{display:flex; flex-direction:column;}
+.nav-order-row{
+  display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  padding:14px 0; border-top:1px dashed var(--paper-shadow);
+  cursor:grab; transition:opacity .15s, background .15s;
+}
+.nav-order-row:first-of-type{border-top:none; padding-top:0;}
+/* The last draggable nav-category row (History, in the default order) butts
+   up against the next settings-row (Pinyin Tone Colors) below it — give that
+   boundary the same 20px/20px solid-line treatment as the Script/Navigation
+   divider above, instead of the normal 14px dashed row rhythm. */
+.nav-order-row:last-child{padding-bottom:20px;}
+.nav-order-row:active{cursor:grabbing;}
+.nav-order-row.dragging{opacity:0.4;}
+.nav-order-row.drag-over{background:rgba(174,59,28,0.08);}
+.nav-order-left{display:flex; align-items:center; gap:12px;}
+.nav-order-handle{
+  display:grid; grid-template-columns:repeat(2,4px); grid-template-rows:repeat(3,4px); gap:3px;
+  width:11px; flex-shrink:0; user-select:none;
+}
+.nav-order-handle span{width:4px; height:4px; border-radius:50%; background:var(--ink-soft); opacity:0.6;}
+.nav-order-row:hover .nav-order-handle span{opacity:0.9;}
+.nav-order-label{font-size:14px; font-weight:600;}
+
+.toggle-switch{position:relative; width:46px; height:26px; flex-shrink:0; cursor:pointer; display:inline-block;}
+.toggle-switch input{position:absolute; opacity:0; width:100%; height:100%; margin:0; cursor:pointer;}
+.toggle-track{position:absolute; inset:0; background:var(--paper-shadow); border-radius:20px; transition:background .15s; pointer-events:none;}
+.toggle-thumb{
+  position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:50%;
+  background:var(--paper); box-shadow:0 1px 3px rgba(0,0,0,0.3); transition:transform .15s; pointer-events:none;
+}
+.toggle-switch input:checked ~ .toggle-track{background:var(--jade);}
+.toggle-switch input:checked ~ .toggle-thumb{transform:translateX(20px);}
+
+.settings-input{
+  border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.6); border-radius:2px;
+  padding:8px 10px; font-size:13.5px; font-family:var(--sans); color:var(--ink); outline:none;
+  width:76px; text-align:center;
+}
+.settings-input:focus{border-color:var(--ink);}
+
+.settings-select{
+  border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.6); border-radius:2px;
+  padding:8px 12px; font-size:13.5px; font-family:var(--sans); color:var(--ink); outline:none; cursor:pointer;
+}
+.settings-select:focus{border-color:var(--ink);}
+
+.speech-rate-row{display:flex; align-items:center; gap:10px; width:250px;}
+.speech-rate-row input[type=range]{flex:1; accent-color:var(--seal);}
+.speech-rate-emoji{font-size:15px;}
+/* "ms" sits inside the number box itself, not beside it — absolutely
+   positioned over the input's own right padding (added below to keep
+   digits from running under it), rather than a separate label. Right-
+   aligned text (not centered) so the digits sit snug against "ms" instead
+   of leaving dead space in between; the box is a touch wider than the
+   plain .settings-input default specifically so a 4-digit value (the
+   slider's own max, 1000) still has clear room before the label. */
+.settings-input-unit-wrap{position:relative; flex-shrink:0;}
+.settings-input-unit-wrap .settings-input{
+  width:70px; padding-left:6px; text-align:right; padding-right:27px; -moz-appearance:textfield;
+}
+/* Native spinner arrows would otherwise sit at the same right edge as "ms". */
+.settings-input-unit-wrap .settings-input::-webkit-outer-spin-button,
+.settings-input-unit-wrap .settings-input::-webkit-inner-spin-button{-webkit-appearance:none; margin:0;}
+.settings-unit{
+  position:absolute; right:7px; top:50%; transform:translateY(-50%);
+  font-size:11px; color:var(--ink-soft); font-weight:600; pointer-events:none;
+}
+
+.tone-preview{
+  font-family:var(--serif-en); font-size:20px; font-weight:700; letter-spacing:2px;
+  background:var(--ink); color:#c9c2ac; border-radius:2px; padding:12px 16px; text-align:center; margin-top:14px;
+}
+.tone-group{margin-right:18px;}
+.tone-group:last-child{margin-right:0;}
+
+.tone-color-list{display:flex; flex-direction:column; gap:8px; margin-top:16px;}
+.tone-color-row{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:10px 14px; background:rgba(255,255,255,0.35); border:1px solid var(--paper-shadow); border-radius:2px;
+}
+.tone-color-label{font-size:13.5px; font-weight:600; display:flex; align-items:center; gap:10px;}
+.tone-color-example{font-family:var(--serif-en); font-weight:700; font-size:16px; color:var(--ink-soft);}
+.tone-color-input{
+  width:52px; height:32px; border:1.5px solid var(--paper-shadow); border-radius:6px;
+  padding:0; cursor:pointer; background:none; flex-shrink:0;
+}
+.tone-color-input::-webkit-color-swatch-wrapper{padding:2px;}
+.tone-color-input::-webkit-color-swatch{border:none; border-radius:4px;}
+.tone-color-input::-moz-color-swatch{border:none; border-radius:4px;}
+
+.settings-danger-row{
+  display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  padding:14px 0; border-top:1px dashed var(--paper-shadow);
+}
+.settings-danger-row:first-of-type{border-top:none; padding-top:0;}
+
+.test-writer-card{
+  margin-top:18px; padding:20px; border:1px solid var(--paper-shadow); border-radius:4px;
+  display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center;
+}
+.account-status{
+  display:flex; align-items:center; gap:12px; padding:14px 16px; background:rgba(255,255,255,0.4);
+  border:1px solid var(--paper-shadow); border-radius:2px; margin-bottom:16px;
+}
+.account-avatar{
+  width:38px; height:38px; border-radius:50%; background:var(--jade); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-weight:700; font-family:var(--serif-en); flex-shrink:0;
+}
+.account-email{font-weight:600; font-size:14px;}
+.account-note{font-size:12.5px; color:var(--ink-soft); margin-top:2px;}
+.settings-save-note{font-size:12.5px; color:var(--jade-dark); font-weight:600; opacity:0; transition:opacity .3s; margin-top:14px;}
+
+footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:center; font-size:12.5px; color:var(--ink-soft);}
+
+</style>
+<script src="settings.js?v=4"></script>
+<script src="auth-guard.js?v=2"></script>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html" style="text-decoration:none;">
+      <div class="seal-mark">境</div>
+      <div class="brand-text"><b>Context Chinese</b><span data-i18n="brand.tagline">Learn Chinese</span></div>
+    </a>
+    <nav class="tabs" id="navTabs" style="flex:1 1 auto;">
+
+      <div class="nav-item" data-nav-cat="learn">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">学习</span><span class="i18n-label" data-i18n="nav.learn">Learn</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="learn-read.html" data-i18n="learn.read">Read</a>
+          <a class="dropdown-link" href="learn-dictate.html" data-i18n="learn.dictate">Dictate</a>
+          <a class="dropdown-link" href="learn-translate.html" data-i18n="learn.translate">Translate</a>
+          <a class="dropdown-link" href="dialogue.html" data-i18n="learn.converse">Converse</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="dictionary">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">词典</span><span class="i18n-label" data-i18n="nav.dictionary">Dictionary</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="dictionary-lookup.html" data-i18n="dict.search">Search</a>
+          <a class="dropdown-link" href="dictionary-wordbank.html" data-i18n="dict.wordbank">Word Bank</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="hanzi">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">汉字</span><span class="i18n-label" data-i18n="nav.hanzi">Hanzi</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="hanzi-strokes.html" data-i18n="hanzi.strokes">Strokes</a>
+          <a class="dropdown-link" href="hanzi-radicals.html" data-i18n="hanzi.radicals">Radicals</a>
+          <a class="dropdown-link" href="hanzi-writing.html" data-i18n="hanzi.writing">Writing Practice</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="pinyin">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">拼音</span><span class="i18n-label" data-i18n="nav.pinyin">Pinyin</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="pinyin-tones.html" data-i18n="pinyin.tones">Tones</a>
+          <a class="dropdown-link" href="pinyin-syllable.html" data-i18n="pinyin.components">Pinyin Components</a>
+          <a class="dropdown-link" href="pinyin-match.html" data-i18n="pinyin.match">Match Pinyin</a>
+          <a class="dropdown-link" href="pinyin-typing.html" data-i18n="pinyin.typing">Type Pinyin</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="zhuyin">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">注音</span><span class="i18n-label" data-i18n="nav.zhuyin">Zhuyin</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="zhuyin.html" data-i18n="zhuyin.chart">Bopomofo Chart</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="geography">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">地理</span><span class="i18n-label" data-i18n="nav.geography">Geography</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="geography.html" data-i18n="geography.provinces">Provinces and Administrative Regions</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="history">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">历史</span><span class="i18n-label" data-i18n="nav.history">History</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="history.html" data-i18n="history.dynasties">Dynasties</a>
+          <a class="dropdown-link" href="post-imperial.html" data-i18n="history.postimperial">Post-Imperial</a>
+          <a class="dropdown-link" href="modern-day.html" data-i18n="history.modern">Modern Day</a>
+        </div>
+      </div>
+
+
+    </nav>
+
+      <div class="nav-item" style="flex-shrink:0;">
+        <button class="tab-btn active" onclick="toggleNavDropdown(event)" style="line-height:1; display:inline-flex; align-items:center; justify-content:center;" title="More"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+        <div class="dropdown" style="left:auto; right:0;">
+          <a class="dropdown-link active" href="settings.html" data-i18n="gear.settings">Settings</a>
+          <a class="dropdown-link" href="help.html" data-i18n="gear.help">Help</a>
+          <button class="dropdown-link" onclick="signOutUser()" data-i18n="gear.logout">Logout</button>
+        </div>
+      </div>
+  </div>
+</header>
+
+<main>
+
+<div class="section-head">
+  <div class="eyebrow">Settings · 设置</div>
+  <p class="lede">Change account details, site appearance and performance.</p>
+</div>
+
+<div class="settings-grid">
+
+  <div class="settings-card">
+    <h3>Account</h3>
+    <p class="settings-sub">Sign-in status for this site.</p>
+    <div class="account-status" id="accountStatus">
+      <div class="account-avatar">境</div>
+      <div>
+        <div class="account-email" id="accountEmail">Checking…</div>
+        <div class="account-note" id="accountNote"></div>
+      </div>
+    </div>
+    <button class="btn ghost small" onclick="signOutUser()" id="accountSignOutBtn" style="display:none;">Sign out</button>
+  </div>
+
+  <div class="settings-card">
+    <h3>Data</h3>
+    <p class="settings-sub">Everything below is stored only in this browser, on this device.</p>
+    <div class="settings-danger-row">
+      <div>
+        <div class="settings-row-label">Reset to Default</div>
+        <div class="settings-row-desc">Resets everything on this site back to its standard settings — applies immediately, without the need to save.</div>
+      </div>
+      <button class="btn danger small" onclick="onResetSettings()">Reset to Default Settings</button>
+    </div>
+    <div class="settings-danger-row">
+      <div>
+        <div class="settings-row-label">Save Changes</div>
+        <div class="settings-row-desc">Every other setting on this page stages here until you save it — leaving without saving will prompt you first.</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span id="unsavedNote" style="display:none; font-size:12.5px; color:var(--gold); font-weight:600;">Unsaved changes</span>
+        <button class="btn small" id="saveSettingsBtn" onclick="onSaveSettings()" disabled>Save Settings</button>
+      </div>
+    </div>
+    <div class="settings-save-note" id="settingsSaveNote">Saved.</div>
+  </div>
+
+  <div class="settings-card">
+    <h3>Appearance</h3>
+    <p class="settings-sub">How Context Chinese looks, reads, and is navigated on this device.</p>
+    <div class="settings-row" style="border-top:none; padding-top:0;">
+      <div>
+        <div class="settings-row-label">Dark Mode</div>
+        <div class="settings-row-desc">Switches the paper-and-ink theme to a dark palette.</div>
+      </div>
+      <div class="settings-control">
+        <label class="toggle-switch">
+          <input type="checkbox" id="darkModeToggle" onchange="onToggleDarkMode(this.checked)">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <div>
+        <div class="settings-row-label">Interface Language</div>
+        <div class="settings-row-desc">English shows Chinese + English side by side in the nav; 中文 shows Chinese only.</div>
+      </div>
+      <div class="settings-control">
+        <select class="settings-select" id="uiLanguageSelect" onchange="onUiLanguageChange(this.value)">
+          <option value="en">English</option>
+          <option value="zh">中文</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <div>
+        <div class="settings-row-label">Script</div>
+        <div class="settings-row-desc">All content is authored in simplified Chinese; traditional is a live character-for-character conversion. The Writing Practice canvas itself always quizzes the simplified form.</div>
+      </div>
+      <div class="settings-control">
+        <select class="settings-select" id="hanziScriptSelect" onchange="onHanziScriptChange(this.value)">
+          <option value="simplified">Simplified</option>
+          <option value="traditional">Traditional</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="settings-subhead">Navigation</div>
+    <p class="settings-sub">Drag items to reorder them in navigation bar. Turn one off to remove it completely, everywhere, until you turn it back on.</p>
+    <div id="navCategoryToggles" class="nav-order-list"></div>
+
+    <div class="settings-row" id="toneColorsRow">
+      <div>
+        <div class="settings-row-label">Pinyin Tone Colors</div>
+        <div class="settings-row-desc">Color codes pinyin text sitewide.</div>
+      </div>
+      <div class="settings-control">
+        <label class="toggle-switch">
+          <input type="checkbox" id="toneColorsToggle" onchange="onToggleToneColors(this.checked)">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
+      </div>
+    </div>
+    <div class="settings-row">
+      <div>
+        <div class="settings-row-label">Hanzi Tone Colors</div>
+        <div class="settings-row-desc">Color codes Hanzi characters being drawn in Writing Practice by their tone. Doesn't affect non-drawn Hanzi.</div>
+      </div>
+      <div class="settings-control">
+        <label class="toggle-switch">
+          <input type="checkbox" id="hanziToneColorsToggle" onchange="onToggleHanziToneColors(this.checked)">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
+      </div>
+    </div>
+    <div class="tone-preview" id="tonePreview"><span class="tone-group">ā ē ī ō ū ǖ</span><span class="tone-group">á é í ó ú ǘ</span><span class="tone-group">ǎ ě ǐ ǒ ǔ ǚ</span><span class="tone-group">à è ì ò ù ǜ</span><span class="tone-group">a e i o u ü</span></div>
+    <p class="settings-sub" style="margin-top:10px;">These colors apply to both Pinyin Tone Colors and Hanzi Tone Colors above.</p>
+    <div class="tone-color-list" id="toneColorList">
+      <div class="tone-color-row">
+        <div class="tone-color-label">Tone 1 <span class="tone-color-example">ā ē ī ō ū ǖ</span></div>
+        <input type="color" class="tone-color-input" id="toneColorInput1" onchange="onToneColorChange('1', this.value)">
+      </div>
+      <div class="tone-color-row">
+        <div class="tone-color-label">Tone 2 <span class="tone-color-example">á é í ó ú ǘ</span></div>
+        <input type="color" class="tone-color-input" id="toneColorInput2" onchange="onToneColorChange('2', this.value)">
+      </div>
+      <div class="tone-color-row">
+        <div class="tone-color-label">Tone 3 <span class="tone-color-example">ǎ ě ǐ ǒ ǔ ǚ</span></div>
+        <input type="color" class="tone-color-input" id="toneColorInput3" onchange="onToneColorChange('3', this.value)">
+      </div>
+      <div class="tone-color-row">
+        <div class="tone-color-label">Tone 4 <span class="tone-color-example">à è ì ò ù ǜ</span></div>
+        <input type="color" class="tone-color-input" id="toneColorInput4" onchange="onToneColorChange('4', this.value)">
+      </div>
+      <div class="tone-color-row">
+        <div class="tone-color-label">Neutral <span class="tone-color-example">a e i o u ü</span></div>
+        <input type="color" class="tone-color-input" id="toneColorInput0" onchange="onToneColorChange('0', this.value)">
+      </div>
+    </div>
+    <button class="btn ghost small" onclick="onResetToneColors()" style="margin-top:14px;">Default Tone Colors</button>
+  </div>
+
+  <div class="settings-card">
+    <h3>Audio</h3>
+    <p class="settings-sub">Adjust the audio settings site-wide.</p>
+    <div class="settings-row" style="border-top:none; padding-top:0;">
+      <div>
+        <div class="settings-row-label">Speech rate</div>
+        <div class="settings-row-desc">How fast text-to-speech reads Chinese aloud.</div>
+      </div>
+      <div class="settings-control">
+        <div class="speech-rate-row">
+          <span class="speech-rate-emoji">🐢</span>
+          <input type="range" id="speechRateSlider" min="0.5" max="1.3" step="0.05" oninput="onSpeechRateInput(this.value)">
+          <span class="speech-rate-emoji">🐇</span>
+        </div>
+        <button class="btn ghost small" onclick="speak('你好，很高兴认识你。')">Test</button>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <div>
+        <div class="settings-row-label">Force Stop Audio On Next Card</div>
+        <div class="settings-row-desc">Cuts off actively playing audio the moment the next word is progressed to in all practice modes.</div>
+      </div>
+      <div class="settings-control">
+        <label class="toggle-switch">
+          <input type="checkbox" id="forceStopAudioToggle" onchange="onToggleAudio('forceStopAudioOnNext', this.checked)">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <div>
+        <div class="settings-row-label">Audio Delay After Input</div>
+        <div class="settings-row-desc">Amount of time that audio is played after a direct input site-wide.</div>
+      </div>
+      <div class="settings-control">
+        <div class="speech-rate-row">
+          <div class="settings-input-unit-wrap">
+            <input type="number" class="settings-input" id="audioDelayMeter" min="0" max="1000" step="50" oninput="onAudioDelayMeterInput(this.value)">
+            <span class="settings-unit">ms</span>
+          </div>
+          <input type="range" id="audioDelaySlider" min="0" max="1000" step="50" oninput="onAudioDelaySliderInput(this.value)">
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-row" style="border-top:none; padding-top:0;">
+      <div>
+        <div class="settings-row-label">Type Pinyin Audio</div>
+        <div class="settings-row-desc">Automatically play audio after a word is completed in Type Pinyin.</div>
+      </div>
+      <div class="settings-control">
+        <label class="toggle-switch">
+          <input type="checkbox" id="ptAudioToggle" onchange="onToggleAudio('ptAudioOnCorrect', this.checked)">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
+      </div>
+    </div>
+    <div class="settings-row">
+      <div>
+        <div class="settings-row-label">Match Pinyin Audio</div>
+        <div class="settings-row-desc">Automatically play audio after a word is completed in Match Pinyin.</div>
+      </div>
+      <div class="settings-control">
+        <label class="toggle-switch">
+          <input type="checkbox" id="mpAudioToggle" onchange="onToggleAudio('mpAudioOnCorrect', this.checked)">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
+      </div>
+    </div>
+    <div class="settings-row">
+      <div>
+        <div class="settings-row-label">Writing Pinyin Audio</div>
+        <div class="settings-row-desc">Automatically play audio after a word is completed in Writing Pinyin.</div>
+      </div>
+      <div class="settings-control">
+        <label class="toggle-switch">
+          <input type="checkbox" id="hwAudioToggle" onchange="onToggleAudio('hwAudioOnCorrect', this.checked)">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-card">
+    <h3>Practice</h3>
+    <p class="settings-sub">Applies to Rapid Fire, Focused, and Folders across Writing, Typing, and Reading practice.</p>
+    <div class="settings-row" style="border-top:none; padding-top:0;">
+      <div>
+        <div class="settings-row-label">Exclude Known <span class="known-badge">K</span> words</div>
+        <div class="settings-row-desc">Skip words you've tagged Known in Word Bank when building a practice queue.</div>
+      </div>
+      <div class="settings-control">
+        <label class="toggle-switch">
+          <input type="checkbox" id="excludeKnownToggle" onchange="onToggleExcludeKnown(this.checked)">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="settings-subhead">Hanzi Writing Practice</div>
+    <p class="settings-sub">Tunes how the stroke-order quiz in Writing Practice grades you.</p>
+    <div class="settings-row" style="border-top:none; padding-top:0;">
+      <div>
+        <div class="settings-row-label">Show hint after misses</div>
+        <div class="settings-row-desc">Number of failed strokes before the correct stroke is shown.</div>
+      </div>
+      <div class="settings-control">
+        <input type="number" class="settings-input" id="hwHintInput" min="1" max="10" step="1" onchange="onSettingNumber('hwHintAfterMisses', this.value, 1, 10)">
+      </div>
+    </div>
+    <div class="settings-row">
+      <div>
+        <div class="settings-row-label">Stroke grading leniency</div>
+        <div class="settings-row-desc">Higher is more forgiving of imprecise strokes. Default 1.</div>
+      </div>
+      <div class="settings-control">
+        <input type="number" class="settings-input" id="hwLeniencyInput" min="0.5" max="3" step="0.1" onchange="onSettingNumber('hwLeniency', this.value, 0.5, 3)">
+      </div>
+    </div>
+    <div class="settings-row">
+      <div>
+        <div class="settings-row-label">Stroke fade duration (ms)</div>
+        <div class="settings-row-desc">How long a mistaken stroke lingers before fading away. Default 400.</div>
+      </div>
+      <div class="settings-control">
+        <input type="number" class="settings-input" id="hwFadeInput" min="0" max="2000" step="50" onchange="onSettingNumber('hwStrokeFadeDuration', this.value, 0, 2000)">
+      </div>
+    </div>
+    <div class="settings-row">
+      <div>
+        <div class="settings-row-label">Brush stroke width</div>
+        <div class="settings-row-desc">Multiplier on the thickness of the line drawn as you write. Default 1.0.</div>
+      </div>
+      <div class="settings-control">
+        <input type="number" class="settings-input" id="hwDrawingWidthInput" min="0.5" max="2.5" step="0.1" onchange="onSettingNumber('hwDrawingWidthScale', this.value, 0.5, 2.5)">
+      </div>
+    </div>
+    <div class="settings-row">
+      <div>
+        <div class="settings-row-label">Auto-advance multi-character words</div>
+        <div class="settings-row-desc">Move straight to a word's next character on success, without clicking Next. Only between characters of the same word — moving on to a new word still needs Next.</div>
+      </div>
+      <div class="settings-control">
+        <label class="toggle-switch">
+          <input type="checkbox" id="hwAutoAdvanceToggle" onchange="onToggleAutoAdvanceMultiChar(this.checked)">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="test-writer-card">
+      <a class="btn ghost small" href="hanzi-writing.html?test=1">Test Writer</a>
+    </div>
+  </div>
+
+</div>
+
+</main>
+
+<footer>境 Context Chinese — a learning companion for Mandarin sound, script, geography and history.</footer>
+
+<script>
+/* ================= NAV DROPDOWN (click to open, does not navigate) ================= */
+function toggleNavDropdown(e){
+  const item = e.currentTarget.closest('.nav-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.nav-item.open').forEach(n=>{
+    n.classList.remove('open');
+    const dd = n.querySelector('.dropdown');
+    if(dd){ dd.style.position=''; dd.style.left=''; dd.style.top=''; }
+  });
+  if(!wasOpen){
+    item.classList.add('open');
+    // Below 920px the nav scrolls horizontally (nav.tabs{overflow-x:auto}).
+    // Anchoring the dropdown with position:fixed here — instead of the
+    // default position:absolute under the button — lets it escape that
+    // scroll container's clipping without ever touching its overflow
+    // property, so opening/closing a dropdown never resets the nav's
+    // scroll position back to the start.
+    if(window.matchMedia('(max-width:920px)').matches){
+      const dd = item.querySelector('.dropdown');
+      const btnRect = e.currentTarget.getBoundingClientRect();
+      dd.style.position = 'fixed';
+      dd.style.top = (btnRect.bottom + 6) + 'px';
+      const maxLeft = window.innerWidth - 208; // dropdown min-width 200px + 8px margin
+      dd.style.left = Math.max(8, Math.min(btnRect.left, maxLeft)) + 'px';
+    }
+  }
+}
+document.addEventListener('click', (e)=>{
+  if(e.target.closest('.dropdown-link') || !e.target.closest('.nav-item')){
+    document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+  }
+});
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='Escape') document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+});
+
+/* ================= SPEECH ================= */
+function speak(text, lang){
+  if(!('speechSynthesis' in window) || !text || text==='—') return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang || 'zh-CN';
+  u.rate = (typeof getSpeechRate === 'function') ? getSpeechRate() : 0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+function shuffle(array){
+  for(let i=array.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function stripTones(s){
+  const map = {'ā':'a','á':'a','ǎ':'a','à':'a','ē':'e','é':'e','ě':'e','è':'e','ī':'i','í':'i','ǐ':'i','ì':'i',
+    'ō':'o','ó':'o','ǒ':'o','ò':'o','ū':'u','ú':'u','ǔ':'u','ù':'u','ǖ':'u','ǘ':'u','ǚ':'u','ǜ':'u','ü':'u'};
+  return s.toLowerCase().split('').map(c=>map[c]||c).join('');
+}
+
+</script>
+
+<script>
+function flashSaved(){
+  const note = document.getElementById('settingsSaveNote');
+  note.style.opacity = '1';
+  clearTimeout(flashSaved._t);
+  flashSaved._t = setTimeout(function(){ note.style.opacity = '0'; }, 1200);
+}
+
+/* ================= UNSAVED-CHANGES STAGING =================
+   Every setting change on this page is staged in memory — live-previewed
+   immediately via the existing apply*() functions (which read it back
+   through settings.js's loadSettings(), see window.__ccSettingsOverride
+   there) — rather than written to localStorage right away. Nothing is
+   actually persisted until "Save Settings" is clicked. Reset to Default
+   Settings is the one exception: it's immediate and bypasses staging
+   entirely, since it's already an explicit, confirmed action. */
+let pendingChanges = {};
+let hasUnsavedChanges = false;
+
+function stagePatch(patch){
+  Object.assign(pendingChanges, patch);
+  window.__ccSettingsOverride = Object.assign({}, window.__ccSettingsOverride || {}, patch);
+  hasUnsavedChanges = true;
+  updateSaveUI();
+}
+function updateSaveUI(){
+  const btn = document.getElementById('saveSettingsBtn');
+  const note = document.getElementById('unsavedNote');
+  if(btn) btn.disabled = !hasUnsavedChanges;
+  if(note) note.style.display = hasUnsavedChanges ? 'inline' : 'none';
+}
+function onSaveSettings(){
+  if(!hasUnsavedChanges) return;
+  saveSettings(pendingChanges);
+  pendingChanges = {};
+  window.__ccSettingsOverride = null;
+  hasUnsavedChanges = false;
+  updateSaveUI();
+  flashSaved();
+}
+// Tab close / refresh / typed-URL navigation — browsers only allow a native,
+// non-customizable prompt here, not the confirm() below.
+window.addEventListener('beforeunload', function(e){
+  if(!hasUnsavedChanges) return;
+  e.preventDefault();
+  e.returnValue = '';
+});
+// In-app navigation (nav dropdown links, brand logo, footer, etc.) — actual
+// clickable links, so a real confirm() with a real question works here.
+// Either answer still leaves the page; the only difference is whether the
+// staged changes are saved first.
+document.addEventListener('click', function(e){
+  if(!hasUnsavedChanges) return;
+  const link = e.target.closest('a[href]');
+  if(!link) return;
+  const href = link.getAttribute('href');
+  if(!href || href.charAt(0) === '#' || href.indexOf('javascript:') === 0) return;
+  e.preventDefault();
+  if(confirm('You have unsaved settings changes. Save them before leaving?')){
+    saveSettings(pendingChanges);
+  }
+  pendingChanges = {};
+  window.__ccSettingsOverride = null;
+  hasUnsavedChanges = false;
+  window.location.href = href;
+}, true);
+
+function refreshAccountUI(){
+  const emailEl = document.getElementById('accountEmail');
+  const noteEl = document.getElementById('accountNote');
+  const signOutBtn = document.getElementById('accountSignOutBtn');
+  if(typeof AUTH_ENABLED !== 'undefined' && !AUTH_ENABLED){
+    emailEl.textContent = 'Sign-in is not enabled yet';
+    noteEl.textContent = 'This site is currently running without a login requirement.';
+    signOutBtn.style.display = 'none';
+    return;
+  }
+  if(typeof firebase === 'undefined' || !firebase.apps || !firebase.apps.length){
+    emailEl.textContent = 'Checking sign-in status…';
+    noteEl.textContent = '';
+    return;
+  }
+  firebase.auth().onAuthStateChanged(function(user){
+    if(user){
+      emailEl.textContent = user.email || 'Signed in';
+      noteEl.textContent = 'Signed in to Context Chinese.';
+      signOutBtn.style.display = 'inline-block';
+    } else {
+      emailEl.textContent = 'Not signed in';
+      noteEl.textContent = '';
+      signOutBtn.style.display = 'none';
+    }
+  });
+}
+
+const TONE_VOWEL_GROUPS = {
+  1: ['ā','ē','ī','ō','ū','ǖ'],
+  2: ['á','é','í','ó','ú','ǘ'],
+  3: ['ǎ','ě','ǐ','ǒ','ǔ','ǚ'],
+  4: ['à','è','ì','ò','ù','ǜ'],
+  0: ['a','e','i','o','u','ü'],
+};
+const TONE_ORDER = [1, 2, 3, 4, 0];
+function renderTonePreview(){
+  const el = document.getElementById('tonePreview');
+  const on = loadSettings().toneColors;
+  el.innerHTML = TONE_ORDER.map(function(t){
+    const vowels = TONE_VOWEL_GROUPS[t].map(function(v){
+      const fixed = wrapPinyinGlyphFixes(v);
+      return on ? '<span class="tone-c tone-c-' + t + '">' + fixed + '</span>' : fixed;
+    }).join(' ');
+    return '<span class="tone-group">' + vowels + '</span>';
+  }).join('');
+}
+// The "Tone #" row examples are static HTML (always shown, regardless of the
+// toggle) rather than JS-rendered like the preview box above — fix their
+// glyphs once up front rather than duplicating the toggle-gated logic.
+function fixToneExampleGlyphs(){
+  document.querySelectorAll('.tone-color-example').forEach(function(el){
+    el.innerHTML = wrapPinyinGlyphFixes(el.textContent);
+  });
+}
+
+function toneHexFor(key){
+  const val = getComputedStyle(document.documentElement).getPropertyValue('--tone-' + key).trim();
+  // <input type="color"> requires a strict #rrggbb value.
+  return /^#[0-9a-fA-F]{6}$/.test(val) ? val : '#808080';
+}
+function loadToneColorInputs(){
+  ['1','2','3','4','0'].forEach(function(k){
+    document.getElementById('toneColorInput' + k).value = toneHexFor(k);
+  });
+}
+
+let navDragKey = null;
+
+function renderNavCategoryToggles(){
+  const order = getNavCategoryOrder();
+  const hidden = new Set(loadSettings().hiddenNavCategories || []);
+  const byKey = {};
+  NAV_CATEGORIES.forEach(function(c){ byKey[c.key] = c; });
+  document.getElementById('navCategoryToggles').innerHTML = order.map(function(key){
+    const c = byKey[key];
+    const checked = !hidden.has(key);
+    return `
+    <div class="nav-order-row" draggable="true" data-key="${key}"
+      ondragstart="onNavDragStart(event, '${key}')"
+      ondragover="onNavDragOver(event, '${key}')"
+      ondragleave="onNavDragLeave(event)"
+      ondrop="onNavDrop(event, '${key}')"
+      ondragend="onNavDragEnd(event)">
+      <div class="nav-order-left">
+        <span class="nav-order-handle" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></span>
+        <span class="nav-order-label">${c.label}</span>
+      </div>
+      <div class="settings-control">
+        <label class="toggle-switch">
+          <input type="checkbox" ${checked ? 'checked' : ''} onchange="onToggleNavCategory('${key}', this.checked)">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
+      </div>
+    </div>`;
+  }).join('');
+}
+function onToggleNavCategory(key, checked){
+  const hidden = new Set(loadSettings().hiddenNavCategories || []);
+  if(checked) hidden.delete(key); else hidden.add(key);
+  stagePatch({hiddenNavCategories: Array.from(hidden)});
+  applyNavVisibility();
+}
+function onNavDragStart(e, key){
+  navDragKey = key;
+  e.dataTransfer.effectAllowed = 'move';
+  e.currentTarget.classList.add('dragging');
+}
+function onNavDragOver(e, key){
+  e.preventDefault();
+  if(key === navDragKey) return;
+  e.currentTarget.classList.add('drag-over');
+}
+function onNavDragLeave(e){
+  e.currentTarget.classList.remove('drag-over');
+}
+function onNavDrop(e, targetKey){
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if(!navDragKey || navDragKey === targetKey) return;
+  const order = getNavCategoryOrder();
+  const fromIdx = order.indexOf(navDragKey);
+  const toIdx = order.indexOf(targetKey);
+  if(fromIdx === -1 || toIdx === -1) return;
+  order.splice(fromIdx, 1);
+  order.splice(toIdx, 0, navDragKey);
+  stagePatch({navCategoryOrder: order});
+  applyNavOrder();
+  renderNavCategoryToggles();
+}
+function onNavDragEnd(e){
+  e.currentTarget.classList.remove('dragging');
+  document.querySelectorAll('.nav-order-row.drag-over').forEach(function(el){ el.classList.remove('drag-over'); });
+  navDragKey = null;
+}
+
+function loadSettingsIntoUI(){
+  const s = loadSettings();
+  document.getElementById('darkModeToggle').checked = s.theme === 'dark';
+  document.getElementById('uiLanguageSelect').value = s.uiLanguage;
+  document.getElementById('hanziScriptSelect').value = s.hanziScript;
+  document.getElementById('speechRateSlider').value = s.speechRate;
+  document.getElementById('toneColorsToggle').checked = s.toneColors;
+  document.getElementById('hanziToneColorsToggle').checked = s.hanziToneColors;
+  document.getElementById('excludeKnownToggle').checked = s.excludeKnownFromPractice;
+  document.getElementById('forceStopAudioToggle').checked = s.forceStopAudioOnNext;
+  document.getElementById('audioDelayMeter').value = s.audioDelayAfterInput;
+  document.getElementById('audioDelaySlider').value = s.audioDelayAfterInput;
+  document.getElementById('ptAudioToggle').checked = s.ptAudioOnCorrect;
+  document.getElementById('mpAudioToggle').checked = s.mpAudioOnCorrect;
+  document.getElementById('hwAudioToggle').checked = s.hwAudioOnCorrect;
+  document.getElementById('hwHintInput').value = s.hwHintAfterMisses;
+  document.getElementById('hwLeniencyInput').value = s.hwLeniency;
+  document.getElementById('hwFadeInput').value = s.hwStrokeFadeDuration;
+  document.getElementById('hwDrawingWidthInput').value = s.hwDrawingWidthScale;
+  document.getElementById('hwAutoAdvanceToggle').checked = s.hwAutoAdvanceMultiChar;
+  loadToneColorInputs();
+  renderTonePreview();
+  fixToneExampleGlyphs();
+  renderNavCategoryToggles();
+}
+
+function onToggleDarkMode(checked){
+  stagePatch({theme: checked ? 'dark' : 'light'});
+  applyTheme();
+  loadToneColorInputs(); // tone defaults differ by theme unless overridden
+  renderTonePreview();
+}
+function onSpeechRateInput(val){
+  stagePatch({speechRate: parseFloat(val)});
+}
+// Audio Delay After Input: a slider paired with a small live meter (styled
+// like the plain number field it replaced) — dragging the slider updates the
+// meter, typing into the meter updates the slider, same two-way sync as
+// speech rate's slider+Test button pairing above. Stages directly rather
+// than going through onSettingNumber's loadSettingsIntoUI() re-render on
+// every tick, so dragging stays smooth.
+function onAudioDelaySliderInput(val){
+  const n = parseInt(val, 10);
+  document.getElementById('audioDelayMeter').value = n;
+  stagePatch({audioDelayAfterInput: n});
+}
+function onAudioDelayMeterInput(val){
+  let n = parseInt(val, 10);
+  if(isNaN(n)) n = DEFAULT_SETTINGS.audioDelayAfterInput;
+  n = Math.min(1000, Math.max(0, n));
+  document.getElementById('audioDelayMeter').value = n;
+  document.getElementById('audioDelaySlider').value = n;
+  stagePatch({audioDelayAfterInput: n});
+}
+function onUiLanguageChange(val){
+  stagePatch({uiLanguage: val});
+  applyLanguage();
+}
+function onHanziScriptChange(val){
+  stagePatch({hanziScript: val});
+  applyHanziScript();
+}
+function onToggleToneColors(checked){
+  stagePatch({toneColors: checked});
+  renderTonePreview();
+}
+function onToggleHanziToneColors(checked){
+  stagePatch({hanziToneColors: checked});
+}
+function onToggleExcludeKnown(checked){
+  stagePatch({excludeKnownFromPractice: checked});
+}
+function onToggleAudio(key, checked){
+  const patch = {}; patch[key] = checked;
+  stagePatch(patch);
+}
+function onToggleAutoAdvanceMultiChar(checked){
+  stagePatch({hwAutoAdvanceMultiChar: checked});
+}
+function onToneColorChange(key, hex){
+  const overrides = Object.assign({}, loadSettings().tonePaletteOverrides || {});
+  overrides[key] = hex;
+  stagePatch({tonePaletteOverrides: overrides});
+  applyTonePalette();
+  renderTonePreview();
+}
+function onResetToneColors(){
+  stagePatch({tonePaletteOverrides: {}});
+  applyTonePalette();
+  loadToneColorInputs();
+  renderTonePreview();
+}
+function onSettingNumber(key, val, min, max){
+  let n = parseFloat(val);
+  if(isNaN(n)) n = DEFAULT_SETTINGS[key];
+  n = Math.min(max, Math.max(min, n));
+  const patch = {}; patch[key] = n;
+  stagePatch(patch);
+  loadSettingsIntoUI();
+}
+function onResetSettings(){
+  if(!confirm('Reset all settings back to their defaults?')) return;
+  resetSettings();
+  // Discard any staged-but-unsaved edits too — the reset below is now the
+  // source of truth on disk, so nothing should still be "pending" over it.
+  pendingChanges = {};
+  window.__ccSettingsOverride = null;
+  hasUnsavedChanges = false;
+  updateSaveUI();
+  applyTheme();
+  applyNavVisibility();
+  applyNavOrder();
+  applyTonePalette();
+  applyLanguage();
+  applyHanziScript();
+  loadSettingsIntoUI();
+  flashSaved();
+}
+
+loadSettingsIntoUI();
+refreshAccountUI();
+</script>
+</body>
+</html>
