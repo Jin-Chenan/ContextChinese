@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>html{visibility:hidden;}</style>
+<title>Help — Context Chinese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDE4D2;
+  --paper-deep:#E1D4B9;
+  --paper-shadow:#cbbb96;
+  --ink:#22241F;
+  --ink-soft:#514E42;
+  --seal:#AE3B1C;
+  --seal-dark:#8C2E15;
+  --jade:#3E6B5B;
+  --jade-dark:#2E5346;
+  --gold:#A9832E;
+  --slate:#4C6169;
+  --paper-rgb:237,228,210;
+  --radius:2px;
+  --serif-cn:'Noto Serif SC', serif;
+  --serif-en:'Zilla Slab', 'Noto Serif', serif;
+  --sans:'Inter', sans-serif;
+  --tone-1:#c0392b;
+  --tone-2:#27974f;
+  --tone-3:#2d6bd6;
+  --tone-4:#9b3fc4;
+  --tone-0:#6b6b6b;
+}
+
+/* ---------- dark mode ---------- */
+:root[data-theme="dark"]{
+  --paper:#1C1B18;
+  --paper-deep:#242220;
+  --paper-shadow:#3A352C;
+  --ink:#EDE6D6;
+  --ink-soft:#B9AF9C;
+  --seal:#E2703F;
+  --seal-dark:#C8592C;
+  --jade:#5FA98D;
+  --jade-dark:#3E8068;
+  --gold:#D9AE5C;
+  --slate:#93A9B1;
+  --paper-rgb:28,27,24;
+  --tone-1:#ff8a72;
+  --tone-2:#6bd98f;
+  --tone-3:#7fb0ff;
+  --tone-4:#d79bf5;
+  --tone-0:#b9af9c;
+}
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .dict-search,
+:root[data-theme="dark"] .dict-entry,
+:root[data-theme="dark"] .dict-filter,
+:root[data-theme="dark"] .import-card,
+:root[data-theme="dark"] .dialogue-card,
+:root[data-theme="dark"] .tone-card,
+:root[data-theme="dark"] .trainer-card,
+:root[data-theme="dark"] .route-card,
+:root[data-theme="dark"] .word-card,
+:root[data-theme="dark"] .radical-face.front,
+:root[data-theme="dark"] .flash-face.front,
+:root[data-theme="dark"] .province-chip,
+:root[data-theme="dark"] .province-detail,
+:root[data-theme="dark"] .tone-desc-panel,
+:root[data-theme="dark"] .converse-card,
+:root[data-theme="dark"] .dictate-card,
+:root[data-theme="dark"] .read-card,
+:root[data-theme="dark"] .translate-card,
+:root[data-theme="dark"] .hw-target-wrap,
+:root[data-theme="dark"] .search-bar,
+:root[data-theme="dark"] .settings-card,
+:root[data-theme="dark"] .account-status,
+:root[data-theme="dark"] .quiz-box{
+  background:rgba(0,0,0,0.28) !important;
+}
+:root[data-theme="dark"] .dict-search input,
+:root[data-theme="dark"] .trainer-input,
+:root[data-theme="dark"] .converse-input,
+:root[data-theme="dark"] .dictate-input,
+:root[data-theme="dark"] .import-textarea,
+:root[data-theme="dark"] .search-bar input,
+:root[data-theme="dark"] .settings-select,
+:root[data-theme="dark"] .settings-input{
+  background:rgba(0,0,0,0.25) !important;
+}
+:root[data-theme="dark"] .keycap{
+  background:linear-gradient(160deg, #2c2a25 0%, #201f1b 100%) !important;
+}
+
+/* ---------- tone colouring ---------- */
+.tone-c-1{color:var(--tone-1);}
+.tone-c-2{color:var(--tone-2);}
+.tone-c-3{color:var(--tone-3);}
+.tone-c-4{color:var(--tone-4);}
+.tone-c-0{color:var(--tone-0);}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(0,0,0,0.025) 0, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(0,0,0,0.03) 0, transparent 50%);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.5;
+}
+::selection{background:var(--seal); color:var(--paper);}
+a{color:inherit;}
+button{font-family:inherit;}
+:focus-visible{outline:2px solid var(--seal); outline-offset:2px;}
+
+/* ---------- layout shell ---------- */
+.wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+header.top{
+  position:sticky; top:0; z-index:50;
+  background:rgba(var(--paper-rgb),0.94);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--paper-shadow);
+}
+.top-inner{display:flex; align-items:flex-start; justify-content:space-between; padding:14px 28px; max-width:1120px; margin:0 auto; gap:20px;}
+.brand{display:flex; align-items:center; gap:12px; cursor:pointer; user-select:none; flex-shrink:0;}
+.seal-mark{
+  width:38px; height:38px; background:var(--seal); color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif-cn); font-size:22px; font-weight:700;
+  border-radius:3px; transform:rotate(-3deg);
+  box-shadow:2px 2px 0 rgba(0,0,0,0.15);
+  flex-shrink:0;
+}
+.brand-text{display:flex; flex-direction:column; line-height:1.1;}
+.brand-text b{font-family:var(--serif-en); font-size:19px; letter-spacing:0.3px; white-space:nowrap;}
+.brand-text span{font-size:11px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;}
+
+nav.tabs{display:flex; flex-wrap:wrap; gap:2px;}
+.nav-item{position:relative;}
+.tab-btn{
+  background:none; border:none; cursor:pointer;
+  padding:8px 12px; font-size:13.5px; font-weight:600; color:var(--ink-soft);
+  border-radius:2px; letter-spacing:0.2px; white-space:nowrap;
+  transition:color .15s, background .15s;
+}
+.tab-btn .cn{font-family:var(--serif-cn); margin-right:5px; font-weight:600;}
+.tab-btn:hover{color:var(--ink); background:rgba(0,0,0,0.05);}
+.tab-btn.active{color:var(--paper); background:var(--ink);}
+
+.dropdown{
+  position:absolute; top:100%; left:0; margin-top:6px; background:var(--paper);
+  border:1px solid var(--paper-shadow); box-shadow:4px 6px 0 rgba(0,0,0,0.1);
+  width:0; min-width:0; display:flex; flex-direction:column; z-index:60;
+  opacity:0; max-height:0; overflow:hidden; pointer-events:none;
+  transform:translateY(-6px);
+  transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease .28s, min-width 0s ease .28s;
+  padding:0 4px;
+}
+.nav-item.open .dropdown{opacity:1; max-height:480px; width:auto; min-width:200px; transform:translateY(0); pointer-events:auto; padding:4px; transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease, min-width 0s ease;}
+.nav-item.open .tab-btn{color:var(--ink); background:rgba(0,0,0,0.06);}
+.tab-btn .caret{display:inline-block; margin-left:5px; font-size:10px; transition:transform .2s ease; opacity:0.6;}
+.nav-item.open .tab-btn .caret{transform:rotate(180deg);}
+.dropdown-link{
+  padding:10px 14px; text-align:left; background:none; border:none; cursor:pointer;
+  font-size:13px; font-weight:600; color:var(--ink-soft); white-space:nowrap; border-radius:2px;
+  text-decoration:none;
+}
+.dropdown-link:hover{background:rgba(0,0,0,0.06); color:var(--ink);}
+.dropdown-link.active{color:var(--seal);}
+
+@media (max-width:920px){
+  .top-inner{flex-direction:column; align-items:flex-start; position:relative;}
+  nav.tabs{width:100%; overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px;}
+  /* The gear/settings nav-item is a direct sibling of nav.tabs in .top-inner
+     (not nested inside it), so once .top-inner stacks into a column here it
+     falls onto its own row below the whole nav strip. Pin it to the
+     top-right corner instead, next to the brand row, freeing that row and
+     matching where it already sits on desktop's single-row layout. */
+  .top-inner > .nav-item{position:absolute; top:14px; right:28px;}
+}
+
+main{max-width:1120px; margin:0 auto; padding:40px 28px 100px;}
+
+.section-head{margin-bottom:28px; position:relative;}
+.eyebrow{
+  font-family:var(--sans); font-size:12px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--seal); display:flex; align-items:center; gap:8px;
+}
+.eyebrow::before{content:''; width:22px; height:2px; background:var(--seal);}
+h1.headline{
+  font-family:var(--serif-en); font-weight:700; font-size:44px; margin:6px 0 10px;
+  letter-spacing:-0.5px;
+}
+h1.headline .cn{font-family:var(--serif-cn); color:var(--seal); font-weight:700;}
+p.lede{color:var(--ink-soft); font-size:16px; max-width:640px; margin:10px 0 0;}
+
+.btn{
+  background:var(--ink); color:var(--paper); border:none; cursor:pointer;
+  padding:10px 18px; font-weight:600; font-size:13.5px; border-radius:2px;
+  letter-spacing:0.3px; transition:transform .12s, background .12s;
+}
+.btn:hover{background:var(--seal-dark);}
+.btn:active{transform:scale(0.97);}
+.btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+.btn.ghost:hover{background:var(--ink); color:var(--paper);}
+.btn.small{padding:6px 12px; font-size:12px;}
+
+.route-cards{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:0;}
+@media (max-width:900px){.route-cards{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:480px){.route-cards{grid-template-columns:1fr;}}
+.route-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px;
+  padding:20px; cursor:pointer; text-align:left; transition:transform .15s, box-shadow .15s, border-color .15s;
+  display:flex; flex-direction:column; gap:8px;
+}
+.route-card:hover{transform:translateY(-3px); box-shadow:4px 6px 0 rgba(0,0,0,0.08); border-color:var(--ink);}
+.route-card .cn-big{font-family:var(--serif-cn); font-size:30px; color:var(--seal); font-weight:700;}
+.route-card b{font-family:var(--serif-en); font-size:17px;}
+.route-card span{font-size:13px; color:var(--ink-soft);}
+
+.settings-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:24px 26px;
+}
+.settings-card h3{
+  margin:0 0 4px; font-family:var(--serif-en); font-size:19px; font-weight:700;
+}
+.settings-sub{font-size:13px; color:var(--ink-soft); margin:0 0 18px;}
+
+.help-text{font-size:13.5px; color:var(--ink-soft); line-height:1.7; margin:0 0 12px;}
+.help-text:last-child{margin-bottom:0;}
+
+.dialogue-list{display:flex; flex-direction:column; gap:12px;}
+.dialogue-card{border:1px solid var(--paper-shadow); border-radius:2px; background:rgba(255,255,255,0.4); overflow:hidden;}
+.dialogue-header{display:flex; align-items:center; justify-content:space-between; padding:16px 20px; cursor:pointer; gap:12px;}
+.dialogue-header b{font-family:var(--sans); font-size:14.5px; font-weight:700;}
+.dialogue-body{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+.dialogue-card.open .dialogue-body{max-height:400px;}
+.dialogue-body-inner{padding:0 20px 18px;}
+
+footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:center; font-size:12.5px; color:var(--ink-soft);}
+
+</style>
+<script src="settings.js?v=3"></script>
+<script src="auth-guard.js?v=2"></script>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html" style="text-decoration:none;">
+      <div class="seal-mark">境</div>
+      <div class="brand-text"><b>Context Chinese</b><span data-i18n="brand.tagline">Learn Chinese</span></div>
+    </a>
+    <nav class="tabs" id="navTabs" style="flex:1 1 auto;">
+
+      <div class="nav-item" data-nav-cat="learn">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">学习</span><span class="i18n-label" data-i18n="nav.learn">Learn</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="learn-read.html" data-i18n="learn.read">Read</a>
+          <a class="dropdown-link" href="learn-dictate.html" data-i18n="learn.dictate">Dictate</a>
+          <a class="dropdown-link" href="learn-translate.html" data-i18n="learn.translate">Translate</a>
+          <a class="dropdown-link" href="dialogue.html" data-i18n="learn.converse">Converse</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="dictionary">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">词典</span><span class="i18n-label" data-i18n="nav.dictionary">Dictionary</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="dictionary-lookup.html" data-i18n="dict.search">Search</a>
+          <a class="dropdown-link" href="dictionary-wordbank.html" data-i18n="dict.wordbank">Word Bank</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="hanzi">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">汉字</span><span class="i18n-label" data-i18n="nav.hanzi">Hanzi</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="hanzi-strokes.html" data-i18n="hanzi.strokes">Strokes</a>
+          <a class="dropdown-link" href="hanzi-radicals.html" data-i18n="hanzi.radicals">Radicals</a>
+          <a class="dropdown-link" href="hanzi-writing.html" data-i18n="hanzi.writing">Writing Practice</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="pinyin">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">拼音</span><span class="i18n-label" data-i18n="nav.pinyin">Pinyin</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="pinyin-tones.html" data-i18n="pinyin.tones">Tones</a>
+          <a class="dropdown-link" href="pinyin-syllable.html" data-i18n="pinyin.components">Pinyin Components</a>
+          <a class="dropdown-link" href="pinyin-match.html" data-i18n="pinyin.match">Match Pinyin</a>
+          <a class="dropdown-link" href="pinyin-typing.html" data-i18n="pinyin.typing">Type Pinyin</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="zhuyin">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">注音</span><span class="i18n-label" data-i18n="nav.zhuyin">Zhuyin</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="zhuyin.html" data-i18n="zhuyin.chart">Bopomofo Chart</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="geography">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">地理</span><span class="i18n-label" data-i18n="nav.geography">Geography</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="geography.html" data-i18n="geography.provinces">Provinces and Administrative Regions</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="history">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">历史</span><span class="i18n-label" data-i18n="nav.history">History</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="history.html" data-i18n="history.dynasties">Dynasties</a>
+          <a class="dropdown-link" href="post-imperial.html" data-i18n="history.postimperial">Post-Imperial</a>
+          <a class="dropdown-link" href="modern-day.html" data-i18n="history.modern">Modern Day</a>
+        </div>
+      </div>
+
+    </nav>
+
+      <div class="nav-item" style="flex-shrink:0;">
+        <button class="tab-btn active" onclick="toggleNavDropdown(event)" style="line-height:1; display:inline-flex; align-items:center; justify-content:center;" title="More"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+        <div class="dropdown" style="left:auto; right:0;">
+          <a class="dropdown-link" href="settings.html" data-i18n="gear.settings">Settings</a>
+          <a class="dropdown-link active" href="help.html" data-i18n="gear.help">Help</a>
+          <button class="dropdown-link" onclick="signOutUser()" data-i18n="gear.logout">Logout</button>
+        </div>
+      </div>
+  </div>
+</header>
+
+<main>
+
+<div class="section-head">
+  <div class="eyebrow">Help · 帮助</div>
+  <p class="lede">A quick guide to what's here, where your data lives, and answers to common questions.</p>
+</div>
+
+<div class="settings-card" style="margin-bottom:22px;">
+  <h3>Around the site</h3>
+  <p class="settings-sub">Everything under the top nav, in one place.</p>
+  <div class="route-cards">
+    <a class="route-card" data-nav-cat="learn" href="dialogue.html" style="text-decoration:none; color:inherit;"><span class="cn-big">学</span><b>Learn</b><span>Converse, dictate, read &amp; translate</span></a>
+    <a class="route-card" data-nav-cat="dictionary" href="dictionary-lookup.html" style="text-decoration:none; color:inherit;"><span class="cn-big">词</span><b>Dictionary</b><span>Look up words &amp; build your Word Bank</span></a>
+    <a class="route-card" data-nav-cat="hanzi" href="hanzi-strokes.html" style="text-decoration:none; color:inherit;"><span class="cn-big">字</span><b>Hanzi</b><span>Strokes, radicals &amp; writing practice</span></a>
+    <a class="route-card" data-nav-cat="pinyin" href="pinyin-tones.html" style="text-decoration:none; color:inherit;"><span class="cn-big">拼</span><b>Pinyin</b><span>Tones &amp; pronunciation practice</span></a>
+    <a class="route-card" data-nav-cat="zhuyin" href="zhuyin.html" style="text-decoration:none; color:inherit;"><span class="cn-big">注</span><b>Zhuyin</b><span>Bopomofo phonetic system</span></a>
+    <a class="route-card" data-nav-cat="geography" href="geography.html" style="text-decoration:none; color:inherit;"><span class="cn-big">地</span><b>Geography</b><span>Provinces, dialects &amp; culture</span></a>
+    <a class="route-card" data-nav-cat="history" href="history.html" style="text-decoration:none; color:inherit;"><span class="cn-big">史</span><b>History</b><span>Dynasties &amp; periods</span></a>
+    <a class="route-card" href="settings.html" style="text-decoration:none; color:inherit;"><span class="cn-big">设</span><b>Settings</b><span>Theme, audio &amp; practice preferences</span></a>
+  </div>
+</div>
+
+<div class="settings-card" style="margin-bottom:22px;">
+  <h3>Your data</h3>
+  <p class="settings-sub">How Context Chinese stores what you do here.</p>
+  <p class="help-text">Your Word Bank, focused characters, and Settings are all saved in this browser's local storage — not on a server. That means they stay on this device and this browser, won't sync anywhere else, and will be lost if you clear your browser's site data. There's nothing to export or back up yet, so it's worth being careful about clearing browser storage for this site once you've built up a Word Bank.</p>
+  <p class="help-text">If sign-in is enabled for this site, your account only gates access to the pages — your study data still lives locally in your browser, not tied to your account.</p>
+</div>
+
+<div class="settings-card">
+  <h3>Frequently asked questions</h3>
+  <p class="settings-sub">Tap a question to expand it.</p>
+  <div class="dialogue-list" id="faqList"></div>
+</div>
+
+</main>
+
+<footer>境 Context Chinese — a learning companion for Mandarin sound, script, geography and history.</footer>
+
+<script>
+/* ================= NAV DROPDOWN (click to open, does not navigate) ================= */
+function toggleNavDropdown(e){
+  const item = e.currentTarget.closest('.nav-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.nav-item.open').forEach(n=>{
+    n.classList.remove('open');
+    const dd = n.querySelector('.dropdown');
+    if(dd){ dd.style.position=''; dd.style.left=''; dd.style.top=''; }
+  });
+  if(!wasOpen){
+    item.classList.add('open');
+    // Below 920px the nav scrolls horizontally (nav.tabs{overflow-x:auto}).
+    // Anchoring the dropdown with position:fixed here — instead of the
+    // default position:absolute under the button — lets it escape that
+    // scroll container's clipping without ever touching its overflow
+    // property, so opening/closing a dropdown never resets the nav's
+    // scroll position back to the start.
+    if(window.matchMedia('(max-width:920px)').matches){
+      const dd = item.querySelector('.dropdown');
+      const btnRect = e.currentTarget.getBoundingClientRect();
+      dd.style.position = 'fixed';
+      dd.style.top = (btnRect.bottom + 6) + 'px';
+      const maxLeft = window.innerWidth - 208; // dropdown min-width 200px + 8px margin
+      dd.style.left = Math.max(8, Math.min(btnRect.left, maxLeft)) + 'px';
+    }
+  }
+}
+document.addEventListener('click', (e)=>{
+  if(e.target.closest('.dropdown-link') || !e.target.closest('.nav-item')){
+    document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+  }
+});
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='Escape') document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+});
+
+/* ================= SPEECH ================= */
+function speak(text, lang){
+  if(!('speechSynthesis' in window) || !text || text==='—') return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang || 'zh-CN';
+  u.rate = (typeof getSpeechRate === 'function') ? getSpeechRate() : 0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+function shuffle(array){
+  for(let i=array.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function stripTones(s){
+  const map = {'ā':'a','á':'a','ǎ':'a','à':'a','ē':'e','é':'e','ě':'e','è':'e','ī':'i','í':'i','ǐ':'i','ì':'i',
+    'ō':'o','ó':'o','ǒ':'o','ò':'o','ū':'u','ú':'u','ǔ':'u','ù':'u','ǖ':'u','ǘ':'u','ǚ':'u','ǜ':'u','ü':'u'};
+  return s.toLowerCase().split('').map(c=>map[c]||c).join('');
+}
+
+/* ================= WORD BANK (persisted via localStorage, shared across pages) ================= */
+let wordBankMem = [];
+function loadWordBank(){
+  try{
+    const raw = localStorage.getItem('ccWordBank');
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return wordBankMem; }
+}
+function saveWordBank(arr){
+  wordBankMem = arr;
+  try{ localStorage.setItem('ccWordBank', JSON.stringify(arr)); }catch(e){}
+}
+
+</script>
+
+<script>
+const faqs = [
+  {q:"How do I save words to study later?", a:"Search for a word in the Dictionary and tap the + button next to a result to add it to your Word Bank. From the Word Bank page you can organize saved words into folders."},
+  {q:"Why is there no audio, or it sounds strange?", a:"Audio uses your browser's built-in text-to-speech, so it depends on your browser and operating system having a Chinese voice installed. You can adjust how fast it speaks in Settings → Pronunciation & Audio."},
+  {q:"How do I turn on dark mode?", a:"Go to Settings → Appearance and toggle Dark mode. It applies immediately across every page."},
+  {q:"How do I get colour-coded tone marks?", a:"Go to Settings → Pronunciation & Audio and turn on Tone colours. Every pinyin syllable across the site will be coloured by its tone."},
+  {q:"Writing Practice feels too strict or too easy — can I change that?", a:"Yes. Settings → Hanzi Writing Practice lets you adjust how many missed strokes trigger a hint, how forgiving stroke grading is, and how long a mistaken stroke lingers before fading."},
+  {q:"Will my Word Bank show up if I switch devices or browsers?", a:"No. Everything is stored locally in this browser, on this device — it won't sync to your phone, another computer, or a different browser."},
+  {q:"Do I need an account to use this site?", a:"Only if sign-in has been enabled for this site. If it hasn't, every page is open without logging in."},
+];
+document.getElementById('faqList').innerHTML = faqs.map((f,i)=>`
+  <div class="dialogue-card" id="faq-${i}">
+    <div class="dialogue-header" onclick="document.getElementById('faq-${i}').classList.toggle('open')">
+      <b>${f.q}</b>
+      <span>▾</span>
+    </div>
+    <div class="dialogue-body"><div class="dialogue-body-inner">
+      <p class="help-text" style="padding-top:14px;">${f.a}</p>
+    </div></div>
+  </div>`).join('');
+</script>
+</body>
+</html>
