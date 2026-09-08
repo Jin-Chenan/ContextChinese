@@ -1,0 +1,2994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>html{visibility:hidden;}</style>
+<title>Context Chinese — Learn Mandarin Sound, Script &amp; Culture</title>
+<meta name="description" content="Context Chinese pairs Mandarin pronunciation, characters and vocabulary with real writing, listening and recall practice — a few focused minutes a day.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3/dist/hanzi-writer.min.js"></script>
+<style>
+:root{
+  --paper:#EDE4D2;
+  --paper-deep:#E1D4B9;
+  --paper-shadow:#cbbb96;
+  --ink:#22241F;
+  --ink-soft:#514E42;
+  --seal:#AE3B1C;
+  --seal-dark:#8C2E15;
+  --jade:#3E6B5B;
+  --jade-dark:#2E5346;
+  --gold:#A9832E;
+  --slate:#4C6169;
+  --paper-rgb:237,228,210;
+  --radius:2px;
+  --serif-cn:'Noto Serif SC', serif;
+  --serif-en:'Zilla Slab', 'Noto Serif', serif;
+  --sans:'Inter', sans-serif;
+}
+:root[data-theme="dark"]{
+  --paper:#1C1B18;
+  --paper-deep:#242220;
+  --paper-shadow:#3A352C;
+  --ink:#EDE6D6;
+  --ink-soft:#B9AF9C;
+  --seal:#E2703F;
+  --seal-dark:#C8592C;
+  --jade:#5FA98D;
+  --jade-dark:#3E8068;
+  --gold:#D9AE5C;
+  --slate:#93A9B1;
+  --paper-rgb:28,27,24;
+}
+:root[data-theme="dark"] .feature-card,
+:root[data-theme="dark"] .app-teaser{
+  background:rgba(0,0,0,0.28) !important;
+}
+:root[data-theme="dark"] .sphere-stage{
+  background:var(--paper-deep) !important;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(0,0,0,0.025) 0, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(0,0,0,0.03) 0, transparent 50%);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.5;
+  overflow-x:hidden;
+}
+::selection{background:var(--seal); color:var(--paper);}
+a{color:inherit;}
+button{font-family:inherit;}
+:focus-visible{outline:2px solid var(--seal); outline-offset:2px;}
+
+.wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+
+/* ---------- minimal header (no app nav — this precedes login) ---------- */
+header.top{
+  position:sticky; top:0; z-index:50;
+  background:rgba(var(--paper-rgb),0.94);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--paper-shadow);
+}
+.top-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 28px; max-width:1120px; margin:0 auto; gap:20px;}
+.brand{display:flex; align-items:center; gap:12px; text-decoration:none; flex-shrink:0;}
+.seal-mark{
+  width:38px; height:38px; background:var(--seal); color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif-cn); font-size:22px; font-weight:700;
+  border-radius:3px; transform:rotate(-3deg);
+  box-shadow:2px 2px 0 rgba(0,0,0,0.15);
+  flex-shrink:0;
+}
+.brand-text{display:flex; flex-direction:column; line-height:1.1; gap:3px;}
+.brand-text b{font-family:var(--serif-en); font-size:19px; letter-spacing:0.3px; white-space:nowrap; color:var(--ink);}
+.brand-text span{font-size:11px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;}
+.header-actions{display:flex; align-items:center; gap:18px; flex-shrink:0;}
+.header-login-link{font-size:13.5px; font-weight:600; color:var(--ink-soft); text-decoration:none;}
+.header-login-link:hover{color:var(--ink);}
+
+main{max-width:1120px; margin:0 auto; padding:0 28px 100px;}
+
+.btn{
+  background:var(--ink); color:var(--paper); border:none; cursor:pointer;
+  padding:12px 22px; font-weight:600; font-size:14.5px; border-radius:2px;
+  letter-spacing:0.3px; transition:transform .12s, background .12s;
+  text-decoration:none; display:inline-block; position:relative;
+}
+.btn:hover{background:var(--seal-dark);}
+.btn:active{transform:scale(0.97);}
+.btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+.btn.ghost:hover{background:var(--ink); color:var(--paper);}
+.btn.large{padding:16px 32px; font-size:16.5px;}
+
+/* The button the sphere's comet flies up to "pop" once its tour finishes —
+   see landingLaunchToSignup. Targets the HEADER's Sign Up link (the sphere
+   itself is the first thing on the page, so the header is the one thing
+   genuinely "above" it). A ring flashes outward (::after, needs its own box
+   so it isn't clipped to the small button) plus a scale-bounce on the
+   button itself, timed together from JS via the .popping class. */
+.pop-target{overflow:visible;}
+.pop-target::after{
+  content:''; position:absolute; inset:0; border-radius:2px;
+  border:2px solid var(--seal); opacity:0; pointer-events:none;
+}
+.pop-target.popping{animation:signupBounce .7s cubic-bezier(.34,1.56,.64,1);}
+.pop-target.popping::after{animation:signupRing .7s ease-out;}
+@keyframes signupBounce{
+  0%{transform:scale(1);}
+  35%{transform:scale(1.16);}
+  60%{transform:scale(0.96);}
+  100%{transform:scale(1);}
+}
+@keyframes signupRing{
+  0%{opacity:0.9; transform:scale(1);}
+  100%{opacity:0; transform:scale(1.6);}
+}
+
+.brush-rule{width:100%; height:3px; margin:0 0 60px; background:
+  linear-gradient(90deg, var(--ink) 0%, var(--ink) 60%, transparent 60%),
+  linear-gradient(90deg, var(--seal) 65%, transparent 65%);
+  background-size:100% 3px, 20% 3px; background-repeat:no-repeat;
+  opacity:0.85;
+}
+
+/* ---------- sphere showcase (the very first thing on the page) ---------- */
+.sphere-showcase{padding:40px 0 30px; text-align:center;}
+.sphere-stage{
+  position:relative; aspect-ratio:1/1; max-width:600px; margin:0 auto; width:100%;
+  background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:50%;
+}
+/* Scoped to these two IDs specifically, NOT a broad ".sphere-stage svg"
+   descendant selector — that used to catch every svg anywhere under
+   .sphere-stage, including ones a per-stop demo builder inserts much
+   deeper in the tree (HanziWriter's own SVG, appended inside
+   #demoHanziTarget inside .demo-hanzi-wrap inside #sphereDemoStage). That
+   forced position:absolute onto HanziWriter's SVG with no positioned
+   ancestor actually sized to match, collapsing it to 0 height (confirmed
+   directly: getBoundingClientRect().height was 0 despite the SVG's own
+   width/height ATTRIBUTES correctly saying 167ish) — the writer was
+   drawing successfully the whole time, just into an invisible box. */
+#sphereDotsSvg, #sphereCometSvg{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
+/* Layering, back to front: ambient dot cloud, then the demo content
+   sitting directly on the sphere itself (no separate nested disc — see
+   .sphere-demo-stage below), then the comet's own trail + dot on top of
+   everything, same as a band circling a globe would pass in front of it. */
+#sphereDotsSvg{z-index:1;}
+#sphereCometSvg{z-index:3; pointer-events:none;}
+/* Matches Writing Practice's own .hw-slot exactly (font-family/weight/fill
+   all copied from there) — the small "revealed character" look this was
+   asked to match, not the page's bigger serif display glyphs (.trainer-char
+   etc.): --sans (Inter, falling back to the OS's own default CJK sans for
+   the actual hanzi glyphs, since Inter itself has none) at weight 600,
+   solid --ink rather than the softer --ink-soft a plain ambient dot used. */
+.sphere-point{fill:var(--ink); font-family:var(--sans); font-weight:600; pointer-events:none; user-select:none; will-change:transform;}
+/* The trail's own "shading" (older/further-back segments reading as
+   dimmer) used to be plain opacity — literal translucency, letting the
+   dotted sphere show through. Using an actual color gradient instead reads
+   as genuine shading rather than see-through: each segment mixes toward
+   the sphere's own background color (--paper-deep, what it's actually
+   sitting on) by a --seal-pct custom property JS sets per segment (100% =
+   full solid seal color, 0% = fully blended into the background) — a
+   real, opaque color transition, not a see-through fade. --seal-pct
+   defaults to 100% (the launch sequence's own single-path trail reuses
+   this same class without ever setting it, so it stays fully solid). */
+.sphere-comet-trail-seg{stroke:color-mix(in srgb, var(--seal) var(--seal-pct, 100%), var(--paper-deep)); stroke-width:4.5; stroke-linecap:butt;}
+.sphere-comet-dot{fill:var(--gold);}
+/* Flame particles (see spawnLaunchFlame) — small embers spawned at the
+   comet's own current position, each just shrinking and fading out in place
+   rather than being pushed anywhere itself: it's the CONTINUOUS stream of
+   freshly-spawned ones (right on top of wherever the comet currently is)
+   plus the still-fading older ones (left behind at wherever it USED to be a
+   moment ago) that reads as a flickering trail accentuating how fast it's
+   moving, not any one particle's own motion. Shared by two different
+   spawn rates: a light, sparse one riding the sphere's own ordinary orbit
+   (see ORBIT_FLAME_SPACING in landingRenderFrame — deliberately much
+   sparser, so the ordinary tour still reads as calm overall), and a dense
+   every-couple-of-frames stream during the one deliberately fast, dramatic
+   Sign Up flight (see landingLaunchToSignup). Both spawn sites carry their
+   own explicit prefers-reduced-motion check (landingRenderFrame's orbit
+   embers; landingLaunchToSignup itself never runs under reduced motion —
+   see prefersReducedMotion in landingInit) rather than this class having
+   one of its own, so nothing ever spawns one of these under reduced motion
+   to begin with. */
+#launchFlamesEl{position:fixed; inset:0; width:100vw; height:100vh; z-index:198; pointer-events:none; overflow:visible;}
+.launch-flame{
+  position:absolute; top:0; left:0; width:15px; height:15px; margin:-7.5px 0 0 -7.5px;
+  border-radius:50% 50% 50% 50% / 65% 65% 35% 35%;
+  background:radial-gradient(circle at 50% 68%, var(--gold) 0%, var(--seal) 58%, transparent 76%);
+  animation:launchFlameFade 420ms ease-out forwards;
+  will-change:transform, opacity;
+}
+@keyframes launchFlameFade{
+  0%{ opacity:0.85; transform:translate(var(--flame-x,0), var(--flame-y,0)) scale(1) rotate(var(--flame-rot,0deg)); }
+  100%{ opacity:0; transform:translate(var(--flame-x,0), var(--flame-y,0)) scale(0.2) rotate(var(--flame-rot,0deg)) translateY(-8px); }
+}
+/* The demo actually being shown "inside" the ONE sphere — no border or
+   background of its own (that read as a second, smaller circle nested
+   inside the big one), just centered directly over the dot cloud so it
+   looks like content appearing on the sphere itself, with the comet's own
+   trail (see above) sweeping around the whole thing on top of it. */
+.sphere-demo-stage{
+  position:absolute; z-index:4; inset:8%;
+  display:flex; align-items:center; justify-content:center; text-align:center;
+  padding:clamp(6px,3vw,16px); pointer-events:none;
+}
+/* z-index:4 (above #sphereCometSvg's 3) — the comet still sweeps in front
+   of the plain ambient dot field (z-index:1) exactly as before, but now
+   passes BEHIND this per-stop content instead of visibly slicing across
+   it. Needed once the framed backdrops (.demo-frame) got wide/tall enough
+   that the comet — which always sweeps the sphere's full width along its
+   vertical center — routinely crossed right through the widest two
+   (Why Chinese, Hanzi), no matter how much those two got trimmed down;
+   letting a solid foreground plaque simply occlude the comet passing
+   behind it reads as normal depth, not a glitch, and needed no per-demo
+   special-casing since it's one change at the shared container. */
+.demo-fade{animation:demoFadeIn .3s ease both;}
+@keyframes demoFadeIn{from{opacity:0; transform:scale(0.94);} to{opacity:1; transform:none;}}
+
+/* ---- per-stop demo visuals — each one reuses the SAME markup language
+   (classes, colors) the real practice pages use for the equivalent piece of
+   UI, just scaled down to fit inside the sphere, so it reads as an actual
+   preview of the feature rather than an invented mini-widget. ---- */
+/* The number and its label share ONE backdrop/frame (see .demo-frame
+   below) instead of two separate pills stacked with a gap between them —
+   reads as a single plaque, not two floating labels. */
+.demo-stat{display:flex; flex-direction:column; align-items:center; gap:4px; max-width:100%; background:var(--paper); padding:14px 24px;}
+/* width is fixed at 6.3em — comfortably wider than "1,120,000,000" (the
+   target value, ~6.04em at this font) at any font-size the clamp() below
+   picks — so the count-up animation never resizes the frame around it as
+   digits accumulate (0 -> 1 -> 11 -> ... -> 1,120,000,000); only the text
+   itself grows, centered inside an already fully-sized box. em, not px, so
+   this still scales together with font-size across viewports. The
+   font-size clamp itself was pulled in ~20% from an earlier, larger size —
+   at the old size this frame's own width put its edges close enough to
+   the sphere's center that the orbiting comet (which sweeps the full
+   width at the sphere's own vertical center) regularly passed right at or
+   through its corners; the smaller ceiling still reads as a prominent
+   stat, just with real clearance on both sides. */
+.demo-stat-num{font-family:var(--serif-en); font-weight:700; font-size:clamp(25px,5.8vw,37px); color:var(--seal); line-height:1; white-space:nowrap; width:6.3em; text-align:center;}
+.demo-stat-label{font-size:12.5px; color:var(--ink-soft); max-width:180px;}
+
+.demo-ring-wrap{position:relative; width:clamp(148px,36vw,230px); height:clamp(148px,36vw,230px);}
+.demo-ring-wrap svg{width:100%; height:100%; transform:rotate(-90deg);}
+.demo-ring-bg{fill:none; stroke:var(--paper-shadow); stroke-width:8;}
+.demo-ring-fg{fill:none; stroke:var(--seal); stroke-width:8; stroke-linecap:round; stroke-dasharray:263.9; stroke-dashoffset:263.9;}
+.demo-ring-label{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+.demo-ring-label span{font-family:var(--serif-en); font-weight:700; font-size:clamp(33px,8.3vw,50px); color:var(--ink);}
+.demo-ring-label small{font-size:10.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.6px;}
+
+/* Same .hw-target-wrap cross-hair/diagonal-guide look Writing Practice's
+   own real drawing grid uses (see writing-practice.html), just scoped under
+   .demo- so it doesn't collide with that page if this is ever inlined
+   there. */
+/* Pulled in ~20% from an earlier, larger clamp ceiling for the same
+   reason .demo-stat-num's own comment gives — this square sat wide enough
+   that the orbiting comet, sweeping the sphere's full width at its
+   vertical center, regularly crossed right at its corners. Still plenty
+   of room to draw a character clearly, just with real clearance now. */
+.demo-hanzi-wrap{
+  position:relative; width:clamp(120px,32vw,240px); height:clamp(120px,32vw,240px);
+  background:var(--paper);
+}
+.demo-hanzi-wrap::before, .demo-hanzi-wrap::after{content:''; position:absolute; background:var(--paper-shadow); opacity:0.8;}
+.demo-hanzi-wrap::before{left:50%; top:0; bottom:0; width:1px;}
+.demo-hanzi-wrap::after{top:50%; left:0; right:0; height:1px;}
+.demo-hanzi-diag{position:absolute; top:50%; left:50%; width:141.5%; height:0; border-top:1px dashed var(--paper-shadow); opacity:0.55;}
+.demo-hanzi-diag1{transform:translate(-50%,-50%) rotate(45deg);}
+.demo-hanzi-diag2{transform:translate(-50%,-50%) rotate(-45deg);}
+#demoHanziTarget{position:relative; z-index:1;}
+
+/* Type-and-check demos (Pinyin, Dictate) — the same shape as the
+   real trainer/dictate input: a glyph or audio cue above, a bordered input
+   box below that fills in letter by letter and flashes jade on success,
+   same as .trainer-input.correct / .dictate-input.correct really do. */
+.demo-type-wrap{display:flex; flex-direction:column; align-items:center; gap:10px;}
+/* A solid backdrop behind the glyph — previously just floating bare over
+   whatever's directly behind it, which was fine against a plain sphere but
+   not against the ambient hanzi field now filling it: a same-sized real
+   character sitting right behind this one (or overlapping it) made the
+   demo's own glyph hard to pick out at a glance. */
+.demo-hz-glyph{
+  font-family:var(--serif-cn); font-size:clamp(53px,11.7vw,73px); font-weight:700; color:var(--ink);
+}
+/* Wraps .demo-hz-glyph in the same framed plaque the other backdrops use
+   (see .demo-frame below), sized to match the width of .demo-type-input
+   sitting right below it — so the glyph and the input box below read as
+   one column instead of a narrow glyph floating over a wider box. */
+.demo-hz-glyph-frame{background:var(--paper); padding:6px 14px; width:clamp(150px,33vw,217px); text-align:center;}
+.demo-audio-icon{
+  width:clamp(57px,13.3vw,73px); height:clamp(57px,13.3vw,73px); border-radius:50%;
+  border:1.5px solid var(--ink); background:var(--paper); display:flex; align-items:center; justify-content:center;
+}
+.demo-audio-icon svg{width:60%; height:60%;}
+.demo-type-input{
+  font-family:var(--serif-en); font-weight:600; font-size:clamp(27px,6.7vw,33px);
+  min-width:clamp(150px,33vw,217px); text-align:center; padding:7px 10px;
+  border:2px solid var(--paper-shadow); border-radius:2px; background:var(--paper);
+  color:var(--ink); transition:border-color .2s, background .2s, color .2s; min-height:1.4em;
+}
+/* A solid jade-tinted background, not the real (non-demo) trainer inputs'
+   own rgba(...,0.14-0.16) translucent tint — that convention only reads as
+   "a light green tint" against those pages' own plain paper background;
+   here, with the ambient hanzi field now behind the whole stage, the same
+   translucency let that field show straight through the box, reading as
+   see-through rather than a solid "correct" state. var(--paper) mixed under
+   the tint is what keeps it solid regardless of what's behind the sphere. */
+.demo-type-input.correct{border-color:var(--jade); background:linear-gradient(rgba(62,107,91,0.16), rgba(62,107,91,0.16)) var(--paper); color:var(--jade-dark);}
+
+/* Multiple Choice — a word chip plus a small board of definition chips, one
+   of which visibly gets "picked" then flips to matched/correct, mirroring
+   the real board's own picked -> correct sequence. */
+.demo-quiz{display:flex; flex-direction:column; align-items:center; gap:10px;}
+.demo-quiz-word{font-family:var(--serif-cn); font-size:clamp(40px,10vw,53px); font-weight:700; color:var(--seal);}
+/* Same framed-plaque wrapper as .demo-hz-glyph-frame, sized to match
+   .demo-quiz-opts' own width below it. */
+.demo-quiz-word-frame{background:var(--paper); padding:6px 14px; width:clamp(140px,40vw,320px); text-align:center;}
+.demo-quiz-opts{display:flex; gap:6px; flex-wrap:wrap; justify-content:center; max-width:clamp(140px,40vw,320px);}
+.demo-quiz-opt{
+  border:1.5px solid var(--paper-shadow); background:var(--paper); padding:5px clamp(6px,2vw,10px);
+  border-radius:20px; font-size:11.5px; font-weight:600; color:var(--ink-soft);
+  transition:background .25s, border-color .25s, color .25s, transform .2s;
+}
+.demo-quiz-opt.picked{border-color:var(--ink); color:var(--ink); transform:scale(1.06);}
+.demo-quiz-opt.correct{background:var(--jade); border-color:var(--jade); color:#fff; transform:scale(1.06);}
+
+/* Shared "temple plaque" frame for four of the sphere's demo backdrops —
+   the Why Chinese stat, the Writing Practice grid, the Pinyin glyph and
+   the Multiple Choice word. A heavier seal-red top edge (like a
+   ceremonial gate's crossbeam) wrapped on all four sides by a thin gold
+   line held off by a gap (the red-lacquer door-panel's own double frame),
+   plus a small lantern tassel hanging off each end of the top edge. Sharp
+   corners throughout — border-radius doesn't read right once the border
+   weight differs per side. */
+.demo-frame{
+  position:relative; border-radius:0;
+  border-style:solid; border-color:var(--seal);
+  border-width:7px 3px 3px 3px;
+  box-shadow:0 0 0 3px var(--paper-deep), 0 0 0 5px var(--gold);
+}
+.demo-tassel{position:absolute; top:-5px; width:1.5px; height:15px; background:var(--seal); pointer-events:none;}
+.demo-tassel::after{content:''; position:absolute; left:50%; bottom:-3px; width:6px; height:6px; border-radius:50%; background:var(--seal); transform:translateX(-50%);}
+.demo-tassel-l{left:10px;}
+.demo-tassel-r{right:10px;}
+/* The lacquer-frame concept's own small gold corner fittings (a diamond —
+   a plain square rotated 45deg) — present in that concept's original
+   mockup but dropped when it got combined with the pailou lintel's own
+   top-crossbeam+tassels into .demo-frame above, reported directly.
+   Re-derived from scratch after the previous -8.5/-12.5 tuning left each
+   corner's actual sharp point (the .demo-frame box-shadow ring's own 90°
+   outer corner, 5px past the border-box in BOTH directions from its own
+   .demo-frame corner) visibly peeking past the diamond's edge — reported
+   directly ("the diagonal golden square ... still shows the definite
+   corners ever so slightly peeking out"). A position:absolute child's
+   top/left/etc resolve against the containing block's PADDING edge, not
+   its outer border edge, so with this element's own S=7px size, a given
+   side's offset O actually centers the diamond at
+   (border-width-on-that-side + O + S/2) past the border-box's edge on
+   that axis — confirmed directly via getBoundingClientRect in an isolated
+   test page, matching hand math exactly. A first pass (O = -8.5 - that
+   side's own border-width) recentered the diamond EXACTLY on the ring's
+   corner point, giving the full apothem (S/2 = 3.5px) of margin — that
+   fully hid the corner but, reported directly, then read as "too far out
+   from the corners" (the ornament visibly detached from the frame rather
+   than sitting snug on it). This is the actual shipped value, tuned for a
+   small ~0.67px margin instead — just enough to reliably cover the sharp
+   corner (confirmed in that same isolated test) without pushing the
+   diamond noticeably outward: O = -8.5 - (that side's own border-width)
+   + 2, i.e. -13.5 on the 7px top border, -9.5 on every 3px side
+   (left/right/bottom). */
+.demo-medallion{position:absolute; width:7px; height:7px; background:var(--gold); transform:rotate(45deg); pointer-events:none;}
+.demo-medallion-tl{top:-13.5px; left:-9.5px;}
+.demo-medallion-tr{top:-13.5px; right:-9.5px;}
+.demo-medallion-bl{bottom:-9.5px; left:-9.5px;}
+.demo-medallion-br{bottom:-9.5px; right:-9.5px;}
+
+/* Word Bank / Vocabulary — a shrunk live search (search.html's own
+   dictionary lookup): a query types itself into a search box, a few
+   matching candidates drop in below it, a highlight sweeps down through
+   them as if scrolling to look them over, then settles on and "clicks" one
+   — same add-to-bank checkmark beat, just arrived at through an actual
+   search now instead of starting from an already-found result. */
+.demo-search-wrap{display:flex; flex-direction:column; align-items:center; gap:8px; width:100%;}
+.demo-search-box{
+  display:flex; align-items:center; gap:8px; width:100%; max-width:clamp(170px,42vw,240px);
+  padding:8px 12px; border:2px solid var(--paper-shadow); border-radius:20px; background:var(--paper);
+  box-sizing:border-box;
+}
+.demo-search-icon{width:16px; height:16px; flex-shrink:0; color:var(--ink-soft);}
+.demo-search-input{
+  font-family:var(--serif-en); font-weight:600; font-size:clamp(15px,3.8vw,18px); color:var(--ink);
+  min-height:1.3em; flex:1; text-align:left;
+}
+/* max-height (not display) is what animates open/closed, so a result set
+   closing before the next query starts reads as a genuine collapse, not a
+   hard cut. */
+.demo-search-results{
+  display:flex; flex-direction:column; width:100%; max-width:clamp(170px,42vw,240px);
+  border:1.5px solid var(--paper-shadow); border-radius:2px; background:var(--paper);
+  overflow:hidden; max-height:0; opacity:0; transition:max-height .3s ease, opacity .3s ease;
+}
+.demo-search-results.open{max-height:200px; opacity:1;}
+.demo-search-result{
+  display:flex; align-items:baseline; gap:6px; padding:6px 10px; text-align:left;
+  border-top:1px solid var(--paper-shadow); transition:background .2s;
+}
+.demo-search-result:first-child{border-top:none;}
+.demo-search-result-hz{font-family:var(--serif-cn); font-weight:700; font-size:clamp(16px,4vw,19px); color:var(--ink); flex-shrink:0;}
+.demo-search-result-py{font-size:11px; color:var(--ink-soft); flex-shrink:0;}
+.demo-search-result-en{font-size:11px; color:var(--ink-soft); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.demo-search-result-check{margin-left:auto; flex-shrink:0; font-size:12px; font-weight:700; color:#fff; opacity:0; transition:opacity .2s;}
+/* The "scrolling to look them over" sweep — a plain hover-style tint, one
+   row at a time. */
+.demo-search-result.hover{background:rgba(174,59,28,0.08);}
+/* The actual pick — same jade "added" color every other demo's own
+   add-to-bank moment flashes, just filling the whole row here since there's
+   no separate add button in a search result. */
+.demo-search-result.picked{background:var(--jade);}
+.demo-search-result.picked .demo-search-result-hz,
+.demo-search-result.picked .demo-search-result-py,
+.demo-search-result.picked .demo-search-result-en{color:#fff;}
+.demo-search-result.picked .demo-search-result-check{opacity:1;}
+
+.sphere-caption{max-width:520px; margin:22px auto 0;}
+.sphere-caption-eyebrow{font-size:11.5px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:var(--seal); margin-bottom:4px;}
+.sphere-caption h3{font-family:var(--serif-en); font-size:19px; margin:0 0 4px;}
+.sphere-caption p{color:var(--ink-soft); font-size:13.5px; margin:0; line-height:1.5;}
+.progress-dots{display:flex; gap:8px; margin:16px auto 0; justify-content:center; flex-wrap:wrap; max-width:220px;}
+.progress-dot{width:8px; height:8px; border-radius:50%; background:var(--paper-shadow); transition:background .3s, transform .3s;}
+.progress-dot.active{background:var(--seal); transform:scale(1.25);}
+.progress-dot.done{background:var(--gold);}
+@media (prefers-reduced-motion: reduce){
+  .demo-fade{animation:none;}
+}
+
+/* ---------- hero pitch (below the sphere now) ---------- */
+.hero-pitch{padding:16px 0 8px; text-align:center;}
+.hero-pitch .cn-huge{font-family:var(--serif-cn); color:var(--seal); font-size:40px; display:block; margin-bottom:8px;}
+.hero-pitch h1{font-family:var(--serif-en); font-size:38px; line-height:1.12; margin:0 auto 16px; font-weight:700; max-width:720px;}
+.hero-pitch h1 em{font-style:normal; color:var(--seal);}
+.hero-pitch p.lede{font-size:16px; color:var(--ink-soft); margin:0 auto 28px; max-width:600px;}
+.hero-ctas{display:flex; align-items:center; justify-content:center; gap:18px; flex-wrap:wrap;}
+.hero-note{font-size:12.5px; color:var(--ink-soft); margin-top:14px;}
+
+/* ---------- section shell ---------- */
+.landing-section{padding:0 0 64px;}
+.section-eyebrow{
+  font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+  color:var(--seal); display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:10px;
+}
+.section-eyebrow::before, .section-eyebrow::after{content:''; width:22px; height:2px; background:var(--seal);}
+.section-title{font-family:var(--serif-en); font-weight:700; font-size:32px; text-align:center; margin:0 0 14px;}
+.section-sub{color:var(--ink-soft); font-size:15.5px; text-align:center; max-width:600px; margin:0 auto 36px;}
+
+/* ---------- features ---------- */
+.feature-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+@media (max-width:820px){.feature-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:560px){.feature-grid{grid-template-columns:1fr;}}
+.feature-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px;
+  padding:22px; display:flex; flex-direction:column; gap:8px;
+}
+.feature-card .cn-big{font-family:var(--serif-cn); font-size:28px; color:var(--seal); font-weight:700;}
+.feature-card b{font-family:var(--serif-en); font-size:16px;}
+.feature-card span{font-size:13px; color:var(--ink-soft); line-height:1.5;}
+
+/* ---------- app teaser ---------- */
+.app-teaser{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px;
+  padding:40px; display:flex; align-items:center; gap:36px; flex-wrap:wrap;
+}
+.app-teaser-icon{
+  width:88px; height:88px; border-radius:22px; background:var(--ink); color:var(--paper);
+  display:flex; align-items:center; justify-content:center; font-family:var(--serif-cn); font-size:44px;
+  flex-shrink:0; box-shadow:4px 4px 0 rgba(0,0,0,0.1);
+}
+.app-teaser-body{flex:1; min-width:240px;}
+.coming-soon-badge{
+  display:inline-flex; align-items:center; gap:6px; background:var(--gold); color:var(--paper);
+  font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:4px 10px;
+  border-radius:20px; margin-bottom:10px;
+}
+.app-teaser-body h3{font-family:var(--serif-en); font-size:22px; margin:0 0 8px;}
+.app-teaser-body p{color:var(--ink-soft); font-size:14.5px; margin:0; max-width:520px;}
+
+/* ---------- final CTA ---------- */
+.final-cta{
+  background:var(--ink); color:var(--paper); border-radius:2px; padding:56px 32px;
+  text-align:center;
+}
+.final-cta h2{font-family:var(--serif-en); font-size:30px; margin:0 0 12px;}
+.final-cta p{color:#c9c2ac; font-size:15px; margin:0 0 26px; max-width:480px; margin-left:auto; margin-right:auto;}
+.final-cta .btn{background:var(--seal); color:#fff;}
+.final-cta .btn:hover{background:var(--seal-dark);}
+
+footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:center; font-size:12.5px; color:var(--ink-soft);}
+footer a{color:var(--ink-soft); text-decoration:underline;}
+</style>
+<script src="settings.js?v=6"></script>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="landing.html">
+      <div class="seal-mark">境</div>
+      <div class="brand-text"><b>Context Chinese</b><span>Your One-Stop China Shop</span></div>
+    </a>
+    <div class="header-actions">
+      <a class="header-login-link" href="login.html">Log In</a>
+      <a class="btn pop-target" id="headerSignupBtn" href="login.html?mode=signup">Sign Up</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="sphere-showcase" id="sphereShowcase">
+  <div class="sphere-stage" id="sphereStage">
+    <svg id="sphereDotsSvg" aria-hidden="true"></svg>
+    <div class="sphere-demo-stage" id="sphereDemoStage"></div>
+    <svg id="sphereCometSvg" aria-hidden="true"></svg>
+  </div>
+  <div class="sphere-caption">
+    <div class="sphere-caption-eyebrow" id="calloutEyebrow">Why Chinese</div>
+    <h3 id="calloutTitle">1.1+ billion voices</h3>
+    <p id="calloutBody">The most-spoken native language on Earth — and the last of history's first civilizations, still living and spoken today.</p>
+  </div>
+  <div class="progress-dots" id="progressDots"></div>
+</section>
+
+<section class="hero-pitch">
+  <span class="cn-huge">境</span>
+  <h1>Fluent in minutes a day — <em>not the hours you don't have.</em></h1>
+  <p class="lede">Real stroke-order writing, spoken dictation and active recall drills — not flashcards you forget by tomorrow. Context Chinese gets you there, a few focused minutes at a time.</p>
+  <div class="hero-ctas">
+    <a class="btn large" href="login.html?mode=signup">Sign Up →</a>
+    <a class="btn ghost large" href="login.html">Log In</a>
+  </div>
+  <p class="hero-note">Plans starting at $7.99/mo — see pricing on the sign-up page.</p>
+</section>
+
+<div class="brush-rule"></div>
+
+<section class="landing-section" id="features">
+  <div class="section-eyebrow">What's Inside</div>
+  <h2 class="section-title">Everything you need, in one place</h2>
+  <p class="section-sub">One shared Word Bank tying every practice mode together.</p>
+  <div class="feature-grid">
+    <div class="feature-card"><span class="cn-big">词</span><b>Vocabulary</b><span>Search the full CC-CEDICT dictionary, save words to your own bank, and organize them into folders.</span></div>
+    <div class="feature-card"><span class="cn-big">拼</span><b>Pinyin</b><span>Build syllables from initials, finals and tones, and drill pronunciation with match &amp; typing games.</span></div>
+    <div class="feature-card"><span class="cn-big">字</span><b>Hanzi</b><span>Learn strokes and radicals, then practice writing real characters from memory with stroke-order grading.</span></div>
+    <div class="feature-card"><span class="cn-big">练</span><b>Practice</b><span>Take spoken dictation, answer multiple-choice quizzes, and translate on the fly — proof you actually know it.</span></div>
+  </div>
+</section>
+
+<section class="landing-section" id="app">
+  <div class="app-teaser">
+    <div class="app-teaser-icon">境</div>
+    <div class="app-teaser-body">
+      <div class="coming-soon-badge">Coming Soon</div>
+      <h3>Context Chinese, in your pocket</h3>
+      <p>A native mobile app is in the works — the same Word Bank, writing practice and pinyin drills you build on the web, synced for study on the go. Create your account now and we'll have everything ready to pick up right where you left off.</p>
+    </div>
+  </div>
+</section>
+
+<section class="landing-section">
+  <div class="final-cta">
+    <h2>Ready to start?</h2>
+    <p>Create your account and pick up your first word, character or tone in the next two minutes — plans and pricing are on the next step.</p>
+    <a class="btn large" href="login.html?mode=signup">Sign Up →</a>
+  </div>
+</section>
+
+</main>
+
+<footer>境 Context Chinese — a learning companion for Mandarin sound, script, geography and history. <a href="login.html">Already have an account? Log in.</a></footer>
+
+<script>
+/* ================= AUTH: skip the pitch for anyone already signed in =================
+   The inverse of auth-guard.js's usual job — that script sends a visitor
+   WITHOUT an account away from a gated page; this one sends a visitor WITH
+   an account (and already signed in) straight past the marketing pitch and
+   on into the app, since landing.html itself is deliberately never behind
+   auth-guard.js (that would just bounce every logged-out visitor straight to
+   login.html and defeat the point of this page existing at all). Mirrors
+   auth-guard.js's own AUTH_ENABLED off-switch and Supabase-loading dance —
+   see that file for why each piece is there. */
+const LANDING_AUTH_ENABLED = false; // flip in lockstep with auth-guard.js's own AUTH_ENABLED
+function revealLanding(){ document.documentElement.style.visibility = 'visible'; }
+function landingRedirectTarget(){
+  const params = new URLSearchParams(location.search);
+  return params.get('redirect') || 'index.html';
+}
+function loadScriptSeq(src){
+  return new Promise(function(resolve, reject){
+    const s = document.createElement('script');
+    s.src = src; s.onload = resolve; s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+if(!LANDING_AUTH_ENABLED){
+  revealLanding();
+} else {
+  const fallback = setTimeout(revealLanding, 6000);
+  loadScriptSeq('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2')
+    .then(function(){ return loadScriptSeq('supabase-config.js'); })
+    .then(function(){ return supabaseClient.auth.getSession(); })
+    .then(function(result){
+      clearTimeout(fallback);
+      if(result.error){ revealLanding(); return; }
+      if(result.data.session) location.replace(landingRedirectTarget());
+      else revealLanding();
+    })
+    .catch(function(){ clearTimeout(fallback); revealLanding(); });
+}
+
+/* ================= SPHERE SHOWCASE =================
+   A dependency-free pseudo-3D sphere (no WebGL/canvas/globe library — just
+   plain trig projecting points from a unit sphere onto the flat SVGs below)
+   made of small dots. A single brighter "comet" continuously circles the
+   sphere's equator on the OUTSIDE (see RING_RX), at its own pace — which
+   normally sits at a constant COMET_SPEED but eases smoothly with the
+   phases below, never snapping, never pausing outright.
+
+   What else changes is the sphere's own ambient rotation speed, alternating
+   between two phases: 'default' (its own slow native pace, DEFAULT_SPEED —
+   the comet visibly circles independently, noticeably faster) and 'synced'
+   (its speed eases up, over RAMP_MS, to SYNC_SPEED — the same MAGNITUDE as
+   the comet's own pace, but always the SAME sign as DEFAULT_SPEED, so the
+   ambient field never reverses direction, at any speed, ever). Every
+   'synced' phase is when that stop's demo is shown; entering it is
+   triggered by a one-shot EVENT, not a timer — the instant the comet's own
+   depth crosses from hidden to comfortably front-facing (see
+   landingRenderFrame's wasCometVisible edge-detection) while in 'default',
+   so the sphere only ever spins up when there's actually something on
+   screen to look at while it does. After SYNC_HOLD_MS at the matched
+   speed, it ramps back down to 'default' and the comet pulls away again
+   until its next arrival triggers the stop after.
+
+   The "rides fixed to the sphere" look does NOT come from literally
+   matching the sphere's own rotation rate to the comet's (their
+   correct-reading directions need opposite raw signs — see COMET_SPEED's
+   own comment — so doing that would force the sphere to reverse direction
+   every single time it sped up, which reads as wrong no matter how
+   briefly, and is exactly the bug this design replaced). Instead, what
+   actually gets eased toward zero is phi_eff itself (cometPhi minus
+   sphereRotation — the one quantity the comet's screen x position actually
+   depends on, see projectCometFlat): its own rate eases from its natural
+   (COMET_SPEED - DEFAULT_SPEED) down to exactly 0 over the ramp (see
+   landingRenderFrame's phiEffRate), using the same blend fraction already
+   driving the sphere's own speed ramp, and the comet's actual rate
+   (cometRate) is simply whatever needs to be added to the sphere's
+   CURRENT rate to produce that — never touching sphereRotation's own sign.
+   Deriving it this way (easing the RELATIVE rate directly, not lerping the
+   comet's rate straight toward the sphere's raw value) matters: a direct
+   lerp overshoots, since the sphere's rate swings all the way up to
+   SYNC_SPEED — same magnitude as COMET_SPEED but the opposite sign — which
+   made the comet sweep noticeably more relative distance than intended
+   partway through the ramp, reading as the trail suddenly sweeping too far
+   and landing unevenly enough to look dotted rather than a continuous
+   line. Because phi_eff's own eased rate exactly reproduces the shape this
+   settle always had, the comet's settle into place (and its later pulling
+   away again) stays gradual and even on both ends, same as before.
+
+   Being on the OUTSIDE (RING_RX, always, never flush on the sphere's own
+   TRUE drawn edge — SPHERE_VISUAL_R, see its own comment, not SPHERE_R,
+   which is smaller and only governs the ambient dots' own placement) is
+   deliberate too: the comet's orbit ellipse is only slightly bigger than
+   the sphere's own silhouette, so it disappears and reappears right near
+   that silhouette's own edge rather than out in open space —
+   and it's hard-hidden (not just dimmed), along with its trail, for the
+   entire time it's actually behind the sphere (depth <= 0), so nothing
+   glows through where the sphere should be occluding it. The same hard cut
+   applies to the ambient dot field's own far side now too.
+
+   Each stop's demo is a small, REAL rendering of that piece of the actual
+   app — a live HanziWriter stroke animation, a typed-and-graded pinyin
+   input, a picked-and-matched multiple-choice pair, a dict-entry-style word
+   card with its own Add button — built with the same visual language
+   (classes, colors) those real pages use, not an invented abstraction of
+   them. Deliberately excludes Lessons/Grammar/Read/Converse and everything
+   under China+ — this tour is scoped to what the user asked it to sell:
+   efficient, active-recall practice, not a tour of every nav item.
+
+   The whole loop only runs while the sphere is actually on screen — an
+   IntersectionObserver pauses it (same landingStop/landingStart used for
+   tab-visibility) once the user scrolls past it, so the final lap that
+   points at and pops the Sign Up button never fires while they're reading
+   something further down the page. See the IntersectionObserver setup in
+   landingInit.
+*/
+const SPHERE_R = 230;      // ambient dots' own placement radius in SVG viewBox units — deliberately INSET from the sphere's true drawn edge (see SPHERE_VISUAL_R) for breathing room, so the dot field doesn't crowd right up against the circle's own border
+const SPHERE_CX = 260, SPHERE_CY = 260;
+// The sphere's TRUE drawn boundary — the actual .sphere-stage circle (a
+// plain border-radius:50% box) that the SVGs sit inside, filling it
+// edge-to-edge (inset:0, 100% width/height). Since that box is a square
+// (aspect-ratio 1/1) whose circle touches all four of its own sides, and
+// the SVG's 520x520 viewBox maps onto that exact same box, the circle's
+// radius in viewBox units is simply half the viewBox — i.e. SPHERE_CX
+// itself — verified directly against the live rendered box (measured
+// ~260.9, matching). NOT SPHERE_R (230) — conflating the two was a real
+// bug here before: RING_RX was once tuned relative to SPHERE_R, landing
+// the comet's orbit visibly INSIDE the sphere's actual edge rather than
+// outside it.
+const SPHERE_VISUAL_R = SPHERE_CX;
+const SPHERE_TILT = 0.30;  // fixed axial tilt, radians (~17deg) — purely cosmetic, keeps the equator from looking like a flat line straight across
+// -1 makes the shared `rotation` value DECREASE as time passes, which is
+// what actually reads as the sphere (the ambient dot field, both at its
+// slow default pace and its fast synced pace) spinning toward the LEFT
+// (westward) on screen for this projection — the requested direction for
+// the sphere itself, independent of the comet's own direction (see
+// COMET_SPEED's own comment, unaffected by this) — verified against actual
+// rendered pixels, not a hand-derived CW/CCW label — that label had been
+// gotten backwards more than once.
+const ROTATION_DIR = -1;
+const DEFAULT_SPEED = ROTATION_DIR * ((Math.PI*2) / 90000); // the sphere's own constant, never-changing ambient spin: one full revolution per 90s
+// The comet's own constant, never-changing rate — deliberately the
+// OPPOSITE raw sign from DEFAULT_SPEED. That looks like it should be
+// backwards (surely a comet meant to circle WITH the sphere should share
+// its sign?), but it isn't: a shared `rotation` value and a single point's
+// own azimuth play opposite roles in this projection's math (rotating the
+// whole frame vs. moving within it), so they need opposite raw signs to
+// read as the SAME visible direction on screen — verified directly against
+// rendered pixels (a departing point's screen x has to increase first,
+// moving right, before disappearing behind the sphere on the right and
+// reappearing from the left; that direction has been gotten backwards by
+// hand-derivation more than once, so trust a fresh pixel measurement over
+// re-deriving it if this ever needs revisiting). One full lap roughly
+// every 4 seconds (50% faster than an earlier 6s pace) — much quicker than
+// the ambient field's own 90s crawl, so it reads unmistakably as a comet
+// racing around a slowly-turning globe, not just another dot in the field.
+const COMET_SPEED = -(Math.PI*2) / 4000;
+// How much faster the comet moves, ONLY while it's actually behind the
+// sphere (depth <= 0) during 'default' — see landingRenderFrame's
+// effectiveCometSpeed. The visible arc's own pace (COMET_SPEED itself,
+// tuned earlier and left alone) stays exactly as it was; this only
+// compresses the "dead time" a viewer spends waiting for it to reappear on
+// the other side, which is the actual bulk of the gap between one stop's
+// demo ending and the next one's beginning — SYNC_HOLD_MS (how long each
+// demo itself stays up) is deliberately NOT touched for this, so the
+// demonstrations themselves are exactly as long as they always were.
+const COMET_HIDDEN_SPEED_MULT = 3;
+// The sphere's own rotation rate during 'synced' — same MAGNITUDE as
+// COMET_SPEED (so it visibly spins "as fast as the comet", matching the
+// original ask) but ALWAYS the same sign as DEFAULT_SPEED/ROTATION_DIR, on
+// purpose: unlike the comet's own single-point azimuth, the ambient dot
+// field's correct-reading direction for the SHARED `rotation` value is
+// governed by that same sign, so this can never be allowed to go negative
+// without the whole field visibly spinning the wrong way. See the header
+// comment above for how "rides fixed to the sphere" is still achieved
+// without the sphere's own rate ever needing to match COMET_SPEED's sign.
+const SYNC_SPEED = ROTATION_DIR * Math.abs(COMET_SPEED);
+const MIN_FRONT_DEPTH = 0.3; // how comfortably front-facing the comet must be to count as a "front arrival" (see landingRenderFrame) — not just barely grazing the edge
+const RAMP_MS = 550;       // how long the sphere's own speed takes to ease between DEFAULT_SPEED and SYNC_SPEED, in either direction — shortened from 900 for a quicker transition between stops. Does NOT affect how far the comet settles off-center any more — see SETTLE_DRIFT.
+// How far phi_eff drifts (in radians, negative = further off the front-
+// center peak, toward where it visibly rests) during the ramp INTO sync —
+// a FIXED target, deliberately independent of RAMP_MS. Before this existed,
+// that drift was just the integral of a rate over RAMP_MS's own duration,
+// so shortening RAMP_MS (to make transitions quicker) shrank the drift too
+// as a pure side effect, dragging the resting position from a comfortable
+// left-of-center spot to hugging the sphere's own edge — confirmed
+// directly (RAMP_MS=900 rested at screen-x≈110, RAMP_MS=550 alone at
+// screen-x≈58, out of a 260-centered field). Pinning the total drift to a
+// constant regardless of RAMP_MS (see landingRenderFrame's phiEffRate)
+// keeps the resting position exactly where it was tuned to be even as
+// RAMP_MS itself changes independently.
+const SETTLE_DRIFT = -38 * Math.PI/180;
+const SYNC_HOLD_MS = 4200; // how long the 'synced' phase holds at the matched speed (after its own RAMP_MS) before easing back down — the demo's visible duration. Deliberately NOT shortened for pacing — see COMET_HIDDEN_SPEED_MULT for how the gap between stops is actually being shortened instead, without touching how long each demo itself stays on screen.
+const LAUNCH_MS = 1700; // long enough for the loop-de-loop (see launchPointAt) to read clearly rather than blur past
+const POP_HOLD_MS = 1700;
+const RESET_GAP_MS = 500;
+
+// ---- Nominal per-phase durations for reconstructing "which stop should
+// the tour be showing right now" after a real-time gap (tab backgrounded —
+// see landingResumeFromHidden) — used ONLY for that scheduling estimate,
+// never to drive the moment-to-moment animation itself, which stays exactly
+// as physics-driven as always while actually visible. STOP_DEFAULT_GAP_MS
+// and LAUNCH_SEQUENCE_MS were measured by replaying this exact code with a
+// neutralized, synthetic clock (driving landingRenderFrame directly instead
+// of through real requestAnimationFrame/setTimeout) rather than hand-derived
+// — the 'default' phase has no fixed timer of its own in the code (it ends
+// whenever the comet's continuous position next crosses back to
+// comfortably front-facing, see landingRenderFrame's front-arrival trigger)
+// so there's no formula to read this off directly, but it turned out
+// remarkably stable in measurement (2633ms every single time, regardless of
+// which stop just finished) since it's governed only by the comet's own
+// fixed lap speed and hidden-speed multiplier. RESTART_TO_STOP0_MS is the
+// one genuinely variable segment (500-1200ms measured, averaging ~700) —
+// RESET_GAP_MS's own fixed 500ms plus a short, mildly variable wait for the
+// reset comet's first front-arrival, which drifts slightly loop to loop
+// because sphereRotation itself is never reset alongside cometPhi (see
+// landingRestart). None of this needs to be exact: being off by even a few
+// hundred ms only changes which stop happens to already be showing the
+// instant the tab becomes visible again, not anything that reads as wrong.
+const STOP_DEFAULT_GAP_MS = 2633;
+const LAUNCH_SEQUENCE_MS = 4917;
+const RESTART_TO_STOP0_MS = 700;
+// Real-time timestamp (performance.now()) of the most recent moment stop 0's
+// own 'synced' phase began — refreshed every loop (see landingBeginSynced)
+// regardless of visibility, so it's always a valid anchor for "how far into
+// the current loop are we" even after an arbitrarily long hidden gap: taking
+// the elapsed time mod one full loop's nominal duration lands correctly
+// regardless of how many whole loops passed while backgrounded. null until
+// the tour has completed at least one full arrival at stop 0.
+let landingLoopAnchorMs = null;
+function landingStopSyncedMs(stopIdx){
+  const s = STOPS[stopIdx];
+  return RAMP_MS + ((s && s.holdMs) || SYNC_HOLD_MS);
+}
+// One full loop's worth of {kind, stopIdx, duration} entries in order —
+// 'synced' then 'default' once per stop (the last stop's own 'default' is
+// instead classified 'launch', covering its departure wait through the full
+// Sign Up flight and pop hold), then the brief gap before stop 0 begins
+// again. Cheap enough (7 stops) to just rebuild on demand.
+function buildLandingSchedule(){
+  const entries = [];
+  for(let i=0;i<STOPS.length;i++){
+    entries.push({kind:'synced', stopIdx:i, duration: landingStopSyncedMs(i)});
+    entries.push(i === STOPS.length-1
+      ? {kind:'launch', duration: LAUNCH_SEQUENCE_MS}
+      : {kind:'default', stopIdx:i, duration: STOP_DEFAULT_GAP_MS});
+  }
+  entries.push({kind:'restart-gap', duration: RESTART_TO_STOP0_MS});
+  return entries;
+}
+
+const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let demoToken = 0; // bumped every time the active stop changes, so a still-finishing previous stop's demo (e.g. mid-type, mid-stroke) can never write into the new one's DOM
+
+/* ---- per-stop demo builders — each renders its own markup into the given
+   container, then (via its own internally-scoped timers, each checking
+   `token` against demoToken before touching anything) animates it to a
+   settled state well within one comet lap. A couple of small shared helpers
+   underneath do the actual "type into a bordered box, flash it correct"
+   animation, since both Pinyin and Dictate want that exact same beat with
+   different framing/examples around it. ---- */
+// innerHTML + wrapPinyinGlyphFixes (settings.js, already loaded site-wide),
+// not plain textContent — neither Zilla Slab nor Noto Serif (the site's own
+// --serif-en stack, used here) ships real glyphs for tone-marked vowels
+// like ǐ/ǎ, so a raw textContent assignment leaves the browser silently
+// substituting a different, unmatched font for just that one character,
+// reading as visibly off next to the rest of the word. This is the same
+// fix the rest of the site already uses for read-only pinyin text (not the
+// separate all-Inter swap type-pinyin.html's own <input> needs — a real
+// <input>'s value can't be wrapped in per-character spans the way a DOM
+// element's content can).
+function demoTypeAndCheck(inputEl, text, onDone){
+  let i = 0;
+  function step(token){
+    if(token !== demoToken || !inputEl.isConnected) return;
+    if(i < text.length){
+      inputEl.innerHTML = wrapPinyinGlyphFixes(text.slice(0, i+1));
+      i++;
+      setTimeout(function(){ step(token); }, 110 + Math.random()*70);
+    } else {
+      inputEl.classList.add('correct');
+      setTimeout(function(){ if(token === demoToken) onDone(); }, 900);
+    }
+  }
+  step(demoToken);
+}
+
+function demoCounter(container, token){
+  container.innerHTML = '<div class="demo-stat demo-frame demo-fade"><span class="demo-tassel demo-tassel-l"></span><span class="demo-tassel demo-tassel-r"></span><span class="demo-medallion demo-medallion-tl"></span><span class="demo-medallion demo-medallion-tr"></span><span class="demo-medallion demo-medallion-bl"></span><span class="demo-medallion demo-medallion-br"></span><div class="demo-stat-num" id="demoStatNum">0</div><div class="demo-stat-label">native Mandarin speakers</div></div>';
+  const el = document.getElementById('demoStatNum');
+  const start = performance.now();
+  const target = 1120000000, duration = 1700;
+  function tick(now){
+    if(token !== demoToken || !el.isConnected) return;
+    const t = Math.min(1, (now-start)/duration);
+    const eased = 1 - Math.pow(1-t, 3);
+    el.textContent = Math.round(target*eased).toLocaleString('en-US');
+    if(t < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+function demoTimeRing(container, token){
+  container.innerHTML =
+    '<div class="demo-ring-wrap demo-fade"><svg viewBox="0 0 100 100">' +
+    '<circle class="demo-ring-bg" cx="50" cy="50" r="42"></circle>' +
+    '<circle class="demo-ring-fg" id="demoRingFg" cx="50" cy="50" r="42"></circle>' +
+    '</svg><div class="demo-ring-label"><span id="demoRingNum">0</span><small>min / day</small></div></div>';
+  const ring = document.getElementById('demoRingFg');
+  const num = document.getElementById('demoRingNum');
+  const start = performance.now();
+  const target = 5, duration = 1600, circumference = 263.9;
+  function tick(now){
+    if(token !== demoToken || !ring.isConnected) return;
+    const t = Math.min(1, (now-start)/duration);
+    const eased = 1 - Math.pow(1-t, 3);
+    ring.style.strokeDashoffset = (circumference * (1-eased)).toFixed(1);
+    num.textContent = Math.round(target*eased);
+    if(t < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+function demoHanzi(container, token){
+  container.innerHTML =
+    '<div class="demo-hanzi-wrap demo-frame demo-fade"><span class="demo-tassel demo-tassel-l"></span><span class="demo-tassel demo-tassel-r"></span><span class="demo-medallion demo-medallion-tl"></span><span class="demo-medallion demo-medallion-tr"></span><span class="demo-medallion demo-medallion-bl"></span><span class="demo-medallion demo-medallion-br"></span><div class="demo-hanzi-diag demo-hanzi-diag1"></div><div class="demo-hanzi-diag demo-hanzi-diag2"></div><div id="demoHanziTarget"></div></div>';
+  if(typeof HanziWriter === 'undefined') return; // CDN didn't load — the box just stays empty rather than erroring
+  const target = document.getElementById('demoHanziTarget');
+  const box = target.getBoundingClientRect().width || 150;
+  try{
+    const writer = HanziWriter.create('demoHanziTarget', '学', {
+      width: box, height: box, padding: Math.round(box*0.08),
+      strokeAnimationSpeed: 1.1, delayBetweenStrokes: 160,
+      strokeColor: '#22241F', radicalColor: '#AE3B1C',
+      showOutline: false, showCharacter: false,
+    });
+    writer.animateCharacter();
+  }catch(e){}
+}
+// Each of these three demos used to show exactly ONE word/question, then
+// just sit there finished for however much of SYNC_HOLD_MS was left before
+// the sphere moved on — several idle seconds of nothing happening. All
+// three now loop through a short list instead, cycling to the next entry
+// (via demoTypeAndCheck's own onDone, or a matching setTimeout chain for
+// Multiple Choice) for as long as this stop stays the active one — each
+// step still checks token against demoToken before touching anything, the
+// same guard demoTypeAndCheck's own chain already uses, so the loop stops
+// cleanly the instant the sphere moves on rather than an orphaned timer
+// eventually writing into a stage that's since moved on to something else.
+//
+// The current stop's own hold duration — STOPS[currentStopIdx]'s own
+// holdMs if it set one (see STOPS' own comment), else the shared
+// SYNC_HOLD_MS every other stop uses.
+function currentHoldMs(){
+  const s = STOPS[currentStopIdx];
+  return (s && s.holdMs) || SYNC_HOLD_MS;
+}
+// How much real time is left before this 'synced' phase ends (RAMP_MS +
+// this stop's own hold duration, after phaseStartedAt) — each loop below
+// checks this BEFORE starting a new word/question, using a worst-case time
+// estimate for that entry, and simply doesn't start it if there isn't
+// enough left to finish. Without this, a word that started with plenty of
+// budget left could still get sliced off mid-character (or mid-hold) the
+// instant the sphere moves on — confirmed directly: the word list's own
+// cumulative time reliably overran the hold by the 3rd entry. Skipping a
+// word it can't finish just leaves the last FULLY completed one sitting
+// there calmly until the phase ends, instead of ever showing something
+// half-typed.
+function demoTimeLeftInPhase(){
+  return (phaseStartedAt + RAMP_MS + currentHoldMs()) - performance.now();
+}
+const DEMO_PINYIN_WORDS = [ {hz:'你好', py:'nǐ hǎo'}, {hz:'谢谢', py:'xièxie'}, {hz:'再见', py:'zàijiàn'}, {hz:'老师', py:'lǎoshī'} ];
+function demoPinyinType(container, token){
+  container.innerHTML =
+    '<div class="demo-type-wrap demo-fade"><div class="demo-hz-glyph-frame demo-frame"><span class="demo-tassel demo-tassel-l"></span><span class="demo-tassel demo-tassel-r"></span><span class="demo-medallion demo-medallion-tl"></span><span class="demo-medallion demo-medallion-tr"></span><span class="demo-medallion demo-medallion-bl"></span><span class="demo-medallion demo-medallion-br"></span><div class="demo-hz-glyph" id="demoPinyinGlyph"></div></div><div class="demo-type-input" id="demoPinyinInput"></div></div>';
+  const glyph = document.getElementById('demoPinyinGlyph');
+  const input = document.getElementById('demoPinyinInput');
+  let idx = 0;
+  let sized = false;
+  function showNext(){
+    if(token !== demoToken || !input.isConnected) return;
+    const w = DEMO_PINYIN_WORDS[idx % DEMO_PINYIN_WORDS.length];
+    if(demoTimeLeftInPhase() < w.py.length*180 + 1000) return; // not enough time left to type this one and hold on it — stop here, leave the last completed word showing
+    idx++;
+    glyph.textContent = w.hz;
+    // Matched to the actual width of the input box below it ONCE, from
+    // this animation's very first word (你好) — the CSS clamp() on
+    // .demo-hz-glyph-frame is only a same-formula fallback for the instant
+    // before this first runs, since the input's true rendered width (its
+    // min-width can grow past the clamp for a long pinyin string) is the
+    // real thing being matched. Re-measuring on every later word instead
+    // (against whichever word had JUST finished typing, not the one about
+    // to show) made the frame visibly grow/shrink as shorter/longer pinyin
+    // cycled through (再见's "zàijiàn", 老师's "lǎoshī") — reported
+    // directly as not matching the input box below it any more.  Pinning
+    // to the first word's size keeps the frame reading as one fixed plaque
+    // for the whole loop, exactly like the Multiple Choice demo's own
+    // word-frame does (see demoMultipleChoice).
+    if(!sized){
+      glyph.parentElement.style.width = input.getBoundingClientRect().width + 'px';
+      sized = true;
+    }
+    input.textContent = '';
+    input.classList.remove('correct');
+    demoTypeAndCheck(input, w.py, showNext);
+  }
+  showNext();
+}
+const DEMO_DICTATE_WORDS = ['zàijiàn', 'xièxie', 'nǐ hǎo', 'duìbùqǐ'];
+function demoDictate(container, token){
+  container.innerHTML =
+    '<div class="demo-type-wrap demo-fade"><div class="demo-audio-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="#8A8A8A" fill="#8A8A8A"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#3B82F6"></path></svg></div><div class="demo-type-input" id="demoDictateInput"></div></div>';
+  const input = document.getElementById('demoDictateInput');
+  let idx = 0;
+  function showNext(){
+    if(token !== demoToken || !input.isConnected) return;
+    const w = DEMO_DICTATE_WORDS[idx % DEMO_DICTATE_WORDS.length];
+    if(demoTimeLeftInPhase() < w.length*180 + 1500) return; // +500 lead-in pause, +1000 typing/hold buffer — see demoTimeLeftInPhase's own comment
+    setTimeout(function(){
+      if(token !== demoToken || !input.isConnected) return;
+      idx++;
+      input.textContent = '';
+      input.classList.remove('correct');
+      demoTypeAndCheck(input, w, showNext);
+    }, 500); // same beat as before — a pause simulating audio playing before typing starts
+  }
+  showNext();
+}
+const DEMO_MC_WORDS = [
+  { word:'谢谢', options:['goodbye','thank you','please'], correctIdx:1 },
+  { word:'再见', options:['thank you','goodbye','sorry'], correctIdx:1 },
+  { word:'请', options:['thank you','sorry','please'], correctIdx:2 },
+];
+function demoMultipleChoice(container, token){
+  container.innerHTML = '<div class="demo-quiz demo-fade"><div class="demo-quiz-word-frame demo-frame"><span class="demo-tassel demo-tassel-l"></span><span class="demo-tassel demo-tassel-r"></span><span class="demo-medallion demo-medallion-tl"></span><span class="demo-medallion demo-medallion-tr"></span><span class="demo-medallion demo-medallion-bl"></span><span class="demo-medallion demo-medallion-br"></span><div class="demo-quiz-word" id="demoQuizWord"></div></div><div class="demo-quiz-opts" id="demoQuizOpts"></div></div>';
+  const wordEl = document.getElementById('demoQuizWord');
+  const optsEl = document.getElementById('demoQuizOpts');
+  let idx = 0;
+  let sized = false;
+  function showNext(){
+    if(token !== demoToken || !optsEl.isConnected) return;
+    if(demoTimeLeftInPhase() < 2300) return; // 700 + 500 + 900 beat below, plus a small buffer
+    const q = DEMO_MC_WORDS[idx % DEMO_MC_WORDS.length];
+    idx++;
+    wordEl.textContent = q.word;
+    optsEl.innerHTML = q.options.map(function(opt, i){
+      return '<span class="demo-quiz-opt"' + (i === q.correctIdx ? ' id="demoQuizCorrect"' : '') + '>' + opt + '</span>';
+    }).join('');
+    // Matched to the actual width of the options row below it ONCE, from
+    // this animation's very first word (谢谢) — .demo-quiz-opts wraps its
+    // chips instead of holding a fixed width, so its true rendered width
+    // (not just its CSS max-width ceiling) is what the word's frame is
+    // really matching. Re-measuring on every later word instead made the
+    // frame visibly resize as shorter/longer option sets cycled through
+    // (再见/请's own options wrap differently than 谢谢's) — reported
+    // directly as not matching the row below it any more. Pinning to the
+    // first word's size keeps the frame reading as one fixed plaque for
+    // the whole loop, same fix as demoPinyinType's own glyph frame above.
+    if(!sized){
+      wordEl.parentElement.style.width = optsEl.getBoundingClientRect().width + 'px';
+      sized = true;
+    }
+    setTimeout(function(){
+      if(token !== demoToken) return;
+      const el = document.getElementById('demoQuizCorrect');
+      if(el) el.classList.add('picked');
+      setTimeout(function(){
+        if(token !== demoToken) return;
+        if(el) el.classList.add('correct');
+        setTimeout(showNext, 900);
+      }, 500);
+    }, 700);
+  }
+  showNext();
+}
+// Used to just show one static already-found card, check it off once, then
+// sit there — bland next to how much is going on in the other stops, and it
+// didn't actually show the feature it was meant to demo (searching CC-CEDICT
+// — see this stop's own body text). Now plays out an actual search instead:
+// types a query, drops in a few real-looking candidates, sweeps a highlight
+// down through them like scrolling to look them over, then clicks the one
+// it wants — same shape (and same demoTimeLeftInPhase time-budget guard) as
+// the Pinyin/Dictate/Multiple Choice loops above, just a richer sequence per
+// item, which is why this stop gets its own longer holdMs (see STOPS below,
+// same reason Pinyin/Dictate already have their own).
+const DEMO_DICTIONARY_SEARCHES = [
+  { query:'ma', results:[
+      {hz:'妈', py:'mā', en:'mom'},
+      {hz:'马', py:'mǎ', en:'horse'},
+      {hz:'吗', py:'ma', en:'question particle'},
+    ], pickIdx:1 },
+  { query:'shi', results:[
+      {hz:'是', py:'shì', en:'to be'},
+      {hz:'十', py:'shí', en:'ten'},
+      {hz:'时', py:'shí', en:'time'},
+    ], pickIdx:0 },
+  { query:'xie', results:[
+      {hz:'谢', py:'xiè', en:'thanks'},
+      {hz:'鞋', py:'xié', en:'shoe'},
+      {hz:'些', py:'xiē', en:'some'},
+    ], pickIdx:2 },
+];
+function demoWordBank(container, token){
+  container.innerHTML =
+    '<div class="demo-search-wrap demo-fade">' +
+      '<div class="demo-search-box"><svg class="demo-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><span class="demo-search-input" id="demoSearchInput"></span></div>' +
+      '<div class="demo-search-results" id="demoSearchResults"></div>' +
+    '</div>';
+  const input = document.getElementById('demoSearchInput');
+  const results = document.getElementById('demoSearchResults');
+  let idx = 0;
+
+  // Types the query into the search box, plain letter by letter (no
+  // wrapPinyinGlyphFixes needed — search queries are typed as bare pinyin,
+  // no tone marks yet, same as a real user hasn't picked a tone until they
+  // pick a result) — mirrors demoTypeAndCheck's own pacing without its
+  // "flash correct" ending, since a live search box isn't graded.
+  function typeQuery(text, onDone){
+    let i = 0;
+    (function step(){
+      if(token !== demoToken || !input.isConnected) return;
+      if(i < text.length){
+        input.textContent = text.slice(0, i+1);
+        i++;
+        setTimeout(step, 90 + Math.random()*60);
+      } else {
+        setTimeout(function(){ if(token === demoToken) onDone(); }, 400);
+      }
+    })();
+  }
+  // Drops the candidate rows in, then sweeps a `.hover` highlight down
+  // through them one at a time up to pickIdx — reading as scrolling through
+  // the results to look them over — before landing on and "clicking" it.
+  function openResults(s, onDone){
+    results.innerHTML = s.results.map(function(r){
+      return '<div class="demo-search-result">' +
+        '<span class="demo-search-result-hz">' + r.hz + '</span>' +
+        '<span class="demo-search-result-py dict-py">' + wrapPinyinGlyphFixes(r.py) + '</span>' +
+        '<span class="demo-search-result-en">' + r.en + '</span>' +
+        '<span class="demo-search-result-check">✓</span></div>';
+    }).join('');
+    requestAnimationFrame(function(){
+      if(token === demoToken && results.isConnected) results.classList.add('open');
+    });
+    const rows = results.querySelectorAll('.demo-search-result');
+    let i = 0;
+    (function sweep(){
+      if(token !== demoToken || !results.isConnected) return;
+      if(i > 0) rows[i-1].classList.remove('hover');
+      if(i <= s.pickIdx){
+        rows[i].classList.add('hover');
+        i++;
+        setTimeout(sweep, 320);
+      } else {
+        rows[s.pickIdx].classList.add('picked');
+        setTimeout(function(){ if(token === demoToken) onDone(); }, 750);
+      }
+    })();
+  }
+  function showNext(){
+    if(token !== demoToken || !input.isConnected) return;
+    const s = DEMO_DICTIONARY_SEARCHES[idx % DEMO_DICTIONARY_SEARCHES.length];
+    // Worst-case budget: typing (150ms/char) + the pause after typing (400)
+    // + a buffer for the results panel opening (350) + one 320ms sweep step
+    // per result (using the full result count, not just up to pickIdx, so
+    // this stays a safe overestimate) + the picked hold (750) + the close/
+    // gap beat before the next query starts (450) + a little slack (300) —
+    // same "don't start a search we can't finish before the hold ends"
+    // guard every other looping demo on the sphere uses.
+    const worstCase = s.query.length*150 + 400 + 350 + s.results.length*320 + 750 + 450 + 300;
+    if(demoTimeLeftInPhase() < worstCase) return;
+    idx++;
+    results.classList.remove('open');
+    setTimeout(function(){
+      if(token !== demoToken || !input.isConnected) return;
+      input.textContent = '';
+      results.innerHTML = '';
+      typeQuery(s.query, function(){ openResults(s, showNext); });
+    }, 400);
+  }
+  showNext();
+}
+
+// holdMs is an optional per-stop override of SYNC_HOLD_MS (see
+// landingBeginSynced/demoTimeLeftInPhase, which use STOPS[currentStopIdx]'s
+// own holdMs when present) — Pinyin, Dictate and Your Word Bank each set
+// one. Pinyin/Dictate loop through a short word list (see
+// DEMO_PINYIN_WORDS/DEMO_DICTATE_WORDS) at a per-character typing pace, so
+// how many words actually fit is a real function of word length, not just a
+// flat duration; Your Word Bank's own search-and-scroll-to-select sequence
+// (see DEMO_DICTIONARY_SEARCHES/demoWordBank) is longer still per item —
+// typing a query is only its first beat, then the results have to drop in,
+// get scrolled through, and settle on a pick. In every case the shared
+// SYNC_HOLD_MS (sized for the other, single-beat stops) wasn't enough for
+// even a couple of these specifically to reliably finish, so they get their
+// own, longer hold instead of lengthening every stop's for their sake.
+// Sized against each demo's own worst-case time-budget estimate (not the
+// typical/average case) so multiple items are guaranteed to fit even on an
+// unlucky run where every step happens to roll the slow end of its own
+// random-timing range, not just on average.
+const STOPS = [
+  { eyebrow:'Why Chinese', title:'1.1+ billion voices',
+    body:"The most-spoken native language on Earth — and the last of history's first civilizations, still living and spoken today.", demo:demoCounter },
+  { eyebrow:'Hanzi', title:'Write it. Keep it.',
+    body:'Real stroke-order grading — you produce the character yourself, instead of just recognizing it for a second and forgetting it.', demo:demoHanzi },
+  { eyebrow:'Pinyin', title:'Every sound, mastered',
+    body:'Build syllables from initials, finals and tones, then type them from memory until they’re automatic.', demo:demoPinyinType, holdMs:5900 },
+  { eyebrow:'Dictate', title:'Hear it. Write it.',
+    body:'Audio plays, you type what you heard — real listening practice, not just recognizing a word already on screen.', demo:demoDictate, holdMs:7400 },
+  { eyebrow:'Multiple Choice', title:'Prove you know it',
+    body:'Pick the right meaning under a bit of real pressure — active recall, not just re-reading a definition.', demo:demoMultipleChoice },
+  { eyebrow:'Your Word Bank', title:'One dictionary, everywhere',
+    body:'Search the full CC-CEDICT dictionary, save what matters, and organize it into folders that follow you into every practice mode above.', demo:demoWordBank, holdMs:8000 },
+  { eyebrow:'No time to spare?', title:'Minutes, not hours',
+    body:'Daily Study surfaces exactly what you’re ready for next — a few focused minutes, not an hour-long grind you’ll skip by Thursday.', demo:demoTimeRing },
+];
+
+// The ambient dot field's own projection — radius defaults to SPHERE_R.
+// Applies SPHERE_TILT (see its own comment), which is what gives the dot
+// field its 3D-sphere roundness rather than looking like a flat disc.
+function project3D(x, y, z, rotation, radius){
+  radius = radius || SPHERE_R;
+  const cosR = Math.cos(rotation), sinR = Math.sin(rotation);
+  const x1 = x*cosR + z*sinR;
+  const z1 = -x*sinR + z*cosR;
+  const cosT = Math.cos(SPHERE_TILT), sinT = Math.sin(SPHERE_TILT);
+  const y2 = y*cosT - z1*sinT;
+  const z2 = y*sinT + z1*cosT;
+  return { x: SPHERE_CX + x1*radius, y: SPHERE_CY + y2*radius, depth: z2 };
+}
+// The comet's OWN projection — deliberately skips the SPHERE_TILT step
+// project3D applies for the ambient dots. With the tilt, an equatorial
+// orbit doesn't project to a flat horizontal line: it bows above and below
+// the sphere's true vertical center depending on where along the orbit the
+// comet currently is (only its RESTING point could be tuned to land near
+// center, via COMET_THETA — the rest of the path in transit still curved
+// away from it). The requirement is a straight horizontal trajectory the
+// whole way around, the way a real comet circling a globe's equator, seen
+// square-on, would actually look — not the dot field's own cosmetic
+// roundness. Skipping the tilt does exactly that: for an equatorial point
+// (y=0) this makes the projected y a constant (SPHERE_CY) at every phi,
+// full stop. depth here is the PRE-tilt z1, not project3D's z2 — for an
+// equatorial point they're simply proportional (z2 = z1*cos(SPHERE_TILT)),
+// so this doesn't change which phi range reads as front-facing, just the
+// numeric scale of the depth value itself.
+function projectCometFlat(x, y, z, rotation, radius){
+  const cosR = Math.cos(rotation), sinR = Math.sin(rotation);
+  const x1 = x*cosR + z*sinR;
+  const z1 = -x*sinR + z*cosR;
+  return { x: SPHERE_CX + x1*radius, y: SPHERE_CY + y*radius, depth: z1 };
+}
+// theta fixed at pi/2 (the equator) elsewhere — only phi ever varies for
+// the comet, so this is the only conversion needed; there's no reverse
+// (unit vector -> spherical) conversion anymore since the comet no longer
+// has per-hop targets to convert TO, just its own continuously-accumulated
+// phi (see COMET_SPEED/landingRenderFrame).
+function sphericalToUnit(theta, phi){
+  return { x: Math.sin(theta)*Math.cos(phi), y: Math.cos(theta), z: Math.sin(theta)*Math.sin(phi) };
+}
+// y = 1 - (2*i+1)/n (not the more commonly-seen 1 - (i/(n-1))*2) is
+// deliberate: that other, more naive version places i=0 and i=n-1 at
+// EXACTLY y=+1/-1 — the sphere's own true poles, x=z=0 both — and
+// project3D's rotation only ever touches x/z, leaving y untouched, so a
+// point sitting exactly on the rotation axis is mathematically incapable
+// of moving at all as the sphere spins: one ambient hanzi character
+// freezing in place for the whole animation while all 168 others visibly
+// orbit, reported directly as the still character at the bottom of the
+// sphere ("just stays stationary... looks odd"). This version's own i=0
+// and i=n-1 land at y = +/-(1 - 1/n) instead — just barely short of the
+// poles, so x/z are small but genuinely nonzero and every one of the 170
+// points actually sweeps its own (if tiny, near the poles) circle. Still
+// an even, symmetric spread across the whole sphere — only the two
+// endpoints move at all versus the old formula, and by under 0.6% of the
+// radius.
+function fibonacciSpherePoints(n){
+  const pts = [];
+  const golden = Math.PI * (3 - Math.sqrt(5));
+  for(let i=0; i<n; i++){
+    const y = 1 - (2*i + 1) / n;
+    const r = Math.sqrt(Math.max(0, 1 - y*y));
+    const theta = golden * i;
+    pts.push({ x: Math.cos(theta)*r, y, z: Math.sin(theta)*r });
+  }
+  return pts;
+}
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const spherePointsData = fibonacciSpherePoints(170);
+// A pool of common, everyday hanzi — one gets assigned to each ambient dot
+// (see landingBuildSphereSvg), shuffled once per page load so the same
+// sphere never lays them out in the same spots twice. Comfortably larger
+// than spherePointsData.length so shuffleArray+slice below always has room
+// to pick 170 distinct characters without repeats.
+const SPHERE_HANZI_POOL = Array.from(
+  '的一是不了在人有我他这个们中来上大为和国地到以说时要就出会可也你对生能而子那得于着下自之年过发后作里用道行所然家种事成方多经么去' +
+  '好学校老师同朋友现些还又再才都很太非常真特别最更已曾从向往走跑坐站躺睡觉醒起回进入开关打吃喝看听写读唱跳笑哭想知懂记忘爱喜欢讨厌怕担心高兴快乐难累忙闲' +
+  '天日月星期早午晚夜今明昨前左右东西南北水火木金土山石田风雨雪云电光河海湖江树花草叶果米饭面茶酒肉鱼蛋菜汤糖盐油' +
+  '房门窗桌椅床书笔纸车船飞机路桥城市村店院医场公园商银钱买卖工习教育文化语言字词句章本页号名姓男孩童父母兄弟姐妹夫妻儿' +
+  '少长短低小坏美丑强弱硬软重轻深浅宽窄圆白黑红黄蓝绿紫灰色画图数算加减乘除' +
+  '一二三四五六七八九十百千万亿零春夏秋冬雷电虫鸟兽龙凤马牛羊鸡犬猫狗猪兔' +
+  '身头手脚眼耳鼻口牙舌心肝肺胃血骨肉皮毛发力气声音'
+).filter(function(ch, i, arr){ return arr.indexOf(ch) === i; }); // de-duplicate — a few characters above (e.g. 生/心/肉) get reused across categories
+function shuffleArray(arr){
+  const a = arr.slice();
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+const sphereHanziAssignment = shuffleArray(SPHERE_HANZI_POOL).slice(0, spherePointsData.length);
+// The fixed font-size every glyph is actually created at (see
+// landingBuildSphereSvg) — landingRenderFrame scales it up/down per frame
+// via a transform's scale() instead of ever changing font-size itself
+// again, so this only needs to be "some reasonable middle value", not the
+// true min or max a glyph ends up rendered at.
+const SPHERE_HANZI_BASE_SIZE = 10;
+// RING_RX is the comet's own constant orbit radius — always, not just
+// sometimes: it rides on the OUTSIDE of the ambient sphere the whole time,
+// never flush on the sphere's own surface (SPHERE_R) the way the ambient
+// dots are. Being consistently larger than the sphere is what makes it
+// disappear (and reappear) right near the sphere's own TRUE edge
+// (SPHERE_VISUAL_R, not SPHERE_R — see that constant's own comment) rather
+// than somewhere out in open space, or — the opposite mistake, made here
+// once — inside the circle. The orbit is only slightly bigger than
+// SPHERE_VISUAL_R, so the point where it crosses into/out of hidden
+// territory sits close to the circle's own drawn boundary. Deliberately
+// CONSTANT, not eased down toward the edge as depth nears 0 the way an
+// earlier version of this tried — that seemed like the more precise way to
+// land the vanishing point exactly on the edge, but shrinking the radius
+// specifically AT the crossing makes that crossing point's own screen x an
+// extra local extremum (verified directly: x measurably dips, reverses,
+// peaks exactly at the crossing, then dips again, even though depth/phi_eff
+// sweep through it perfectly smoothly) — a real wobble in the comet's path
+// that reads as the trail crossing back over itself, breaking up what
+// should be a single smooth line into something that looks dotted. Just
+// keeping RING_RX small (barely bigger than SPHERE_VISUAL_R) gets the
+// vanishing point close enough to the edge with a plain constant radius, no
+// wobble at all. The trail is a live record of the comet's own recent
+// positions — short line segments faded by age (older = fainter, tapering
+// the tail rather than a hard cut) and hard-hidden (matching the comet dot
+// itself) for the whole time they're actually behind the sphere's
+// silhouette (depth <= 0) — a glowing trail bleeding through from behind
+// would break the same illusion a faintly-visible dot did.
+const RING_RX = SPHERE_VISUAL_R * 1.03;
+// The comet's vertical "weave" — meant to read like a fish undulating as
+// it swims, not a rigid track it slides along. ONLY happens during
+// 'synced' (the fast portion, once the comet has settled into its resting
+// spot for a demo stop — see SETTLE_DRIFT) — the plain 'default' orbit
+// keeps its original flat, straight sweep untouched, exactly as it read
+// before this weave existed at all (see landingRenderFrame's own
+// phaseKind branch). Driven by real elapsed time (nowMs), not by how far
+// along its own crossing it's gotten, so it keeps bobbing continuously
+// while parked in place rather than freezing solid the instant it stops
+// moving sideways. AMPLITUDE is a CONSTANT swing — no depth-based
+// tapering — since during 'synced' the comet isn't doing a real edge-to-
+// edge crossing at all, just bobbing in place; damping it toward the
+// resting spot's own depth read as the zigzag arbitrarily shrinking for
+// no visible reason. AMPLITUDE is in the same 520-wide viewBox units as
+// SPHERE_CX/RING_RX. PERIOD_MS is how long one full up-down bob takes.
+const COMET_WEAVE_AMPLITUDE = 20;
+const COMET_WEAVE_PERIOD_MS = 650;
+const COMET_WEAVE_OMEGA = (Math.PI * 2) / COMET_WEAVE_PERIOD_MS;
+// The weave applies for the comet's whole visible sweep, both 'default'
+// (the plain orbit) and 'synced' (parked, demoing) — tried confining it to
+// 'synced' only at one point, on the theory that a bob competing against
+// real fast horizontal travel was itself what read as "jumping." That
+// theory was wrong: a straight, weave-free 'default' sweep was reported
+// right back as its own problem ("the comet just follows a straight line
+// now"), and the ACTUAL jumping turned out to be two unrelated, genuine
+// discontinuities that a fake-clock replay caught directly, nothing to do
+// with the weave's mere presence:
+//   1. currentCometBaselineOffset (this lap's latitude, see its own
+//      comment) used to get re-rolled the instant a stop's hold ended —
+//      while the comet was still fully OPAQUE and on screen (it only
+//      settles into RESTING during 'synced', never actually hides), so a
+//      new random latitude teleported the visibly-sitting dot by dozens of
+//      pixels in a single frame. Fixed by deferring the reroll (see
+//      pendingThetaReroll/rerollCometLatitude) to the first frame the dot
+//      is confirmed hidden.
+//   2. Gating the weave itself on phaseKind (the 'synced'-only attempt
+//      above) traded that for a smaller version of the same mistake: the
+//      weave's own amplitude snapped instantly to/from 0 the moment
+//      phaseKind flipped, a real 6-18px single-frame jump while still
+//      opaque.
+// With both of those genuine discontinuities fixed at their own source,
+// the weave is simply always on again — COMET_WEAVE_RAMP_MS now only eases
+// its amplitude up from 0 right as the comet actually becomes visible
+// (cometBecameOpaqueAtMs), the ORIGINAL reason this ramp existed: the
+// underlying sine is driven by raw elapsed time, so without a ramp the
+// comet could appear already pinned near +/-COMET_WEAVE_AMPLITUDE (a
+// sine's own slowest-changing region) for its first stretch of travel,
+// reading as "starts on a straight path at its min/max value" and
+// inconsistent lap to lap.
+const COMET_WEAVE_RAMP_MS = 450;
+// The weave's own constant-amplitude sine (see COMET_WEAVE_AMPLITUDE's own
+// comment for why it's undamped, not a depth-based envelope) — the DOT's
+// own y always uses this raw version, unclamped, all the way up to the
+// instant it actually vanishes (proj.depth crossing 0). A geometric clamp
+// here (tried first — see cometWeaveOffsetClamped below, still used for
+// the TRAIL) pulls the offset toward exactly 0 as the sphere's own width
+// pinches out near the edge, which for the trail is what keeps its tail
+// from poking past the true circle — but applied to the DOT's own moving
+// position, it forces the same flattening over that whole final stretch
+// of travel, so the dot visibly flattens out and "snaps" to one fixed,
+// entirely deterministic (x,y) every single time it's about to vanish,
+// rather than just continuing its real motion until opacity cuts it off —
+// reported directly as killing the illusion of continuous movement. Since
+// the dot is moments from disappearing anyway whenever this would matter,
+// briefly rendering slightly outside the true circle right before that
+// reads as one continuous motion cut off cleanly, not one that visibly
+// arrives at a fixed pose first.
+function cometWeaveOffsetRaw(timeMs){
+  return COMET_WEAVE_AMPLITUDE * Math.sin(timeMs * COMET_WEAVE_OMEGA);
+}
+// The TRAIL's own version — same raw swing, but clamped to however much
+// vertical room is actually left before the point would poke outside the
+// sphere's true visual circle (SPHERE_VISUAL_R; Pythagoras against
+// xOffset, this point's own x distance from SPHERE_CX) — a trail point out
+// near the edge, where the circle's own width is pinching down toward
+// nothing, physically CAN'T swing the full raw amplitude without poking
+// outside, unlike the dot itself (see cometWeaveOffsetRaw's own comment on
+// why the dot stays unclamped). Everywhere the raw swing already fits
+// inside the available room (true across nearly all of the trail, most of
+// the time), this is a no-op. baselineOffset (currentCometBaselineOffset
+// on a lap whose latitude isn't the true equator — see its own comment)
+// shifts the whole allowed range rather than just its width, since the
+// weave itself still swings symmetrically around that shifted baseline,
+// not around the circle's own center.
+function cometWeaveOffsetClamped(xOffset, timeMs, baselineOffset, rampFrac){
+  const raw = cometWeaveOffsetRaw(timeMs) * (rampFrac === undefined ? 1 : rampFrac);
+  const avail = Math.sqrt(Math.max(0, SPHERE_VISUAL_R*SPHERE_VISUAL_R - xOffset*xOffset));
+  const base = baselineOffset || 0;
+  return Math.max(-avail - base, Math.min(avail - base, raw));
+}
+// How far short of phi_eff=0/pi (RING_RX's own true mathematical edge) the
+// trail needs to stop for its own oldest point to land on the sphere's
+// real drawn boundary. Landing exactly ON SPHERE_VISUAL_R (tried first)
+// makes cometWeaveOffsetClamped's own avail compute to EXACTLY 0 there —
+// every single frame, since the oldest point is deliberately built to
+// always reach this same spot — permanently pinning the tail's own far end
+// dead center (SPHERE_CY) no matter what the weave is doing everywhere else
+// on the trail: a stub that never moves while the rest of the line visibly
+// bobs, reported directly ("the tail's need to go up and down just like
+// the length of its line does... it should not have the same follow point
+// as the head of the comet does" — the head's own weave is unclamped, per
+// cometWeaveOffsetRaw's own comment, while the tail's end was frozen
+// solid).
+//
+// An earlier pass here pulled the target radius in by a full
+// COMET_WEAVE_AMPLITUDE (20px) to fix that — comfortably unclamped, but
+// left the oldest point sitting a visibly obvious ~20px short of the
+// sphere's own drawn edge, reported directly right back: "the tail still
+// needs to end off at the circumference of the sphere". Since
+// cometWeaveOffsetClamped's avail at an x-offset of D is
+// sqrt(SPHERE_VISUAL_R^2 - D^2) (plain Pythagoras against the true
+// circle), the TIGHT minimum D that still leaves avail == exactly
+// COMET_WEAVE_AMPLITUDE (not "comfortably more than it") solves to
+// D = sqrt(SPHERE_VISUAL_R^2 - COMET_WEAVE_AMPLITUDE^2) — for this
+// sphere's own actual numbers that's only a fraction of a pixel inside
+// SPHERE_VISUAL_R itself (259.2 vs 260, not 240), so the oldest point now
+// reads as sitting right AT the circumference while still keeping exactly
+// enough headroom for the full, unclamped raw weave the whole time — both
+// reports satisfied at once rather than trading one off against the other.
+const COMET_TRAIL_EDGE_PHI_INSET = Math.acos(Math.sqrt(SPHERE_VISUAL_R*SPHERE_VISUAL_R - COMET_WEAVE_AMPLITUDE*COMET_WEAVE_AMPLITUDE) / RING_RX);
+// The comet's own fixed polar angle — the true equator. This used to need
+// tuning away from exactly pi/2 to counteract SPHERE_TILT pushing its
+// RESTING point above center, back when the comet's own projection still
+// applied that tilt like the ambient dots do. Now that it uses its own
+// untilted projection (see projectCometFlat), the true equator is correct
+// again — pi/2 is what makes an untilted equatorial orbit project to a
+// perfectly flat horizontal line the whole way around, not just at one
+// tuned resting spot.
+const COMET_THETA = Math.PI/2;
+// How far off the true equator a single lap's own currentCometTheta (see
+// its own comment) is allowed to land, re-rolled within +/-this every lap.
+// Originally 0.35 rad (~20 degrees): still kept sin(theta) above ~0.94 —
+// the orbit's own radius, and so how much of the sphere's face the comet
+// visibly sweeps, barely shrunk even at the extremes — but
+// cos(theta)*RING_RX (the resulting height offset, see
+// currentCometBaselineOffset) reached a bit over 90px at that extreme,
+// comfortably more than the sphere's own radius (260px) needs to read as
+// "arrives noticeably too high" or "too low" against the demo content
+// sitting dead-center in .sphere-demo-stage every lap — reported directly,
+// still visible after the weave-ramp fix above (which only smooths the
+// small ±20px oscillation riding ON TOP of this baseline, not the
+// baseline's own per-lap swing). Pulled in to 0.13 rad (~7.5 degrees):
+// cos(theta)*RING_RX now tops out around 35px, still clearly more varied
+// lap to lap than the weave amplitude alone, but no longer landing near a
+// third of the sphere's own radius away from center. Reported directly yet
+// AGAIN even at 0.13 ("still goes too high or too low when spawning in") —
+// pulled in further to 0.07 rad (~4 degrees): cos(theta)*RING_RX now tops
+// out around 19px, still enough per-lap variety to not look robotically
+// identical every time but small enough that the demo content dead-center
+// in .sphere-demo-stage no longer reads as visibly off from the comet's
+// own resting height.
+const COMET_THETA_JITTER = 0.07;
+const TRAIL_LEN = 28; // how many points the trail is built from — 25% longer than 22, which read as a bit too short
+// 'synced' phase only — the trail's own fixed ANGULAR spacing and
+// per-step look-back into the weave's own time-based sine (see
+// landingRenderFrame's own comment on why this trail is rebuilt from
+// these every frame instead of accumulating real recorded positions).
+// PHI_STEP is in the same phi-radians the comet's own orbit already uses
+// (not raw screen pixels) — converting each trail point through the SAME
+// sin/cos projection the dot itself uses is what keeps the whole trail
+// riding exactly on the sphere's own circular boundary, the same way the
+// dot always does, rather than a straight ruler-line extrapolation that
+// can shoot past the sphere's edge into open space once the dot is
+// resting near it. TRAIL_LEN * TIME_STEP_MS (~756ms) is a bit over one
+// full COMET_WEAVE_PERIOD_MS, so the trail always shows a touch more than
+// one complete wave of the weave.
+//
+// PHI_STEP * (TRAIL_LEN-1) is the trail's MAXIMUM angular reach behind the
+// dot — needs to comfortably cover the settled resting spot's own fixed
+// distance from the edge it entered from, or the tail falls short of the
+// boundary and reads as a wavy line floating in open space instead of
+// wrapping the sphere (reported directly). That resting distance is fixed
+// by MIN_FRONT_DEPTH (how far past the edge "arrival" fires, in phi) plus
+// SETTLE_DRIFT (how much further it drifts during the ramp): arrival phi
+// is pi - asin(MIN_FRONT_DEPTH) = ~162.5 degrees from center, minus
+// SETTLE_DRIFT's 38 degrees leaves it resting ~55.5 degrees short of the
+// edge — so 0.04 * 27 = ~62 degrees of reach clears that with a bit of
+// margin. This is a MAXIMUM, not a fixed step, though — the loop below
+// scales it down whenever the dot's ACTUAL distance to the edge is
+// shorter than that (which is most of the time — the settled spot is one
+// specific case, not every case this runs in), so the trail's oldest
+// point always lands exactly at the edge with nothing left over past it.
+const COMET_TRAIL_PHI_STEP = 0.04;
+const COMET_TRAIL_TIME_STEP_MS = 27;
+// A much coarser version of the same "evenly spaced, not per-frame" idea —
+// spawns one ember roughly every ORBIT_FLAME_SPACING screen pixels of
+// comet movement (tracked via lastOrbitFlamePt in landingRenderFrame).
+// Deliberately sparser than the launch flight's own every-couple-of-frames
+// stream (see spawnLaunchFlame's own comment) — the ordinary orbit still
+// reads as calm overall, just with a light flicker of embers riding along
+// its trail, rather than a constant dense flare.
+const ORBIT_FLAME_SPACING = 22;
+let lastOrbitFlamePt = null;
+let sphereEls = null;
+function landingBuildSphereSvg(){
+  const dotsSvg = document.getElementById('sphereDotsSvg');
+  const cometSvg = document.getElementById('sphereCometSvg');
+  if(!dotsSvg || !cometSvg) return null;
+  dotsSvg.setAttribute('viewBox', '0 0 520 520');
+  cometSvg.setAttribute('viewBox', '0 0 520 520');
+  dotsSvg.innerHTML = '';
+  cometSvg.innerHTML = '';
+  // Each ambient point is a single hanzi now (see SPHERE_HANZI_POOL/
+  // sphereHanziAssignment), not a plain dot — text-anchor/dominant-baseline
+  // center the glyph on its own point the same way a circle's cx/cy already
+  // did — EXCEPT landingRenderFrame now repositions/rescales each glyph via
+  // its own transform attribute instead of touching x/y/font-size directly
+  // every frame (see SPHERE_HANZI_BASE_SIZE's own comment): x/y/font-size
+  // are set ONCE here, at creation, and never touched again — changing
+  // font-size (or x/y, on a text node — unlike a circle's cx/cy/r) forces
+  // the browser to re-shape/re-lay-out the glyph itself, not just repaint
+  // it, which for 170 CJK glyphs updating every single frame (the whole
+  // point of an ever-rotating sphere) was measurably heavy — confirmed
+  // directly as visible stutter in the sphere's own spin. A transform is
+  // compositor-only, the same cheap category of update cx/cy/r always were.
+  const dots = spherePointsData.map(function(_, i){
+    const t = document.createElementNS(SVG_NS, 'text');
+    t.setAttribute('class', 'sphere-point');
+    t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('dominant-baseline', 'central');
+    t.setAttribute('x', 0);
+    t.setAttribute('y', 0);
+    t.setAttribute('font-size', SPHERE_HANZI_BASE_SIZE);
+    t.textContent = sphereHanziAssignment[i % sphereHanziAssignment.length];
+    dotsSvg.appendChild(t);
+    return t;
+  });
+  // A fixed pool of <line> segments reused every frame (cheaper than
+  // creating/destroying TRAIL_LEN elements 60 times a second) — one per gap
+  // between two consecutive recorded trail points, each independently
+  // opacity-faded by age and depth, giving the per-segment fade a single
+  // <polyline> (one shared stroke-opacity for the whole thing) couldn't.
+  const trailSegs = [];
+  for(let i=0;i<TRAIL_LEN-1;i++){
+    const seg = document.createElementNS(SVG_NS, 'line');
+    seg.setAttribute('class', 'sphere-comet-trail-seg');
+    cometSvg.appendChild(seg);
+    trailSegs.push(seg);
+  }
+  const comet = document.createElementNS(SVG_NS, 'circle');
+  comet.setAttribute('class', 'sphere-comet-dot');
+  comet.setAttribute('r', 6);
+  cometSvg.appendChild(comet);
+  return { dots, trailSegs, comet };
+}
+
+let cometPhi = 0;         // continuously accumulated at cometRate (COMET_SPEED at rest, blending toward the sphere's own current rate while syncing) — never stops, see landingRenderFrame
+let sphereRotation = 0;   // the ambient field's own accumulated rotation angle — accumulated (not a closed-form nowMs*rate) since its own speed varies again, see landingRenderFrame
+let lastFrameMs = null;
+// Starts at 1, not 0 — landingRenderFrame's own (dotFrameCounter+1)%2===0
+// check would otherwise skip the very FIRST frame too, leaving every glyph
+// sitting at its untouched creation-time position (x=0,y=0 — the stage's
+// own top-left corner) until a second frame happened to run, instead of
+// spread across the sphere from the first paint on (confirmed directly:
+// the whole field read as empty, with one stray mark up in the stage's
+// corner, until something forced a second frame).
+let dotFrameCounter = 1; // see its own use in landingRenderFrame — the ambient hanzi field updates at half the real frame rate
+let phaseKind = 'default';  // 'default' (sphere at its own pace, waiting for the comet's next front arrival) | 'synced' (sphere ramped up to match the comet, demo showing)
+let phaseStartedAt = 0;
+let wasCometVisible = true; // last frame's front/back state — landingRenderFrame fires a "front arrival" the instant this flips from false to true, but only while phaseKind is 'default'
+// The dot's own opacity is driven by a LOOSER threshold (proj.depth > 0)
+// than wasCometVisible (proj.depth > MIN_FRONT_DEPTH, "comfortably" front-
+// facing) — there's a real gap between them (0 < depth <= MIN_FRONT_DEPTH)
+// where the dot is still fully opaque on screen but wasCometVisible has
+// already flipped false. rerollCometLatitude's own "wait until hidden"
+// guard needs THIS looser threshold, not wasCometVisible — confirmed
+// directly (a fake-clock replay) that gating on wasCometVisible alone
+// still let the reroll fire while the dot was visibly sitting there at
+// opacity 1, landing right back in the same "jumping" bug it was meant to
+// fix.
+let cometWasOpaque = true;
+// The instant cometWasOpaque last flipped false->true (see its own use in
+// landingRenderFrame, right where opacity is set) — see COMET_WEAVE_RAMP_MS's
+// own comment for what this drives. -Infinity so the very first appearance,
+// same as every later one, still ramps in cleanly.
+let cometBecameOpaqueAtMs = -Infinity;
+let currentStopIdx = 0;   // which STOPS entry is currently shown
+let launchArmed = false;  // true once the LAST stop's own hold has ended — landingRenderFrame launches to Sign Up the moment the comet is about to slip behind the sphere on its next departure, see its own comment
+let cometVisibleOnSphere = true; // false once it's launched toward the Sign Up button
+let cometTrailPts = []; // rebuilt fresh every frame, oldest first, as {x,y,depth01,stepsBack} — still rebuilt (not frozen) once the dot goes behind the sphere too, just via a different formula — see cometHiddenSinceMs's own comment
+let cometLastScreenX = null; // previous frame's comet screen x — landingRenderFrame diffs against this to track cometTrailDir
+let cometTrailDir = 1; // which way the trail extends behind the dot (+1/-1) — holds its last real value once the comet stops actually moving horizontally, rather than collapsing to 0
+let lastVisibleEffectivePhiStep = COMET_TRAIL_PHI_STEP; // the trail's own angular step, frozen at whatever it last was while the dot was still visible — see its own use in the hidden branch's comment for why this (not a fresh reach-to-edge calculation) is what keeps the trail sliding forward once hidden instead of collapsing or freezing
+// This cycle's own randomized SETTLE_DRIFT (see that constant's own
+// comment for the base value/reasoning) — re-rolled fresh in
+// landingBeginSynced every time a new stop's settle begins, rather than
+// always drifting the exact same fixed amount. This varies how long the
+// SUBSEQUENT 'default' departure takes to reach the next front-to-back
+// crossing (and so, via the weave, the HEIGHT the head happens to be at
+// the instant it actually disappears) — but NOT which two screen X
+// positions that disappearing can ever happen at: an orbit confined to
+// one fixed latitude (COMET_THETA, see its own comment) is confined by
+// plain geometry to cross front-to-back at that latitude's own two edge
+// points every single time, no matter what timing/rate variety exists
+// elsewhere — confirmed directly, with a proper fake-clock-driven replay
+// (real setTimeout/performance.now racing against a synthetic frame-by-
+// frame clock was corrupting earlier attempts to check this), that the
+// exit X landed on the exact same value lap after lap even with this
+// already varying. currentCometTheta below is what actually answers
+// "don't make the comet always return to on[e] exit point... whatever
+// part of the circumference... it hits, that's where the head exits
+// from" — SETTLE_DRIFT is still worth keeping for its own real (Y/timing)
+// variety on top of that. Starts equal to the base constant so the very
+// first stop (before landingBeginSynced has ever rolled it) still behaves
+// exactly as tuned.
+let currentSettleDrift = SETTLE_DRIFT;
+// This LAP's own latitude for the comet's orbit — re-rolled once per lap
+// (in landingBeginDefault, right as the comet pulls away after a stop's
+// hold ends, so the choice is settled well before the NEXT arrival rather
+// than changing mid-flight) to a value near, but not always exactly at,
+// the true equator (COMET_THETA). A fixed latitude is what pins the
+// front-to-back crossing to the same two screen X positions every lap
+// (see currentSettleDrift's own comment) — varying it is what actually
+// varies those crossing points, both in screen height (a latitude circle
+// sits at a different constant height than the equator, per
+// projectCometFlat's own y: SPHERE_CY + y*radius term) and slightly in X
+// too (a latitude circle's own left/right extent is pulled in from the
+// equator's by sin(theta), same as a real globe: a circle of latitude has
+// a smaller radius than the equator, physically correct rather than a
+// side effect to route around). currentCometSinTheta/
+// currentCometBaselineOffset are this same lap's theta pre-resolved into
+// the two numbers landingRenderFrame's trail math actually needs every
+// frame (dot position itself doesn't need either — projectCometFlat
+// already folds theta in correctly on its own, see its call in
+// landingRenderFrame). currentCometTrailEdgeInset is
+// COMET_TRAIL_EDGE_PHI_INSET's own tight-minimum derivation (see that
+// constant's comment), re-solved for whatever this lap's own shrunk
+// radius/shifted baseline actually are instead of assuming the equator's.
+let currentCometTheta = COMET_THETA;
+let currentCometSinTheta = Math.sin(COMET_THETA);
+let currentCometBaselineOffset = Math.cos(COMET_THETA) * RING_RX;
+let currentCometTrailEdgeInset = COMET_TRAIL_EDGE_PHI_INSET;
+// Set by landingBeginDefault (a stop's hold just ended) but NOT applied
+// there any more — see rerollCometLatitude's own call site in
+// landingRenderFrame for why. Left true across however many frames it
+// takes for the comet to actually go behind the sphere.
+let pendingThetaReroll = false;
+// Actually changes the lap's latitude (currentCometTheta and everything
+// derived from it) — pulled out of landingBeginDefault into its own
+// function because WHEN this runs matters more than where it's triggered
+// from: landingBeginDefault used to call this inline, on the assumption
+// (stated in its own old comment) that the comet would already be safely
+// off-screen by the time a stop's hold ends and the sphere starts ramping
+// back down. That's false — during 'synced' the comet is RESTING, not
+// hidden (see SETTLE_DRIFT's own comment: "resting fixed to the sphere's
+// surface... noticeably left-of-center"), fully visible right up until
+// the hold's own fixed timer fires — confirmed directly (a fake-clock
+// replay) that changing currentCometBaselineOffset there teleports the
+// dot's on-screen Y by dozens of pixels in a single frame while its own
+// opacity is still '1'. Reported directly, repeatedly, as "jumping up and
+// down" no matter how the WEAVE on top of that baseline was tuned,
+// because the actual jump was in the baseline itself, not the weave.
+// Deferred instead to the first frame landingRenderFrame confirms the
+// comet is actually hidden (see its own call site) — invisible by
+// construction, so there's nothing on screen to visibly teleport.
+function rerollCometLatitude(){
+  currentCometTheta = COMET_THETA + (Math.random() * 2 - 1) * COMET_THETA_JITTER;
+  currentCometSinTheta = Math.sin(currentCometTheta);
+  currentCometBaselineOffset = Math.cos(currentCometTheta) * RING_RX;
+  // Same tight-minimum derivation as COMET_TRAIL_EDGE_PHI_INSET's own
+  // comment, just solved for THIS lap's own shrunk radius/shifted
+  // baseline instead of assuming the equator's — the oldest trail point
+  // still needs enough clearance for the FULL weave amplitude on both
+  // sides of a baseline that isn't 0 anymore, not just the amplitude
+  // alone, so the required clearance from the true edge is
+  // |baseline| + amplitude here, not amplitude alone.
+  const targetXOffset = Math.sqrt(Math.max(0,
+    SPHERE_VISUAL_R * SPHERE_VISUAL_R - Math.pow(Math.abs(currentCometBaselineOffset) + COMET_WEAVE_AMPLITUDE, 2)));
+  currentCometTrailEdgeInset = Math.acos(Math.min(1, targetXOffset / (currentCometSinTheta * RING_RX)));
+}
+// When the dot itself last went behind the sphere (null while it's
+// visible). The dot's own opacity still snaps off instantly right at that
+// moment (see built.comet.style.opacity below), but the TRAIL behind it
+// used to keep being recomputed from the dot's own (now meaningless,
+// behind-the-sphere) position every frame — which very quickly collapses
+// the whole reconstructed trail down to a single degenerate point (phiEff
+// clamped to whichever edge it's nearest), so in practice the line
+// vanished within about a frame of the dot doing the same thing, reading
+// as "together," not the separate "dot first, then the line fades" beat
+// asked for. Freezing cometTrailPts at whatever it was on the LAST frame
+// the dot was actually visible, then fading that frozen shape out over
+// COMET_TRAIL_FADE_MS instead of recomputing it, is what actually gives
+// the line its own separate, gradual disappearance.
+let cometHiddenSinceMs = null;
+// The fading trail's own manually-advanced position (see the hidden
+// branch's own comment for why this can't just keep reading the real,
+// live comet position every frame like the visible branch does).
+let fadingHeadPhiEff = null;
+let fadingHeadLastMs = null;
+const COMET_TRAIL_FADE_MS = 500;
+// Scales down fadingHeadPhiEff's own per-frame advance (see the hidden
+// branch below) for JUST the fade, not the trail's while-VISIBLE spacing —
+// COMET_TRAIL_PHI_STEP/COMET_TRAIL_TIME_STEP_MS stays untouched so the
+// wave density everyone already tuned by eye is unaffected. Reported
+// directly ("the line, as soon as it hits the right side edge, dissipates
+// moving to the left instead of slowly going into the right edge") and
+// confirmed by a frame-by-frame replay: with no scale-down at all
+// (fraction 1), an ordinary 'default'-phase hide (as opposed to a
+// 'synced'/settled one, where the visible branch's own distanceToEdge
+// clamp keeps lastVisibleEffectivePhiStep small) lets lastVisibleEffective-
+// PhiStep sit at its unclamped max (COMET_TRAIL_PHI_STEP itself) for the
+// whole fade — over COMET_TRAIL_FADE_MS that integrates to the ENTIRE
+// 28-point trail visibly sliding about 190px further left (measured
+// directly: x-range 387-528 the instant hiding begins, down to 196-460 by
+// the time it's fully faded), all of it still fully frontFacing/opaque the
+// whole way, since virtualDepth never actually crosses back negative in
+// that range — reading exactly as "slides inward across the sphere while
+// dimming" instead of "fades away right at the edge." A flat 0 here was
+// tried too (freezing fadingHeadPhiEff outright) but that regressed an
+// earlier, already-settled complaint from before this constant existed
+// ("make sure the line fades as it moves into the circumference and not
+// just fading there as it sits" — see cometTrailPts's hidden-branch
+// comment) — reading as the line stopping dead. This fraction (well under
+// 1, well above 0), plus the linear decay-to-0 applied alongside it where
+// driftRate is computed below, keeps it visibly still gliding, just
+// nowhere near as far — and eases to a stop in step with its own opacity
+// reaching 0, rather than still sliding at a constant rate right up until
+// the frame it vanishes.
+const FADE_DRIFT_FRAC = 0.3;
+let landingToken = 0;
+let landingTimer = null;
+let landingRafId = null;
+let landingActive = false;
+let sphereInViewport = true; // updated by the IntersectionObserver set up in landingInit
+
+function easeInOutCubic(t){ return t<0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2; }
+
+function landingRenderFrame(nowMs){
+  const built = sphereEls;
+  if(!built) return;
+  if(lastFrameMs === null) lastFrameMs = nowMs;
+  const dt = Math.min(100, nowMs - lastFrameMs); // clamp so a long tab-throttle gap can't fling anything forward in one jump when it resumes
+  lastFrameMs = nowMs;
+  // Applies a pending latitude reroll (see rerollCometLatitude's own
+  // comment) the first frame the comet is confirmed hidden — cometWasOpaque
+  // (not wasCometVisible; see its own comment for why that's the wrong,
+  // too-early-flipping check) here still holds LAST frame's own result,
+  // i.e. "was the dot actually still opaque as of the last time this ran,"
+  // so false means it's genuinely been fully hidden for at least one whole
+  // frame already, safe to change underneath it. Must run before
+  // cometUnit/proj get computed for THIS frame below, so the whole frame
+  // (dot AND trail) sees the new latitude consistently, never a mix of
+  // old-dot-position with new-trail-math or vice versa.
+  if(pendingThetaReroll && !cometWasOpaque){
+    rerollCometLatitude();
+    pendingThetaReroll = false;
+  }
+
+  // The sphere's own rotation speed eases between its slow DEFAULT_SPEED
+  // and SYNC_SPEED (same magnitude as the comet's own pace, same SIGN as
+  // DEFAULT_SPEED — see SYNC_SPEED's own comment for why it's never
+  // COMET_SPEED directly) over RAMP_MS, then holds wherever it landed for
+  // the rest of the phase: ramping UP during 'synced' (that's when the
+  // demo is shown) and back DOWN to the default pace during 'default' (so
+  // the comet visibly pulls away again). sphereRotation is integrated
+  // frame by frame rather than a closed-form nowMs*rate, since its rate
+  // isn't constant. Its own direction never reverses, at any speed.
+  const rampU = Math.min(1, (nowMs - phaseStartedAt) / RAMP_MS);
+  const blend = phaseKind === 'synced' ? easeInOutCubic(rampU) : 1 - easeInOutCubic(rampU);
+  const sphereSpeed = DEFAULT_SPEED + (SYNC_SPEED - DEFAULT_SPEED) * blend;
+  const rotationBeforeThisFrame = sphereRotation; // captured BEFORE this frame's own update — see wasHiddenThisFrame's own comment for why this specific value (not the line below) is what it needs
+  sphereRotation += sphereSpeed * dt;
+  const rotation = sphereRotation;
+
+  // The comet's own rate is built from the TARGET RELATIVE rate (phi_eff's
+  // own rate — the one quantity the comet's screen x position actually
+  // depends on, see projectCometFlat) rather than a direct lerp between
+  // COMET_SPEED and sphereSpeed's raw value. A direct lerp overshoots: since
+  // sphereSpeed swings all the way up to SYNC_SPEED (same magnitude as
+  // COMET_SPEED but the OPPOSITE sign), the midpoint of that lerp sits much
+  // closer to COMET_SPEED - sphereSpeed's own difference than the smooth,
+  // gradually-decaying relative rate actually wants — the comet ends up
+  // sweeping MORE relative distance than intended partway through the ramp
+  // (confirmed numerically: ~46% too fast at the ramp's midpoint), which
+  // read as the settling trail suddenly sweeping too far and its points
+  // landing unevenly enough to look dotted instead of a continuous line.
+  // Instead, phi_eff's own rate is what's eased directly — down to exactly
+  // 0 at blend=1 (frozen, matched to the sphere) — and cometRate is simply
+  // whatever needs to be added to the sphere's CURRENT rate to produce
+  // that, regardless of the sphere's own sign.
+  //
+  // The coefficient phi_eff's rate eases FROM depends on direction. Ramping
+  // OUT of sync (back to 'default') and steady 'default' itself always use
+  // the comet's true natural rate (COMET_SPEED - DEFAULT_SPEED) — that's
+  // what makes cometRate settle to exactly COMET_SPEED once blend reaches 0
+  // (see cometPhi's own comment), preserving "the comet's independent speed
+  // never changes" no matter how RAMP_MS is tuned. Ramping INTO sync uses a
+  // DIFFERENT coefficient instead — one that scales inversely with RAMP_MS
+  // — so the ramp's own total phi_eff drift (its integral over the ramp,
+  // which is what actually determines how far off-center the comet settles
+  // — see SETTLE_DRIFT) stays pinned to a fixed target regardless of how
+  // long or short RAMP_MS is. Using the natural rate here too, the way the
+  // OUT direction does, would make a shorter RAMP_MS integrate to LESS
+  // total drift as a pure side effect of less time to accumulate it in —
+  // exactly what previously dragged the resting position from a comfortable
+  // left-of-center spot toward hugging the sphere's own edge as RAMP_MS was
+  // shortened for snappier transitions. (This does mean phi_eff's rate has
+  // a small discontinuity at the instant a sync trigger fires — the natural
+  // rate it was using during 'default' isn't quite this coefficient's own
+  // starting value — but that's a single frame's difference in RATE, not
+  // position, well below the threshold of being visually noticeable.)
+  // Only during 'default' (never mid-sync, where phi_eff is being eased
+  // toward a specific settle target instead — boosting the rate here too
+  // would throw that target off): checks THIS frame's depth using the
+  // comet's position from BEFORE this frame's own update (a one-frame lag,
+  // ~16ms at 60fps — nowhere near enough to matter) to decide whether it's
+  // currently behind the sphere, and if so, moves at COMET_HIDDEN_SPEED_MULT
+  // times the normal pace instead of COMET_SPEED's own tuned value — see
+  // below for why the frame that actually crosses back into view needs its
+  // own correction, on top of this.
+  // Uses rotationBeforeThisFrame here, NOT `rotation` (this frame's own,
+  // already-updated value) — cometPhi at this point ALSO hasn't been
+  // updated for this frame yet, so pairing it with the ALREADY-advanced
+  // `rotation` mixes two different frames' own state together. That
+  // mismatch is normally too small to matter (sphereRotation's own
+  // per-frame movement is tiny during 'default') — but it became a real,
+  // self-perpetuating bug once the crossing-clamp below existed: right
+  // after correctly landing depth just barely positive, the NEXT frame's
+  // check — reading that same barely-positive cometPhi against an ALREADY
+  // slightly-more-advanced rotation — could read depth as negative again,
+  // re-triggering the boost and the clamp, landing at the same wrong
+  // "barely positive" spot again, forever (confirmed directly: phi_eff got
+  // stuck oscillating at the same ~0.0002 depth for 2000+ simulated
+  // frames, never actually progressing, so the front-arrival trigger a
+  // bit further along never fired at all). Pairing cometPhi with the
+  // rotation value that actually matches its own timing fixes it.
+  const wasHiddenThisFrame = phaseKind === 'default' && (function(){
+    const u = sphericalToUnit(currentCometTheta, cometPhi);
+    return projectCometFlat(u.x, u.y, u.z, rotationBeforeThisFrame, 1).depth <= 0;
+  })();
+  const effectiveCometSpeed = wasHiddenThisFrame ? COMET_SPEED * COMET_HIDDEN_SPEED_MULT : COMET_SPEED;
+  const phiEffCoefficient = phaseKind === 'synced'
+    ? currentSettleDrift / (RAMP_MS * 0.5) // 0.5 = the fixed average of (1-easeInOutCubic(u)) over u in [0,1], from that ease curve's own symmetry
+    : (effectiveCometSpeed - DEFAULT_SPEED);
+  const phiEffRate = phiEffCoefficient * (1 - blend);
+  const cometRate = sphereSpeed + phiEffRate;
+  cometPhi += cometRate * dt;
+  // The boost above moves in per-frame steps up to COMET_HIDDEN_SPEED_MULT
+  // times bigger than normal — on a long/clamped frame (dt up to 100ms,
+  // see above) that step alone can be ~27deg of phi_eff, easily enough to
+  // sail straight past the hidden->visible crossing (depth 0) instead of
+  // landing just past it the way the un-boosted rate always did. Since the
+  // front-arrival trigger below fires on the FIRST frame depth reads
+  // comfortably positive, overshooting the crossing itself means that
+  // first "visible" frame can land at a much higher, more centered depth
+  // than intended — and since the settle-into-place drift (SETTLE_DRIFT)
+  // is a FIXED offset from wherever the trigger actually fired, a
+  // more-centered trigger point drags the whole rest into resting near
+  // dead-center instead of the intended left-of-center spot (confirmed:
+  // this is what was happening, inconsistently, frame-timing-dependently,
+  // across different stops). Rolling back to land AT the crossing itself
+  // (found by linearly interpolating between this frame's start/end depth,
+  // a good approximation since sin() is close to linear right around its
+  // own zero crossing) keeps the boost's speed benefit for the deeply
+  // hidden stretch while making the crossing itself land at the same spot
+  // it always did, independent of dt or how fast the boost was moving.
+  if(wasHiddenThisFrame){
+    const uAfter = sphericalToUnit(currentCometTheta, cometPhi);
+    const depthAfter = projectCometFlat(uAfter.x, uAfter.y, uAfter.z, rotation, 1).depth;
+    if(depthAfter > 0){
+      const uBefore = sphericalToUnit(currentCometTheta, cometPhi - cometRate*dt);
+      const depthBefore = projectCometFlat(uBefore.x, uBefore.y, uBefore.z, rotation, 1).depth;
+      const crossFrac = depthBefore / (depthBefore - depthAfter); // in [0,1] — how far through this frame's step depth actually crossed 0
+      cometPhi -= (cometRate * dt) * (1 - crossFrac); // discard the overshoot past the crossing
+    }
+  }
+
+  // Every OTHER frame only (~30fps, not 60) — a real, measured cost even
+  // after the transform-only change above: rasterizing 170 CJK glyphs (not
+  // just repositioning them) is inherently heavier than the plain circles
+  // this field used to be, and still visibly cost enough at a full 60fps to
+  // read as stutter. The sphere's own rotation is a slow, continuous
+  // background drift (a full turn takes 90s at DEFAULT_SPEED) — halving its
+  // own update rate isn't something a viewer can actually perceive, unlike
+  // the comet/trail/flames below, which stay at every frame since real
+  // speed and precise timing both matter there.
+  dotFrameCounter = (dotFrameCounter + 1) % 2;
+  if(dotFrameCounter === 0){
+    for(let i=0;i<spherePointsData.length;i++){
+      const p = spherePointsData[i];
+      const proj = project3D(p.x, p.y, p.z, rotation);
+      const el = built.dots[i];
+      // A single transform (translate + scale), not x/y/font-size — see
+      // landingBuildSphereSvg's own comment on SPHERE_HANZI_BASE_SIZE for why:
+      // this is a compositor-only update, same cheap category cx/cy/r always
+      // were, instead of forcing 170 CJK glyphs to re-shape/re-layout every
+      // single frame. Scale is relative to SPHERE_HANZI_BASE_SIZE — e.g. a
+      // glyph created at the base size scaled by 0.9 renders at 0.9x that,
+      // exactly like font-size directly would have, just far cheaper to
+      // animate.
+      const depth01 = (proj.depth + 1) / 2;
+      const scale = (6 + depth01*9) / SPHERE_HANZI_BASE_SIZE;
+      el.setAttribute('transform', 'translate(' + proj.x.toFixed(1) + ',' + proj.y.toFixed(1) + ') scale(' + scale.toFixed(3) + ')');
+      // Hard-hidden (not just dimmed) on the far side (depth <= 0), matching
+      // the comet and its trail — a dot still faintly glowing through where
+      // the sphere should be reads as translucent rather than solid.
+      el.style.opacity = Math.max(0, proj.depth).toFixed(2);
+    }
+  }
+  let cometTrailFadeMultiplier = 1; // read by the segment-rendering loop below; only ever < 1 once the dot has gone behind the sphere (see cometHiddenSinceMs's own comment)
+  if(cometVisibleOnSphere){
+    // On the true equator (COMET_THETA), projected with the SAME live
+    // `rotation` the ambient dots use (so it's genuinely riding the
+    // sphere's own spin on top of its own motion, not a separately-
+    // animating overlay) but via projectCometFlat, NOT project3D — see
+    // that function's own comment for why the comet needs its own
+    // untilted projection.
+    //
+    // Rendered at a plain constant RING_RX — see its own comment for why a
+    // depth-based taper down to SPHERE_R (tried earlier) isn't used here.
+    const cometUnit = sphericalToUnit(currentCometTheta, cometPhi);
+    const proj = projectCometFlat(cometUnit.x, cometUnit.y, cometUnit.z, rotation, RING_RX);
+    const isFrontThisFrame = proj.depth > MIN_FRONT_DEPTH;
+    // Edge-detected HERE, before weaveRampFrac reads it below, not down
+    // where cometWasOpaque itself gets assigned later in this same
+    // function — confirmed directly (per-call projectCometFlat logging)
+    // that capturing it there was a frame too late: weaveRampFrac on the
+    // very FIRST visible frame was reading cometBecameOpaqueAtMs's STALE
+    // value (from whatever the previous visible stretch left it at), so it
+    // came in already at full amplitude instead of ramped, then snapped
+    // DOWN to near-0 the very next frame once the timestamp finally
+    // caught up — a real, jarring reversal, still opaque both sides.
+    if(proj.depth > 0 && !cometWasOpaque) cometBecameOpaqueAtMs = nowMs;
+    // Ramps up from 0 over COMET_WEAVE_RAMP_MS once the dot actually
+    // becomes opaque again — see COMET_WEAVE_RAMP_MS's own comment for why
+    // this is keyed off visibility, not phaseKind. Applies the same way in
+    // 'default' and 'synced' alike, so there's no phase-boundary snap to
+    // smooth out on the way back down either — the only discontinuity
+    // this ever needs to soften is the one at becomes-visible, not a phase
+    // change.
+    const weaveRampFrac = Math.min(1, Math.max(0, (nowMs - cometBecameOpaqueAtMs) / COMET_WEAVE_RAMP_MS));
+    proj.y += cometWeaveOffsetRaw(nowMs) * weaveRampFrac;
+    built.comet.setAttribute('cx', proj.x.toFixed(1));
+    built.comet.setAttribute('cy', proj.y.toFixed(1));
+    // A solid dot, always — no depth-based fade any more (that read as
+    // translucent well before it was anywhere near the sphere's edge, not
+    // just right at the boundary). Hard-hidden the instant it's actually
+    // behind the sphere's own silhouette (depth <= 0), same as before, just
+    // a clean on/off snap now rather than a gradual fade to 0 — the
+    // trail's own color gradient (see its own comment) still tapers away
+    // right alongside it, so the disappearance overall doesn't read as an
+    // abrupt pop even though the dot itself has no fade of its own.
+    // cometBecameOpaqueAtMs is captured earlier above (before weaveRampFrac
+    // needs it), not here — this just carries cometWasOpaque itself
+    // forward to the state the rest of this frame (and next frame's guards
+    // above) can rely on.
+    cometWasOpaque = proj.depth > 0;
+    built.comet.style.opacity = cometWasOpaque ? '1' : '0';
+    // cometTrailDir tracks which way the trail should extend (the comet's
+    // last REAL horizontal direction of travel, diffed against
+    // cometLastScreenX) — held onto once real horizontal movement stops
+    // (once the comet has settled during 'synced' — see SETTLE_DRIFT)
+    // rather than collapsing toward 0. Tracked every frame regardless of
+    // phase — but ONLY while still genuinely visible (cometHiddenSinceMs
+    // still null). Once hidden, `proj` above is the REAL comet, already
+    // sweeping the back arc at COMET_HIDDEN_SPEED_MULT — the exact same
+    // reason the hidden branch below reconstructs the fading trail from its
+    // own frozen fadingHeadPhiEff/lastVisibleEffectivePhiStep instead of
+    // this real position (see that branch's own comment). Leaving this
+    // tracker running through that fast, now-invisible sweep let it flip
+    // sign mid-fade whenever the real dot's screen x happened to reverse
+    // behind the sphere — unrelated to which way the visible, frozen trail
+    // is actually extending — and a single sign flip inverts every
+    // subsequent virtualPhiEff the hidden branch computes, reading almost
+    // the whole reconstructed trail as behind the sphere within one frame
+    // instead of over COMET_TRAIL_FADE_MS. Confirmed directly (a frame-by-
+    // frame replay): cometTrailDir flipped from 1 to -1 the exact frame the
+    // trail's 26-of-27 front-facing segments collapsed to 0, one frame
+    // after hiding began — reported directly as the line not fading
+    // gracefully the way it does coming in, just touching the edge and
+    // disappearing. Freezing this tracker the same way the fading position
+    // itself is already frozen fixes that.
+    if(cometHiddenSinceMs === null){
+      if(cometLastScreenX !== null){
+        const dx = proj.x - cometLastScreenX;
+        if(Math.abs(dx) > 0.05) cometTrailDir = dx > 0 ? 1 : -1;
+      }
+      cometLastScreenX = proj.x;
+    }
+    // Rebuilt from scratch every frame, in EITHER phase, as a fixed-shape
+    // trailing "S" of TRAIL_LEN points anchored at the comet's own CURRENT
+    // position (the last entry, right behind the dot) and extending
+    // backward — not an accumulated history of real past positions. Each
+    // point going back is COMET_TRAIL_PHI_STEP further along the SAME
+    // circular orbit the dot itself rides (via phiEff, recovered from this
+    // frame's own x/depth — see COMET_TRAIL_PHI_STEP's own comment) —
+    // giving it the sphere's own curvature for free, so the trail always
+    // stays riding the sphere's true boundary rather than shooting off in
+    // a straight line. Each point's own y then adds the SAME weave, just
+    // COMET_TRAIL_TIME_STEP_MS further into the past per step back, so the
+    // trail stays properly wavy and connected to the dot.
+    //
+    // This USED to branch on phaseKind — 'default' instead accumulated
+    // real recorded (x,y) history, spaced by real screen distance moved.
+    // That produced a visibly DIFFERENT wave density between the two
+    // phases (that spacing depends on how fast the comet actually happens
+    // to be moving at that instant, which varies a lot between 'default'
+    // and 'synced''s very different speeds, while this phi-based
+    // reconstruction's own spacing is always the same fixed angular step
+    // regardless) — reported directly as "the waves of the fast and slow
+    // animation are drastically different." Using this SAME reconstruction
+    // unconditionally in both phases guarantees an identical wave, by
+    // construction, no matter how fast the comet is actually moving
+    // underneath it.
+    //
+    // Once actually hidden and mid-fade, "genuinely visible again" needs a
+    // comfortably positive depth (MIN_FRONT_DEPTH, the same bar the front-
+    // arrival trigger below already holds itself to) — not just proj.depth
+    // > 0 — confirmed directly (a fake-clock replay) that right around the
+    // hidden->visible crossing, the COMET_HIDDEN_SPEED_MULT-boosted step
+    // can land depth only a hair positive for a single frame before
+    // settling back negative the very next one, which used to reset
+    // cometHiddenSinceMs/fadingHeadPhiEff right there — recapturing the
+    // fade's start position from wherever the REAL (3x-boosted) comet had
+    // already gotten to by then, snapping the drawn line there instead of
+    // continuing its own smooth virtual slide, and restarting the whole
+    // 500ms fade over again on top of that. Reported directly ("a line
+    // drawn that jumps to [a stray point]... the whole thing completely
+    // disappears instead of... slowly going into the edge"). Only the
+    // FIRST frame's own plain ">0" still gates the initial hide (matches
+    // the dot's own opacity cutoff just above, so the two never disagree
+    // about the moment the dot itself first vanishes).
+    const genuinelyVisibleAgain = cometHiddenSinceMs === null ? proj.depth > 0 : proj.depth > MIN_FRONT_DEPTH;
+    if(genuinelyVisibleAgain){
+      cometHiddenSinceMs = null;
+      const phiEff = Math.atan2(proj.depth, (proj.x - SPHERE_CX) / RING_RX);
+      // The edge BEHIND the dot's current direction of travel (pi if
+      // moving in the cometTrailDir=+1 sense, else 0 — see the loop's own
+      // comment on why older points move toward pi in that case), and how
+      // far in phi that actually is from here. COMET_TRAIL_PHI_STEP was
+      // tuned to comfortably reach it from the usual settled resting spot,
+      // but that fixed step OVERSHOOTS whenever the real distance is
+      // shorter — the settled spot is one specific case, not every case
+      // this runs in — and clamping each point past the edge (tried
+      // first) piled every overshot point on top of one another right at
+      // the boundary: a static flat run that doesn't wave with the rest of
+      // the trail (reading as a stuck, non-moving stub), reported directly.
+      // Scaling the step down to fit the ACTUAL remaining distance instead
+      // means the oldest point lands exactly at the edge with no leftover
+      // points beyond it, whatever that distance happens to be this frame.
+      // "The edge" is inset from the bare phi_eff=0/pi by
+      // COMET_TRAIL_EDGE_PHI_INSET — see that constant's own comment for
+      // why it targets a radius a bit SHORT of the sphere's real drawn
+      // boundary (not right on it, and not RING_RX's own true edge either)
+      // — leaving the oldest point genuine room to weave instead of
+      // landing somewhere its own vertical swing would be clamped to
+      // nothing.
+      const edgePhiEff = cometTrailDir > 0 ? (Math.PI - currentCometTrailEdgeInset) : currentCometTrailEdgeInset;
+      const distanceToEdge = Math.abs(phiEff - edgePhiEff);
+      const effectivePhiStep = Math.min(COMET_TRAIL_PHI_STEP, distanceToEdge / (TRAIL_LEN - 1));
+      lastVisibleEffectivePhiStep = effectivePhiStep; // see the hidden branch below for why this needs to survive past proj.depth<=0
+      cometTrailPts = [];
+      for(let idx = 0; idx < TRAIL_LEN; idx++){
+        const stepsBack = TRAIL_LEN - 1 - idx; // idx = TRAIL_LEN-1 (newest, at the dot) -> stepsBack = 0; idx = 0 (oldest) -> stepsBack = TRAIL_LEN-1
+        // + here, not - : phiEff runs HIGHER->LOWER as the dot moves in its
+        // cometTrailDir=+1 sense (verified against rendered pixels — see
+        // ROTATION_DIR/COMET_SPEED's own comments on this sign being easy to
+        // get backwards by hand-derivation alone), so older points (larger
+        // stepsBack) need a phiEff HIGHER than the current one to land
+        // BEHIND the dot. A trailing "-" here (tried first) placed every
+        // older point ahead of the dot instead of behind it, making the
+        // tail stick out on the dot's leading side — reading on screen as
+        // the comet heading the opposite way from its actual direction of
+        // travel.
+        const virtualPhiEff = phiEff + stepsBack * effectivePhiStep * cometTrailDir;
+        const virtualDepth = Math.sin(virtualPhiEff);
+        const virtualXOffset = Math.cos(virtualPhiEff) * currentCometSinTheta * RING_RX;
+        const pastMs = nowMs - stepsBack * COMET_TRAIL_TIME_STEP_MS;
+        cometTrailPts.push({
+          x: SPHERE_CX + virtualXOffset,
+          y: SPHERE_CY + currentCometBaselineOffset + cometWeaveOffsetClamped(virtualXOffset, pastMs, currentCometBaselineOffset, weaveRampFrac),
+          depth01: (virtualDepth + 1) / 2,
+          stepsBack: stepsBack, // kept so the hidden branch below can keep weaving each point in real time without needing phiEff again
+        });
+      }
+    } else {
+      // The dot just went (or already is) behind the sphere — its own
+      // opacity already snapped off above. Re-deriving each point's own X
+      // using the SAME reach-scaling the visible branch above uses (which
+      // targets a specific edge, scaling effectivePhiStep down to land
+      // exactly on it) would chase a now-meaningless target once phiEff
+      // itself is already past the boundary, collapsing the whole
+      // reconstruction to a single degenerate point within about a frame.
+      // The fix isn't to freeze the trail in place, though (tried first —
+      // reads as the line stopping dead and just dimming while it sits
+      // there, reported directly: "make sure the line fades as it moves
+      // into the circumference and not just fading there as it sits").
+      //
+      // The fix ALSO isn't to keep reading the real, live phiEff every
+      // frame during the fade (tried next) — 'default' phase quietly
+      // moves the comet at COMET_HIDDEN_SPEED_MULT (3x) once it's actually
+      // behind the sphere, specifically so the boring hidden stretch of
+      // its orbit passes faster. That boost was always there and always
+      // harmless before, since nothing was ever rendered from the hidden
+      // comet's own position — but reading the real position here means
+      // the fading trail inherits that 3x speed the instant the head
+      // disappears, reading as the line suddenly rocketing off rather
+      // than continuing on at the pace it was already visibly moving,
+      // reported directly ("the line movement is completely off").
+      // fadingHeadPhiEff is a separate, manually-advanced position:
+      // captured once from the real phiEff right as hiding begins, then
+      // stepped forward every frame at lastVisibleEffectivePhiStep's own
+      // rate (the SAME per-real-ms rate the trail was already using to
+      // space its historical points while visible) instead of the real
+      // (now boosted) cometPhi — continuing the fade at the speed the eye
+      // already saw, decoupled from whatever the real, hidden comet is
+      // actually doing behind the scenes. cometWeaveOffsetClamped already
+      // forces the weave to 0 for any point whose x-offset has moved past
+      // the true circle (avail clamps to 0 there), and frontFacing in the
+      // segment-rendering loop below already hides any segment once both
+      // its endpoints' depth has gone negative, so nothing renders wrong
+      // once it's actually behind — this only changes how the
+      // STILL-VISIBLE tail end of the line behaves while the fade plays out.
+      if(cometHiddenSinceMs === null){
+        cometHiddenSinceMs = nowMs;
+        fadingHeadPhiEff = Math.atan2(proj.depth, (proj.x - SPHERE_CX) / RING_RX);
+        fadingHeadLastMs = nowMs;
+      }
+      const elapsedSinceHidden = nowMs - cometHiddenSinceMs;
+      if(elapsedSinceHidden <= COMET_TRAIL_FADE_MS){
+        // FADE_DRIFT_FRAC (see its own comment) scales the base rate down;
+        // the (1 - elapsed/FADE_MS) factor on top of that decays it further,
+        // linearly, to exactly 0 right as the fade itself finishes — so the
+        // trail's last bit of forward drift eases to a stop in step with
+        // its own opacity reaching 0, instead of still sliding at a
+        // constant rate right up until the frame it disappears.
+        const driftRate = lastVisibleEffectivePhiStep * FADE_DRIFT_FRAC * (1 - elapsedSinceHidden / COMET_TRAIL_FADE_MS);
+        fadingHeadPhiEff += driftRate * cometTrailDir * (nowMs - fadingHeadLastMs) / COMET_TRAIL_TIME_STEP_MS;
+        fadingHeadLastMs = nowMs;
+        cometTrailPts = [];
+        for(let idx = 0; idx < TRAIL_LEN; idx++){
+          const stepsBack = TRAIL_LEN - 1 - idx;
+          const virtualPhiEff = fadingHeadPhiEff + stepsBack * lastVisibleEffectivePhiStep * cometTrailDir;
+          const virtualDepth = Math.sin(virtualPhiEff);
+          const virtualXOffset = Math.cos(virtualPhiEff) * currentCometSinTheta * RING_RX;
+          const pastMs = nowMs - stepsBack * COMET_TRAIL_TIME_STEP_MS;
+          cometTrailPts.push({
+            x: SPHERE_CX + virtualXOffset,
+            y: SPHERE_CY + currentCometBaselineOffset + cometWeaveOffsetClamped(virtualXOffset, pastMs, currentCometBaselineOffset, weaveRampFrac),
+            depth01: (virtualDepth + 1) / 2,
+            stepsBack: stepsBack,
+          });
+        }
+      } else {
+        cometTrailPts = [];
+      }
+      cometTrailFadeMultiplier = Math.max(0, 1 - elapsedSinceHidden / COMET_TRAIL_FADE_MS);
+    }
+    // Ordinary-orbit embers — see ORBIT_FLAME_SPACING's own comment. Gated
+    // on proj.depth > 0 (not just cometVisibleOnSphere, which only means
+    // "on the front-facing hemisphere in general") so nothing spawns in the
+    // one frame the dot itself is already hidden behind the sphere's own
+    // silhouette — same visibility check built.comet's own opacity uses
+    // just above. Reduced motion skips the ongoing rAF loop entirely (see
+    // landingInit) but still calls this function once for a static first
+    // frame — an explicit check here (rather than assuming that single call
+    // never reaches this far) is what stops that one frame from spawning a
+    // lone ember that would then play its own fade/scale animation anyway.
+    //
+    // proj.x/proj.y are in #sphereCometSvg's own 520x520 viewBox space —
+    // #orbitFlamesEl shares that same positioned ancestor (.sphere-stage),
+    // so only the viewBox->real-pixel scale factor is needed here, not a
+    // viewport offset (see orbitFlamesEl's own comment in landingInit for
+    // why this container is NOT the viewport-fixed launchFlamesEl launch
+    // flames use — using that here was the actual scroll bug reported
+    // directly: fixed-position embers stayed put at a stale viewport spot
+    // while the comet itself kept scrolling normally with the page).
+    if(!prefersReducedMotion && proj.depth > 0){
+      const cometSvg = document.getElementById('sphereCometSvg');
+      if(cometSvg){
+        const scale = cometSvg.getBoundingClientRect().width / 520;
+        const localX = proj.x * scale;
+        const localY = proj.y * scale;
+        if(!lastOrbitFlamePt || Math.hypot(localX-lastOrbitFlamePt.x, localY-lastOrbitFlamePt.y) > ORBIT_FLAME_SPACING){
+          // Spacing/gating still tracks the dot's own real movement (above)
+          // so the spawn RATE is unaffected, but the ember itself spawns
+          // from a random point already sitting somewhere back along the
+          // rendered trail (excluding the very last entry, which is the
+          // dot's own position) rather than the dot's exact leading tip —
+          // reads as embers coming off the comet's tail, the way a real
+          // one's own exhaust trails behind it, not flaring at its head.
+          const pts = cometTrailPts;
+          const src = pts.length > 1 ? pts[Math.floor(Math.random() * (pts.length - 1))] : {x: proj.x, y: proj.y};
+          const flamesEl = document.getElementById('orbitFlamesEl');
+          if(flamesEl) spawnLaunchFlame(flamesEl, src.x * scale, src.y * scale);
+          lastOrbitFlamePt = {x: localX, y: localY};
+        }
+      }
+    } else {
+      lastOrbitFlamePt = null; // forces a fresh ember right as it re-emerges, instead of silently counting the hidden gap as "distance already traveled"
+    }
+    // "Front arrival": the instant depth crosses from not-comfortably-
+    // visible to comfortably visible (MIN_FRONT_DEPTH, not just barely
+    // past 0 — a grazing edge crossing shouldn't count), that's the
+    // one-shot trigger to START syncing (see landingBeginSynced) — only
+    // while in 'default', so it can't retrigger mid-sync or during the
+    // ramp back down. Edge-detected (only fires on the false->true flip,
+    // via wasCometVisible) so a fast-circling comet doesn't retrigger
+    // every single frame it happens to be visible — exactly once per lap.
+    // (isFrontThisFrame is this same depth > MIN_FRONT_DEPTH check, just
+    // computed earlier, alongside weaveRampFrac — see its own comment
+    // above.)
+    const isFront = isFrontThisFrame;
+    if(isFront && !wasCometVisible && phaseKind === 'default'){
+      const next = currentStopIdx + 1;
+      if(next < STOPS.length) landingBeginSynced(landingToken, next);
+    }
+    // launchArmed (set in landingBeginDefault once the LAST stop's own
+    // hold ends) catches the comet on its way OUT — the falling edge, the
+    // instant it's about to slip behind the sphere on its normal departure
+    // sweep — rather than waiting for it to actually complete that lap and
+    // come back around to its usual resting spot. Launching from wherever
+    // it already naturally is at that moment (near the sphere's right
+    // edge, mid-departure) is what makes the launch read as peeling off
+    // partway through an ordinary wrap-around instead of starting over
+    // from the front-left rest position it was just sitting at.
+    if(launchArmed && !isFront && wasCometVisible){
+      launchArmed = false;
+      landingLaunchToSignup(landingToken);
+    }
+    wasCometVisible = isFront;
+  } else {
+    cometWasOpaque = false;
+    built.comet.style.opacity = '0';
+  }
+  // Draws the trail as short segments between consecutive recorded points.
+  // "Shading" (older segments and ones nearer the sphere's own silhouette
+  // reading as dimmer) is a real color blend now, not translucency — each
+  // segment's stroke mixes toward the sphere's own background color (see
+  // --seal-pct in .sphere-comet-trail-seg's own comment), same shape this
+  // used when it was an opacity multiplier (age contributing a gentle
+  // 0.5-1.0 taper, not 0-1.0, so the very tail end doesn't look like a
+  // hard-edged ribbon; depth doing most of the work). Per-segment opacity
+  // is otherwise a hard 0/1 switch keyed on frontFacing — genuinely hidden
+  // once actually behind the sphere's silhouette (depth <= 0) — so the
+  // tail stays fully solid right up until the sphere's own edge actually
+  // cuts it off, reading as wrapping around and disappearing behind the
+  // sphere rather than fading into nothing while still out in the open.
+  // cometTrailFadeMultiplier is the one exception: once the DOT has gone
+  // behind the sphere and the trail has frozen (see cometHiddenSinceMs's
+  // own comment), this ramps every remaining segment down together over
+  // COMET_TRAIL_FADE_MS, so the line gets its own separate, gradual
+  // disappearance rather than snapping off alongside the dot.
+  const segs = built.trailSegs;
+  for(let i=0;i<segs.length;i++){
+    const a = cometTrailPts[i], b = cometTrailPts[i+1];
+    const seg = segs[i];
+    if(!a || !b || !cometVisibleOnSphere){
+      seg.style.opacity = '0';
+      continue;
+    }
+    const age01 = i / segs.length; // 0 = oldest end of the buffer, 1 = newest (right behind the comet)
+    const frontFacing = Math.max(0, Math.min(a.depth01, b.depth01)*2 - 1); // 0 for either endpoint behind, else raw depth
+    seg.setAttribute('x1', a.x.toFixed(1)); seg.setAttribute('y1', a.y.toFixed(1));
+    seg.setAttribute('x2', b.x.toFixed(1)); seg.setAttribute('y2', b.y.toFixed(1));
+    // cometTrailFadeMultiplier is 1 right up until the dot itself goes
+    // behind the sphere, then eases down to 0 over COMET_TRAIL_FADE_MS —
+    // see cometHiddenSinceMs's own comment for why the trail needs this
+    // separate fade instead of just tracking frontFacing moment to moment.
+    seg.style.setProperty('--seal-pct', ((0.5 + age01*0.5) * frontFacing * cometTrailFadeMultiplier * 100).toFixed(1) + '%');
+    seg.style.opacity = (frontFacing > 0 && cometTrailFadeMultiplier > 0) ? '1' : '0';
+  }
+  if(landingActive) landingRafId = requestAnimationFrame(landingRenderFrame);
+}
+
+function landingSetCallout(stopIdx){
+  const s = STOPS[stopIdx];
+  document.getElementById('calloutEyebrow').textContent = s.eyebrow;
+  document.getElementById('calloutTitle').textContent = s.title;
+  document.getElementById('calloutBody').textContent = s.body;
+  document.querySelectorAll('.progress-dot').forEach(function(dot, i){
+    dot.classList.toggle('active', i === stopIdx);
+    dot.classList.toggle('done', i < stopIdx);
+  });
+  const stage = document.getElementById('sphereDemoStage');
+  if(stage){
+    demoToken++;
+    const token = demoToken;
+    stage.innerHTML = '';
+    if(typeof s.demo === 'function') s.demo(stage, token);
+  }
+}
+function landingBuildProgressDots(){
+  const wrap = document.getElementById('progressDots');
+  wrap.innerHTML = STOPS.map(function(){ return '<span class="progress-dot"></span>'; }).join('');
+}
+
+// Enters the 'synced' phase for stopIdx — triggered by landingRenderFrame
+// the instant the comet's own front-arrival fires while in 'default' (see
+// its own comment). The sphere's own speed starts ramping up to match the
+// comet's (see landingRenderFrame's blend) right away, so the callout/demo
+// swaps in immediately too — by the time the ramp actually finishes
+// (RAMP_MS later) and the two speeds are genuinely matched, the comet has
+// settled into resting fixed to the sphere's surface a bit further along
+// than where it first came into view, which is what puts it noticeably
+// left-of-center rather than dead-center once it's actually still. Holds
+// synced for this stop's own hold duration (see currentHoldMs) after that
+// before ramping back down to 'default'.
+function landingBeginSynced(token, stopIdx){
+  if(token !== landingToken || !landingActive) return;
+  phaseKind = 'synced';
+  phaseStartedAt = performance.now();
+  // Re-rolled every time a new settle begins (see currentSettleDrift's own
+  // comment) — kept within a band around the original tuned constant
+  // rather than anywhere at all, since SETTLE_DRIFT's own comment already
+  // found that drifting too little reads as barely resting off-center at
+  // all, and drifting too far (found empirically while shortening RAMP_MS,
+  // a different route to the same "too much drift" place) drags the
+  // resting spot into hugging the sphere's own edge instead of comfortably
+  // resting near it. Originally 0.65x-1.3x — reported directly ("comet
+  // comes in too far sometimes"): the top of that band (1.3x, -49.4
+  // degrees) overshoots the -38 degree tuned target by enough to visibly
+  // hug the edge on an unlucky roll. Pulled the top down to 1.05x (-39.9
+  // degrees, barely past the tuned target itself) while leaving the
+  // bottom alone, since the "reads as barely resting off-center" floor
+  // was never the complaint.
+  currentSettleDrift = SETTLE_DRIFT * (0.65 + Math.random() * 0.4);
+  currentStopIdx = stopIdx; // set before currentHoldMs() reads it below
+  // Refreshes the schedule anchor every time a loop reaches stop 0 again —
+  // see landingLoopAnchorMs's own comment. Harmless to set unconditionally
+  // here rather than gating it on landingActive/being a "real" arrival:
+  // this function already bailed out above if either doesn't hold.
+  if(stopIdx === 0) landingLoopAnchorMs = phaseStartedAt;
+  landingSetCallout(stopIdx);
+  landingTimer = setTimeout(function(){ landingBeginDefault(token); }, RAMP_MS + currentHoldMs());
+}
+// Enters the 'default' phase — the sphere's own speed starts ramping back
+// down to its normal slow pace, so the comet (never having changed its own
+// constant speed at all) visibly pulls away again. No timer scheduled here
+// — the NEXT sync is triggered by the comet's own front-arrival event in
+// landingRenderFrame, not a fixed duration, so the sphere never spins up
+// with nothing front-facing to show for it. The demo inside the sphere
+// clears right away too — bumping demoToken invalidates any of its own
+// still-running timers (mid-type, mid-stroke, etc.) so nothing keeps
+// writing into a stage that's about to be empty — rather than lingering
+// on screen until the NEXT stop's demo happens to overwrite it; the
+// caption text below the sphere is left alone, since it's not "in the
+// center" the way the demo itself is.
+function landingBeginDefault(token){
+  if(token !== landingToken || !landingActive) return;
+  phaseKind = 'default';
+  phaseStartedAt = performance.now();
+  // NOT re-rolled here any more — see rerollCometLatitude's own comment
+  // for why this used to visibly teleport the resting dot. Just flagged;
+  // landingRenderFrame applies it the moment the comet's actually hidden.
+  pendingThetaReroll = true;
+  demoToken++;
+  const stage = document.getElementById('sphereDemoStage');
+  if(stage) stage.innerHTML = '';
+  // This was the LAST stop's own hold ending — arm the launch (see
+  // landingRenderFrame) so the comet's very next departure sweep peels off
+  // toward Sign Up instead of continuing on to trigger another stop.
+  if(currentStopIdx === STOPS.length - 1) launchArmed = true;
+}
+// The straight start->end glide plus a loop-de-loop riding on top of it —
+// LOOP_TURNS full loops that land precisely on that straight path at both
+// ends (the envelope is 0 at t=0 and t=1), so it starts precisely at the
+// sphere and lands precisely on the button — three loops carry it up toward
+// the button, with the LAST loop's own closing curl being what actually
+// touches down on it, not a separate straight run tacked on afterward. The
+// rotational handedness (which way each loop curls relative to the
+// direction of travel) is flipped from an earlier version of this, to match
+// a reference doodle this was originally tuned against.
+//
+// Both the loop's own size (amplitude) and its rotation (angle) are driven
+// by PROGRESS — easeInOutCubic(t), the same eased fraction that already
+// positions the straight-line glide — rather than raw t. Since
+// easeInOutCubic moves slowly near both ends of t and fast through the
+// middle, tuning the envelope against raw t makes it land in the wrong
+// SPATIAL spot: an envelope that peaks at, say, t=0.15 actually shows up
+// hugging the sphere (progress is only ~4% there), not partway along the
+// flight the way it looks in isolation. Driving everything off progress
+// instead keeps the envelope's shape directly readable as "where along the
+// visible path this happens."
+//
+// The envelope itself used to be sin(pi * progress^LOOP_RISE_POWER) — a
+// single exponent controlling both how quickly it rose off the sphere AND
+// where its peak landed, which turned out to fight itself: pushing the
+// peak later (a bigger exponent, wanted so the loops sit well clear of the
+// button) also made progress^power's own rate right at progress=0 flatten
+// out MORE slowly for a SMALLER exponent, and it's exactly the small
+// exponents that were needed to move the peak earlier — every attempt to
+// pull the loops back from the button made that same exponent change
+// sharpen the curve's very first moments into a visible kink right off the
+// sphere. One exponent can't set both independently.
+//
+// loopEnvelope below has three phases instead of a plain rise/decay: it
+// rises from 0 using smootherStep (Ken Perlin's improved smoothstep — zero
+// first AND second derivative at its own start, not just zero slope, so the
+// curve's very first instroke reads as gradual and continuous no matter how
+// early the peak is) up to LOOP_RISE_END, HOLDS at full amplitude —
+// genuinely flat, not still easing — until LOOP_DECAY_START, then eases
+// back down to exactly 0 at progress=1 with the same smooth shape mirrored.
+//
+// LOOP_RISE_END is small (0.08) so the loop-de-loop itself is essentially
+// what the comet does the instant it leaves the sphere — smootherStep's
+// zero-derivative start keeps that departure kink-free no matter how small
+// LOOP_RISE_END is (the derivative of smootherStep(progress/R) at
+// progress=0 is smootherStep'(0)/R = 0/R = 0 regardless of R), so shrinking
+// it only changes how QUICKLY the loop reaches full size, never whether the
+// very first instant reads as a clean departure. A large LOOP_RISE_END
+// instead spends a real, visible stretch of the flight still easing up to
+// full loop size — reading as "goes straight for a bit, then starts
+// looping," which is exactly the opening this was tuned to remove.
+//
+// LOOP_DECAY_START close to 1 (0.90, not partway through the flight) is
+// what actually delivers "the final loop touches the button" instead of
+// "loops, then glides the rest of the way in": a plain two-phase rise-then-
+// decay envelope, even stretched to decay all the way to progress=1 with no
+// flat cutoff at all, still spends a long final stretch at an amplitude too
+// small to read as an actual loop before it finally reaches zero —
+// smoothstep-family curves inherently linger near their own target rather
+// than closing the gap at a constant rate — so it still LOOKED like a
+// straight line for a real chunk of the flight even with nothing artificial
+// forcing that (confirmed directly, rendering it: the mathematically-still-
+// curving tail was visually indistinguishable from a genuinely straight
+// one). Holding at FULL amplitude via a real plateau, then only decaying in
+// a short, late window right before the button, is what keeps the loop big
+// and clearly visible right up until the last moment, so its own closing
+// curl — not an invisible lingering curve, and not a deliberate flat run
+// either — is what reaches the button.
+//
+// LOOP_TURNS is tuned against both LOOP_RISE_END and LOOP_DECAY_START
+// together (not derivable from either alone) so exactly three loop-de-loops
+// read as genuinely distinct closed shapes across the whole flight —
+// confirmed by rendering the actual curve at candidate values and counting,
+// not by a formula: the obvious "how much of the envelope is above some
+// visibility cutoff" estimate consistently undercounts here, since even a
+// loop whose amplitude is still rising or falling can read as a complete,
+// if small, closed loop rather than a partial one.
+function smootherStep(u){ u = Math.max(0, Math.min(1, u)); return u*u*u*(u*(u*6-15)+10); }
+const LOOP_RISE_END = 0.08;
+const LOOP_DECAY_START = 0.90;
+function loopEnvelope(progress){
+  if(progress <= 0 || progress >= 1) return 0;
+  if(progress < LOOP_RISE_END) return smootherStep(progress / LOOP_RISE_END);
+  if(progress < LOOP_DECAY_START) return 1;
+  return smootherStep(1 - (progress - LOOP_DECAY_START) / (1 - LOOP_DECAY_START));
+}
+const LOOP_TURNS = 3.05;
+const LOOP_AMPLITUDE_FRAC = 0.19; // loop size as a fraction of the straight-line launch distance
+function launchPointAt(t, startX, startY, endX, endY){
+  const dx = endX - startX, dy = endY - startY;
+  const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+  const dirX = dx/dist, dirY = dy/dist;
+  const perpX = -dirY, perpY = dirX;
+  const progress = easeInOutCubic(t);
+  const baseX = startX + dx*progress, baseY = startY + dy*progress;
+  const amplitude = dist * LOOP_AMPLITUDE_FRAC * loopEnvelope(progress);
+  const angle = progress * LOOP_TURNS * Math.PI*2;
+  const loopAlong = amplitude * Math.cos(angle), loopAcross = -amplitude * Math.sin(angle); // negated to invert the loop's own rotational handedness
+  return { x: baseX + dirX*loopAlong + perpX*loopAcross, y: baseY + dirY*loopAlong + perpY*loopAcross };
+}
+// One flame particle at (x, y) into flamesEl — see .launch-flame's own CSS
+// for the shrink-and-fade animation; this only ever sets its spawn position,
+// a little random size/rotation variance, and lets the CSS animation run
+// unattended from there, removing the element itself once 'animationend'
+// fires so nothing needs to track or sweep these up from the tick loop
+// below. --flame-x/--flame-y (not left/top) are what actually place it, so
+// the keyframe's own scale/rotate composes with that spawn position in one
+// transform instead of fighting an inline one — width/height/margin carry
+// the size variance instead, for the same reason (the animation's own
+// transform would otherwise just override an inline one on the same
+// property).
+function spawnLaunchFlame(flamesEl, x, y){
+  const flame = document.createElement('div');
+  flame.className = 'launch-flame';
+  const size = 11 + Math.random()*8;
+  flame.style.width = size + 'px';
+  flame.style.height = size + 'px';
+  flame.style.marginTop = (-size/2) + 'px';
+  flame.style.marginLeft = (-size/2) + 'px';
+  flame.style.setProperty('--flame-x', (x + (Math.random()-0.5)*10).toFixed(1) + 'px');
+  flame.style.setProperty('--flame-y', (y + (Math.random()-0.5)*10).toFixed(1) + 'px');
+  flame.style.setProperty('--flame-rot', (Math.random()*40 - 20).toFixed(1) + 'deg');
+  flame.addEventListener('animationend', function(){ flame.remove(); });
+  flamesEl.appendChild(flame);
+}
+function landingLaunchToSignup(token){
+  if(token !== landingToken || !landingActive) return;
+  const svg = document.getElementById('sphereCometSvg');
+  const btn = document.getElementById('headerSignupBtn');
+  const overlay = document.getElementById('launchCometEl');
+  const trailPath = document.getElementById('launchTrailSvg') && document.getElementById('launchTrailSvg').querySelector('path');
+  const flamesEl = document.getElementById('launchFlamesEl');
+  if(!svg || !btn || !overlay){ landingRestart(token); return; }
+  if(flamesEl) flamesEl.innerHTML = ''; // safety net — clears any stray particles left over from an unusual prior interruption
+  const startRect = svg.getBoundingClientRect();
+  const unit = sphericalToUnit(currentCometTheta, cometPhi);
+  const proj = projectCometFlat(unit.x, unit.y, unit.z, sphereRotation, RING_RX);
+  const scale = startRect.width / 520;
+  const startX = startRect.left + proj.x * scale;
+  const startY = startRect.top + proj.y * scale;
+  const btnRect = btn.getBoundingClientRect();
+  const endX = btnRect.left + btnRect.width/2;
+  const endY = btnRect.top + btnRect.height/2;
+
+  cometVisibleOnSphere = false;
+  overlay.hidden = false;
+  overlay.style.left = startX + 'px';
+  overlay.style.top = startY + 'px';
+  overlay.style.opacity = '1';
+  if(trailPath){
+    trailPath.setAttribute('d', 'M'+startX+','+startY);
+    trailPath.style.opacity = '0.85';
+  }
+  const startedAt = performance.now();
+  let flameFrameCount = 0;
+  function tick(){
+    if(token !== landingToken || !landingActive) return;
+    const t = Math.min(1, (performance.now() - startedAt) / LAUNCH_MS);
+    const p = launchPointAt(t, startX, startY, endX, endY);
+    overlay.style.left = p.x + 'px';
+    overlay.style.top = p.y + 'px';
+    // Every other frame, not every one — close enough together at ~30ms
+    // apart for a continuous-looking stream once several are overlapping
+    // mid-fade, without doubling the DOM churn for no visible gain.
+    flameFrameCount++;
+    if(flamesEl && t < 1 && flameFrameCount % 2 === 0) spawnLaunchFlame(flamesEl, p.x, p.y);
+    // Rebuilds the whole path from scratch each frame — cheap at this
+    // resolution over LAUNCH_MS's short duration — so the trail traces the
+    // actual loop-de-loop route flown so far, not a straight cut across it.
+    // steps is a FIXED count spread across the whole 0..t range every
+    // frame, not just the newest bit — so as t grows toward 1, the same
+    // budget of points has to cover more and more of the curve, and with
+    // too few of them the two tight loops visibly facet into straight
+    // segments (confirmed: 40 was nowhere near enough — the trail read as
+    // polygonal, worst right as it completed). High enough here that even
+    // the full path, loops included, still reads as smoothly curved.
+    if(trailPath){
+      const steps = 500;
+      let d = '';
+      for(let i=0;i<=steps;i++){
+        const st = t * (i/steps);
+        const sp = launchPointAt(st, startX, startY, endX, endY);
+        d += (i===0 ? 'M' : 'L') + sp.x.toFixed(1) + ',' + sp.y.toFixed(1) + ' ';
+      }
+      trailPath.setAttribute('d', d);
+    }
+    if(t < 1){
+      requestAnimationFrame(tick);
+    } else {
+      overlay.style.opacity = '0';
+      if(trailPath) trailPath.style.opacity = '0';
+      btn.classList.remove('popping');
+      void btn.offsetWidth;
+      btn.classList.add('popping');
+      landingTimer = setTimeout(function(){
+        overlay.hidden = true;
+        landingRestart(token);
+      }, POP_HOLD_MS);
+    }
+  }
+  requestAnimationFrame(tick);
+}
+function landingRestart(token){
+  if(token !== landingToken || !landingActive) return;
+  landingTimer = setTimeout(function(){
+    if(token !== landingToken || !landingActive) return;
+    cometVisibleOnSphere = true;
+    cometTrailPts = [];
+    // Same reasoning as landingStart: re-enters hidden and in 'default'
+    // rather than pre-placed at a synced position, so the loop's first
+    // stop after every restart lands the same natural way every other
+    // stop does instead of visibly jumping there.
+    //
+    // "Hidden" is relative to sphereRotation, not an absolute cometPhi
+    // value — projectCometFlat's own depth works out to
+    // sin(cometPhi - sphereRotation) (see sphericalToUnit/projectCometFlat
+    // combined), so -π/2 alone only actually lands behind the sphere while
+    // sphereRotation happens to be near 0. landingStart resets sphereRotation
+    // to 0 in the same breath, so its own -π/2 is exact — but this function
+    // never resets sphereRotation (it keeps accumulating for as long as the
+    // tour has been running), and it drifts by a genuinely large fraction of
+    // a full turn over just one loop (DEFAULT_SPEED's own 90s/revolution
+    // means ~240° over a ~60s loop) — confirmed directly (this landed the
+    // comet front-facing, not hidden, often enough to read as "appears on
+    // the wrong side"). Subtracting the CURRENT sphereRotation keeps the
+    // relative angle pinned to genuinely-hidden regardless of how far it's
+    // drifted.
+    cometPhi = sphereRotation - Math.PI/2;
+    wasCometVisible = false;
+    currentStopIdx = -1;
+    launchArmed = false;
+    phaseKind = 'default';
+    phaseStartedAt = performance.now() - RAMP_MS - 1;
+  }, RESET_GAP_MS);
+}
+
+function landingStop(){
+  landingActive = false;
+  landingToken++;
+  if(landingTimer){ clearTimeout(landingTimer); landingTimer = null; }
+  if(landingRafId){ cancelAnimationFrame(landingRafId); landingRafId = null; }
+}
+function landingStart(){
+  landingActive = true;
+  landingToken++;
+  // Starts HIDDEN and in 'default', same as every stop after the first —
+  // NOT pre-placed at a synced, already-settled position. Skipping straight
+  // to 'synced' used to make the very first stop appear already sitting
+  // wherever cometPhi's starting value happened to project (dead-center,
+  // in practice), which is a visibly different spot than the natural
+  // "arrives from the hidden side, drifts left-of-center during the ramp"
+  // landing every later stop goes through — the first stop would visibly
+  // jump from that dead-center start to the usual spot the moment it moved
+  // at all. Letting it circle in and trigger the ordinary front-arrival
+  // (see landingRenderFrame) keeps stop 0 indistinguishable from the rest.
+  cometPhi = -Math.PI/2;
+  sphereRotation = 0;
+  wasCometVisible = false; // matches that starting hidden state
+  lastFrameMs = null;
+  cometVisibleOnSphere = true;
+  cometTrailPts = [];
+  currentStopIdx = -1; // so the first front arrival correctly advances to stop 0
+  launchArmed = false;
+  phaseKind = 'default';
+  // Backdated by more than RAMP_MS so the very first frame already reads
+  // as "ramp long since finished" (blend all the way down at DEFAULT_SPEED)
+  // instead of as if transitioning down from a sync that never happened,
+  // which the ordinary 'default' blend formula would otherwise assume.
+  phaseStartedAt = performance.now() - RAMP_MS - 1;
+  landingRafId = requestAnimationFrame(landingRenderFrame);
+}
+
+// landingPause/landingResume — used by updateLandingRunState for the
+// sphere scrolling out of (and back into) the viewport specifically, NOT
+// tab visibility any more (see landingStopRendering/landingResumeFromHidden
+// for that) — instead of the full-reset landingStop/landingStart pair below
+// (which stay in place for their own original purposes: landingStop as a
+// hard kill switch, and landingStart for the genuine first entry and the
+// couple of deliberate full resets — landingRestart's own gap, mid-launch).
+// Restarting the whole tour from stop -1 every time the sphere scrolls back
+// into view read as broken, not as a fresh start — this keeps the comet's
+// own position and lap progress exactly where they were. Scroll gets to
+// keep this exact-resume behavior (unlike tab-hidden) because it's a much
+// more frequent, usually brief interruption — a user skimming past the
+// sphere while reading the rest of the page shouldn't come back to it
+// having visibly jumped ahead, the way tabbing away for a real stretch of
+// time now deliberately does.
+let landingPausedAt = null; // real-time timestamp captured on pause; null whenever not currently paused
+function landingPause(){
+  if(!landingActive) return;
+  landingPausedAt = performance.now();
+  landingActive = false;
+  if(landingTimer){ clearTimeout(landingTimer); landingTimer = null; }
+  if(landingRafId){ cancelAnimationFrame(landingRafId); landingRafId = null; }
+}
+function landingResume(){
+  if(landingActive || landingPausedAt === null) return;
+  const pausedMs = performance.now() - landingPausedAt;
+  landingPausedAt = null;
+  // Mid-launch (or the brief pop-hold/restart-gap right after) has its own
+  // once-per-tour timing that isn't worth resuming precisely for how rare
+  // and brief a window it is to get interrupted in — falls back to the
+  // same full reset landingStart already does, just without a second
+  // token bump's worth of churn beyond what landingStart itself performs.
+  if(!cometVisibleOnSphere){
+    const overlay = document.getElementById('launchCometEl');
+    if(overlay){ overlay.hidden = true; overlay.style.opacity = '0'; }
+    const trailPath = document.getElementById('launchTrailSvg') && document.getElementById('launchTrailSvg').querySelector('path');
+    if(trailPath) trailPath.style.opacity = '0';
+    const flamesEl = document.getElementById('launchFlamesEl');
+    if(flamesEl) flamesEl.innerHTML = '';
+    landingStart();
+    return;
+  }
+  // Shifts phaseStartedAt forward by exactly how long the pause lasted, so
+  // the ramp/hold timing below picks back up reading as "the same amount
+  // of ACTIVE time has elapsed" it would have without the gap, rather than
+  // suddenly appearing to have aged by the full paused duration in one
+  // jump the instant this resumes.
+  phaseStartedAt += pausedMs;
+  lastFrameMs = null; // avoid a single huge dt on the next frame (landingRenderFrame's own dt clamp would catch it anyway, but this is cleaner)
+  landingActive = true;
+  // The currently-shown stop's own demo has its own independent timers
+  // (typing, stroke animation, etc.) that landingPause doesn't explicitly
+  // track or cancel — bumping demoToken and re-showing it fresh avoids
+  // resuming into a demo that's stuck mid-character or oddly far along
+  // from however much it kept ticking in the background while paused.
+  if(phaseKind === 'synced' && currentStopIdx >= 0){
+    demoToken++;
+    landingSetCallout(currentStopIdx);
+    const myToken = landingToken;
+    const remaining = Math.max(100, (RAMP_MS + currentHoldMs()) - (performance.now() - phaseStartedAt));
+    landingTimer = setTimeout(function(){ landingBeginDefault(myToken); }, remaining);
+  }
+  landingRafId = requestAnimationFrame(landingRenderFrame);
+}
+
+// Cancels rendering (the current phase timer + the rAF loop) WITHOUT
+// touching any of the tour's own logical state — phaseStartedAt,
+// currentStopIdx, cometPhi, sphereRotation, landingPausedAt, all left
+// exactly as they are. Used for tab-hidden specifically (see
+// updateLandingRunState/landingResumeFromHidden): unlike landingPause
+// (still used for scroll — see its own comment for why that one stays a
+// freeze-and-resume), this deliberately does NOT record a pause timestamp
+// to shift anything by later — real time is simply left to keep passing
+// underneath the frozen render, so whenever rendering resumes, real elapsed
+// time already reads as "however long it's actually been."
+function landingStopRendering(){
+  landingActive = false;
+  if(landingTimer){ clearTimeout(landingTimer); landingTimer = null; }
+  if(landingRafId){ cancelAnimationFrame(landingRafId); landingRafId = null; }
+}
+// Called when the tab becomes visible again after being hidden (see
+// updateLandingRunState) — jumps the tour's state directly to wherever it
+// should now be, using real elapsed time against buildLandingSchedule's own
+// nominal per-phase durations, rather than resuming from the exact spot it
+// was at when the tab went hidden. That exact-resume behavior is what
+// landingPause/landingResume (still used for the sphere scrolling out of
+// view, a separate interruption this doesn't touch) deliberately keep doing
+// — but for tab visibility specifically, the standing site-wide rule is
+// that an animation must keep advancing in real time the whole time it's
+// backgrounded, landing wherever that much real time says it should,
+// never freezing in place and never restarting from scratch either.
+//
+// The per-phase durations in buildLandingSchedule are nominal, empirically
+// measured estimates, not a live physics replay of the entire hidden gap —
+// precise to within a few hundred ms per stop, which is far more precision
+// than a decorative background animation needs. A brief tab switch that
+// lands back within the SAME stop's own original hold picks up that hold's
+// remaining time without disturbing its demo (still mid-write, mid-type,
+// whatever it already was) — a quick glance away shouldn't flash the demo
+// back to its own beginning for no reason. A longer gap that lands on a
+// stop's 'synced' phase from scratch (a different stop, or the same one
+// reached again on a later lap) restarts that stop's demo fresh instead of
+// trying to resume it partway through — genuinely resuming a demo mid-word
+// would add real complexity for a moment nobody was watching anyway (see
+// STOPS/landingSetCallout — each demo just plays out on its own regardless
+// of how it started).
+function landingResumeFromHidden(){
+  if(landingActive) return;
+  if(landingLoopAnchorMs === null || !cometVisibleOnSphere){
+    // Nothing to resume from yet (very first entry), or hidden happened to
+    // catch it mid-launch/mid-restart-gap — same simplification
+    // landingResume() already falls back to for that brief, rare window.
+    landingStart();
+    return;
+  }
+  const schedule = buildLandingSchedule();
+  const totalMs = schedule.reduce(function(sum, e){ return sum + e.duration; }, 0);
+  const elapsed = ((performance.now() - landingLoopAnchorMs) % totalMs + totalMs) % totalMs;
+  let acc = 0, target = schedule[0];
+  for(let i=0;i<schedule.length;i++){
+    if(elapsed < acc + schedule[i].duration){ target = schedule[i]; break; }
+    acc += schedule[i].duration;
+  }
+  const wasStopIdx = currentStopIdx, wasPhaseKind = phaseKind; // captured before any of this touches them
+  landingActive = true;
+  landingToken++;
+  const token = landingToken;
+  if(target.kind === 'synced'){
+    const intoEntryMs = elapsed - acc;
+    const remaining = target.duration - intoEntryMs;
+    if(target.stopIdx === wasStopIdx && wasPhaseKind === 'synced' && remaining > 400){
+      // Still within the very same occurrence of this stop's hold that was
+      // already showing before the tab hid — resume its ramp/hold timing
+      // from where it should be, leaving the demo itself untouched.
+      phaseStartedAt = performance.now() - intoEntryMs;
+      landingTimer = setTimeout(function(){ landingBeginDefault(token); }, remaining);
+    } else {
+      // Same "arrives from hidden" starting condition landingStart/landingRestart
+      // use, so this reads as a normal arrival, not a teleport — see their own
+      // comments for why NOT pre-placing it at an already-settled spot matters.
+      // Clearing cometTrailPts here is what actually makes it read as a
+      // fresh arrival rather than a glitch — cometPhi jumping straight to a
+      // "hidden" value without this left old trail points sitting at
+      // wherever the comet was BEFORE the hidden gap, spatially unrelated to
+      // the new position: the render loop still draws a segment connecting
+      // each consecutive pair of points regardless of how far apart they
+      // are, so the very next frame drew one enormous stray line from the
+      // old spot to the new one, and once those stale points aged out of
+      // the fixed-size buffer a few frames later the trail could just as
+      // easily read as depth-hidden (behind the sphere from the NEW
+      // rotation's own point of view, even though they were recorded under
+      // the OLD one) and vanish outright — both symptoms reported directly.
+      //
+      // sphereRotation - Math.PI/2 (not a bare -Math.PI/2), same fix and same
+      // reason as landingRestart's own — see its comment for the full
+      // derivation. A hidden gap here can be arbitrarily long, so
+      // sphereRotation (which only ever resets at a true landingStart) can
+      // have drifted by an essentially arbitrary amount by the time this
+      // runs, same as landingRestart's own much shorter, but still real,
+      // per-loop drift — a bare -Math.PI/2 landed the comet front-facing
+      // instead of hidden often enough to read as "appears on the wrong
+      // side of the sphere" on resume, confirmed directly.
+      //
+      // Deliberately does NOT call landingBeginSynced directly, even though
+      // target.kind says 'synced' — landingStart's own comet-positioning
+      // comment already worked this exact issue out once: starting hidden
+      // and going STRAIGHT into 'synced' doesn't work, because 'synced'
+      // eases the comet's own rate down to zero over just RAMP_MS (550ms),
+      // nowhere near enough time/rate budget to sweep the ~1.9 rad from
+      // fully hidden (depth -1) to comfortably visible (past
+      // MIN_FRONT_DEPTH) before the rate bottoms out — confirmed directly:
+      // the comet stayed invisible for the entire hold, the callout playing
+      // out over it with no comet ever appearing. 'default' has no such
+      // ramp (cometRate stays at full magnitude the whole time), so —
+      // same as landingStart's own first entry — this resets into 'default'
+      // instead and lets the ordinary front-arrival trigger in
+      // landingRenderFrame call landingBeginSynced itself once the comet
+      // has genuinely swept back into view under its own power.
+      // currentStopIdx = target.stopIdx - 1 (not target.stopIdx) is what
+      // makes that trigger's own "next = currentStopIdx + 1" land back on
+      // the stop the schedule actually wants.
+      cometTrailPts = [];
+      cometPhi = sphereRotation - Math.PI/2;
+      wasCometVisible = false;
+      currentStopIdx = target.stopIdx - 1;
+      phaseKind = 'default';
+      phaseStartedAt = performance.now();
+      launchArmed = false;
+      demoToken++;
+      const syncedStage = document.getElementById('sphereDemoStage');
+      if(syncedStage) syncedStage.innerHTML = '';
+    }
+  } else if(target.kind === 'default'){
+    // Needs the exact same "treat it as a fresh arrival from hidden" reset
+    // the 'synced' branch just above already does, for the exact same
+    // reason (see its own comment for the full derivation) — this branch
+    // was missing it entirely, which was the actual bug: cometPhi and
+    // cometTrailPts were left holding whatever they were the instant the
+    // tab was hidden, completely disconnected from the schedule jump
+    // currentStopIdx/phaseStartedAt make right below. A stale cometPhi
+    // paired with a NEW currentStopIdx isn't just cosmetically behind — it
+    // can compute to depth <= 0 under the current sphereRotation and just
+    // never reappear, or draw one stray trail segment leaping from the old
+    // position to wherever it's next recorded, exactly the "disappears or
+    // does something unintended" symptom reported directly.
+    cometTrailPts = [];
+    cometPhi = sphereRotation - Math.PI/2;
+    wasCometVisible = false;
+    currentStopIdx = target.stopIdx;
+    phaseKind = 'default';
+    phaseStartedAt = performance.now();
+    launchArmed = false;
+    demoToken++;
+    const stage = document.getElementById('sphereDemoStage');
+    if(stage) stage.innerHTML = '';
+  } else {
+    // 'launch' or 'restart-gap' — resuming mid-flight of the Sign Up launch
+    // (or its brief pop/reset gap) isn't worth replicating; a full reset
+    // reads as the natural next thing to happen either way.
+    landingStart();
+    return;
+  }
+  landingRafId = requestAnimationFrame(landingRenderFrame);
+}
+
+function landingInit(){
+  const stage = document.getElementById('sphereStage');
+  if(!stage) return;
+  sphereEls = landingBuildSphereSvg();
+  landingBuildProgressDots();
+  const overlay = document.createElement('div');
+  overlay.id = 'launchCometEl';
+  overlay.hidden = true;
+  overlay.style.cssText = 'position:fixed; width:14px; height:14px; margin:-7px 0 0 -7px; border-radius:50%; background:var(--gold); box-shadow:0 0 16px 4px rgba(169,131,46,0.65), 0 0 4px 1px var(--gold); z-index:200; pointer-events:none; opacity:0;';
+  document.body.appendChild(overlay);
+  // A full-viewport SVG just for the launch's own trailing line — the
+  // sphere's own trail SVG is confined to its small local viewBox and
+  // can't reach all the way up to the header button. A <path>, not a
+  // <line>: the launch itself loops the loop on its way up (see
+  // landingLaunchToSignup), so the trail has to trace that actual curved
+  // route, rebuilt from scratch each frame from every sampled point so far
+  // — a straight line from start to current position would just cut
+  // across the loops instead of showing them.
+  const launchTrailSvg = document.createElementNS(SVG_NS, 'svg');
+  launchTrailSvg.id = 'launchTrailSvg';
+  launchTrailSvg.style.cssText = 'position:fixed; inset:0; width:100vw; height:100vh; z-index:199; pointer-events:none;';
+  const launchTrailPath = document.createElementNS(SVG_NS, 'path');
+  launchTrailPath.setAttribute('class', 'sphere-comet-trail-seg');
+  launchTrailPath.setAttribute('fill', 'none');
+  launchTrailPath.style.opacity = '0';
+  launchTrailSvg.appendChild(launchTrailPath);
+  document.body.appendChild(launchTrailSvg);
+  // Plain positioned div, not SVG — spawnLaunchFlame appends/removes a
+  // handful of short-lived elements into this every launch, and a div's own
+  // CSS animation (see .launch-flame) is simpler to fire-and-forget than
+  // animating SVG shapes would be. position:fixed (viewport-relative) is
+  // correct HERE specifically because the launch flight travels all the
+  // way from the sphere up to the header's Sign Up button — two elements
+  // that don't share one scrolling reference frame.
+  const launchFlamesEl = document.createElement('div');
+  launchFlamesEl.id = 'launchFlamesEl';
+  document.body.appendChild(launchFlamesEl);
+  // The ordinary orbit's own embers (see landingRenderFrame's
+  // ORBIT_FLAME_SPACING block) get a SEPARATE container instead of reusing
+  // launchFlamesEl — position:absolute inside .sphere-stage itself (the
+  // exact same positioned ancestor #sphereCometSvg already uses), not
+  // position:fixed. Reusing the fixed, viewport-relative launchFlamesEl
+  // here was the actual bug reported directly: the comet scrolls normally
+  // with the page (it's an ordinary absolutely-positioned child of the
+  // stage), but a fixed-position ember, once spawned, stays glued to
+  // whatever viewport spot it was born at — scrolling the page during an
+  // ember's ~420ms lifetime visibly tore it away from the comet's own
+  // now-different position, scattering embers across the screen instead of
+  // riding along the trail. Sharing the stage's own coordinate space (and
+  // using LOCAL, not viewport, coordinates — see orbitFlamesEl's own use in
+  // landingRenderFrame) means it scrolls in perfect lockstep with the comet
+  // instead, the same way the ambient dots and the trail already do.
+  const orbitFlamesEl = document.createElement('div');
+  orbitFlamesEl.id = 'orbitFlamesEl';
+  orbitFlamesEl.style.cssText = 'position:absolute; inset:0; z-index:2; pointer-events:none; overflow:visible;';
+  stage.appendChild(orbitFlamesEl);
+
+  if(prefersReducedMotion){
+    landingActive = false;
+    landingRenderFrame(0);
+    landingSetCallout(0);
+    return;
+  }
+  // Only runs while the sphere is actually visible on screen — combined
+  // with the tab-visibility check below, so the loop (and, critically, the
+  // eventual hop that points the comet at Sign Up and pops it) never fires
+  // while the user has scrolled past the sphere to read something further
+  // down the page.
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver(function(entries){
+      sphereInViewport = entries[0].isIntersecting;
+      updateLandingRunState();
+    }, { threshold: 0.15 });
+    io.observe(stage);
+  }
+  landingStart();
+}
+function updateLandingRunState(){
+  if(prefersReducedMotion) return;
+  // Tab-hidden and scrolled-out-of-view are two deliberately different
+  // interruptions now (see landingStopRendering/landingResumeFromHidden's
+  // own comments for why) — checked independently rather than folded into
+  // one combined "should run" condition, so each resumes its own way
+  // regardless of what the other is currently doing.
+  if(document.hidden){
+    if(landingActive) landingStopRendering();
+    return;
+  }
+  if(!sphereInViewport){
+    if(landingActive) landingPause();
+    return;
+  }
+  // Tab visible AND sphere in view — whatever paused it (if anything)
+  // resumes its own matching way.
+  if(!landingActive){
+    if(landingPausedAt !== null) landingResume();
+    else landingResumeFromHidden(); // covers "was hidden" and "never started yet" alike — see its own fallback
+  }
+}
+document.addEventListener('visibilitychange', updateLandingRunState);
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', landingInit);
+} else {
+  landingInit();
+}
+</script>
+</body>
+</html>
