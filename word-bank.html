@@ -1,0 +1,2162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>html{visibility:hidden;}</style>
+<title>Vocabulary — Word Bank — Context Chinese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDE4D2;
+  --paper-deep:#E1D4B9;
+  --paper-shadow:#cbbb96;
+  --ink:#22241F;
+  --ink-soft:#514E42;
+  --seal:#AE3B1C;
+  --seal-dark:#8C2E15;
+  --jade:#3E6B5B;
+  --jade-dark:#2E5346;
+  --gold:#A9832E;
+  --slate:#4C6169;
+  --plum:#7A4C9E;
+  --paper-rgb:237,228,210;
+  --radius:2px;
+  --serif-cn:'Noto Serif SC', serif;
+  --serif-en:'Zilla Slab', 'Noto Serif', serif;
+  --sans:'Inter', sans-serif;
+  --tone-1:#2d6bd6;
+  --tone-2:#27974f;
+  --tone-3:#E0B400;
+  --tone-4:#c0392b;
+  --tone-0:#6b6b6b;
+}
+
+/* ---------- dark mode ---------- */
+:root[data-theme="dark"]{
+  --paper:#1C1B18;
+  --paper-deep:#242220;
+  --paper-shadow:#3A352C;
+  --ink:#EDE6D6;
+  --ink-soft:#B9AF9C;
+  --seal:#E2703F;
+  --seal-dark:#C8592C;
+  --jade:#5FA98D;
+  --jade-dark:#3E8068;
+  --gold:#D9AE5C;
+  --slate:#93A9B1;
+  --plum:#B98AE3;
+  --paper-rgb:28,27,24;
+  --tone-1:#7fb0ff;
+  --tone-2:#6bd98f;
+  --tone-3:#F2D24B;
+  --tone-4:#ff8a72;
+  --tone-0:#b9af9c;
+}
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .dict-search,
+:root[data-theme="dark"] .dict-entry,
+:root[data-theme="dark"] .dict-filter,
+:root[data-theme="dark"] .import-card,
+:root[data-theme="dark"] .dialogue-card,
+:root[data-theme="dark"] .tone-card,
+:root[data-theme="dark"] .trainer-card,
+:root[data-theme="dark"] .route-card,
+:root[data-theme="dark"] .word-card,
+:root[data-theme="dark"] .radical-face.front,
+:root[data-theme="dark"] .flash-face.front,
+:root[data-theme="dark"] .province-chip,
+:root[data-theme="dark"] .province-detail,
+:root[data-theme="dark"] .tone-desc-panel,
+:root[data-theme="dark"] .converse-card,
+:root[data-theme="dark"] .dictate-card,
+:root[data-theme="dark"] .read-card,
+:root[data-theme="dark"] .translate-card,
+:root[data-theme="dark"] .hw-target-wrap,
+:root[data-theme="dark"] .search-bar,
+:root[data-theme="dark"] .settings-card,
+:root[data-theme="dark"] .quiz-box{
+  background:rgba(0,0,0,0.28) !important;
+}
+:root[data-theme="dark"] .modal-card{
+  background:var(--paper) !important;
+}
+:root[data-theme="dark"] .dict-search input,
+:root[data-theme="dark"] .trainer-input,
+:root[data-theme="dark"] .converse-input,
+:root[data-theme="dark"] .dictate-input,
+:root[data-theme="dark"] .import-textarea,
+:root[data-theme="dark"] .search-bar input,
+:root[data-theme="dark"] .settings-select,
+:root[data-theme="dark"] .settings-input,
+:root[data-theme="dark"] .import-options select,
+:root[data-theme="dark"] .import-options input[type=text],
+:root[data-theme="dark"] .modal-field select,
+:root[data-theme="dark"] .modal-field input[type=text],
+:root[data-theme="dark"] .list-family-chip select{
+  background:rgba(0,0,0,0.25) !important;
+}
+:root[data-theme="dark"] .keycap{
+  background:linear-gradient(160deg, #2c2a25 0%, #201f1b 100%) !important;
+}
+
+/* ---------- tone colouring ---------- */
+.tone-c-1{color:var(--tone-1);}
+.tone-c-2{color:var(--tone-2);}
+.tone-c-3{color:var(--tone-3);}
+.tone-c-4{color:var(--tone-4);}
+.tone-c-0{color:var(--tone-0);}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(0,0,0,0.025) 0, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(0,0,0,0.03) 0, transparent 50%);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.5;
+}
+::selection{background:var(--seal); color:var(--paper);}
+a{color:inherit;}
+button{font-family:inherit;}
+:focus-visible{outline:2px solid var(--seal); outline-offset:2px;}
+
+/* ---------- layout shell ---------- */
+.wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+header.top{
+  position:sticky; top:0; z-index:50;
+  background:rgba(var(--paper-rgb),0.94);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--paper-shadow);
+}
+.top-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 28px; max-width:1120px; margin:0 auto; gap:20px;}
+.brand{display:flex; align-items:center; gap:12px; cursor:pointer; user-select:none; flex-shrink:0;}
+.seal-mark{
+  width:38px; height:38px; background:var(--seal); color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif-cn); font-size:22px; font-weight:700;
+  border-radius:3px; transform:rotate(-3deg);
+  box-shadow:2px 2px 0 rgba(0,0,0,0.15);
+  flex-shrink:0;
+}
+.brand-text{display:flex; flex-direction:column; line-height:1.1; gap:3px;}
+.brand-text b{font-family:var(--serif-en); font-size:19px; letter-spacing:0.3px; white-space:nowrap;}
+.brand-text span{font-size:11px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;}
+
+nav.tabs{display:flex; flex-wrap:wrap; gap:2px;}
+.nav-item{position:relative;}
+.tab-btn{
+  background:none; border:none; cursor:pointer;
+  padding:8px 12px; font-size:13.5px; font-weight:600; color:var(--ink-soft);
+  border-radius:2px; letter-spacing:0.2px; white-space:nowrap;
+  transition:color .15s, background .15s;
+}
+.tab-btn .cn{font-family:var(--serif-cn); margin-right:5px; font-weight:600;}
+.tab-btn:hover{color:var(--ink); background:rgba(0,0,0,0.05);}
+.tab-btn.active{color:var(--ink); background:rgba(0,0,0,0.06);}
+
+.dropdown{
+  position:absolute; top:100%; left:0; margin-top:6px; background:var(--paper);
+  border:1px solid var(--paper-shadow); box-shadow:4px 6px 0 rgba(0,0,0,0.1);
+  width:0; min-width:0; display:flex; flex-direction:column; z-index:60;
+  opacity:0; max-height:0; overflow:hidden; pointer-events:none;
+  transform:translateY(-6px);
+  transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease .28s, min-width 0s ease .28s;
+  padding:0 4px;
+}
+.nav-item.open .dropdown{opacity:1; max-height:480px; width:auto; min-width:200px; transform:translateY(0); pointer-events:auto; padding:4px; transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease, min-width 0s ease;}
+.nav-item.open .tab-btn{color:var(--ink); background:rgba(0,0,0,0.06);}
+.tab-btn .caret{display:inline-block; margin-left:5px; font-size:10px; transition:transform .2s ease; opacity:0.6;}
+.nav-item.open .tab-btn .caret{transform:rotate(180deg);}
+.dropdown-link{
+  padding:10px 14px; text-align:left; background:none; border:none; cursor:pointer;
+  font-size:13px; font-weight:600; color:var(--ink-soft); white-space:nowrap; border-radius:2px;
+  text-decoration:none;
+}
+.dropdown-link:hover{background:rgba(0,0,0,0.06); color:var(--ink);}
+.dropdown-link.active{color:var(--seal);}
+@media (max-width:920px){
+  .top-inner{flex-direction:column; align-items:flex-start; position:relative;}
+  nav.tabs{width:100%; overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px;}
+  /* The gear/settings nav-item is a direct sibling of nav.tabs in .top-inner
+     (not nested inside it), so once .top-inner stacks into a column here it
+     falls onto its own row below the whole nav strip. Pin it to the
+     top-right corner instead, next to the brand row, freeing that row and
+     matching where it already sits on desktop's single-row layout. */
+  .top-inner > .nav-item{position:absolute; top:14px; right:28px;}
+}
+
+main{max-width:1120px; margin:0 auto; padding:40px 28px 100px;}
+section.view{display:none; animation:fadein .35s ease;}
+section.view.active{display:block;}
+@keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+.subview{display:none;}
+.subview.active{display:block;}
+
+.section-head{margin-bottom:28px; position:relative;}
+.eyebrow{
+  font-family:var(--sans); font-size:12px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--seal); display:flex; align-items:center; gap:8px;
+}
+.eyebrow::before{content:''; width:22px; height:2px; background:var(--seal);}
+h1.headline{
+  font-family:var(--serif-en); font-weight:700; font-size:44px; margin:6px 0 10px;
+  letter-spacing:-0.5px;
+}
+h1.headline .cn{font-family:var(--serif-cn); color:var(--seal); font-weight:700;}
+p.lede{color:var(--ink-soft); font-size:16px; max-width:640px; margin:10px 0 0;}
+.brush-rule{width:100%; height:3px; margin:26px 0; background:
+  linear-gradient(90deg, var(--ink) 0%, var(--ink) 60%, transparent 60%),
+  linear-gradient(90deg, var(--seal) 65%, transparent 65%);
+  background-size:100% 3px, 20% 3px; background-repeat:no-repeat;
+  opacity:0.85;
+}
+
+.subnav{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:30px;}
+.subnav-pill{
+  padding:8px 16px; border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4);
+  border-radius:20px; font-size:13px; font-weight:600; color:var(--ink-soft); cursor:pointer;
+}
+.subnav-pill:hover{border-color:var(--ink); color:var(--ink);}
+.subnav-pill.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+.card{
+  background:rgba(255,255,255,0.35);
+  border:1px solid var(--paper-shadow);
+  border-radius:var(--radius);
+  padding:22px;
+}
+.grid{display:grid; gap:16px;}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+@media (max-width:800px){.grid-2,.grid-3,.grid-4{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:520px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+
+.btn{
+  background:var(--ink); color:var(--paper); border:none; cursor:pointer;
+  padding:10px 18px; font-weight:600; font-size:13.5px; border-radius:2px;
+  letter-spacing:0.3px; transition:transform .12s, background .12s;
+}
+.btn:hover{background:var(--seal-dark);}
+.btn:active{transform:scale(0.97);}
+.btn:disabled{opacity:0.4; cursor:not-allowed;}
+.btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+.btn.ghost:hover{background:var(--ink); color:var(--paper);}
+.btn.small{padding:6px 12px; font-size:12px;}
+
+/* ---------- HOME ---------- */
+.hero{position:relative; padding:20px 0 10px;}
+.hero-grid{display:grid; grid-template-columns:1.2fr 1fr; gap:40px; align-items:center;}
+@media (max-width:820px){.hero-grid{grid-template-columns:1fr;}}
+.hero h1{font-family:var(--serif-en); font-size:52px; line-height:1.05; margin:0 0 18px; font-weight:700;}
+.hero h1 .cn{font-family:var(--serif-cn); color:var(--seal); display:block; font-size:64px; margin-bottom:6px;}
+.hero p{font-size:17px; color:var(--ink-soft); max-width:480px; margin-bottom:26px;}
+.hero-seals{position:relative; height:340px;}
+.float-seal{
+  position:absolute; font-family:var(--serif-cn); font-weight:700;
+  color:var(--paper); display:flex; align-items:center; justify-content:center;
+  border-radius:3px; box-shadow:3px 3px 0 rgba(0,0,0,0.15);
+}
+.route-cards{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:44px;}
+@media (max-width:900px){.route-cards{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:480px){.route-cards{grid-template-columns:1fr;}}
+.route-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px;
+  padding:20px; cursor:pointer; text-align:left; transition:transform .15s, box-shadow .15s, border-color .15s;
+  display:flex; flex-direction:column; gap:8px;
+}
+.route-card:hover{transform:translateY(-3px); box-shadow:4px 6px 0 rgba(0,0,0,0.08); border-color:var(--ink);}
+.route-card .cn-big{font-family:var(--serif-cn); font-size:30px; color:var(--seal); font-weight:700;}
+.route-card b{font-family:var(--serif-en); font-size:17px;}
+.route-card span{font-size:13px; color:var(--ink-soft);}
+
+/* ---------- DICTIONARY ---------- */
+.dict-search{display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.5); border:1.5px solid var(--ink);
+  border-radius:2px; padding:10px 16px; max-width:460px; margin-bottom:8px;}
+.search-icon{width:18px; height:18px; flex-shrink:0;}
+.dict-search input{border:none; background:none; outline:none; font-size:15px; width:100%; font-family:var(--sans);}
+.dict-filters{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 20px;}
+.dict-filter{
+  border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4); padding:6px 13px;
+  border-radius:20px; font-size:12.5px; cursor:pointer; font-weight:600; color:var(--ink-soft);
+}
+.dict-filter:hover{border-color:var(--ink); color:var(--ink);}
+.dict-filter.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+/* ---- collapsible section cards (Vocabulary lists / Import / Folders) ----
+   see settings.js's applyCollapsedSections/toggleCollapsible for the JS side. */
+/* The whole box toggles on click now (see toggleCollapsibleBox), not just
+   the header line — cursor:pointer here on the box itself, not just
+   .collapsible-toggle below, so hovering anywhere on it (its own padding,
+   plain text once expanded, etc.) shows that it's clickable too. Real
+   controls inside (buttons, inputs, selects, links) keep their own cursor
+   regardless, since cursor only inherits where nothing more specific wins. */
+.collapsible{cursor:pointer;}
+.collapsible-toggle{display:flex; align-items:center; justify-content:space-between; gap:10px; cursor:pointer; user-select:none;}
+.collapsible-caret{display:inline-block; margin-left:8px; transition:transform .2s; flex-shrink:0;}
+.collapsible.collapsed .collapsible-caret{transform:rotate(-90deg);}
+.collapsible.collapsed > *:not(:first-child){display:none;}
+
+.import-card{background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:18px 20px; margin:0 0 26px;}
+.import-card h4{margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:1.2px; color:var(--gold);}
+.import-hint{font-size:12.5px; color:var(--ink-soft); margin:0 0 12px; line-height:1.6;}
+.import-hint code{background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:3px; padding:1px 5px; font-family:monospace; font-size:11px;}
+.import-row{display:flex; align-items:center; gap:12px; margin-bottom:10px; flex-wrap:wrap;}
+.import-or{font-size:12.5px; color:var(--ink-soft);}
+.file-label{cursor:pointer;}
+.import-textarea{width:100%; font-family:var(--sans); font-size:13px; padding:10px 12px; border:1.5px solid var(--paper-shadow);
+  border-radius:2px; background:rgba(255,255,255,0.6); resize:vertical; margin-bottom:10px;}
+.import-status{font-size:12.5px; color:var(--jade-dark); font-weight:600; min-height:18px; opacity:0; transition:opacity .3s;}
+
+/* No left/right padding or border of its own, so — with no margin-right
+   hack — this row's own right edge lands at exactly the same x as each
+   .dict-entry card's right edge below it (both are plain children of the
+   same container). All Vocab/Delete are also sized down specifically in
+   this toolbar (see .mass-toolbar .btn.small below) to sit closer in visual
+   weight to the compact focus-tag pills next to them, rather than towering
+   over them.
+   justify-content:space-between across exactly 3 top-level children now
+   (.mass-toolbar-left, .wordbank-daily-row, .mass-toolbar-right) — reported
+   directly ("bring the backdrop for daily study back and move it... in
+   between 0 selected and mark/filter by focus tag... sit perfectly center
+   between the two of them"). space-between gives the middle item equal gap
+   on both sides automatically, and still degrades correctly to a plain
+   flush-left/flush-right pair when .wordbank-daily-row is hidden (Settings
+   → Daily Study off) — unlike a margin:auto approach, which would need
+   .wb-tag-filter-row's OWN margin-left:auto (removed below) to keep doing
+   that same job when the middle item vanishes, and the two would fight
+   each other's auto-margin space whenever both existed at once. */
+.mass-toolbar{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:14px; font-size:13px; color:var(--ink-soft);}
+.mass-toolbar-left, .mass-toolbar-right{display:flex; align-items:center; gap:16px; flex-wrap:wrap;}
+/* Horizontal padding trimmed down from the plain size-match above — All
+   Vocab + Delete are .mass-toolbar-right's own trailing content, on the far
+   side of the tag-filter row from Delete's right edge (which
+   justify-content:space-between up on .mass-toolbar keeps pinned to the
+   toolbar's own right edge, matching .dict-entry's, regardless of how wide
+   these two buttons are — see .mass-toolbar's own comment). Their combined
+   width is what pushes the tag-filter row's own left edge — and so its
+   W/T/R/A/K buttons — into a column with each word row's own focus-tags
+   below. Narrowed here so that column actually lines up, matching each word
+   row's own trailing content (.dict-folder-select's fixed 100px + the audio
+   button + their gaps) — only reliable BECAUSE .dict-folder-select has a
+   fixed width now; when it was auto-sized to its options, its own width (and
+   so this target) differed between the general Word Bank view and any given
+   folder's view. Re-check (and re-tune this value) if All Vocab/Delete's
+   text/icon, .dict-folder-select's own width, or .dict-meta's gap ever
+   change. */
+.mass-toolbar .btn.small{padding:3px 5.1px;}
+.mass-select-all{display:flex; align-items:center; gap:7px; cursor:pointer; font-weight:600;}
+.dict-check{width:16px; height:16px; accent-color:var(--seal); cursor:pointer; flex-shrink:0;}
+.wb-tag-filter-row{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+.wb-tag-row-label{font-size:12.5px; color:var(--ink-soft); font-weight:600;}
+.wb-tag-filter-row .focus-tag:disabled{opacity:0.4; cursor:not-allowed;}
+.wb-mark-mode-toggle{display:flex; align-items:center; gap:6px; cursor:pointer; font-size:12.5px; color:var(--ink-soft); font-weight:600; padding-right:8px; border-right:1px solid var(--paper-shadow);}
+/* Same sliding on/off switch settings.html's own toggles use (.toggle-switch/
+   .toggle-track/.toggle-thumb, ported here rather than shared per this
+   site's usual per-page convention) — a plain checkbox replaced here
+   because it read as an odd one-off next to every OTHER on/off control on
+   the site, reported directly ("make the Mark/Filter by Focus Tag a slider
+   instead of a checkbox"). Sized down from settings.html's own 46x26 (this
+   sits inline in a compact toolbar label, not its own settings row) —
+   thumb/track/translateX all scaled by the same ~0.7 factor so the thumb
+   still travels edge-to-edge exactly like the full-size version. */
+.toggle-switch{position:relative; width:32px; height:18px; flex-shrink:0; cursor:pointer; display:inline-block;}
+.toggle-switch input{position:absolute; opacity:0; width:100%; height:100%; margin:0; cursor:pointer;}
+.toggle-track{position:absolute; inset:0; background:var(--paper-shadow); border-radius:14px; transition:background .15s; pointer-events:none;}
+.toggle-thumb{
+  position:absolute; top:2px; left:2px; width:14px; height:14px; border-radius:50%;
+  background:var(--paper); box-shadow:0 1px 2px rgba(0,0,0,0.3); transition:transform .15s; pointer-events:none;
+}
+.toggle-switch input:checked ~ .toggle-track{background:var(--jade);}
+.toggle-switch input:checked ~ .toggle-thumb{transform:translateX(14px);}
+
+.dict-count{font-size:12.5px; color:var(--ink-soft); margin-bottom:14px;}
+.dict-list{display:flex; flex-direction:column; gap:10px;}
+.dict-entry{
+  display:flex; align-items:center; gap:18px; background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow);
+  border-radius:2px; padding:16px 20px; cursor:pointer;
+  transition:border-color .15s, background .15s, transform .1s;
+}
+.dict-entry:hover{border-color:var(--seal);}
+.dict-entry.selected{border-color:var(--seal); background:rgba(174,59,28,0.08); transform:scale(1.006);}
+.dict-hz{font-family:var(--serif-cn); font-size:34px; font-weight:700; color:var(--seal); min-width:52px; text-align:center;}
+.dict-mid{flex:1; min-width:0;}
+.dict-py{font-family:var(--serif-en); font-weight:700; font-size:16px;}
+.dict-en{font-size:13.5px; color:var(--ink-soft); margin-top:2px;}
+.dict-meta{display:flex; align-items:center; gap:10px; flex-shrink:0; flex-wrap:wrap; justify-content:flex-end;}
+.dict-pos{font-size:10.5px; text-transform:uppercase; letter-spacing:0.8px; color:var(--gold); border:1px solid var(--gold);
+  border-radius:20px; padding:3px 9px; white-space:nowrap;}
+.dict-empty{padding:40px 20px; text-align:center; color:var(--ink-soft); font-size:14px;}
+/* Below this width, .dict-hz + .dict-meta (fixed-width, never shrink) leave
+   .dict-mid (flex:1, min-width:0) no room at all and it collapses to 0 —
+   the pinyin/meaning silently disappear. Wrapping the row onto its own
+   lines below the phone breakpoint fixes that without touching desktop,
+   where there's always enough width for a single row. */
+@media (max-width:600px){
+  .dict-entry{flex-wrap:wrap;}
+  /* The checkbox sitting before .dict-hz in source order pushed the hanzi
+     ~34px right of where .dict-mid/.dict-meta start below it once those
+     wrap onto their own full-width lines — the hanzi looked stranded,
+     indented relative to everything under it. Moving the checkbox to the
+     end (it still works identically, just visually last) lets the hanzi be
+     the flush-left first item instead, aligning it with the rest of the card. */
+  .dict-check{order:4;}
+  .dict-hz{order:1;}
+  .dict-mid{flex:1 1 100%; min-width:100%; order:2;}
+  .dict-meta{flex:1 1 100%; justify-content:flex-start; order:3;}
+}
+.add-btn{width:28px; height:28px; border-radius:50%; border:1.5px solid var(--jade); color:var(--jade-dark);
+  background:none; font-size:16px; font-weight:700; cursor:pointer; line-height:1; flex-shrink:0;}
+.add-btn:hover{background:var(--jade); color:#fff;}
+.wb-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap; gap:10px;}
+.wb-note{background:rgba(62,107,91,0.1); border-left:3px solid var(--jade); padding:12px 16px; font-size:13px; color:var(--ink-soft); margin-bottom:20px;}
+.folder-manager{background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:18px 20px; margin-bottom:22px;}
+.folder-manager h4{margin:0 0 12px; font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--gold);}
+/* Left column (folder-creation controls + the whole-Word-Bank Daily Study
+   row stacked under it) beside the folder pill list on the right — the pills
+   start at that right column's own top-left corner and wrap downward from
+   there, rather than spanning the full card width below everything. */
+.folder-manager-grid{display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap;}
+.folder-left-col{display:flex; flex-direction:column; gap:10px; flex-shrink:0;}
+.folder-create-row{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+.folder-create-row input{flex:1; min-width:180px; max-width:280px; padding:8px 12px; border:1.5px solid var(--paper-shadow); border-radius:2px; font-family:inherit; font-size:13.5px; background:rgba(255,255,255,0.6);}
+.folder-pill-list{display:flex; flex-wrap:wrap; align-content:flex-start; gap:8px; flex:1; min-width:200px;}
+/* A folder pill is now a container, not itself a button — .folder-pill-toggle
+   (the label+count) and .folder-pill-delete (only rendered once the pill is
+   active) are separate sibling buttons inside it. Nesting a delete button
+   inside the toggle button would be invalid HTML (buttons can't nest) and
+   unpredictable across browsers, which is what a big separate "Delete
+   folder" button appearing below the whole pill list was working around. */
+.folder-pill{display:inline-flex; align-items:center; gap:2px; background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:20px;
+  padding:2px; font-size:13px; font-weight:600; color:var(--ink); transition:background .12s, border-color .12s;}
+.folder-pill:hover{border-color:var(--seal);}
+.folder-pill.active{background:var(--seal); border-color:var(--seal); color:#fff;}
+.folder-pill.active .count{color:rgba(255,255,255,0.8);}
+.folder-pill .count{color:var(--ink-soft); font-weight:500; font-size:12px;}
+.folder-pill-toggle{background:none; border:none; padding:4px 6px 4px 12px; margin:0; font:inherit; font-weight:inherit; color:inherit; cursor:pointer; display:inline-flex; align-items:center; gap:8px;}
+.folder-pill-delete{
+  background:none; border:none; padding:0; margin:0; color:inherit; opacity:0.7; cursor:pointer;
+  width:20px; height:20px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:15px; line-height:1;
+}
+.folder-pill-delete:hover{opacity:1; background:rgba(255,255,255,0.3);}
+.folder-empty-note{font-size:13px; color:var(--ink-soft);}
+/* Daily Study on/off, per collection (see loadDailyStudyCollections). The
+   sunrise icon itself is the button now — reported directly ("make the
+   sunrise asset the actual button on folders") — not a checkbox sitting
+   next to a decorative icon. The real <input type=checkbox> (see below)
+   stays in the DOM for state/keyboard/screen-reader purposes and is what
+   onchange/toggleFolderDailyStudy still fire off, but it's visually
+   shrunk to nothing; the <label> around it (unchanged) is what makes
+   clicking the icon itself already toggle it, native <label> behavior. */
+.folder-daily-toggle{display:inline-flex; align-items:center; cursor:pointer; padding:2px; flex-shrink:0;}
+.folder-daily-toggle input{position:absolute; width:1px; height:1px; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; padding:0;}
+/* Feather Icons' "sunrise" glyph (sunrise.svg, added to the project folder).
+   Colors are hardcoded on the SVG elements themselves (not CSS variables)
+   matching this site's own convention for small multi-color icons that
+   don't need to re-theme in dark mode (e.g. the speak-btn icon's own
+   stroke="#8A8A8A"/stroke="#3B82F6") — these presentation attributes are
+   what "on" (checked) actually renders as; low CSS specificity, easily
+   overridden below for "off". Land (the horizon line) reuses --jade's own
+   light-theme value; the sun's own arc and every ray use a real yellow
+   since --gold reads as a muted brass/amber, not actually yellow.
+
+   Stacked on its own backdrop square (.daily-icon-backdrop, sized to what
+   the checkbox itself used to be, 13x13 — reported directly, "so that the
+   colors of the asset can be seen") via CSS grid stacking (both children
+   share grid-area 1/1) rather than absolute positioning, so no explicit
+   width/height juggling is needed to keep them centered on each other. */
+/* The backdrop square is bigger than the icon itself now (20x20 vs the
+   icon's own 13x13) — reported directly ("make the square backdrops...
+   bigger so it envelops the whole asset"), since a same-size backdrop let
+   the sunrise glyph's own strokes touch or run past the backdrop's own
+   edges instead of visibly sitting inside it. margin:auto on the icon
+   (below) is what centers the smaller icon within this larger grid cell —
+   a grid item's default stretch-to-fill would otherwise still make it
+   fill the whole 20x20 area despite its own explicit width/height. */
+.daily-icon-wrap{display:inline-grid; width:20px; height:20px; flex-shrink:0;}
+/* An actual white checkbox-square, not a tinted circle — reported directly
+   ("make it an actual white square like a checkbox square"), box-sizing
+   set explicitly so the border doesn't push this past 13x13 (this page
+   doesn't reset box-sizing globally, unlike some of the others). */
+.daily-icon-backdrop{grid-area:1/1; width:20px; height:20px; box-sizing:border-box; border-radius:3px; background:#fff; border:1px solid var(--paper-shadow);}
+.daily-icon{grid-area:1/1; width:13px; height:13px; margin:auto;}
+/* "off" (this folder not part of Daily Study): reads as a plain grey moon
+   instead of a sunrise — reported directly. Only two of the SVG's three
+   part-groups actually change: the sun's own arc (the lone <path>) goes
+   grey, standing for the moon; every ray (the five <line>s other than the
+   very last one, plus the one <polyline> — see DAILY_ICON_SVG's own
+   comment for why the land line is always last in that markup) is
+   recolored to EXACTLY .daily-icon-backdrop's own fill color (#fff, not
+   the CSS variable border it also carries — only the fill needs matching
+   for the "invisible ray" trick), so each ray blends invisibly into its
+   own backdrop rather than reading as a dimmed sun. The moon's own grey
+   (the arc) is a real, clearly-visible mid-grey rather than the barely-off-
+   white this used against the old tinted backdrop — needs the contrast
+   now that the backdrop itself is white. The land line is left alone in
+   both states — this is about the sun reading as a moon, not the ground
+   disappearing too. A plain CSS sibling selector off the checkbox's own
+   :checked state (not a JS-toggled class) — input comes before
+   .daily-icon-wrap in the DOM, so this needs no :has() and needs no
+   re-render on click, just reacts the instant the real checkbox's state
+   does. */
+.folder-daily-toggle input:not(:checked) ~ .daily-icon-wrap .daily-icon path{stroke:#A0A8B0;}
+.folder-daily-toggle input:not(:checked) ~ .daily-icon-wrap .daily-icon line:not(:last-child),
+.folder-daily-toggle input:not(:checked) ~ .daily-icon-wrap .daily-icon polyline{stroke:#fff;}
+/* The bordered rectangle backdrop is back — reported directly ("bring the
+   backdrop for daily study for word bank back") — but content-sized now,
+   not the old fixed 280px synced in JS to the folder-name input's own
+   width: that sync only made sense back when this row sat directly below
+   that input in .folder-left-col. Living in .mass-toolbar now instead (see
+   that section's own comment on why: "move it to in between 0 selected
+   and mark/filter by focus tag"), centered as the toolbar's own middle
+   flex child, where a content-hugging pill fits the surrounding toolbar
+   controls (All Vocab, the focus-tag buttons) far better than a wide box
+   ever would. Reuses the same .folder-daily-toggle checkbox+sunrise
+   control each folder pill already has (see toggleFolderDailyStudy)
+   rather than a separate one-off control. */
+.wordbank-daily-row{
+  display:flex; align-items:center; gap:5px; font-size:12.5px; font-weight:600; color:var(--ink);
+  padding:6px 10px; background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px;
+}
+/* A fixed width, not auto-sized to its options — without this, a native
+   <select> sizes its closed box to its WIDEST option (folder names in the
+   general Word Bank view, "General Word Bank" in a folder's own view), so
+   the same word row was two different widths depending which view it's in.
+   Since the closed box only ever actually displays "Copy to…" (selectedIndex
+   resets to 0 after every use — see its onchange), 100px comfortably fits
+   that in every view without needing to fit the widest option; the open
+   dropdown popup itself isn't constrained to this, so long folder names are
+   still fully readable there. Keeping this constant is also what lets
+   .mass-toolbar .btn.small's own width (elsewhere in this file) target one
+   stable number instead of a moving one per view. */
+.dict-folder-select{font-size:11.5px; width:100px; padding:4px 8px; border:1px solid var(--paper-shadow); border-radius:20px; background:rgba(255,255,255,0.6); color:var(--ink-soft); font-family:inherit; cursor:pointer;}
+.btn.ghost.small.danger{border-color:var(--seal); color:var(--seal);}
+.btn.ghost.small.danger:hover{background:var(--seal); color:#fff;}
+.btn-icon{width:1em; height:1em; vertical-align:-0.15em; margin-left:6px; flex-shrink:0;}
+
+/* ---------- FOCUS TAGS (per-skill: Writing / Typing / Reading / Hearing) ---------- */
+.focus-tags{display:flex; align-items:center; gap:4px; flex-shrink:0;}
+.focus-tag{
+  width:20px; height:20px; border-radius:4px; border:1.5px solid var(--paper-shadow); background:none;
+  font-size:10px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  color:var(--ink-soft); padding:0; font-family:var(--sans); flex-shrink:0; transition:background .12s, border-color .12s;
+}
+.focus-tag:hover{border-color:var(--ink); color:var(--ink);}
+.focus-tag:disabled{cursor:not-allowed; opacity:0.4;}
+.focus-tag:disabled:hover{border-color:var(--paper-shadow); color:var(--ink-soft);}
+.focus-tag.active{color:#fff; border-color:transparent;}
+.focus-tag.active:hover{filter:brightness(1.08);}
+.ft-writing.active{background:var(--seal);}
+.ft-typing.active{background:var(--gold);}
+.ft-reading.active{background:var(--jade);}
+.ft-hearing.active{background:var(--slate);}
+.ft-known.active{background:var(--plum);}
+.hyperfocus-badge{font-size:14px; margin-left:2px; cursor:default; color:var(--gold); display:inline-flex; align-items:center;}
+.hyperfocus-badge svg{width:1em; height:1em; vertical-align:-0.15em;}
+
+/* ---------- VOCABULARY LIST SUBSCRIPTIONS ---------- */
+.list-manager{background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:18px 20px; margin-bottom:22px;}
+.list-manager h4{margin:0 0 4px; font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--gold);}
+.list-manager-hint{font-size:12.5px; color:var(--ink-soft); margin:0 0 16px; line-height:1.6;}
+.list-chip-row{display:flex; flex-wrap:wrap; gap:12px;}
+/* Clickable now, not just a static card — reported directly ("switches
+   whenever the box gets clicked") — see progressChip's own comment for
+   what a click actually does. cursor:pointer here, not just on some inner
+   control, is what signals the whole card is the target. */
+.list-chip{
+  background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow); border-radius:2px;
+  padding:14px 16px; min-width:150px; max-width:210px; position:relative; cursor:pointer;
+}
+.list-chip-remove{
+  position:absolute; top:6px; right:6px; background:none; border:none; color:var(--ink-soft); cursor:pointer;
+  font-size:13px; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; padding:0;
+}
+.list-chip-remove:hover{background:var(--seal); color:#fff;}
+.list-chip-name{font-weight:700; font-size:13px; padding-right:16px; line-height:1.3;}
+.list-chip-pct{font-family:var(--serif-en); font-weight:700; font-size:22px; color:var(--seal); margin-top:8px;}
+.list-progress-track{width:100%; height:6px; background:var(--paper-deep); border-radius:20px; overflow:hidden; margin-top:6px;}
+.list-progress-fill{height:100%; background:var(--jade); border-radius:20px; transition:width .3s ease;}
+/* Two stacked fractions now, not one (see progressChip's own comment) —
+   reported directly to give both the progress bar above and the chip's
+   own bottom edge below more breathing room than the single-line version
+   needed, not just squeeze a second line into the old 5px gap. */
+.list-chip-sub{margin-top:12px; margin-bottom:2px; display:flex; flex-direction:column; gap:3px;}
+.list-chip-metric{font-size:10.5px; color:var(--ink-soft); font-weight:400;}
+/* The currently front-facing metric (see loadVocabListMetric) — bold, not
+   also recolored, so the toggle reads as "which number is in focus" rather
+   than implying one metric is somehow more correct than the other. */
+.list-chip-metric.list-metric-active{font-weight:700; color:var(--ink);}
+.list-family-chip{
+  background:rgba(255,255,255,0.25); border:1.5px dashed var(--paper-shadow); border-radius:2px;
+  padding:14px 16px; min-width:150px; max-width:210px; display:flex; flex-direction:column; gap:8px; justify-content:center;
+}
+.list-family-chip.disabled{color:var(--ink-soft); font-size:12px;}
+.list-family-name{font-weight:700; font-size:13px; color:var(--ink-soft);}
+.list-family-chip select{font-size:12.5px; padding:6px 8px; border:1.5px solid var(--paper-shadow); border-radius:2px; background:rgba(255,255,255,0.6); font-family:inherit; cursor:pointer;}
+.list-family-sub{font-size:11px; color:var(--ink-soft);}
+
+/* ---------- IMPORT OPTIONS ---------- */
+.import-options{display:flex; flex-direction:column; gap:10px; margin:14px 0; padding:14px 16px; background:rgba(255,255,255,0.3); border:1px dashed var(--paper-shadow); border-radius:2px;}
+.import-option-row{display:flex; align-items:center; gap:8px; font-size:13.5px; font-weight:600; cursor:pointer;}
+.import-suboption{display:flex; align-items:center; gap:8px; margin-left:24px; font-size:13px; flex-wrap:wrap;}
+.import-suboption select, .import-suboption input[type=text]{
+  font-size:12.5px; padding:6px 9px; border:1.5px solid var(--paper-shadow); border-radius:2px;
+  background:rgba(255,255,255,0.6); font-family:inherit; min-width:0; max-width:100%;
+}
+
+/* ---------- MODAL (used for the "add to Word Bank?" subscribe prompt) ---------- */
+.modal-backdrop{position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:300; display:flex; align-items:center; justify-content:center; padding:20px;}
+.modal-card{background:var(--paper); border:1px solid var(--paper-shadow); border-radius:2px; max-width:420px; width:100%; padding:26px; box-shadow:6px 8px 0 rgba(0,0,0,0.25); position:relative;}
+.modal-card h4{margin:0 0 8px; font-family:var(--serif-en); font-size:19px; font-weight:700;}
+.modal-card p{font-size:13.5px; color:var(--ink-soft); margin:0 0 18px;}
+.modal-close{position:absolute; top:14px; right:14px; background:none; border:none; font-size:18px; cursor:pointer; color:var(--ink-soft); line-height:1; padding:2px;}
+.modal-close:hover{color:var(--ink);}
+.modal-field{display:flex; flex-direction:column; gap:12px; margin-bottom:22px;}
+.modal-field label{display:flex; align-items:center; gap:8px; font-size:13.5px; cursor:pointer; flex-wrap:wrap;}
+.modal-field select, .modal-field input[type=text]{
+  font-size:13px; padding:6px 9px; border:1.5px solid var(--paper-shadow); border-radius:2px;
+  background:rgba(255,255,255,0.6); font-family:inherit;
+}
+.modal-actions{display:flex; gap:10px;}
+
+/* ---------- TONES ---------- */
+.tone-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:14px;}
+@media (max-width:900px){.tone-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:560px){.tone-grid{grid-template-columns:repeat(2,1fr);}}
+.tone-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); padding:18px 14px;
+  border-radius:2px; text-align:center; cursor:pointer; transition:border-color .15s, transform .15s;
+}
+.tone-card:hover{border-color:var(--seal); transform:translateY(-2px);}
+.tone-num{font-family:var(--serif-en); font-weight:700; font-size:13px; color:var(--ink-soft);}
+.tone-svg{margin:8px auto;}
+.tone-mark{font-family:var(--serif-cn); font-size:34px; font-weight:700; color:var(--seal);}
+.tone-name{font-weight:600; font-size:13.5px; margin-top:4px;}
+.tone-example{font-size:12px; color:var(--ink-soft); margin-top:6px;}
+.tone-desc-panel{
+  margin-top:22px; padding:20px; background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow);
+  border-radius:2px; min-height:60px;
+}
+
+/* ---------- QUIZ ---------- */
+.quiz-box{background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow); padding:24px; border-radius:2px; margin-top:20px;}
+.quiz-prompt{font-family:var(--serif-cn); font-size:46px; text-align:center; margin:6px 0 4px; font-weight:700;}
+.quiz-pinyin{text-align:center; color:var(--ink-soft); font-size:15px; margin-bottom:18px;}
+.quiz-opts{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; max-width:520px; margin:0 auto;}
+@media (max-width:520px){.quiz-opts{grid-template-columns:repeat(3,1fr);}}
+.quiz-opt{
+  padding:12px 4px; text-align:center; border:1.5px solid var(--ink); background:transparent;
+  cursor:pointer; font-weight:700; border-radius:2px; font-size:15px;
+}
+.quiz-opt:hover{background:var(--ink); color:var(--paper);}
+.quiz-opt.correct{background:var(--jade); border-color:var(--jade); color:#fff;}
+.quiz-opt.wrong{background:var(--seal); border-color:var(--seal); color:#fff;}
+.quiz-status{text-align:center; margin-top:16px; font-size:14px; color:var(--ink-soft); min-height:20px;}
+.quiz-score{text-align:center; font-weight:700; font-family:var(--serif-en); font-size:15px;}
+
+/* ---------- PINYIN SYLLABLE BUILDER ---------- */
+.syl-builder{display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start;}
+.syl-col{flex:1; min-width:220px;}
+.syl-col h4{font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--ink-soft); margin:0 0 10px;}
+.chip-grid{display:flex; flex-wrap:wrap; gap:9px;}
+.chip{
+  border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4); padding:6px 11px;
+  border-radius:20px; font-size:13px; cursor:pointer; font-weight:600;
+}
+.chip:hover{border-color:var(--ink);}
+.chip.picked{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+.syl-result{
+  background:var(--ink); color:var(--paper); border-radius:2px; padding:26px; text-align:center;
+  font-family:var(--serif-en); font-size:34px; font-weight:700; min-width:220px; align-self:stretch;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+}
+.syl-result small{font-size:12px; font-weight:400; color:#c9c2ac; letter-spacing:1px; text-transform:uppercase;}
+
+.word-list{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:10px;}
+@media (max-width:760px){.word-list{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:480px){.word-list{grid-template-columns:1fr;}}
+.word-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:14px;
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+}
+.word-card .hz{font-family:var(--serif-cn); font-size:22px; font-weight:700;}
+.word-card .py{font-size:12.5px; color:var(--ink-soft);}
+.speak-btn{
+  background:none; border:1.5px solid var(--ink); border-radius:50%; width:32px; height:32px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--ink);
+}
+.speak-btn:hover{background:var(--ink); color:var(--paper);}
+.speak-btn svg{width:16px; height:16px;}
+/* One-click copy of an entry's plain hanzi (see settings.js's own
+   ccCopyToClipboard comment) — same shape/size as .speak-btn right next to
+   it, just a distinct icon, so the two read as a matched pair of actions. */
+.cc-copy-btn{
+  background:none; border:1.5px solid var(--ink); border-radius:50%; width:32px; height:32px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--ink);
+}
+.cc-copy-btn:hover{background:var(--ink); color:var(--paper);}
+.cc-copy-btn svg{width:16px; height:16px;}
+
+/* ---------- PINYIN TRAINER ---------- */
+.trainer-card{
+  background:rgba(255,255,255,0.45); border:1px solid var(--paper-shadow); border-radius:2px;
+  padding:38px 34px; max-width:460px; margin:0 auto; text-align:center;
+}
+.trainer-char{
+  font-family:var(--serif-cn); font-size:72px; font-weight:700; color:var(--ink);
+  margin-bottom:20px; min-height:88px; display:flex; align-items:center; justify-content:center;
+}
+.trainer-input{
+  font-family:var(--serif-en); font-size:20px; padding:12px 16px; text-align:center; width:100%;
+  border:2px solid var(--paper-shadow); border-radius:2px; outline:none; background:rgba(255,255,255,0.6);
+  color:var(--ink); transition:border-color .15s, background .15s; font-weight:600;
+}
+.trainer-input:focus{border-color:var(--ink);}
+.trainer-input.correct{border-color:var(--jade); background:rgba(62,107,91,0.14); color:var(--jade-dark);}
+.trainer-reveal{
+  font-family:var(--serif-en); font-size:19px; font-weight:700; color:var(--seal); min-height:28px; margin:14px 0 2px;
+}
+.trainer-controls{display:flex; gap:10px; justify-content:center; margin-top:16px; flex-wrap:wrap;}
+.trainer-progress{margin-top:20px; font-size:12px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;}
+.trainer-done{font-family:var(--serif-en); font-size:24px; font-weight:700; padding:20px 0 8px;}
+.trainer-done-sub{font-size:14px; color:var(--ink-soft); margin-bottom:18px;}
+
+.tone-key{margin:28px auto 0; max-width:560px; border-top:1px dashed var(--paper-shadow); padding-top:18px;}
+.tone-key-title{font-size:12px; text-transform:uppercase; letter-spacing:1.2px; color:var(--ink-soft); text-align:center; margin-bottom:12px;}
+.tone-key-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:9px; font-size:12.5px; color:var(--ink-soft); text-align:center;}
+@media (max-width:620px){.tone-key-grid{grid-template-columns:repeat(2,1fr);}}
+.tone-key-grid b{font-family:var(--serif-cn); color:var(--seal); margin-right:4px; font-size:14px;}
+.tone-key-grid code{background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:3px; padding:1px 5px; font-size:11px; font-family:monospace;}
+.bank-notice{background:rgba(169,131,46,0.12); border-left:3px solid var(--gold); padding:10px 16px; font-size:12.5px; color:var(--ink-soft); margin-bottom:20px;}
+
+/* ---------- TYPEWRITER KEYCAPS (zhuyin keyboard + pinyin initials/finals) ---------- */
+.keyboard{display:flex; flex-direction:column; gap:12px; align-items:center; margin:22px 0;}
+.keyboard-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+.keycap{
+  width:62px; height:62px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(160deg, #f6f0e0 0%, #e7ddc2 100%);
+  border:1px solid var(--paper-shadow);
+  box-shadow:0 3px 0 var(--paper-shadow), 0 6px 9px rgba(0,0,0,0.18), inset 0 1px 1px rgba(255,255,255,0.7);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent;
+  transition:transform .08s ease, box-shadow .08s ease, background .1s ease;
+  position:relative; padding:0;
+}
+.keycap:hover{transform:translateY(-2px); box-shadow:0 5px 0 var(--paper-shadow), 0 10px 14px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.7);}
+.keycap:active{transform:translateY(2px); box-shadow:0 1px 0 var(--paper-shadow), 0 2px 4px rgba(0,0,0,0.15), inset 0 1px 2px rgba(0,0,0,0.15);}
+.keycap.picked{background:linear-gradient(160deg, var(--ink) 0%, #34372f 100%); color:var(--paper); border-color:var(--ink); transform:translateY(2px); box-shadow:0 1px 0 var(--ink), 0 2px 4px rgba(0,0,0,0.25), inset 0 1px 2px rgba(0,0,0,0.2);}
+.keycap .kc-main{font-family:var(--serif-cn); font-size:23px; font-weight:700; line-height:1; color:var(--seal);}
+.keycap.picked .kc-main{color:var(--paper);}
+.keycap .kc-sub{font-family:var(--serif-en); font-size:9.5px; color:var(--ink-soft); margin-top:3px; letter-spacing:0.5px;}
+.keycap.picked .kc-sub{color:#c9c2ac;}
+.keycap.small{width:52px; height:52px;}
+.keycap.small .kc-main{font-family:var(--serif-en); font-size:13px; font-weight:700; color:var(--ink);}
+.keycap.small.picked .kc-main{color:var(--paper);}
+.keyboard-note{font-size:12.5px; color:var(--ink-soft); text-align:center; max-width:520px; margin:4px auto 0;}
+
+/* ---------- STROKES ---------- */
+.stroke-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+@media (max-width:760px){.stroke-grid{grid-template-columns:repeat(2,1fr);}}
+.stroke-card{background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:16px; text-align:center;}
+.stroke-card svg{margin:4px 0 8px;}
+.stroke-card b{font-family:var(--serif-cn); font-size:15px; display:block;}
+.stroke-card span{font-size:11.5px; color:var(--ink-soft);}
+.rules-list{list-style:none; margin:24px 0 0; padding:0; display:grid; gap:10px;}
+.rules-list li{
+  display:flex; gap:12px; align-items:flex-start; background:rgba(255,255,255,0.35);
+  border:1px solid var(--paper-shadow); padding:12px 16px; border-radius:2px; font-size:14px;
+}
+.rules-list b{font-family:var(--serif-en); color:var(--seal); min-width:22px;}
+
+/* ---------- RADICALS ---------- */
+.search-bar{
+  display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.5); border:1.5px solid var(--ink);
+  border-radius:2px; padding:8px 14px; max-width:320px; margin-bottom:20px;
+}
+.search-bar input{border:none; background:none; outline:none; font-size:14px; width:100%; font-family:var(--sans);}
+.radical-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:12px;}
+@media (max-width:800px){.radical-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:520px){.radical-grid{grid-template-columns:repeat(2,1fr);}}
+.radical-card{perspective:800px; height:118px; cursor:pointer;}
+.radical-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;}
+.radical-card.flipped .radical-inner{transform:rotateY(180deg);}
+.radical-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:2px; border:1px solid var(--paper-shadow);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; padding:8px; text-align:center;
+}
+.radical-face.front{background:rgba(255,255,255,0.4);}
+.radical-face.front .ch{font-family:var(--serif-cn); font-size:34px; font-weight:700; color:var(--seal);}
+.radical-face.front .py{font-size:11px; color:var(--ink-soft); margin-top:4px;}
+.radical-face.back{background:var(--ink); color:var(--paper); transform:rotateY(180deg);}
+.radical-face.back .mean{font-weight:700; font-size:13px;}
+.radical-face.back .ex{font-size:11px; margin-top:6px; color:#c9c2ac;}
+
+/* ---------- CHARACTERS flashcards ---------- */
+.deck-wrap{display:flex; flex-direction:column; align-items:center; gap:18px;}
+.flashcard{width:280px; height:280px; perspective:1000px; cursor:pointer;}
+.flash-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;}
+.flashcard.flipped .flash-inner{transform:rotateY(180deg);}
+.flash-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:4px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow:5px 6px 0 rgba(0,0,0,0.12);
+}
+.flash-face.front{background:rgba(255,255,255,0.55); border:1px solid var(--paper-shadow);}
+.flash-face.front .ch{font-family:var(--serif-cn); font-size:100px; font-weight:700;}
+.flash-face.back{background:var(--ink); color:var(--paper); transform:rotateY(180deg);}
+.flash-face.back .py{font-family:var(--serif-en); font-size:26px; font-weight:700;}
+.flash-face.back .mean{margin-top:10px; font-size:15px; color:#d9d2ba;}
+.flash-face.back .strokes{margin-top:16px; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--gold);}
+.deck-controls{display:flex; gap:10px; align-items:center;}
+.deck-progress{font-size:12.5px; color:var(--ink-soft); font-weight:600;}
+
+/* ---------- WRITING PRACTICE ---------- */
+.hw-wrap{display:flex; flex-direction:column; align-items:center;}
+.hw-target-wrap{position:relative; width:280px; height:280px; margin:0 auto; border:2px solid var(--paper-shadow); background:rgba(255,255,255,0.55);}
+.hw-target-wrap::before{content:''; position:absolute; left:50%; top:0; bottom:0; width:1px; background:var(--paper-shadow); opacity:0.8; z-index:1;}
+.hw-target-wrap::after{content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:var(--paper-shadow); opacity:0.8; z-index:1;}
+.hw-diag{position:absolute; top:50%; left:50%; width:396px; height:0; border-top:1px dashed var(--paper-shadow); opacity:0.55; z-index:1;}
+.hw-diag1{transform:translate(-50%,-50%) rotate(45deg);}
+.hw-diag2{transform:translate(-50%,-50%) rotate(-45deg);}
+#hwTarget{position:relative; z-index:2;}
+.hw-context{text-align:center; font-size:14px; color:var(--ink-soft); margin:16px 0 2px;}
+.hw-progress{text-align:center; font-size:12px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase; margin-bottom:6px;}
+.hw-controls{display:flex; gap:10px; justify-content:center; margin-top:20px; flex-wrap:wrap;}
+.hw-result{text-align:center; font-size:14px; font-weight:600; color:var(--jade-dark); min-height:20px; margin-top:14px;}
+.hw-empty{text-align:center; padding:50px 20px; color:var(--ink-soft); font-size:14px;}
+
+/* ---------- DIALOGUE ---------- */
+.dialogue-list{display:flex; flex-direction:column; gap:12px;}
+.dialogue-card{border:1px solid var(--paper-shadow); border-radius:2px; background:rgba(255,255,255,0.4); overflow:hidden;}
+.dialogue-header{display:flex; align-items:center; justify-content:space-between; padding:16px 20px; cursor:pointer;}
+.dialogue-header b{font-family:var(--serif-en); font-size:17px;}
+.dialogue-header .icon{font-family:var(--serif-cn); font-size:22px; color:var(--seal); margin-right:10px;}
+.dialogue-body{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+.dialogue-card.open .dialogue-body{max-height:900px;}
+.dialogue-body-inner{padding:0 20px 20px;}
+.line{display:flex; gap:14px; padding:10px 0; border-top:1px dashed var(--paper-shadow);}
+.line:first-child{border-top:none;}
+.line .who{
+  flex-shrink:0; width:26px; height:26px; border-radius:50%; background:var(--ink); color:var(--paper);
+  display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;
+}
+.line.b .who{background:var(--seal);}
+.line-text .hz{font-family:var(--serif-cn); font-size:18px; font-weight:600;}
+.line-text .py{font-size:12.5px; color:var(--ink-soft); margin-top:2px;}
+.line-text .en{font-size:12.5px; color:var(--slate); margin-top:2px; display:none;}
+.show-en .line-text .en{display:block;}
+.toggle-en-btn{margin-bottom:16px;}
+
+/* ---------- ZHUYIN ---------- */
+.zhuyin-table{width:100%; border-collapse:collapse; font-size:13.5px;}
+.zhuyin-table th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--ink-soft); padding:6px 10px; border-bottom:2px solid var(--ink);}
+.zhuyin-table td{padding:6px 10px; border-bottom:1px solid var(--paper-shadow);}
+.zy-symbol{font-family:var(--serif-cn); font-size:20px; color:var(--seal); font-weight:700; cursor:pointer;}
+.zy-symbol:hover{text-decoration:underline;}
+.zhuyin-note{background:rgba(255,255,255,0.4); border-left:3px solid var(--gold); padding:14px 18px; font-size:13.5px; margin-top:20px; color:var(--ink-soft);}
+
+/* ---------- GEOGRAPHY ---------- */
+.province-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+@media (max-width:820px){.province-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:560px){.province-grid{grid-template-columns:repeat(2,1fr);}}
+.province-chip{
+  background:rgba(255,255,255,0.4); border:1.5px solid var(--paper-shadow); border-radius:2px; padding:16px 10px;
+  text-align:center; cursor:pointer; transition:border-color .15s, background .15s;
+}
+.province-chip:hover{border-color:var(--seal);}
+.province-chip.active{background:var(--ink); border-color:var(--ink); color:var(--paper);}
+.province-chip .cn{font-family:var(--serif-cn); font-size:20px; font-weight:700; display:block;}
+.province-chip .en{font-size:11px; color:inherit; opacity:0.75;}
+.province-detail{margin-top:24px; background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow); border-radius:2px; padding:28px;}
+.pd-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:6px;}
+.pd-head .cn{font-family:var(--serif-cn); font-size:36px; font-weight:700; color:var(--seal);}
+.pd-head .en{font-family:var(--serif-en); font-size:20px; color:var(--ink-soft);}
+.pd-sub{color:var(--ink-soft); font-size:14px; margin-bottom:20px;}
+.pd-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:20px;}
+@media (max-width:700px){.pd-grid{grid-template-columns:1fr;}}
+.pd-block h4{font-size:11.5px; text-transform:uppercase; letter-spacing:1.2px; color:var(--gold); margin:0 0 10px;}
+.tag-row{display:flex; flex-wrap:wrap; gap:6px;}
+.tag{background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:20px; padding:5px 12px; font-size:12.5px;}
+.pd-list{list-style:none; margin:0; padding:0; display:grid; gap:6px; font-size:13.5px;}
+.pd-list li{padding-left:14px; position:relative;}
+.pd-list li::before{content:'—'; position:absolute; left:0; color:var(--seal);}
+
+/* ---------- HISTORY ---------- */
+.timeline{position:relative; margin-top:10px; padding-left:26px;}
+.timeline::before{content:''; position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:var(--paper-shadow);}
+.dyn-item{position:relative; padding-bottom:22px; cursor:pointer;}
+.dyn-item::before{
+  content:''; position:absolute; left:-26px; top:6px; width:12px; height:12px; border-radius:50%;
+  background:var(--paper); border:2.5px solid var(--ink);
+}
+.dyn-item.open::before{background:var(--seal); border-color:var(--seal);}
+.dyn-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;}
+.dyn-head .cn{font-family:var(--serif-cn); font-size:24px; font-weight:700;}
+.dyn-head .period{font-size:12.5px; color:var(--ink-soft); font-family:var(--serif-en); font-weight:600;}
+.dyn-body{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+.dyn-item.open .dyn-body{max-height:400px;}
+.dyn-body-inner{padding:12px 0 4px; font-size:14px; color:var(--ink-soft); max-width:640px;}
+.dyn-body-inner ul{margin:10px 0 0; padding-left:18px;}
+.dyn-body-inner li{margin-bottom:4px;}
+
+footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:center; font-size:12.5px; color:var(--ink-soft);}
+
+.cedict-credit{font-size:11px; color:var(--ink-soft); margin:10px 0 0; line-height:1.6;}
+.cedict-credit a{color:var(--jade-dark); font-weight:600;}
+
+</style>
+<script src="settings.js?v=6"></script>
+<script src="cedict.js"></script>
+<script src="oracle-bone-coverage.js"></script>
+<script src="seal-script-coverage.js"></script>
+<script src="oracle-bone.js"></script>
+<script src="char-decompositions.js"></script>
+<script src="word-suggestions.js"></script>
+<script src="hsk-lists.js"></script>
+<script src="tocfl-lists.js"></script>
+<script src="auth-guard.js?v=2"></script>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html" style="text-decoration:none;">
+      <div class="seal-mark">境</div>
+      <div class="brand-text"><b>Context Chinese</b><span data-i18n="brand.tagline">Your One-Stop China Shop</span></div>
+    </a>
+    <nav class="tabs" id="navTabs" style="flex:1 1 auto;">
+
+      <div class="nav-item" data-nav-cat="learn">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">学习</span><span class="i18n-label" data-i18n="nav.learn">Learn</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="read.html" data-i18n="learn.read">Read</a>
+          <a class="dropdown-link" href="dictate.html" data-i18n="learn.dictate">Dictate</a>
+          <a class="dropdown-link" href="multiple-choice.html" data-i18n="learn.multiplechoice">Multiple Choice</a>
+          <a class="dropdown-link" href="translate.html" data-i18n="learn.translate">Translate</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="vocabulary">
+        <button class="tab-btn active" onclick="toggleNavDropdown(event)"><span class="cn">词汇</span><span class="i18n-label" data-i18n="nav.vocabulary">Vocabulary</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="search.html" data-i18n="vocab.search">Search</a>
+          <a class="dropdown-link active" href="word-bank.html" data-i18n="vocab.wordbank">Word Bank</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="hanzi">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">汉字</span><span class="i18n-label" data-i18n="nav.hanzi">Hanzi</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="strokes.html" data-i18n="hanzi.strokes">Strokes</a>
+          <a class="dropdown-link" href="radicals.html" data-i18n="hanzi.radicals">Radicals</a>
+          <a class="dropdown-link" href="writing-practice.html" data-i18n="hanzi.writing">Writing Practice</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="pinyin">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">拼音</span><span class="i18n-label" data-i18n="nav.pinyin">Pinyin</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="pinyin-components.html" data-i18n="pinyin.components">Components</a>
+          <a class="dropdown-link" href="match-pinyin.html" data-i18n="pinyin.match">Match Pinyin</a>
+          <a class="dropdown-link" href="type-pinyin.html" data-i18n="pinyin.typing">Type Pinyin</a>
+        </div>
+      </div>
+</nav>
+
+      <div class="nav-item" style="flex-shrink:0;">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)" style="line-height:1; display:inline-flex; align-items:center; justify-content:center;" title="More"><svg viewBox="0 0 24 24" fill="black" style="width:18px; height:18px;"><path d="M19.14,12.94c0.04,-0.3,0.06,-0.61,0.06,-0.94c0,-0.32,-0.02,-0.64,-0.07,-0.94l2.03,-1.58c0.18,-0.14,0.23,-0.41,0.12,-0.61 l-1.92,-3.32c-0.12,-0.22,-0.37,-0.29,-0.59,-0.22l-2.39,0.96c-0.5,-0.38,-1.03,-0.7,-1.62,-0.94L14.4,2.81 c-0.04,-0.24,-0.24,-0.41,-0.48,-0.41h-3.84c-0.24,0,-0.43,0.17,-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33 c-0.22,-0.08,-0.47,0,-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94 l-2.03,1.58c-0.18,0.14,-0.23,0.41,-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39,-0.96c0.5,0.38,1.03,0.7,1.62,0.94 l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44,-0.17,0.47,-0.41l0.36,-2.54c0.59,-0.24,1.13,-0.56,1.62,-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59,-0.22l1.92,-3.32c0.12,-0.22,0.07,-0.47,-0.12,-0.61L19.14,12.94z M12,15.6c-1.98,0,-3.6,-1.62,-3.6,-3.6 s1.62,-3.6,3.6,-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"></path></svg></button>
+        <div class="dropdown" style="left:auto; right:0;">
+          <a class="dropdown-link" href="settings.html" data-i18n="gear.settings">Settings</a>
+          <a class="dropdown-link" href="help.html" data-i18n="gear.help">Help</a>
+          <button class="dropdown-link" onclick="signOutUser()" data-i18n="gear.logout">Logout</button>
+        </div>
+      </div>
+  </div>
+</header>
+
+<main>
+
+<div class="section-head">
+  <div class="eyebrow">Word Bank · 词汇</div>
+</div>
+
+<div class="wb-note">Manage and organize your vocabulary. Words saved here will appear in all practice modules.</div>
+
+<div class="list-manager collapsible collapsed" data-collapse-id="wb-lists" onclick="toggleCollapsibleBox(event, this)">
+  <h4 class="collapsible-toggle">Vocabulary lists<span class="collapsible-caret">▾</span></h4>
+  <p class="list-manager-hint">Subscribe to a standard word list to see what percentage of it you already know, based on the words in your Word Bank below. Matches are exact on the simplified word. Pick a family below to add a level.</p>
+  <div class="list-chip-row" id="listChipRow"></div>
+</div>
+
+<div class="import-card collapsible collapsed" data-collapse-id="wb-import" onclick="toggleCollapsibleBox(event, this)">
+  <h4 class="collapsible-toggle">Import<span class="collapsible-caret">▾</span></h4>
+  <p class="import-hint">Upload a CSV/TXT file, or paste a list below — one entry per line, as <code>汉字</code>, <code>汉字,pīnyīn</code>, or <code>汉字,pīnyīn,meaning</code> (comma-separated hanzi on one line also works).</p>
+  <div class="import-row">
+    <label class="btn ghost small file-label">Upload file<input type="file" accept=".csv,.txt" style="display:none" onchange="handleCsvFile(event)"></label>
+    <span class="import-or">or paste a list:</span>
+  </div>
+  <textarea id="wbPasteArea" class="import-textarea" rows="3" placeholder="你好,nǐhǎo,hello&#10;谢谢&#10;再见,zàijiàn"></textarea>
+
+  <div class="import-options">
+    <label class="import-option-row"><input type="checkbox" id="impAddToBank" checked onchange="onImpAddToBankToggle()"> Add to my Word Bank</label>
+    <div class="import-suboption" id="impFolderRow">
+      Folder:
+      <select id="impFolderSelect" onchange="onImpFolderSelectChange()"></select>
+      <input type="text" id="impNewFolderName" placeholder="New folder name" style="display:none;">
+    </div>
+    <label class="import-option-row"><input type="checkbox" id="impSaveAsList" onchange="onImpSaveAsListToggle()"> Save as a trackable Vocabulary List (to measure your progress against, like HSK above)</label>
+    <div class="import-suboption" id="impListNameRow" style="display:none;">
+      List name: <input type="text" id="impListName" placeholder="e.g. My HSK 1 flashcards" maxlength="60">
+    </div>
+  </div>
+
+  <button class="btn small" onclick="handlePasteImport()">Add pasted list</button>
+  <div class="import-status" id="wbImportStatus"></div>
+  <p class="cedict-credit">Word lookups during import are powered by <a href="https://www.mdbg.net/chinese/dictionary?page=cc-cedict" target="_blank" rel="noopener">CC-CEDICT</a>, © CC-CEDICT contributors, licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>. See <a href="NOTICE.md" target="_blank" rel="noopener">NOTICE.md</a>.</p>
+  <p class="cedict-credit">Oracle bone script glyphs from the <a href="https://oracular.azurewebsites.net/glyphs/download" target="_blank" rel="noopener">Oracular</a> font (Jingyuan Oracle Bone Digital Platform, Peichao Qin), licensed under the SIL Open Font License. Seal script glyphs from <a href="https://www.cns11643.gov.tw/downloadList.jsp?ID=2&amp;ID2=34&amp;la=1" target="_blank" rel="noopener">CNS 11643</a>, Taiwan's Ministry of Digital Affairs. See <a href="NOTICE.md" target="_blank" rel="noopener">NOTICE.md</a> for details.</p>
+</div>
+
+<div class="folder-manager collapsible collapsed" data-collapse-id="wb-folders" onclick="toggleCollapsibleBox(event, this)">
+  <h4 class="collapsible-toggle">Folders<span class="collapsible-caret">▾</span></h4>
+  <div class="folder-manager-grid">
+    <div class="folder-left-col">
+      <div class="folder-create-row">
+        <input type="text" id="folderNameInput" placeholder="New folder name, e.g. HSK 1" maxlength="40" onkeydown="if(event.key==='Enter') handleCreateFolder()">
+        <button class="btn small" onclick="handleCreateFolder()">Create folder</button>
+      </div>
+    </div>
+    <div class="folder-pill-list" id="folderPillList"></div>
+  </div>
+</div>
+
+<div class="wb-note" style="margin-bottom:14px;">
+  Each word's tags mark it as focused, per skill — click one to toggle it: <span class="focus-tag ft-writing active" style="display:inline-flex;">W</span> Writing (Hanzi) · <span class="focus-tag ft-typing active" style="display:inline-flex;">T</span> Typing · <span class="focus-tag ft-reading active" style="display:inline-flex;">R</span> Reading (Match Pinyin) · <span class="focus-tag ft-hearing active" style="display:inline-flex;">A</span> Hearing (coming soon) · <span class="focus-tag ft-known active" style="display:inline-flex;">K</span> Known. All four skill tags lit up at once means a word is <b>Hyperfocus</b> <span class="hyperfocus-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>.
+</div>
+
+<div class="dict-search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8" fill="#A9D6F5" stroke="#2F6FA8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="#8B5A2B"></line></svg><input id="wbSearchInput" placeholder="Search this list by hanzi, pinyin, or meaning…" oninput="renderWordBankView()"></div>
+
+<div class="wb-header">
+  <span id="wbCount" style="font-size:12.5px; color:var(--ink-soft);"></span>
+</div>
+<div class="mass-toolbar">
+  <div class="mass-toolbar-left">
+    <label class="mass-select-all"><input type="checkbox" id="wbSelectAllCb" onchange="wbToggleSelectAll(this.checked)"> Select all shown</label>
+    <span id="wbSelCount">0 selected</span>
+  </div>
+  <div class="wordbank-daily-row">
+    Daily Study - <label class="folder-daily-toggle" title="Trickle in new words from the general Word Bank a few at a time, like each folder can below" onclick="event.stopPropagation()">
+      <input type="checkbox" id="wordBankDailyToggle" onchange="toggleWordBankDailyStudy(this.checked)"><span class="daily-icon-wrap"><span class="daily-icon-backdrop"></span><svg class="daily-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 18a5 5 0 0 0-10 0" stroke="#FBC02D"></path><line x1="12" y1="2" x2="12" y2="9" stroke="#FBC02D"></line><line x1="4.22" y1="10.22" x2="5.64" y2="11.64" stroke="#FBC02D"></line><line x1="1" y1="18" x2="3" y2="18" stroke="#FBC02D"></line><line x1="21" y1="18" x2="23" y2="18" stroke="#FBC02D"></line><line x1="18.36" y1="11.64" x2="19.78" y2="10.22" stroke="#FBC02D"></line><polyline points="8 6 12 2 16 6" stroke="#FBC02D"></polyline><line x1="23" y1="22" x2="1" y2="22" stroke="#3E6B5B"></line></svg></span>
+    </label>
+  </div>
+  <div class="mass-toolbar-right">
+    <div class="wb-tag-filter-row" id="wbTagFilterRow"></div>
+    <span id="wbFolderActions"></span>
+    <button class="btn ghost small danger" id="wbDeleteSelectedBtn" disabled onclick="wbDeleteSelected()">Delete<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="8" y1="12" x2="16" y2="12"></line></svg></button>
+  </div>
+</div>
+<div class="dict-list" id="wbList"></div>
+
+</main>
+
+<footer>境 Context Chinese — a learning companion for Mandarin sound, script, geography and history.</footer>
+
+<script>
+/* ================= NAV DROPDOWN (click to open, does not navigate) ================= */
+function toggleNavDropdown(e){
+  const item = e.currentTarget.closest('.nav-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.nav-item.open').forEach(n=>{
+    n.classList.remove('open');
+    const dd = n.querySelector('.dropdown');
+    if(dd){ dd.style.position=''; dd.style.left=''; dd.style.top=''; }
+  });
+  if(!wasOpen){
+    item.classList.add('open');
+    // Below 920px the nav scrolls horizontally (nav.tabs{overflow-x:auto}).
+    // Anchoring the dropdown with position:fixed here — instead of the
+    // default position:absolute under the button — lets it escape that
+    // scroll container's clipping without ever touching its overflow
+    // property, so opening/closing a dropdown never resets the nav's
+    // scroll position back to the start.
+    if(window.matchMedia('(max-width:920px)').matches){
+      const dd = item.querySelector('.dropdown');
+      const btnRect = e.currentTarget.getBoundingClientRect();
+      dd.style.position = 'fixed';
+      dd.style.top = (btnRect.bottom + 6) + 'px';
+      const maxLeft = window.innerWidth - 208; // dropdown min-width 200px + 8px margin
+      dd.style.left = Math.max(8, Math.min(btnRect.left, maxLeft)) + 'px';
+    }
+  }
+}
+document.addEventListener('click', (e)=>{
+  if(e.target.closest('.dropdown-link') || !e.target.closest('.nav-item')){
+    document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+  }
+});
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='Escape') document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+});
+
+/* ================= SPEECH ================= */
+function speak(text, lang){
+  if(!('speechSynthesis' in window) || !text || text==='—') return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang || 'zh-CN';
+  u.rate = (typeof getSpeechRate === 'function') ? getSpeechRate() : 0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+function shuffle(array){
+  for(let i=array.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function stripTones(s){
+  const map = {'ā':'a','á':'a','ǎ':'a','à':'a','ē':'e','é':'e','ě':'e','è':'e','ī':'i','í':'i','ǐ':'i','ì':'i',
+    'ō':'o','ó':'o','ǒ':'o','ò':'o','ū':'u','ú':'u','ǔ':'u','ù':'u','ǖ':'u','ǘ':'u','ǚ':'u','ǜ':'u','ü':'u'};
+  return s.toLowerCase().split('').map(c=>map[c]||c).join('');
+}
+
+/* ================= WORD BANK (persisted via localStorage, shared across pages) =================
+   Note: localStorage is scoped per-origin. If these files are opened directly from disk (file://),
+   most browsers share storage across files in the same folder, but this can vary — hosting the
+   site (even a simple local server) guarantees the Word Bank stays in sync across every page. */
+let wordBankMem = [];
+function loadWordBank(){
+  try{
+    const raw = localStorage.getItem('ccWordBank');
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return wordBankMem; }
+}
+function saveWordBank(arr){
+  wordBankMem = arr;
+  try{
+    localStorage.setItem('ccWordBank', JSON.stringify(arr));
+    return true;
+  }catch(e){
+    // Most common real-world cause: Private Browsing on iOS Safari throws on
+    // every localStorage write. Previously swallowed silently here, so the
+    // UI kept claiming words were added while nothing actually persisted —
+    // callers now get this back via addToWordBank's .saved flag.
+    console.warn('Word Bank failed to save — storage may be blocked (e.g. Private Browsing).', e);
+    return false;
+  }
+}
+// Adds to the general Word Bank when folder is falsy, or to that folder's own
+// independent collection otherwise — the two never share storage (see the
+// FOLDERS block below), so this only ever de-dupes against the ONE
+// collection it's writing into. Cross-collection duplicate handling (prompting
+// to keep-as-copy or skip-and-mark-Known) is handled by the caller — see
+// addEntriesWithDuplicateCheck.
+function addToWordBank(entries, folder){
+  const target = folder ? loadFolderWords(folder) : loadWordBank();
+  const existing = new Set(target.map(w=>w.hz));
+  let added=0, skipped=0;
+  entries.forEach(e=>{
+    if(!e || !e.hz) return;
+    if(existing.has(e.hz)){ skipped++; return; }
+    existing.add(e.hz);
+    target.push({hz:e.hz, py:e.py||'—', en:e.en||'—'});
+    added++;
+  });
+  const saved = folder ? saveFolderWords(folder, target) : saveWordBank(target);
+  return {added, skipped, total:target.length, saved};
+}
+function removeFromWordBankRaw(hz){
+  saveWordBank(loadWordBank().filter(w=>w.hz!==hz));
+}
+function clearWordBankRaw(){
+  saveWordBank([]);
+}
+
+/* ---- FOLDERS: each an independent word collection, entirely separate from
+   the general Word Bank above — a word can exist in the general Word Bank
+   and in one or more folders at once as independent copies (own py/en);
+   deleting or editing one never touches the others. Colored focus/Known tags
+   (W/T/R/H/K) are still shared across every copy of a word automatically,
+   since those live in a completely separate store keyed by hanzi (see
+   settings.js) — not tied to which collection a word entry sits in. ---- */
+function loadFolders(){
+  try{ const raw = localStorage.getItem('ccFolders'); return raw ? JSON.parse(raw) : []; }catch(e){ return []; }
+}
+function saveFolders(arr){
+  try{ localStorage.setItem('ccFolders', JSON.stringify(arr)); }catch(e){}
+}
+// Feather Icons' "sunrise" glyph (sunrise.svg in the project folder),
+// recolored per-part — see .folder-daily-toggle .daily-icon's own CSS
+// comment for the color reasoning, and .daily-icon-backdrop's for the
+// "off" (grey moon) state this same markup also renders via CSS alone.
+// Shared here as one constant since it's used identically in two places
+// (the general Word Bank's own Daily Study row and every folder pill's
+// own toggle — see renderFolderManager below). Element order matters, not
+// just for source-reading clarity: the "off" CSS picks out every ray via
+// line:not(:last-child)/polyline, which only works because the horizon
+// (land) line is the LAST child here — keep any future edit to this
+// markup consistent with that, or move the CSS selectors to match.
+// Wrapped in .daily-icon-wrap/.daily-icon-backdrop (not just the bare
+// <svg>) so every caller gets the backdrop circle for free.
+const DAILY_ICON_SVG = '<span class="daily-icon-wrap"><span class="daily-icon-backdrop"></span><svg class="daily-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 18a5 5 0 0 0-10 0" stroke="#FBC02D"></path><line x1="12" y1="2" x2="12" y2="9" stroke="#FBC02D"></line><line x1="4.22" y1="10.22" x2="5.64" y2="11.64" stroke="#FBC02D"></line><line x1="1" y1="18" x2="3" y2="18" stroke="#FBC02D"></line><line x1="21" y1="18" x2="23" y2="18" stroke="#FBC02D"></line><line x1="18.36" y1="11.64" x2="19.78" y2="10.22" stroke="#FBC02D"></line><polyline points="8 6 12 2 16 6" stroke="#FBC02D"></polyline><line x1="23" y1="22" x2="1" y2="22" stroke="#3E6B5B"></line></svg></span>';
+// Per-collection Daily Study on/off (see writing-practice.html's own
+// read-only copy of loadDailyStudyCollections, and applyDailyStudyGating
+// there for how these flags actually gate the practice queue). This is the
+// one page that writes ccDailyStudyCollections — every other page treats it
+// as read-only.
+function loadDailyStudyCollections(){
+  try{
+    const raw = localStorage.getItem('ccDailyStudyCollections');
+    const parsed = raw ? JSON.parse(raw) : null;
+    return (parsed && parsed.folders) ? parsed : {wordBank:false, folders:{}};
+  }catch(e){ return {wordBank:false, folders:{}}; }
+}
+function saveDailyStudyCollections(collections){
+  try{ localStorage.setItem('ccDailyStudyCollections', JSON.stringify(collections)); }catch(e){}
+}
+function toggleWordBankDailyStudy(checked){
+  const c = loadDailyStudyCollections();
+  c.wordBank = checked;
+  saveDailyStudyCollections(c);
+}
+function toggleFolderDailyStudy(name, checked){
+  const c = loadDailyStudyCollections();
+  c.folders[name] = checked;
+  saveDailyStudyCollections(c);
+}
+function loadAllFolderWords(){
+  try{ const raw = localStorage.getItem('ccFolderWords'); return raw ? JSON.parse(raw) : {}; }catch(e){ return {}; }
+}
+function loadFolderWords(name){
+  return loadAllFolderWords()[name] || [];
+}
+// The "All Vocab" view: every folder's vocab plus the general Word
+// Bank, merged into one list. A word can exist as an independent copy in
+// several collections at once (see the note above) — de-duped here by hz so
+// it only ever shows one card, keeping whichever copy (py/en) was seen
+// first: the general Word Bank's own copy if it has one, else the first
+// folder that contains it.
+function loadAllWordsAggregate(){
+  const merged = loadWordBank().slice();
+  const seen = new Set(merged.map(w=>w.hz));
+  loadFolders().forEach(function(f){
+    loadFolderWords(f).forEach(function(w){
+      if(!seen.has(w.hz)){ seen.add(w.hz); merged.push(w); }
+    });
+  });
+  return merged;
+}
+function saveFolderWords(name, arr){
+  const all = loadAllFolderWords();
+  all[name] = arr;
+  try{
+    localStorage.setItem('ccFolderWords', JSON.stringify(all));
+    return true;
+  }catch(e){
+    console.warn('Folder failed to save — storage may be blocked (e.g. Private Browsing).', e);
+    return false;
+  }
+}
+function createFolder(name){
+  name = (name||'').trim();
+  if(!name) return loadFolders();
+  const folders = loadFolders();
+  if(!folders.includes(name)){ folders.push(name); saveFolders(folders); }
+  return folders;
+}
+function deleteFolder(name){
+  saveFolders(loadFolders().filter(f=>f!==name));
+  const all = loadAllFolderWords();
+  delete all[name];
+  try{ localStorage.setItem('ccFolderWords', JSON.stringify(all)); }catch(e){}
+  const daily = loadDailyStudyCollections();
+  if(name in daily.folders){ delete daily.folders[name]; saveDailyStudyCollections(daily); }
+}
+// One-time migration from the old model (a folder was just a `folder` tag on
+// a shared ccWordBank entry) to independent per-folder collections. Safe to
+// call on every page load — once migrated, no ccWordBank entry has a
+// `folder` field left, so this is a no-op from then on.
+function migrateFoldersToIndependentStorage(){
+  const bank = loadWordBank();
+  const toMove = bank.filter(w => w.folder);
+  if(!toMove.length) return;
+  const all = loadAllFolderWords();
+  toMove.forEach(w=>{
+    const f = w.folder;
+    if(!all[f]) all[f] = [];
+    if(!all[f].some(x=>x.hz===w.hz)) all[f].push({hz:w.hz, py:w.py, en:w.en});
+  });
+  try{ localStorage.setItem('ccFolderWords', JSON.stringify(all)); }catch(e){}
+  saveWordBank(bank.filter(w => !w.folder));
+}
+// Finds every collection (general Word Bank + each folder) that already has
+// a word with this hanzi — used for cross-collection duplicate detection.
+function findExistingCopies(hz){
+  const hits = [];
+  if(loadWordBank().some(w=>w.hz===hz)) hits.push('your Word Bank');
+  loadFolders().forEach(f=>{ if(loadFolderWords(f).some(w=>w.hz===hz)) hits.push(`folder "${f}"`); });
+  return hits;
+}
+// Wraps addToWordBank with a per-word "this is already saved elsewhere — keep
+// a new copy here, or skip it (and mark it Known, since a duplicate usually
+// means you already know it)?" check, scanning every OTHER collection (not
+// just the one being added to). Only prompts for words that actually have a
+// duplicate; everything else is added straight through with no extra friction.
+function addEntriesWithDuplicateCheck(entries, folder){
+  const toAdd = [];
+  let markedKnown = 0;
+  entries.forEach(e=>{
+    if(!e || !e.hz) return;
+    const elsewhere = findExistingCopies(e.hz).filter(src => !(folder ? src === `folder "${folder}"` : src === 'your Word Bank'));
+    if(!elsewhere.length){ toAdd.push(e); return; }
+    const keep = confirm(`"${e.hz}" (${e.py}) is already in ${elsewhere.join(' and ')}.\n\nKeep it as a new copy here too? Its focus/Known tags stay shared either way.\n\nOK = keep a copy here\nCancel = skip it here and mark it Known`);
+    if(keep){ toAdd.push(e); }
+    else { setFocusCategory(e.hz, KNOWN_TAG.key, true); markedKnown++; }
+  });
+  const res = addToWordBank(toAdd, folder);
+  res.markedKnown = markedKnown;
+  return res;
+}
+// Batch version for imports and list subscriptions, which can be hundreds of
+// words — asking per-word via confirm() would mean dozens of dialogs, so
+// this splits the batch into duplicates vs. fresh words and asks ONCE how to
+// handle the duplicates as a group.
+function addEntriesWithDuplicateCheckBatch(entries, folder){
+  const dupes = [], fresh = [];
+  entries.forEach(e=>{
+    if(!e || !e.hz) return;
+    const elsewhere = findExistingCopies(e.hz).filter(src => !(folder ? src === `folder "${folder}"` : src === 'your Word Bank'));
+    (elsewhere.length ? dupes : fresh).push(e);
+  });
+  if(!dupes.length) return addToWordBank(fresh, folder);
+  const keepDupes = confirm(`${dupes.length} of these ${entries.length} words are already saved elsewhere (your Word Bank or another folder).\n\nOK = keep all ${dupes.length} as new copies here too\nCancel = skip those ${dupes.length} here and mark them Known instead`);
+  const toAdd = keepDupes ? fresh.concat(dupes) : fresh;
+  if(!keepDupes) dupes.forEach(e=>setFocusCategory(e.hz, KNOWN_TAG.key, true));
+  const res = addToWordBank(toAdd, folder);
+  res.markedKnown = keepDupes ? 0 : dupes.length;
+  return res;
+}
+
+</script>
+
+<script>
+/* Single-word Remove and blanket Clear-all were replaced by the checkbox +
+   "Delete selected" flow above (see wbToggleSelect/wbDeleteSelected) — one
+   consistent, safer path for removing 1, several, or all shown words. */
+
+/* ---- import: CSV upload / pasted list ---- */
+function showWbStatus(msg){
+  const el = document.getElementById('wbImportStatus');
+  el.textContent = msg;
+  el.style.opacity = '1';
+  clearTimeout(window._wbStatusTimer);
+  window._wbStatusTimer = setTimeout(()=>{ el.style.opacity='0'; }, 3800);
+}
+function unlockedSuggestionsMessage(beforeWordHz, beforeCharHz){
+  const parts = [];
+  if(typeof getSuggestedWords === 'function'){
+    const unlocked = getSuggestedWords().filter(s=>!beforeWordHz.has(s.hz));
+    if(unlocked.length) parts.push(`new word suggestion${unlocked.length>1?'s':''} (${unlocked.map(u=>u.hz).join(', ')})`);
+  }
+  if(typeof getSuggestedCharacters === 'function'){
+    const unlocked = getSuggestedCharacters().filter(s=>!beforeCharHz.has(s.hz));
+    if(unlocked.length) parts.push(`new character suggestion${unlocked.length>1?'s':''} (${unlocked.map(u=>u.hz).join(', ')})`);
+  }
+  return parts.length ? ` 🎉 You've unlocked ${parts.join(' and ')} — check Vocabulary → Search to add them.` : '';
+}
+function isLikelyPinyin(str){
+  return /^[a-zA-ZüÜāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ\s]+$/.test(str) && str.length>0;
+}
+function hasHanzi(str){
+  return /\p{Script=Han}/u.test(str);
+}
+// Built once, lazily, on first use rather than at load time — pasted-list
+// imports (lookupWord's only caller) don't happen on every page load, so
+// there's no reason to pay this cost before it's actually needed. Turns
+// "find every CEDICT entry with this exact hz" from an O(n) scan of
+// 124,936 entries (repeated once per pasted word — O(n·m) for a large
+// list) into an O(1) Map lookup.
+let CEDICT_BY_HZ = null;
+function getCedictByHz(){
+  if(CEDICT_BY_HZ) return CEDICT_BY_HZ;
+  CEDICT_BY_HZ = new Map();
+  if(typeof CEDICT !== 'undefined'){
+    for(const e of CEDICT){
+      const bucket = CEDICT_BY_HZ.get(e[0]);
+      if(bucket) bucket.push(e); else CEDICT_BY_HZ.set(e[0], [e]);
+    }
+  }
+  return CEDICT_BY_HZ;
+}
+function lookupWord(hz){
+  if(typeof CEDICT === 'undefined') return null;
+  const bucket = getCedictByHz().get(hz);
+  if(!bucket) return null;
+  let best = null;
+  for(const e of bucket){
+    if(!best) best = e;
+    if(!/^surname\b/i.test(e[2])){ best = e; break; } // prefer the common-word sense over a surname reading
+  }
+  if(!best) return null;
+  return parentalFilterCedictEntry(hz, best[1], best[2]); // null if parental controls flagged every sense
+}
+// Rejects a candidate hz value that has no actual Chinese characters at all
+// (e.g. a stray pinyin-only or English-only line in a pasted list) instead of
+// silently saving it as a "word" with nothing to look up or write — that
+// used to slip through as {hz:'it; other', py:'—', en:'—'}-style garbage,
+// only noticed later as an unexplained gap in Writing Practice's word count.
+function parseListText(text){
+  const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  const entries = [];
+  const skipped = [];
+  lines.forEach(line=>{
+    const parts = line.split(',').map(p=>p.trim().replace(/^"|"$/g,'')).filter(Boolean);
+    if(parts.length===0) return;
+    if(parts.length===1){
+      const hz = parts[0];
+      if(!hasHanzi(hz)){ skipped.push(hz); return; }
+      const found = lookupWord(hz);
+      entries.push(found || {hz, py:'—', en:'—'});
+      return;
+    }
+    if(isLikelyPinyin(parts[1])){
+      const hz = parts[0];
+      if(!hasHanzi(hz)){ skipped.push(hz); return; }
+      const py = parts[1];
+      let en = parts[2];
+      if(!en){ const found = lookupWord(hz); en = found ? found.en : '—'; }
+      entries.push({hz, py, en});
+    } else {
+      parts.forEach(hz=>{
+        if(!hasHanzi(hz)){ skipped.push(hz); return; }
+        const found = lookupWord(hz);
+        entries.push(found || {hz, py:'—', en:'—'});
+      });
+    }
+  });
+  entries.skipped = skipped; // non-hanzi lines that were rejected — see processImportedEntries
+  return entries;
+}
+/* ---- import destination options: general Word Bank / a folder / a tracked
+   Vocabulary List — independently combinable, per the checkboxes above the
+   import button. ---- */
+function onImpAddToBankToggle(){
+  document.getElementById('impFolderRow').style.display = document.getElementById('impAddToBank').checked ? 'flex' : 'none';
+}
+function onImpFolderSelectChange(){
+  const sel = document.getElementById('impFolderSelect');
+  document.getElementById('impNewFolderName').style.display = sel.value === '__new__' ? 'inline-block' : 'none';
+}
+function onImpSaveAsListToggle(){
+  document.getElementById('impListNameRow').style.display = document.getElementById('impSaveAsList').checked ? 'flex' : 'none';
+}
+function renderImportFolderSelect(){
+  const sel = document.getElementById('impFolderSelect');
+  if(!sel) return;
+  const prevValue = sel.value;
+  sel.innerHTML = folderSelectOptionsHTML();
+  if([...sel.options].some(o => o.value === prevValue)) sel.value = prevValue;
+}
+function processImportedEntries(entries, sourceLabel){
+  const skippedNote = (entries.skipped && entries.skipped.length)
+    ? ` Skipped ${entries.skipped.length} line${entries.skipped.length===1?'':'s'} with no Chinese characters (${entries.skipped.slice(0,5).join(', ')}${entries.skipped.length>5?', …':''}).`
+    : '';
+  if(!entries.length){ showWbStatus(`Nothing to import.${skippedNote}`); return; }
+  const beforeWords = typeof getSuggestedWords === 'function' ? new Set(getSuggestedWords().map(s=>s.hz)) : new Set();
+  const beforeChars = typeof getSuggestedCharacters === 'function' ? new Set(getSuggestedCharacters().map(s=>s.hz)) : new Set();
+
+  let addedMsg;
+  if(document.getElementById('impAddToBank').checked){
+    const folder = resolveFolderChoice(
+      document.getElementById('impFolderSelect').value,
+      document.getElementById('impNewFolderName').value
+    );
+    const res = addEntriesWithDuplicateCheckBatch(entries, folder);
+    if(res.saved === false){
+      showWbStatus(`Couldn't save — this browser is blocking storage. On iPhone, this usually means Private Browsing is on; turn it off and try again.`);
+      return;
+    }
+    addedMsg = `added ${res.added} new${res.skipped?`, ${res.skipped} already there`:''}${res.markedKnown?`, ${res.markedKnown} skipped as duplicates & marked Known`:''} to ${folder?`folder "${folder}"`:'your Word Bank'}`;
+  } else {
+    addedMsg = 'not added to your Word Bank';
+  }
+
+  let listMsg = '';
+  if(document.getElementById('impSaveAsList').checked){
+    const nameInput = document.getElementById('impListName');
+    const name = nameInput.value.trim() || `Imported list (${entries.length} words)`;
+    const lists = loadCustomLists();
+    lists.push({id: 'custom-' + Date.now() + '-' + Math.random().toString(36).slice(2,7), name, words: entries.map(e => ({s:e.hz, p:e.py}))});
+    saveCustomLists(lists);
+    listMsg = ` Saved as vocabulary list "${name}".`;
+    nameInput.value = '';
+  }
+
+  renderWordBankView();
+  showWbStatus(`${sourceLabel}: ${entries.length} entr${entries.length===1?'y':'ies'} — ${addedMsg}.${listMsg}${skippedNote}${unlockedSuggestionsMessage(beforeWords, beforeChars)}`);
+}
+function handleCsvFile(e){
+  const file = e.target.files[0];
+  e.target.value = ''; // clear now, not just on success, so re-picking the same file always re-fires onchange
+  if(!file){ showWbStatus('No file was picked.'); return; }
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    // Strip a leading UTF-8 BOM some mobile export tools (Files app, Numbers,
+    // etc.) prepend — parseListText's line trim already strips it too, but
+    // this is the actual data path being exercised here, not the parser.
+    const raw = String(ev.target.result);
+    const text = raw.charCodeAt(0) === 0xFEFF ? raw.slice(1) : raw;
+    processImportedEntries(parseListText(text), `Imported from ${file.name}`);
+  };
+  reader.onerror = function(){
+    showWbStatus(`Couldn't read "${file.name}" — try again, or paste the list into the box below instead.`);
+  };
+  reader.readAsText(file);
+}
+function handlePasteImport(){
+  const area = document.getElementById('wbPasteArea');
+  const text = area.value;
+  if(!text.trim()) return;
+  processImportedEntries(parseListText(text), 'Parsed pasted list');
+  area.value = '';
+}
+function handleCreateFolder(){
+  const input = document.getElementById('folderNameInput');
+  const name = input.value.trim();
+  if(!name) return;
+  createFolder(name);
+  input.value = '';
+  renderFolderManager();
+  renderWordBankView();
+}
+// Which folder (if any) the Word Bank list below is currently filtered to —
+// empty string means "just the general Word Bank" (the default landing
+// view), '__all__' means the merged All Vocab view (every folder plus
+// the general Word Bank, see loadAllWordsAggregate). Clicking a folder pill
+// toggles that one folder; clicking "All Vocab" sets '__all__'.
+let wbFolderFilter = '';
+// Multi-select for bulk delete — hz values, scoped to whatever collection is
+// currently shown; cleared whenever that collection changes so a stale
+// selection can never carry over and delete from the wrong list.
+let wbSelectedSet = new Set();
+// Tag filter (W/T/R/H/K) — a word must have EVERY selected tag active to
+// show; empty means no filter. Independent of search, both apply together.
+let wbTagFilter = new Set();
+function toggleFolderFilter(name){
+  wbFolderFilter = (wbFolderFilter === name) ? '' : name;
+  wbSelectedSet.clear();
+  renderFolderManager();
+  renderWordBankView();
+}
+function showAllWords(){
+  wbFolderFilter = '__all__';
+  wbSelectedSet.clear();
+  renderFolderManager();
+  renderWordBankView();
+}
+function handleDeleteFolder(name){
+  const count = loadFolderWords(name).length;
+  if(!confirm(`Delete the folder "${name}" and its ${count} word${count===1?'':'s'}? This can't be undone. (Copies of these words elsewhere, like your general Word Bank, are unaffected.)`)) return;
+  deleteFolder(name);
+  if(wbFolderFilter === name) wbFolderFilter = '';
+  wbSelectedSet.clear();
+  renderFolderManager();
+  renderWordBankView();
+}
+// Copies one word from whatever collection is currently shown into another
+// (general Word Bank or a different folder) — collections are independent,
+// so this is a copy, not a move; the word stays where it was too. Goes
+// through the duplicate-check wrapper since the target may already have it.
+function handleCopyToCollection(hz, targetValue){
+  if(!targetValue) return;
+  let target = targetValue === '__general__' ? '' : targetValue;
+  if(targetValue === '__new__'){
+    const name = prompt('New folder name:');
+    if(!name || !name.trim()) return;
+    createFolder(name.trim());
+    target = name.trim();
+  }
+  const source = wbFolderFilter ? loadFolderWords(wbFolderFilter) : loadWordBank();
+  const word = source.find(w=>w.hz===hz);
+  if(!word) return;
+  const res = addEntriesWithDuplicateCheck([word], target);
+  renderFolderManager();
+  renderWordBankView();
+  showWbStatus(res.added ? `Copied "${hz}" to ${target || 'your Word Bank'}.` : `"${hz}" wasn't copied.`);
+}
+// Matches the folder-name input's own rendered width exactly (it's a
+// flex:1 child with a min/max clamp, so its actual width varies with
+// available space) rather than guessing a fixed px value that would only be
+// right at one particular viewport width. The Folders section is collapsed
+// (display:none) by default, and renderFolderManager runs synchronously
+// while the page is still parsing — well before DOMContentLoaded, let alone
+// any click — so a sync that only ran there would read the input's width
+// while it's hidden (0px) and bake that in permanently. Three call sites
+// cover every way the section can end up visible: renderFolderManager
+// itself (page load / data changes, right for the common case where the
+// section is collapsed and this sync's 0px result doesn't matter since
+// nothing is visible yet); the Folders box's own onclick (self-heals the
+// moment a user actually toggles it open); and the DOMContentLoaded
+// listener just below, registered after settings.js's own DOMContentLoaded
+// listener (applyCollapsedSections, which is what un-collapses a section the
+// user left open on a previous visit) so this always runs AFTER that
+// restore — otherwise a section restored already-open would never get a
+// real sync at all, since no click ever happens to trigger the onclick path.
+function renderFolderManager(){
+  const folders = loadFolders();
+  const list = document.getElementById('folderPillList');
+  const daily = loadDailyStudyCollections();
+  // Settings → Daily Study (dailyStudyEnabled) gates the checkbox+sunrise
+  // control itself, not the underlying feature data — turning it off just
+  // hides the control everywhere it appears (this row, and every folder
+  // pill's own below) rather than clearing anyone's existing on/off choices,
+  // so turning it back on later still remembers what was toggled before.
+  const dailyStudyOn = loadSettings().dailyStudyEnabled;
+  const dailyRowEl = document.querySelector('.wordbank-daily-row');
+  if(dailyRowEl) dailyRowEl.style.display = dailyStudyOn ? '' : 'none';
+  const wbToggle = document.getElementById('wordBankDailyToggle');
+  if(wbToggle) wbToggle.checked = !!daily.wordBank;
+  if(!folders.length){
+    list.innerHTML = `<div class="folder-empty-note">No folders yet — create one above, then copy words into it below. Folders let you pick specific groups to study in Hanzi Writing Practice.</div>`;
+  } else {
+    list.innerHTML = folders.map(f=>{
+      const count = loadFolderWords(f).length;
+      const active = wbFolderFilter === f;
+      const dailyOn = !!daily.folders[f];
+      const deleteBtn = active
+        ? `<button type="button" class="folder-pill-delete" title="Delete &quot;${f}&quot;" aria-label="Delete &quot;${f}&quot;" onclick="event.stopPropagation(); handleDeleteFolder('${f}')">×</button>`
+        : '';
+      const dailyToggle = dailyStudyOn
+        ? `<label class="folder-daily-toggle" title="Daily Study for &quot;${f}&quot;" onclick="event.stopPropagation()"><input type="checkbox" ${dailyOn?'checked':''} onchange="toggleFolderDailyStudy('${f}', this.checked)">${DAILY_ICON_SVG}</label>`
+        : '';
+      return `<div class="folder-pill${active?' active':''}"><button type="button" class="folder-pill-toggle" onclick="toggleFolderFilter('${f}')">${f} <span class="count">(${count})</span></button>${dailyToggle}${deleteBtn}</div>`;
+    }).join('');
+  }
+  renderImportFolderSelect();
+}
+/* ---- vocabulary list subscriptions ----
+   Two kinds of trackable lists:
+   - "Family" lists (HSK, TOCFL): a fixed catalog, subscribed by picking a level
+     from that family's dropdown. HSK 7 covers the official HSK 3.0 standard's
+     combined 7-9 advanced tier, published as one list rather than three.
+   - Custom lists: created by importing a CSV/pasted list with "Save as a
+     trackable Vocabulary List" checked (see handleImportSubmit below). Each
+     one is a frozen snapshot of exactly those words. */
+const LIST_FAMILIES = {
+  hsk: {
+    label: 'HSK (3.0)',
+    levels: [
+      {key:'1', label:'HSK 1 (3.0)'}, {key:'2', label:'HSK 2 (3.0)'}, {key:'3', label:'HSK 3 (3.0)'},
+      {key:'4', label:'HSK 4 (3.0)'}, {key:'5', label:'HSK 5 (3.0)'}, {key:'6', label:'HSK 6 (3.0)'},
+      {key:'7', label:'HSK 7–9 (3.0, combined)'},
+    ],
+    getWords: function(lvl){ return (typeof HSK_LISTS !== 'undefined' && HSK_LISTS[lvl]) ? HSK_LISTS[lvl] : []; },
+  },
+  tocfl: {
+    label: 'TOCFL',
+    levels: [
+      {key:'0-1', label:'TOCFL Novice 1'}, {key:'0-2', label:'TOCFL Novice 2'},
+      {key:'1', label:'TOCFL Band 1 (A1)'}, {key:'2', label:'TOCFL Band 2 (A2)'},
+      {key:'3', label:'TOCFL Band 3 (B1)'}, {key:'4', label:'TOCFL Band 4 (B2)'},
+      {key:'5', label:'TOCFL Band 5 (C1–C2)'},
+    ],
+    getWords: function(lvl){ return (typeof TOCFL_LISTS !== 'undefined' && TOCFL_LISTS[lvl]) ? TOCFL_LISTS[lvl] : []; },
+  },
+};
+function getFamilyLevelWords(subKey){
+  const sep = subKey.indexOf(':');
+  const fam = LIST_FAMILIES[subKey.slice(0, sep)];
+  return fam ? fam.getWords(subKey.slice(sep+1)) : [];
+}
+function getFamilyLevelLabel(subKey){
+  const sep = subKey.indexOf(':');
+  const fam = LIST_FAMILIES[subKey.slice(0, sep)];
+  if(!fam) return subKey;
+  const lvl = fam.levels.find(l => l.key === subKey.slice(sep+1));
+  return lvl ? lvl.label : subKey;
+}
+function loadListSubscriptions(){
+  try{ const raw = localStorage.getItem('ccListSubscriptions'); return raw ? JSON.parse(raw) : []; }catch(e){ return []; }
+}
+function saveListSubscriptions(arr){
+  try{ localStorage.setItem('ccListSubscriptions', JSON.stringify(arr)); }catch(e){}
+}
+function unsubscribeList(subKey){
+  saveListSubscriptions(loadListSubscriptions().filter(k => k !== subKey));
+  renderWordBankView();
+}
+function subscribeToList(famKey, levelKey){
+  const subKey = famKey + ':' + levelKey;
+  const words = getFamilyLevelWords(subKey);
+  const label = getFamilyLevelLabel(subKey);
+  showAddToBankPrompt({
+    title: `Subscribed to ${label}`,
+    message: `${label} has ${words.length.toLocaleString()} words. Add them to your Word Bank now, so you can start studying them directly?`,
+    words: words.map(w => ({hz:w.s, py:w.p, en:'—'})),
+    onDone: function(){
+      const subs = loadListSubscriptions();
+      if(!subs.includes(subKey)) subs.push(subKey);
+      saveListSubscriptions(subs);
+      renderWordBankView();
+    }
+  });
+}
+
+/* ---- custom lists: user-created trackable snapshots from an import ---- */
+function loadCustomLists(){
+  try{ const raw = localStorage.getItem('ccCustomLists'); return raw ? JSON.parse(raw) : []; }catch(e){ return []; }
+}
+function saveCustomLists(arr){
+  try{ localStorage.setItem('ccCustomLists', JSON.stringify(arr)); }catch(e){}
+}
+function deleteCustomList(id){
+  if(!confirm('Stop tracking this vocabulary list? Words already in your Word Bank are unaffected.')) return;
+  saveCustomLists(loadCustomLists().filter(l => l.id !== id));
+  renderWordBankView();
+}
+
+function renderListSubscriptions(){
+  const row = document.getElementById('listChipRow');
+  if(!row) return;
+  const subs = loadListSubscriptions();
+  // Two separate measures now, not one — reported directly ("we need to
+  // make the selected lists have two metrics: known and added"). "Added"
+  // is what this used to be the ONLY measure (and used to be mislabeled
+  // "known"): you already have this word saved somewhere, reading across
+  // the general Word Bank AND every folder, since they're independent
+  // collections now but a word in either one still counts as progress.
+  // "Known" is stricter — the word also carries the purple Known (K) focus
+  // tag specifically (see KNOWN_TAG in settings.js), i.e. you've actually
+  // marked yourself confident in it, not just filed it away somewhere.
+  const added = new Set(loadWordBank().concat(...loadFolders().map(loadFolderWords)).map(w => w.hz));
+  const knownTagged = new Set(getFocusedCharsIn(KNOWN_TAG.key));
+  const customLists = loadCustomLists();
+
+  function progressChip(name, words, removeAttr){
+    const total = words.length;
+    const addedCount = total ? words.filter(w => added.has(w.s)).length : 0;
+    const knownCount = total ? words.filter(w => knownTagged.has(w.s)).length : 0;
+    // Which of the two is front-facing (drives the % and the progress bar
+    // fill, not just which fraction line below is bold) — a single shared
+    // preference, not per-card, so it stays in sync with index.html's own
+    // copy of this same card (see loadVocabListMetric in settings.js).
+    // Clicking the card itself toggles it and flips every card on this
+    // page together, not just the one clicked.
+    const metric = loadVocabListMetric();
+    const displayCount = metric === 'known' ? knownCount : addedCount;
+    const pct = total ? (displayCount / total * 100) : 0;
+    return `
+    <div class="list-chip" onclick="toggleVocabListMetric(); renderListSubscriptions();">
+      <button class="list-chip-remove" title="Remove" onclick="event.stopPropagation(); ${removeAttr}">×</button>
+      <div class="list-chip-name">${name}</div>
+      <div class="list-chip-pct">${pct.toFixed(1)}%</div>
+      <div class="list-progress-track"><div class="list-progress-fill" style="width:${pct}%;"></div></div>
+      <div class="list-chip-sub">
+        <div class="list-chip-metric${metric==='added'?' list-metric-active':''}">${addedCount.toLocaleString()} / ${total.toLocaleString()} Added</div>
+        <div class="list-chip-metric${metric==='known'?' list-metric-active':''}">${knownCount.toLocaleString()} / ${total.toLocaleString()} Known</div>
+      </div>
+    </div>`;
+  }
+
+  const subChips = subs.map(subKey =>
+    progressChip(getFamilyLevelLabel(subKey), getFamilyLevelWords(subKey), `unsubscribeList('${subKey}')`)
+  ).join('');
+
+  const customChips = customLists.map(list =>
+    progressChip(list.name, list.words, `deleteCustomList('${list.id}')`)
+  ).join('');
+
+  const familyPickers = Object.keys(LIST_FAMILIES).map(famKey => {
+    const fam = LIST_FAMILIES[famKey];
+    const available = fam.levels.filter(l => !subs.includes(famKey + ':' + l.key));
+    if(!available.length){
+      return `<div class="list-family-chip disabled"><div class="list-family-name">${fam.label}</div><div class="list-family-sub">All levels added</div></div>`;
+    }
+    return `
+    <div class="list-family-chip">
+      <div class="list-family-name">+ ${fam.label}</div>
+      <select onchange="if(this.value) subscribeToList('${famKey}', this.value); this.selectedIndex=0;">
+        <option value="">Choose a level…</option>
+        ${available.map(l => `<option value="${l.key}">${l.label}</option>`).join('')}
+      </select>
+    </div>`;
+  }).join('');
+
+  row.innerHTML = subChips + customChips + familyPickers;
+}
+
+/* ---- shared folder-select helper (used by the import options and the
+   subscribe prompt below) — includes a "+ New folder…" option that reveals
+   an inline name field. ---- */
+function folderSelectOptionsHTML(){
+  return `<option value="">No folder — general vocabulary</option>` +
+    loadFolders().map(f => `<option value="${f}">${f}</option>`).join('') +
+    `<option value="__new__">+ New folder…</option>`;
+}
+function resolveFolderChoice(selectValue, newNameValue){
+  if(selectValue === '__new__'){
+    const name = (newNameValue || '').trim();
+    if(!name) return '';
+    createFolder(name);
+    return name;
+  }
+  return selectValue || '';
+}
+
+/* ---- "add these words to your Word Bank?" prompt, shown after subscribing
+   to a family list level. ---- */
+function showAddToBankPrompt(opts){
+  const backdrop = document.createElement('div');
+  backdrop.className = 'modal-backdrop';
+  backdrop.innerHTML = `
+    <div class="modal-card">
+      <button class="modal-close" title="Close">×</button>
+      <h4>${opts.title}</h4>
+      <p>${opts.message}</p>
+      <div class="modal-field">
+        <label><input type="radio" name="promptChoice" value="none" checked> Don't add — just track progress</label>
+        <label><input type="radio" name="promptChoice" value="general"> Add to my general Word Bank</label>
+        <label><input type="radio" name="promptChoice" value="folder"> Add to folder:
+          <select id="promptFolderSelect">${folderSelectOptionsHTML()}</select>
+          <input type="text" id="promptNewFolderName" placeholder="New folder name" style="display:none;">
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button class="btn small" id="promptConfirmBtn">Confirm</button>
+      </div>
+    </div>`;
+  document.body.appendChild(backdrop);
+  const folderSelect = backdrop.querySelector('#promptFolderSelect');
+  const newFolderInput = backdrop.querySelector('#promptNewFolderName');
+  folderSelect.addEventListener('change', function(){
+    newFolderInput.style.display = folderSelect.value === '__new__' ? 'block' : 'none';
+  });
+  function close(){ backdrop.remove(); }
+  backdrop.querySelector('.modal-close').onclick = function(){ opts.onDone(); close(); };
+  backdrop.addEventListener('click', function(e){ if(e.target === backdrop){ opts.onDone(); close(); } });
+  backdrop.querySelector('#promptConfirmBtn').onclick = function(){
+    const choice = backdrop.querySelector('input[name="promptChoice"]:checked').value;
+    if(choice === 'general'){
+      addEntriesWithDuplicateCheckBatch(opts.words);
+    } else if(choice === 'folder'){
+      const folder = resolveFolderChoice(folderSelect.value, newFolderInput.value);
+      addEntriesWithDuplicateCheckBatch(opts.words, folder);
+    }
+    opts.onDone();
+    close();
+  };
+}
+/* ---- focus tags: Writing and Reading are per-character (Hanzi Writing
+   Practice and Match Pinyin quiz individual characters), so a multi-char
+   word's tag reflects "every character in this word is focused" and toggling
+   it sets/clears every character at once. Typing and Hearing are per-entry,
+   matching how Type Pinyin (and the future listening exercise) quiz whole
+   Word Bank entries. Known (K) is also per-entry — see KNOWN_TAG in
+   settings.js — and rendered as a fifth tag alongside the four focus ones,
+   but kept out of the Hyperfocus check (it isn't a "needs attention"
+   category, and isHyperfocus() is defined only over FOCUS_CATEGORIES). ---- */
+function focusTagsHTML(hz){
+  const states = FOCUS_CATEGORIES.map(function(cat){
+    const charBased = cat.key === 'writing' || cat.key === 'reading';
+    const active = charBased ? isEntryFocused(hz, cat.key) : isFocusedIn(hz, cat.key);
+    return {cat, active, charBased};
+  });
+  const hyper = states.every(function(s){ return s.active; });
+  const anyColoredActive = states.some(function(s){ return s.active; });
+  const tags = states.map(function(s){
+    return `<button class="focus-tag ft-${s.cat.key} ${s.active?'active':''}" title="${s.cat.label}" onclick="onToggleWordFocusTag('${hz}','${s.cat.key}',${s.charBased})">${s.cat.short}</button>`;
+  }).join('');
+  const knownActive = isFocusedIn(hz, KNOWN_TAG.key);
+  // K can't be turned on while any of W/T/R/H is already lit — it means
+  // "already confident", which a live focus tag directly contradicts. Same
+  // rule as onToggleWordFocusTag's own guard, just surfaced here as a
+  // disabled button instead of a click that silently does nothing.
+  const knownTitle = (!knownActive && anyColoredActive) ? 'Remove the other focus tags first to mark this Known' : KNOWN_TAG.label;
+  const knownTag = `<button class="focus-tag ft-known ${knownActive?'active':''}" ${(!knownActive && anyColoredActive) ? 'disabled' : ''} title="${knownTitle}" onclick="onToggleWordFocusTag('${hz}','${KNOWN_TAG.key}',false)">${KNOWN_TAG.short}</button>`;
+  const hyperBadge = hyper ? '<span class="hyperfocus-badge" title="Hyperfocus — focused in every category"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>' : '';
+  return `<div class="focus-tags">${tags}${hyperBadge}${knownTag}</div>`;
+}
+function onToggleWordFocusTag(hz, category, charBased){
+  // Known (K) and the four skill tags (W/T/R/H) are mutually exclusive in
+  // both directions: turning a skill tag ON clears K automatically (below),
+  // and K can't be turned ON at all while any skill tag is still active —
+  // the button itself is rendered disabled for that case (see
+  // focusTagsHTML), this is just the matching guard against any other path
+  // reaching this function.
+  if(category !== KNOWN_TAG.key){
+    const turningOn = charBased ? !isEntryFocused(hz, category) : !isFocusedIn(hz, category);
+    if(turningOn && isFocusedIn(hz, KNOWN_TAG.key)) setFocusCategory(hz, KNOWN_TAG.key, false);
+  } else if(!isFocusedIn(hz, KNOWN_TAG.key)){
+    const anyColoredActive = FOCUS_CATEGORIES.some(function(cat){
+      const catCharBased = cat.key === 'writing' || cat.key === 'reading';
+      return catCharBased ? isEntryFocused(hz, cat.key) : isFocusedIn(hz, cat.key);
+    });
+    if(anyColoredActive) return;
+  }
+  if(charBased) toggleEntryFocus(hz, category); else toggleFocusCategory(hz, category);
+  renderWordBankView();
+}
+
+// Toggles the given tag on every currently-selected word, EACH ONE judged
+// on its own current state — a word that already carries the tag loses it
+// (unmark), one that doesn't gets it (mark) — rather than one uniform
+// "turn it on for all of them" pass. A mixed selection genuinely does both
+// at once: whichever words already had it lose it, the rest gain it. Marking
+// (the "gain it" half) still mirrors onToggleWordFocusTag's own rules: it
+// clears that word's Known tag (the two are mutually exclusive), and marking
+// Known itself is skipped for any word that still has a skill tag active —
+// same as that word's own K button being disabled for the same reason
+// elsewhere on this page — rather than silently clearing those tags to
+// force it through. Requires at least one selected word (see the disabled
+// attribute in renderWbTagFilterRow) so this never fires on an empty
+// selection.
+function wbMarkSelectedWithTag(category){
+  if(!wbSelectedSet.size) return;
+  const isKnown = category === KNOWN_TAG.key;
+  const charBased = category === 'writing' || category === 'reading';
+  const hasTag = function(hz){ return isKnown || !charBased ? isFocusedIn(hz, category) : isEntryFocused(hz, category); };
+  wbSelectedSet.forEach(function(hz){
+    if(hasTag(hz)){
+      if(charBased){
+        Array.from(hz).filter(function(ch){ return HAN_CHAR_RE.test(ch); }).forEach(function(ch){ setFocusCategory(ch, category, false); });
+      } else {
+        setFocusCategory(hz, category, false);
+      }
+      return;
+    }
+    if(isKnown){
+      const anyColoredActive = FOCUS_CATEGORIES.some(function(cat){
+        const cb = cat.key === 'writing' || cat.key === 'reading';
+        return cb ? isEntryFocused(hz, cat.key) : isFocusedIn(hz, cat.key);
+      });
+      if(anyColoredActive) return;
+      setFocusCategory(hz, KNOWN_TAG.key, true);
+      return;
+    }
+    if(charBased){
+      Array.from(hz).filter(function(ch){ return HAN_CHAR_RE.test(ch); }).forEach(function(ch){ setFocusCategory(ch, category, true); });
+    } else {
+      setFocusCategory(hz, category, true);
+    }
+    if(isFocusedIn(hz, KNOWN_TAG.key)) setFocusCategory(hz, KNOWN_TAG.key, false);
+  });
+  renderWordBankView();
+}
+// A word must have EVERY currently-selected filter tag active to pass — an
+// empty filter (nothing selected) passes everything through unfiltered.
+// Independent of wbMarkMode below: switching to Mark mode doesn't clear or
+// disable a filter already in effect, it only changes what clicking one of
+// the five tag buttons DOES — the list stays narrowed by whatever filter
+// was active, so you can filter down to a subset first, then switch to Mark
+// mode to bulk-tag exactly that subset.
+function wbMatchesTagFilter(hz){
+  for(const key of wbTagFilter){
+    if(key === KNOWN_TAG.key){
+      if(!isFocusedIn(hz, KNOWN_TAG.key)) return false;
+      continue;
+    }
+    const charBased = key === 'writing' || key === 'reading';
+    const active = charBased ? isEntryFocused(hz, key) : isFocusedIn(hz, key);
+    if(!active) return false;
+  }
+  return true;
+}
+function toggleWbTagFilter(key){
+  if(wbTagFilter.has(key)) wbTagFilter.delete(key); else wbTagFilter.add(key);
+  renderWordBankView();
+}
+function clearWbTagFilter(){
+  wbTagFilter.clear();
+  renderWordBankView();
+}
+// Flips the whole row between its two meanings: OFF (default) is the
+// original Filter by Focus Tag — the five buttons narrow the list below.
+// ON is Mark by Focus Tag — the same five buttons instead bulk-tag whatever
+// words are currently checked (see wbMarkSelectedWithTag). Only what the
+// buttons DO and how the row is labeled changes; wbTagFilter itself is left
+// alone either way (see wbMatchesTagFilter's own note above).
+let wbMarkMode = false;
+function wbToggleMarkMode(on){
+  wbMarkMode = on;
+  renderWbTagFilterRow();
+}
+function renderWbTagFilterRow(){
+  const row = document.getElementById('wbTagFilterRow');
+  if(!row) return;
+  const allTags = FOCUS_CATEGORIES.concat([KNOWN_TAG]);
+  const label = wbMarkMode ? 'Mark by Focus Tag:' : 'Filter by Focus Tag:';
+  // Kept deliberately short ("Mark" + a checkbox, not a full sentence) — it
+  // sits directly to the left of the label on the SAME line as the five tag
+  // buttons, and that whole line is already calibrated down to the pixel
+  // against .mass-toolbar's OTHER trailing content (see the big comment on
+  // .mass-toolbar above) so the buttons land in the same column as each
+  // word row's own tags below. Every extra pixel added here eats into that
+  // margin before the row wraps and silently breaks that alignment — hence
+  // short label text over a fuller explanation (put in the title instead).
+  const toggle = `<label class="wb-mark-mode-toggle" title="Tag every checked word at once instead of filtering the list"><span class="toggle-switch"><input type="checkbox" ${wbMarkMode?'checked':''} onchange="wbToggleMarkMode(this.checked)"><span class="toggle-track"></span><span class="toggle-thumb"></span></span> Mark</label>`;
+  // Reuses .focus-tags (not just .wb-tag-filter-row's own wider gap) so this
+  // button group is pixel-for-pixel the same width as the tags on each word
+  // row below — required for the two to actually line up in a column.
+  let buttons, extra;
+  if(wbMarkMode){
+    const noneSelected = wbSelectedSet.size === 0;
+    const selectedHz = Array.from(wbSelectedSet);
+    buttons = allTags.map(cat=>{
+      const charBased = cat.key === 'writing' || cat.key === 'reading';
+      const hasTag = hz => cat.key === KNOWN_TAG.key || !charBased ? isFocusedIn(hz, cat.key) : isEntryFocused(hz, cat.key);
+      // Only disabled with nothing selected — the button stays pressable
+      // even once every selected word already carries the tag, since
+      // clicking it then un-marks them (see wbMarkSelectedWithTag's own
+      // per-word toggle) rather than being a no-op to guard against.
+      const disabled = noneSelected;
+      let title;
+      if(noneSelected) title = 'Select one or more words below first';
+      else {
+        const allTagged = selectedHz.every(hasTag), noneTagged = selectedHz.every(hz=>!hasTag(hz));
+        title = allTagged ? `Remove ${cat.label} from selected words`
+          : noneTagged ? `Mark selected words as ${cat.label}`
+          : `Toggle ${cat.label} on selected words — adds it for those missing it, removes it from those that already have it`;
+      }
+      return `<button class="focus-tag ft-${cat.key}" ${disabled?'disabled':''} title="${title}" onclick="wbMarkSelectedWithTag('${cat.key}')">${cat.short}</button>`;
+    }).join('');
+    extra = '';
+  } else {
+    buttons = allTags.map(cat=>
+      `<button class="focus-tag ft-${cat.key} ${wbTagFilter.has(cat.key)?'active':''}" title="Filter: ${cat.label}" onclick="toggleWbTagFilter('${cat.key}')">${cat.short}</button>`
+    ).join('');
+    extra = wbTagFilter.size ? `<button class="btn ghost small" onclick="clearWbTagFilter()">Clear filter</button>` : '';
+  }
+  row.innerHTML = `${toggle}<span class="wb-tag-row-label">${label}</span><div class="focus-tags">${buttons}</div>${extra}`;
+}
+// checkboxEl is optional (the checkbox's own onchange already has `this` to
+// hand over) — when given, its row gets the .selected class kept in sync
+// with it directly rather than re-querying the DOM for it by hz.
+function wbToggleSelect(hz, checked, checkboxEl){
+  if(checked) wbSelectedSet.add(hz); else wbSelectedSet.delete(hz);
+  const row = (checkboxEl || document.querySelector(`.dict-check[data-hz="${hz}"]`))?.closest('.dict-entry');
+  if(row) row.classList.toggle('selected', checked);
+  updateWbSelCount();
+}
+function wbToggleSelectAll(checked){
+  document.querySelectorAll('#wbList .dict-check').forEach(cb=>{
+    cb.checked = checked;
+    cb.closest('.dict-entry')?.classList.toggle('selected', checked);
+    const hz = cb.dataset.hz;
+    if(checked) wbSelectedSet.add(hz); else wbSelectedSet.delete(hz);
+  });
+  updateWbSelCount();
+}
+function updateWbSelCount(){
+  const countEl = document.getElementById('wbSelCount');
+  const delBtn = document.getElementById('wbDeleteSelectedBtn');
+  if(countEl) countEl.textContent = `${wbSelectedSet.size} selected`;
+  if(delBtn) delBtn.disabled = wbSelectedSet.size === 0;
+  // The Mark by Focus Tag buttons' disabled state (see renderWbTagFilterRow)
+  // depends on the selection too, but a checkbox click only calls this
+  // function, not a full renderWordBankView() — refresh that row here too
+  // so it doesn't stay stuck disabled/enabled from whenever the list itself
+  // last happened to redraw.
+  renderWbTagFilterRow();
+}
+function wbDeleteSelected(){
+  const n = wbSelectedSet.size;
+  if(!n) return;
+  const isAll = wbFolderFilter === '__all__';
+  const where = isAll ? 'every list they appear in — your general Word Bank and any folders'
+    : wbFolderFilter ? `folder "${wbFolderFilter}"`
+    : 'your general Word Bank';
+  if(!confirm(`Delete ${n} selected word${n===1?'':'s'} from ${where}? This can't be undone.`)) return;
+  if(isAll){
+    saveWordBank(loadWordBank().filter(w=>!wbSelectedSet.has(w.hz)));
+    loadFolders().forEach(function(f){
+      saveFolderWords(f, loadFolderWords(f).filter(w=>!wbSelectedSet.has(w.hz)));
+    });
+  } else if(wbFolderFilter){
+    saveFolderWords(wbFolderFilter, loadFolderWords(wbFolderFilter).filter(w=>!wbSelectedSet.has(w.hz)));
+  } else {
+    saveWordBank(loadWordBank().filter(w=>!wbSelectedSet.has(w.hz)));
+  }
+  wbSelectedSet.clear();
+  renderFolderManager();
+  renderWordBankView();
+}
+
+function renderWordBankView(){
+  const bank = loadWordBank();
+  const folders = loadFolders();
+  renderListSubscriptions();
+  renderWbTagFilterRow();
+  const isAll = wbFolderFilter === '__all__';
+  const all = isAll ? loadAllWordsAggregate() : wbFolderFilter ? loadFolderWords(wbFolderFilter) : bank;
+  document.getElementById('wbCount').textContent = isAll
+    ? `${all.length} word${all.length===1?'':'s'} across your Word Bank and folders`
+    : wbFolderFilter
+    ? `${all.length} word${all.length===1?'':'s'} in "${wbFolderFilter}"`
+    : `${bank.length} word${bank.length===1?'':'s'} saved`;
+  document.getElementById('wbFolderActions').innerHTML =
+    `<button class="btn ghost small" ${isAll?'disabled':''} onclick="showAllWords()">All Vocab</button>`;
+
+  const searchRaw = (document.getElementById('wbSearchInput')?.value || '').trim();
+  const searchLower = searchRaw.toLowerCase();
+  const searchStripped = stripTones(searchLower);
+  const shown = all.filter(w=>{
+    if(!wbMatchesTagFilter(w.hz)) return false;
+    if(!searchLower) return true;
+    if(w.hz.includes(searchRaw)) return true;
+    if(stripTones((w.py||'').toLowerCase()).includes(searchStripped)) return true;
+    if((w.en||'').toLowerCase().includes(searchLower)) return true;
+    return false;
+  });
+
+  const list = document.getElementById('wbList');
+  if(!all.length){
+    list.innerHTML = isAll
+      ? `<div class="dict-empty">Your Word Bank and folders are all empty. Head to <a href="search.html" style="color:var(--seal); font-weight:600;">Search</a> and add some, or import a list.</div>`
+      : wbFolderFilter
+      ? `<div class="dict-empty">No words in "${wbFolderFilter}" yet — copy some in below, or import a list straight into this folder.</div>`
+      : `<div class="dict-empty">Your Word Bank is empty. Head to <a href="search.html" style="color:var(--seal); font-weight:600;">Search</a> and add some, or import a list.</div>`;
+    updateWbSelCount();
+    return;
+  }
+  if(!shown.length){
+    list.innerHTML = `<div class="dict-empty">No words match your search or tag filter.</div>`;
+    updateWbSelCount();
+    return;
+  }
+  // Word Bank and every folder are independent collections now, so this
+  // control copies a word into another one rather than reassigning it —
+  // the word stays in its current collection too.
+  const copyTargets = (wbFolderFilter ? [{value:'__general__', label:'General Word Bank'}] : [])
+    .concat(folders.filter(f=>f!==wbFolderFilter).map(f=>({value:f, label:f})));
+  list.innerHTML = shown.map(w=>`
+    <div class="dict-entry${wbSelectedSet.has(w.hz)?' selected':''}">
+      <input type="checkbox" class="dict-check" data-hz="${w.hz}" ${wbSelectedSet.has(w.hz)?'checked':''} onchange="wbToggleSelect('${w.hz}', this.checked, this)">
+      <div class="dict-hz">${renderOracleHz(w.hz)}</div>
+      <div class="dict-mid"><div class="dict-py">${w.py}</div><div class="dict-en">${w.en}</div></div>
+      <div class="dict-meta">
+        ${focusTagsHTML(w.hz)}
+        <select class="dict-folder-select" onchange="handleCopyToCollection('${w.hz}', this.value); this.selectedIndex=0;" title="Copy to another list">
+          <option value="" selected disabled>Copy to…</option>
+          ${copyTargets.map(t=>`<option value="${t.value}">${t.label}</option>`).join('')}
+          <option value="__new__">+ New folder…</option>
+        </select>
+        <button class="speak-btn" onclick="speakDelayed('${w.hz}')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="#8A8A8A" fill="#8A8A8A"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#3B82F6"></path></svg></button>
+        ${ccCopyHanziButtonHTML(w.hz, 'Copy ' + w.hz)}
+      </div>
+    </div>`).join('');
+  updateWbSelCount();
+  const allCb = document.getElementById('wbSelectAllCb');
+  if(allCb) allCb.checked = shown.length > 0 && shown.every(w=>wbSelectedSet.has(w.hz));
+}
+migrateFoldersToIndependentStorage();
+renderFolderManager();
+renderWordBankView();
+</script>
+</body>
+</html>

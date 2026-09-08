@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>html{visibility:hidden;}</style>
+<title>Hanzi — Radicals — Context Chinese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDE4D2;
+  --paper-deep:#E1D4B9;
+  --paper-shadow:#cbbb96;
+  --ink:#22241F;
+  --ink-soft:#514E42;
+  --seal:#AE3B1C;
+  --seal-dark:#8C2E15;
+  --jade:#3E6B5B;
+  --jade-dark:#2E5346;
+  --gold:#A9832E;
+  --slate:#4C6169;
+  --paper-rgb:237,228,210;
+  --radius:2px;
+  --serif-cn:'Noto Serif SC', serif;
+  --serif-en:'Zilla Slab', 'Noto Serif', serif;
+  --sans:'Inter', sans-serif;
+  --tone-1:#2d6bd6;
+  --tone-2:#27974f;
+  --tone-3:#E0B400;
+  --tone-4:#c0392b;
+  --tone-0:#6b6b6b;
+}
+
+/* ---------- dark mode ---------- */
+:root[data-theme="dark"]{
+  --paper:#1C1B18;
+  --paper-deep:#242220;
+  --paper-shadow:#3A352C;
+  --ink:#EDE6D6;
+  --ink-soft:#B9AF9C;
+  --seal:#E2703F;
+  --seal-dark:#C8592C;
+  --jade:#5FA98D;
+  --jade-dark:#3E8068;
+  --gold:#D9AE5C;
+  --slate:#93A9B1;
+  --paper-rgb:28,27,24;
+  --tone-1:#7fb0ff;
+  --tone-2:#6bd98f;
+  --tone-3:#F2D24B;
+  --tone-4:#ff8a72;
+  --tone-0:#b9af9c;
+}
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .dict-search,
+:root[data-theme="dark"] .dict-entry,
+:root[data-theme="dark"] .dict-filter,
+:root[data-theme="dark"] .import-card,
+:root[data-theme="dark"] .dialogue-card,
+:root[data-theme="dark"] .tone-card,
+:root[data-theme="dark"] .trainer-card,
+:root[data-theme="dark"] .route-card,
+:root[data-theme="dark"] .word-card,
+:root[data-theme="dark"] .radical-face.front,
+:root[data-theme="dark"] .flash-face.front,
+:root[data-theme="dark"] .province-chip,
+:root[data-theme="dark"] .province-detail,
+:root[data-theme="dark"] .tone-desc-panel,
+:root[data-theme="dark"] .converse-card,
+:root[data-theme="dark"] .dictate-card,
+:root[data-theme="dark"] .read-card,
+:root[data-theme="dark"] .translate-card,
+:root[data-theme="dark"] .hw-target-wrap,
+:root[data-theme="dark"] .search-bar,
+:root[data-theme="dark"] .settings-card,
+:root[data-theme="dark"] .quiz-box{
+  background:rgba(0,0,0,0.28) !important;
+}
+:root[data-theme="dark"] .modal-card{
+  background:var(--paper) !important;
+}
+:root[data-theme="dark"] .dict-search input,
+:root[data-theme="dark"] .trainer-input,
+:root[data-theme="dark"] .converse-input,
+:root[data-theme="dark"] .dictate-input,
+:root[data-theme="dark"] .import-textarea,
+:root[data-theme="dark"] .search-bar input,
+:root[data-theme="dark"] .settings-select,
+:root[data-theme="dark"] .settings-input{
+  background:rgba(0,0,0,0.25) !important;
+}
+:root[data-theme="dark"] .modal-field select,
+:root[data-theme="dark"] .modal-field input[type=text]{
+  background:rgba(0,0,0,0.25) !important;
+}
+:root[data-theme="dark"] .keycap{
+  background:linear-gradient(160deg, #2c2a25 0%, #201f1b 100%) !important;
+}
+
+/* ---------- tone colouring ---------- */
+.tone-c-1{color:var(--tone-1);}
+.tone-c-2{color:var(--tone-2);}
+.tone-c-3{color:var(--tone-3);}
+.tone-c-4{color:var(--tone-4);}
+.tone-c-0{color:var(--tone-0);}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(0,0,0,0.025) 0, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(0,0,0,0.03) 0, transparent 50%);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.5;
+}
+::selection{background:var(--seal); color:var(--paper);}
+a{color:inherit;}
+button{font-family:inherit;}
+:focus-visible{outline:2px solid var(--seal); outline-offset:2px;}
+
+/* ---------- layout shell ---------- */
+.wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+header.top{
+  position:sticky; top:0; z-index:50;
+  background:rgba(var(--paper-rgb),0.94);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--paper-shadow);
+}
+.top-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 28px; max-width:1120px; margin:0 auto; gap:20px;}
+.brand{display:flex; align-items:center; gap:12px; cursor:pointer; user-select:none; flex-shrink:0;}
+.seal-mark{
+  width:38px; height:38px; background:var(--seal); color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif-cn); font-size:22px; font-weight:700;
+  border-radius:3px; transform:rotate(-3deg);
+  box-shadow:2px 2px 0 rgba(0,0,0,0.15);
+  flex-shrink:0;
+}
+.brand-text{display:flex; flex-direction:column; line-height:1.1; gap:3px;}
+.brand-text b{font-family:var(--serif-en); font-size:19px; letter-spacing:0.3px; white-space:nowrap;}
+.brand-text span{font-size:11px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;}
+
+nav.tabs{display:flex; flex-wrap:wrap; gap:2px;}
+.nav-item{position:relative;}
+.tab-btn{
+  background:none; border:none; cursor:pointer;
+  padding:8px 12px; font-size:13.5px; font-weight:600; color:var(--ink-soft);
+  border-radius:2px; letter-spacing:0.2px; white-space:nowrap;
+  transition:color .15s, background .15s;
+}
+.tab-btn .cn{font-family:var(--serif-cn); margin-right:5px; font-weight:600;}
+.tab-btn:hover{color:var(--ink); background:rgba(0,0,0,0.05);}
+.tab-btn.active{color:var(--ink); background:rgba(0,0,0,0.06);}
+
+.dropdown{
+  position:absolute; top:100%; left:0; margin-top:6px; background:var(--paper);
+  border:1px solid var(--paper-shadow); box-shadow:4px 6px 0 rgba(0,0,0,0.1);
+  width:0; min-width:0; display:flex; flex-direction:column; z-index:60;
+  opacity:0; max-height:0; overflow:hidden; pointer-events:none;
+  transform:translateY(-6px);
+  transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease .28s, min-width 0s ease .28s;
+  padding:0 4px;
+}
+.nav-item.open .dropdown{opacity:1; max-height:480px; width:auto; min-width:200px; transform:translateY(0); pointer-events:auto; padding:4px; transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease, min-width 0s ease;}
+.nav-item.open .tab-btn{color:var(--ink); background:rgba(0,0,0,0.06);}
+.tab-btn .caret{display:inline-block; margin-left:5px; font-size:10px; transition:transform .2s ease; opacity:0.6;}
+.nav-item.open .tab-btn .caret{transform:rotate(180deg);}
+.dropdown-link{
+  padding:10px 14px; text-align:left; background:none; border:none; cursor:pointer;
+  font-size:13px; font-weight:600; color:var(--ink-soft); white-space:nowrap; border-radius:2px;
+  text-decoration:none;
+}
+.dropdown-link:hover{background:rgba(0,0,0,0.06); color:var(--ink);}
+.dropdown-link.active{color:var(--seal);}
+@media (max-width:920px){
+  .top-inner{flex-direction:column; align-items:flex-start; position:relative;}
+  nav.tabs{width:100%; overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px;}
+  /* The gear/settings nav-item is a direct sibling of nav.tabs in .top-inner
+     (not nested inside it), so once .top-inner stacks into a column here it
+     falls onto its own row below the whole nav strip. Pin it to the
+     top-right corner instead, next to the brand row, freeing that row and
+     matching where it already sits on desktop's single-row layout. */
+  .top-inner > .nav-item{position:absolute; top:14px; right:28px;}
+}
+
+main{max-width:1120px; margin:0 auto; padding:40px 28px 100px;}
+section.view{display:none; animation:fadein .35s ease;}
+section.view.active{display:block;}
+@keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+.subview{display:none;}
+.subview.active{display:block;}
+
+.section-head{margin-bottom:28px; position:relative;}
+.eyebrow{
+  font-family:var(--sans); font-size:12px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--seal); display:flex; align-items:center; gap:8px;
+}
+.eyebrow::before{content:''; width:22px; height:2px; background:var(--seal);}
+h1.headline{
+  font-family:var(--serif-en); font-weight:700; font-size:44px; margin:6px 0 10px;
+  letter-spacing:-0.5px;
+}
+h1.headline .cn{font-family:var(--serif-cn); color:var(--seal); font-weight:700;}
+p.lede{color:var(--ink-soft); font-size:16px; max-width:640px; margin:10px 0 0;}
+.brush-rule{width:100%; height:3px; margin:26px 0; background:
+  linear-gradient(90deg, var(--ink) 0%, var(--ink) 60%, transparent 60%),
+  linear-gradient(90deg, var(--seal) 65%, transparent 65%);
+  background-size:100% 3px, 20% 3px; background-repeat:no-repeat;
+  opacity:0.85;
+}
+
+.subnav{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:30px;}
+.subnav-pill{
+  padding:8px 16px; border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4);
+  border-radius:20px; font-size:13px; font-weight:600; color:var(--ink-soft); cursor:pointer;
+}
+.subnav-pill:hover{border-color:var(--ink); color:var(--ink);}
+.subnav-pill.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+.card{
+  background:rgba(255,255,255,0.35);
+  border:1px solid var(--paper-shadow);
+  border-radius:var(--radius);
+  padding:22px;
+}
+.grid{display:grid; gap:16px;}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+@media (max-width:800px){.grid-2,.grid-3,.grid-4{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:520px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+
+.btn{
+  background:var(--ink); color:var(--paper); border:none; cursor:pointer;
+  padding:10px 18px; font-weight:600; font-size:13.5px; border-radius:2px;
+  letter-spacing:0.3px; transition:transform .12s, background .12s;
+}
+.btn:hover{background:var(--seal-dark);}
+.btn:active{transform:scale(0.97);}
+.btn:disabled{opacity:0.4; cursor:not-allowed;}
+.btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+.btn.ghost:hover{background:var(--ink); color:var(--paper);}
+.btn.small{padding:6px 12px; font-size:12px;}
+
+/* ---------- HOME ---------- */
+.hero{position:relative; padding:20px 0 10px;}
+.hero-grid{display:grid; grid-template-columns:1.2fr 1fr; gap:40px; align-items:center;}
+@media (max-width:820px){.hero-grid{grid-template-columns:1fr;}}
+.hero h1{font-family:var(--serif-en); font-size:52px; line-height:1.05; margin:0 0 18px; font-weight:700;}
+.hero h1 .cn{font-family:var(--serif-cn); color:var(--seal); display:block; font-size:64px; margin-bottom:6px;}
+.hero p{font-size:17px; color:var(--ink-soft); max-width:480px; margin-bottom:26px;}
+.hero-seals{position:relative; height:340px;}
+.float-seal{
+  position:absolute; font-family:var(--serif-cn); font-weight:700;
+  color:var(--paper); display:flex; align-items:center; justify-content:center;
+  border-radius:3px; box-shadow:3px 3px 0 rgba(0,0,0,0.15);
+}
+.route-cards{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:44px;}
+@media (max-width:900px){.route-cards{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:480px){.route-cards{grid-template-columns:1fr;}}
+.route-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px;
+  padding:20px; cursor:pointer; text-align:left; transition:transform .15s, box-shadow .15s, border-color .15s;
+  display:flex; flex-direction:column; gap:8px;
+}
+.route-card:hover{transform:translateY(-3px); box-shadow:4px 6px 0 rgba(0,0,0,0.08); border-color:var(--ink);}
+.route-card .cn-big{font-family:var(--serif-cn); font-size:30px; color:var(--seal); font-weight:700;}
+.route-card b{font-family:var(--serif-en); font-size:17px;}
+.route-card span{font-size:13px; color:var(--ink-soft);}
+
+/* ---------- DICTIONARY ---------- */
+.dict-search{display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.5); border:1.5px solid var(--ink);
+  border-radius:2px; padding:10px 16px; max-width:460px; margin-bottom:8px;}
+.dict-search input{border:none; background:none; outline:none; font-size:15px; width:100%; font-family:var(--sans);}
+.dict-filters{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 20px;}
+.dict-filter{
+  border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4); padding:6px 13px;
+  border-radius:20px; font-size:12.5px; cursor:pointer; font-weight:600; color:var(--ink-soft);
+}
+.dict-filter:hover{border-color:var(--ink); color:var(--ink);}
+.dict-filter.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+.import-card{background:rgba(255,255,255,0.4); border:1px dashed var(--paper-shadow); border-radius:2px; padding:18px 20px; margin:0 0 26px;}
+.import-card h4{margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:1.2px; color:var(--gold);}
+.import-hint{font-size:12.5px; color:var(--ink-soft); margin:0 0 12px; line-height:1.6;}
+.import-hint code{background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:3px; padding:1px 5px; font-family:monospace; font-size:11px;}
+.import-row{display:flex; align-items:center; gap:12px; margin-bottom:10px; flex-wrap:wrap;}
+.import-or{font-size:12.5px; color:var(--ink-soft);}
+.file-label{cursor:pointer;}
+.import-textarea{width:100%; font-family:var(--sans); font-size:13px; padding:10px 12px; border:1.5px solid var(--paper-shadow);
+  border-radius:2px; background:rgba(255,255,255,0.6); resize:vertical; margin-bottom:10px;}
+.import-status{font-size:12.5px; color:var(--jade-dark); font-weight:600; min-height:18px; opacity:0; transition:opacity .3s;}
+
+.mass-toolbar{display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:14px; font-size:13px; color:var(--ink-soft);}
+.mass-select-all{display:flex; align-items:center; gap:7px; cursor:pointer; font-weight:600;}
+.dict-check{width:16px; height:16px; accent-color:var(--seal); cursor:pointer; flex-shrink:0;}
+
+.dict-count{font-size:12.5px; color:var(--ink-soft); margin-bottom:14px;}
+.dict-list{display:flex; flex-direction:column; gap:10px;}
+.dict-entry{
+  display:flex; align-items:center; gap:18px; background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow);
+  border-radius:2px; padding:16px 20px;
+}
+.dict-hz{font-family:var(--serif-cn); font-size:34px; font-weight:700; color:var(--seal); min-width:52px; text-align:center;}
+.dict-mid{flex:1; min-width:0;}
+.dict-py{font-family:var(--serif-en); font-weight:700; font-size:16px;}
+.dict-en{font-size:13.5px; color:var(--ink-soft); margin-top:2px;}
+.dict-meta{display:flex; align-items:center; gap:10px; flex-shrink:0;}
+.dict-pos{font-size:10.5px; text-transform:uppercase; letter-spacing:0.8px; color:var(--gold); border:1px solid var(--gold);
+  border-radius:20px; padding:3px 9px; white-space:nowrap;}
+.dict-empty{padding:40px 20px; text-align:center; color:var(--ink-soft); font-size:14px;}
+.add-btn{width:28px; height:28px; border-radius:50%; border:1.5px solid var(--jade); color:var(--jade-dark);
+  background:none; font-size:16px; font-weight:700; cursor:pointer; line-height:1; flex-shrink:0;}
+.add-btn:hover{background:var(--jade); color:#fff;}
+.wb-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap; gap:10px;}
+.wb-note{background:rgba(62,107,91,0.1); border-left:3px solid var(--jade); padding:12px 16px; font-size:13px; color:var(--ink-soft); margin-bottom:20px;}
+
+/* ---------- TONES ---------- */
+.tone-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:14px;}
+@media (max-width:900px){.tone-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:560px){.tone-grid{grid-template-columns:repeat(2,1fr);}}
+.tone-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); padding:18px 14px;
+  border-radius:2px; text-align:center; cursor:pointer; transition:border-color .15s, transform .15s;
+}
+.tone-card:hover{border-color:var(--seal); transform:translateY(-2px);}
+.tone-num{font-family:var(--serif-en); font-weight:700; font-size:13px; color:var(--ink-soft);}
+.tone-svg{margin:8px auto;}
+.tone-mark{font-family:var(--serif-cn); font-size:34px; font-weight:700; color:var(--seal);}
+.tone-name{font-weight:600; font-size:13.5px; margin-top:4px;}
+.tone-example{font-size:12px; color:var(--ink-soft); margin-top:6px;}
+.tone-desc-panel{
+  margin-top:22px; padding:20px; background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow);
+  border-radius:2px; min-height:60px;
+}
+
+/* ---------- QUIZ ---------- */
+.quiz-box{background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow); padding:24px; border-radius:2px; margin-top:20px;}
+.quiz-prompt{font-family:var(--serif-cn); font-size:46px; text-align:center; margin:6px 0 4px; font-weight:700;}
+.quiz-pinyin{text-align:center; color:var(--ink-soft); font-size:15px; margin-bottom:18px;}
+.quiz-opts{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; max-width:520px; margin:0 auto;}
+@media (max-width:520px){.quiz-opts{grid-template-columns:repeat(3,1fr);}}
+.quiz-opt{
+  padding:12px 4px; text-align:center; border:1.5px solid var(--ink); background:transparent;
+  cursor:pointer; font-weight:700; border-radius:2px; font-size:15px;
+}
+.quiz-opt:hover{background:var(--ink); color:var(--paper);}
+.quiz-opt.correct{background:var(--jade); border-color:var(--jade); color:#fff;}
+.quiz-opt.wrong{background:var(--seal); border-color:var(--seal); color:#fff;}
+.quiz-status{text-align:center; margin-top:16px; font-size:14px; color:var(--ink-soft); min-height:20px;}
+.quiz-score{text-align:center; font-weight:700; font-family:var(--serif-en); font-size:15px;}
+
+/* ---------- PINYIN SYLLABLE BUILDER ---------- */
+.syl-builder{display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start;}
+.syl-col{flex:1; min-width:220px;}
+.syl-col h4{font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--ink-soft); margin:0 0 10px;}
+.chip-grid{display:flex; flex-wrap:wrap; gap:9px;}
+.chip{
+  border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4); padding:6px 11px;
+  border-radius:20px; font-size:13px; cursor:pointer; font-weight:600;
+}
+.chip:hover{border-color:var(--ink);}
+.chip.picked{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+.syl-result{
+  background:var(--ink); color:var(--paper); border-radius:2px; padding:26px; text-align:center;
+  font-family:var(--serif-en); font-size:34px; font-weight:700; min-width:220px; align-self:stretch;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+}
+.syl-result small{font-size:12px; font-weight:400; color:#c9c2ac; letter-spacing:1px; text-transform:uppercase;}
+
+.word-list{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:10px;}
+@media (max-width:760px){.word-list{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:480px){.word-list{grid-template-columns:1fr;}}
+.word-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:14px;
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+}
+.word-card .hz{font-family:var(--serif-cn); font-size:22px; font-weight:700;}
+.word-card .py{font-size:12.5px; color:var(--ink-soft);}
+.speak-btn{
+  background:none; border:1.5px solid var(--ink); border-radius:50%; width:32px; height:32px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.speak-btn:hover{background:var(--ink); color:var(--paper);}
+
+/* ---------- PINYIN TRAINER ---------- */
+.trainer-card{
+  background:rgba(255,255,255,0.45); border:1px solid var(--paper-shadow); border-radius:2px;
+  padding:38px 34px; max-width:460px; margin:0 auto; text-align:center;
+}
+.trainer-char{
+  font-family:var(--serif-cn); font-size:72px; font-weight:700; color:var(--ink);
+  margin-bottom:20px; min-height:88px; display:flex; align-items:center; justify-content:center;
+}
+.trainer-input{
+  font-family:var(--serif-en); font-size:20px; padding:12px 16px; text-align:center; width:100%;
+  border:2px solid var(--paper-shadow); border-radius:2px; outline:none; background:rgba(255,255,255,0.6);
+  color:var(--ink); transition:border-color .15s, background .15s; font-weight:600;
+}
+.trainer-input:focus{border-color:var(--ink);}
+.trainer-input.correct{border-color:var(--jade); background:rgba(62,107,91,0.14); color:var(--jade-dark);}
+.trainer-reveal{
+  font-family:var(--serif-en); font-size:19px; font-weight:700; color:var(--seal); min-height:28px; margin:14px 0 2px;
+}
+.trainer-controls{display:flex; gap:10px; justify-content:center; margin-top:16px; flex-wrap:wrap;}
+.trainer-progress{margin-top:20px; font-size:12px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;}
+.trainer-done{font-family:var(--serif-en); font-size:24px; font-weight:700; padding:20px 0 8px;}
+.trainer-done-sub{font-size:14px; color:var(--ink-soft); margin-bottom:18px;}
+
+.tone-key{margin:28px auto 0; max-width:560px; border-top:1px dashed var(--paper-shadow); padding-top:18px;}
+.tone-key-title{font-size:12px; text-transform:uppercase; letter-spacing:1.2px; color:var(--ink-soft); text-align:center; margin-bottom:12px;}
+.tone-key-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:9px; font-size:12.5px; color:var(--ink-soft); text-align:center;}
+@media (max-width:620px){.tone-key-grid{grid-template-columns:repeat(2,1fr);}}
+.tone-key-grid b{font-family:var(--serif-cn); color:var(--seal); margin-right:4px; font-size:14px;}
+.tone-key-grid code{background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:3px; padding:1px 5px; font-size:11px; font-family:monospace;}
+.bank-notice{background:rgba(169,131,46,0.12); border-left:3px solid var(--gold); padding:10px 16px; font-size:12.5px; color:var(--ink-soft); margin-bottom:20px;}
+
+/* ---------- TYPEWRITER KEYCAPS (zhuyin keyboard + pinyin initials/finals) ---------- */
+.keyboard{display:flex; flex-direction:column; gap:12px; align-items:center; margin:22px 0;}
+.keyboard-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+.keycap{
+  width:62px; height:62px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(160deg, #f6f0e0 0%, #e7ddc2 100%);
+  border:1px solid var(--paper-shadow);
+  box-shadow:0 3px 0 var(--paper-shadow), 0 6px 9px rgba(0,0,0,0.18), inset 0 1px 1px rgba(255,255,255,0.7);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent;
+  transition:transform .08s ease, box-shadow .08s ease, background .1s ease;
+  position:relative; padding:0;
+}
+.keycap:hover{transform:translateY(-2px); box-shadow:0 5px 0 var(--paper-shadow), 0 10px 14px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.7);}
+.keycap:active{transform:translateY(2px); box-shadow:0 1px 0 var(--paper-shadow), 0 2px 4px rgba(0,0,0,0.15), inset 0 1px 2px rgba(0,0,0,0.15);}
+.keycap.picked{background:linear-gradient(160deg, var(--ink) 0%, #34372f 100%); color:var(--paper); border-color:var(--ink); transform:translateY(2px); box-shadow:0 1px 0 var(--ink), 0 2px 4px rgba(0,0,0,0.25), inset 0 1px 2px rgba(0,0,0,0.2);}
+.keycap .kc-main{font-family:var(--serif-cn); font-size:23px; font-weight:700; line-height:1; color:var(--seal);}
+.keycap.picked .kc-main{color:var(--paper);}
+.keycap .kc-sub{font-family:var(--serif-en); font-size:9.5px; color:var(--ink-soft); margin-top:3px; letter-spacing:0.5px;}
+.keycap.picked .kc-sub{color:#c9c2ac;}
+.keycap.small{width:52px; height:52px;}
+.keycap.small .kc-main{font-family:var(--serif-en); font-size:13px; font-weight:700; color:var(--ink);}
+.keycap.small.picked .kc-main{color:var(--paper);}
+.keyboard-note{font-size:12.5px; color:var(--ink-soft); text-align:center; max-width:520px; margin:4px auto 0;}
+
+/* ---------- STROKES ---------- */
+.stroke-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+@media (max-width:760px){.stroke-grid{grid-template-columns:repeat(2,1fr);}}
+.stroke-card{background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:16px; text-align:center;}
+.stroke-card svg{margin:4px 0 8px;}
+.stroke-card b{font-family:var(--serif-cn); font-size:15px; display:block;}
+.stroke-card span{font-size:11.5px; color:var(--ink-soft);}
+.rules-list{list-style:none; margin:24px 0 0; padding:0; display:grid; gap:10px;}
+.rules-list li{
+  display:flex; gap:12px; align-items:flex-start; background:rgba(255,255,255,0.35);
+  border:1px solid var(--paper-shadow); padding:12px 16px; border-radius:2px; font-size:14px;
+}
+.rules-list b{font-family:var(--serif-en); color:var(--seal); min-width:22px;}
+
+/* ---------- RADICALS ---------- */
+/* Toolbar row holding the search bar and the "Add to Folder…" trigger side
+   by side. The 20px gap that used to live on .search-bar's own margin-bottom
+   moved here instead: a flex item's margin is part of its box for
+   align-items:center purposes, so leaving that margin on .search-bar alone
+   pulled its effective center upward and made the shorter button look
+   dropped below it rather than vertically centered against it. Keeping the
+   same 20px as margin-bottom on the toolbar itself preserves the original
+   spacing before .radical-count/.radical-grid while letting both toolbar
+   children center against each other correctly. */
+.radical-toolbar{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:20px;}
+/* Same small rounded-pill look search.html's own "Add selected to…" toolbar
+   dropdown (.dict-folder-select/.dict-add-select-wide) uses, ported here
+   rather than the plain .btn.ghost.small this used before — reported
+   directly ("make the Add to folder button... the same as the Add selected
+   to pill dropdown that appears in Search"). Still a real <button> (not a
+   <select>) since choosing a destination here needs the modal's own extra
+   Range/Specific step first, unlike Search's own version where the
+   selection is already made via checkboxes before a folder is even picked —
+   but visually it's the same pill: same font-size/padding/border/radius,
+   same ~180px width. */
+.radical-add-folder-btn{
+  font-size:11.5px; width:180px; padding:4px 8px; border:1px solid var(--paper-shadow); border-radius:20px;
+  background:rgba(255,255,255,0.6); color:var(--ink-soft); font-family:inherit; cursor:pointer; text-align:center;
+}
+.radical-add-folder-btn:hover{border-color:var(--ink); color:var(--ink);}
+.search-bar{
+  display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.5); border:1.5px solid var(--ink);
+  border-radius:2px; padding:8px 14px; max-width:320px;
+}
+.search-icon{width:18px; height:18px; flex-shrink:0;}
+.search-bar input{border:none; background:none; outline:none; font-size:14px; width:100%; font-family:var(--sans);}
+.radical-grid{display:grid; grid-template-columns:repeat(8,1fr); gap:10px;}
+/* Relevancy's own section headers — real siblings of .radical-card inside
+   the SAME grid (not a separate list), so the CSS `order` both share is
+   what interleaves a divider between one tier group's cards and the next's
+   (see RADICAL_TIER_GROUPS/RADICAL_TIER_DIVIDER_ORDER). grid-column:1/-1
+   spans every column regardless of how many the current breakpoint uses,
+   which is what actually forces the line break — the cards after it wrap
+   onto a fresh row same as if a real <br> sat between them. Hidden by
+   default (only ever shown for the Relevancy sort — see renderRadicals). */
+.radical-tier-divider{
+  display:none; grid-column:1 / -1; align-items:baseline; gap:10px; flex-wrap:wrap;
+  padding:10px 0 4px; border-top:1px solid var(--paper-shadow);
+}
+.radical-tier-divider-label{font-family:var(--serif-en); font-weight:700; font-size:15px; text-transform:uppercase; letter-spacing:1px; color:var(--seal);}
+.radical-tier-divider-desc{font-size:12.5px; color:var(--ink-soft);}
+@media (max-width:900px){.radical-grid{grid-template-columns:repeat(6,1fr);}}
+@media (max-width:700px){.radical-grid{grid-template-columns:repeat(4,1fr);}}
+@media (max-width:460px){.radical-grid{grid-template-columns:repeat(3,1fr);}}
+.radical-count{font-size:12.5px; color:var(--ink-soft); margin-bottom:14px;}
+.radical-card{position:relative; perspective:800px; height:104px; cursor:pointer;}
+/* Live position in whatever the current Organize-by order + Relevancy tier
+   + search combination happens to show — sits outside .radical-inner (so it
+   never gets flipped away with the card itself) and is exactly the number
+   the Add to Folder modal's Range/Specific pickers refer to. */
+.radical-ordinal{
+  position:absolute; top:3px; left:5px; z-index:2; font-size:9px; font-weight:700;
+  color:var(--ink-soft); opacity:0.75; pointer-events:none;
+}
+.radical-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;}
+.radical-card.flipped .radical-inner{transform:rotateY(180deg);}
+.radical-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:2px; border:1px solid var(--paper-shadow);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; padding:6px; text-align:center;
+}
+.radical-face.front{background:rgba(255,255,255,0.4);}
+.radical-face.front .radical-target{width:52px; height:52px;}
+.radical-face.front .py{font-size:10.5px; color:var(--ink-soft); margin-top:2px;}
+/* Only present on the 10 radicals whose only recorded form is a practical/
+   bound-component glyph with no traditional/canonical form recorded
+   elsewhere on the site — see the radicals array's own comment on `alt`. */
+.radical-face.front .radical-alt{font-size:8.5px; color:var(--ink-soft); opacity:0.85; margin-top:1px;}
+.radical-face.back{background:var(--ink); color:var(--paper); transform:rotateY(180deg);}
+.radical-face.back .mean{font-weight:700; font-size:12.5px;}
+
+/* ---- Add to Folder modal — same convention as word-bank.html's own
+   modal-backdrop/modal-card, copied here since radicals.html didn't have
+   any modal before this. ---- */
+.modal-backdrop{position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:300; display:flex; align-items:center; justify-content:center; padding:20px;}
+.modal-card{background:var(--paper); border:1px solid var(--paper-shadow); border-radius:2px; max-width:420px; width:100%; padding:26px; box-shadow:6px 8px 0 rgba(0,0,0,0.25); position:relative;}
+.modal-card h4{margin:0 0 8px; font-family:var(--serif-en); font-size:19px; font-weight:700;}
+.modal-card p{font-size:13.5px; color:var(--ink-soft); margin:0 0 18px;}
+.modal-close{position:absolute; top:14px; right:14px; background:none; border:none; font-size:18px; cursor:pointer; color:var(--ink-soft); line-height:1; padding:2px;}
+.modal-close:hover{color:var(--ink);}
+.modal-field{display:flex; flex-direction:column; gap:12px; margin-bottom:22px;}
+.modal-field label{display:flex; align-items:center; gap:8px; font-size:13.5px; cursor:pointer; flex-wrap:wrap;}
+.modal-field select, .modal-field input[type=text]{
+  font-size:13px; padding:6px 9px; border:1.5px solid var(--paper-shadow); border-radius:2px;
+  background:rgba(255,255,255,0.6); font-family:inherit;
+}
+.modal-actions{display:flex; gap:10px;}
+.radical-add-preview{font-size:12.5px; color:var(--ink-soft); margin:-2px 0 4px;}
+
+/* ---------- CHARACTERS flashcards ---------- */
+.deck-wrap{display:flex; flex-direction:column; align-items:center; gap:18px;}
+.flashcard{width:280px; height:280px; perspective:1000px; cursor:pointer;}
+.flash-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;}
+.flashcard.flipped .flash-inner{transform:rotateY(180deg);}
+.flash-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:4px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow:5px 6px 0 rgba(0,0,0,0.12);
+}
+.flash-face.front{background:rgba(255,255,255,0.55); border:1px solid var(--paper-shadow);}
+.flash-face.front .ch{font-family:var(--serif-cn); font-size:100px; font-weight:700;}
+.flash-face.back{background:var(--ink); color:var(--paper); transform:rotateY(180deg);}
+.flash-face.back .py{font-family:var(--serif-en); font-size:26px; font-weight:700;}
+.flash-face.back .mean{margin-top:10px; font-size:15px; color:#d9d2ba;}
+.flash-face.back .strokes{margin-top:16px; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--gold);}
+.deck-controls{display:flex; gap:10px; align-items:center;}
+.deck-progress{font-size:12.5px; color:var(--ink-soft); font-weight:600;}
+
+/* ---------- WRITING PRACTICE ---------- */
+.hw-wrap{display:flex; flex-direction:column; align-items:center;}
+.hw-target-wrap{position:relative; width:280px; height:280px; margin:0 auto; border:2px solid var(--paper-shadow); background:rgba(255,255,255,0.55);}
+.hw-target-wrap::before{content:''; position:absolute; left:50%; top:0; bottom:0; width:1px; background:var(--paper-shadow); opacity:0.8; z-index:1;}
+.hw-target-wrap::after{content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:var(--paper-shadow); opacity:0.8; z-index:1;}
+.hw-diag{position:absolute; top:50%; left:50%; width:396px; height:0; border-top:1px dashed var(--paper-shadow); opacity:0.55; z-index:1;}
+.hw-diag1{transform:translate(-50%,-50%) rotate(45deg);}
+.hw-diag2{transform:translate(-50%,-50%) rotate(-45deg);}
+#hwTarget{position:relative; z-index:2;}
+.hw-context{text-align:center; font-size:14px; color:var(--ink-soft); margin:16px 0 2px;}
+.hw-progress{text-align:center; font-size:12px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase; margin-bottom:6px;}
+.hw-controls{display:flex; gap:10px; justify-content:center; margin-top:20px; flex-wrap:wrap;}
+.hw-result{text-align:center; font-size:14px; font-weight:600; color:var(--jade-dark); min-height:20px; margin-top:14px;}
+.hw-empty{text-align:center; padding:50px 20px; color:var(--ink-soft); font-size:14px;}
+
+/* ---------- DIALOGUE ---------- */
+.dialogue-list{display:flex; flex-direction:column; gap:12px;}
+.dialogue-card{border:1px solid var(--paper-shadow); border-radius:2px; background:rgba(255,255,255,0.4); overflow:hidden;}
+.dialogue-header{display:flex; align-items:center; justify-content:space-between; padding:16px 20px; cursor:pointer;}
+.dialogue-header b{font-family:var(--serif-en); font-size:17px;}
+.dialogue-header .icon{font-family:var(--serif-cn); font-size:22px; color:var(--seal); margin-right:10px;}
+.dialogue-body{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+.dialogue-card.open .dialogue-body{max-height:900px;}
+.dialogue-body-inner{padding:0 20px 20px;}
+.line{display:flex; gap:14px; padding:10px 0; border-top:1px dashed var(--paper-shadow);}
+.line:first-child{border-top:none;}
+.line .who{
+  flex-shrink:0; width:26px; height:26px; border-radius:50%; background:var(--ink); color:var(--paper);
+  display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;
+}
+.line.b .who{background:var(--seal);}
+.line-text .hz{font-family:var(--serif-cn); font-size:18px; font-weight:600;}
+.line-text .py{font-size:12.5px; color:var(--ink-soft); margin-top:2px;}
+.line-text .en{font-size:12.5px; color:var(--slate); margin-top:2px; display:none;}
+.show-en .line-text .en{display:block;}
+.toggle-en-btn{margin-bottom:16px;}
+
+/* ---------- ZHUYIN ---------- */
+.zhuyin-table{width:100%; border-collapse:collapse; font-size:13.5px;}
+.zhuyin-table th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--ink-soft); padding:6px 10px; border-bottom:2px solid var(--ink);}
+.zhuyin-table td{padding:6px 10px; border-bottom:1px solid var(--paper-shadow);}
+.zy-symbol{font-family:var(--serif-cn); font-size:20px; color:var(--seal); font-weight:700; cursor:pointer;}
+.zy-symbol:hover{text-decoration:underline;}
+.zhuyin-note{background:rgba(255,255,255,0.4); border-left:3px solid var(--gold); padding:14px 18px; font-size:13.5px; margin-top:20px; color:var(--ink-soft);}
+
+/* ---------- GEOGRAPHY ---------- */
+.province-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+@media (max-width:820px){.province-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:560px){.province-grid{grid-template-columns:repeat(2,1fr);}}
+.province-chip{
+  background:rgba(255,255,255,0.4); border:1.5px solid var(--paper-shadow); border-radius:2px; padding:16px 10px;
+  text-align:center; cursor:pointer; transition:border-color .15s, background .15s;
+}
+.province-chip:hover{border-color:var(--seal);}
+.province-chip.active{background:var(--ink); border-color:var(--ink); color:var(--paper);}
+.province-chip .cn{font-family:var(--serif-cn); font-size:20px; font-weight:700; display:block;}
+.province-chip .en{font-size:11px; color:inherit; opacity:0.75;}
+.province-detail{margin-top:24px; background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow); border-radius:2px; padding:28px;}
+.pd-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:6px;}
+.pd-head .cn{font-family:var(--serif-cn); font-size:36px; font-weight:700; color:var(--seal);}
+.pd-head .en{font-family:var(--serif-en); font-size:20px; color:var(--ink-soft);}
+.pd-sub{color:var(--ink-soft); font-size:14px; margin-bottom:20px;}
+.pd-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:20px;}
+@media (max-width:700px){.pd-grid{grid-template-columns:1fr;}}
+.pd-block h4{font-size:11.5px; text-transform:uppercase; letter-spacing:1.2px; color:var(--gold); margin:0 0 10px;}
+.tag-row{display:flex; flex-wrap:wrap; gap:6px;}
+.tag{background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:20px; padding:5px 12px; font-size:12.5px;}
+.pd-list{list-style:none; margin:0; padding:0; display:grid; gap:6px; font-size:13.5px;}
+.pd-list li{padding-left:14px; position:relative;}
+.pd-list li::before{content:'—'; position:absolute; left:0; color:var(--seal);}
+
+/* ---------- HISTORY ---------- */
+.timeline{position:relative; margin-top:10px; padding-left:26px;}
+.timeline::before{content:''; position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:var(--paper-shadow);}
+.dyn-item{position:relative; padding-bottom:22px; cursor:pointer;}
+.dyn-item::before{
+  content:''; position:absolute; left:-26px; top:6px; width:12px; height:12px; border-radius:50%;
+  background:var(--paper); border:2.5px solid var(--ink);
+}
+.dyn-item.open::before{background:var(--seal); border-color:var(--seal);}
+.dyn-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;}
+.dyn-head .cn{font-family:var(--serif-cn); font-size:24px; font-weight:700;}
+.dyn-head .period{font-size:12.5px; color:var(--ink-soft); font-family:var(--serif-en); font-weight:600;}
+.dyn-body{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+.dyn-item.open .dyn-body{max-height:400px;}
+.dyn-body-inner{padding:12px 0 4px; font-size:14px; color:var(--ink-soft); max-width:640px;}
+.dyn-body-inner ul{margin:10px 0 0; padding-left:18px;}
+.dyn-body-inner li{margin-bottom:4px;}
+
+footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:center; font-size:12.5px; color:var(--ink-soft);}
+
+</style>
+<script src="settings.js?v=6"></script>
+<script src="auth-guard.js?v=2"></script>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html" style="text-decoration:none;">
+      <div class="seal-mark">境</div>
+      <div class="brand-text"><b>Context Chinese</b><span data-i18n="brand.tagline">Your One-Stop China Shop</span></div>
+    </a>
+    <nav class="tabs" id="navTabs" style="flex:1 1 auto;">
+
+      <div class="nav-item" data-nav-cat="learn">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">学习</span><span class="i18n-label" data-i18n="nav.learn">Learn</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="read.html" data-i18n="learn.read">Read</a>
+          <a class="dropdown-link" href="dictate.html" data-i18n="learn.dictate">Dictate</a>
+          <a class="dropdown-link" href="multiple-choice.html" data-i18n="learn.multiplechoice">Multiple Choice</a>
+          <a class="dropdown-link" href="translate.html" data-i18n="learn.translate">Translate</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="vocabulary">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">词汇</span><span class="i18n-label" data-i18n="nav.vocabulary">Vocabulary</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="search.html" data-i18n="vocab.search">Search</a>
+          <a class="dropdown-link" href="word-bank.html" data-i18n="vocab.wordbank">Word Bank</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="hanzi">
+        <button class="tab-btn active" onclick="toggleNavDropdown(event)"><span class="cn">汉字</span><span class="i18n-label" data-i18n="nav.hanzi">Hanzi</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="strokes.html" data-i18n="hanzi.strokes">Strokes</a>
+          <a class="dropdown-link active" href="radicals.html" data-i18n="hanzi.radicals">Radicals</a>
+          <a class="dropdown-link" href="writing-practice.html" data-i18n="hanzi.writing">Writing Practice</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="pinyin">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">拼音</span><span class="i18n-label" data-i18n="nav.pinyin">Pinyin</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="pinyin-components.html" data-i18n="pinyin.components">Components</a>
+          <a class="dropdown-link" href="match-pinyin.html" data-i18n="pinyin.match">Match Pinyin</a>
+          <a class="dropdown-link" href="type-pinyin.html" data-i18n="pinyin.typing">Type Pinyin</a>
+        </div>
+      </div>
+</nav>
+
+      <div class="nav-item" style="flex-shrink:0;">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)" style="line-height:1; display:inline-flex; align-items:center; justify-content:center;" title="More"><svg viewBox="0 0 24 24" fill="black" style="width:18px; height:18px;"><path d="M19.14,12.94c0.04,-0.3,0.06,-0.61,0.06,-0.94c0,-0.32,-0.02,-0.64,-0.07,-0.94l2.03,-1.58c0.18,-0.14,0.23,-0.41,0.12,-0.61 l-1.92,-3.32c-0.12,-0.22,-0.37,-0.29,-0.59,-0.22l-2.39,0.96c-0.5,-0.38,-1.03,-0.7,-1.62,-0.94L14.4,2.81 c-0.04,-0.24,-0.24,-0.41,-0.48,-0.41h-3.84c-0.24,0,-0.43,0.17,-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33 c-0.22,-0.08,-0.47,0,-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94 l-2.03,1.58c-0.18,0.14,-0.23,0.41,-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39,-0.96c0.5,0.38,1.03,0.7,1.62,0.94 l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44,-0.17,0.47,-0.41l0.36,-2.54c0.59,-0.24,1.13,-0.56,1.62,-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59,-0.22l1.92,-3.32c0.12,-0.22,0.07,-0.47,-0.12,-0.61L19.14,12.94z M12,15.6c-1.98,0,-3.6,-1.62,-3.6,-3.6 s1.62,-3.6,3.6,-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"></path></svg></button>
+        <div class="dropdown" style="left:auto; right:0;">
+          <a class="dropdown-link" href="settings.html" data-i18n="gear.settings">Settings</a>
+          <a class="dropdown-link" href="help.html" data-i18n="gear.help">Help</a>
+          <button class="dropdown-link" onclick="signOutUser()" data-i18n="gear.logout">Logout</button>
+        </div>
+      </div>
+  </div>
+</header>
+
+<main>
+
+<div class="section-head">
+  <div class="eyebrow">Radicals · 汉字</div>
+  <p class="lede">All 214 Kangxi radicals, organized however's useful right now — Kangxi dictionary order, Unicode order, Relevancy (Starter → Expanded → Extended), or Frequency — drawn exactly as they render in Writing Practice, in whichever script your Settings are set to. Tap a card to flip it.</p>
+</div>
+
+<div class="subnav" id="radicalSortNav"></div>
+
+<div class="radical-toolbar">
+  <div class="search-bar"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8" fill="#A9D6F5" stroke="#2F6FA8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="#8B5A2B"></line></svg><input id="radicalSearch" placeholder="Search radicals by meaning or pinyin..." oninput="renderRadicals()"></div>
+  <button class="radical-add-folder-btn" onclick="openAddToFolderModal()">Add to Folder…</button>
+</div>
+<div class="radical-count" id="radicalCount"></div>
+<div class="radical-grid" id="radicalGrid"></div>
+
+<div class="modal-backdrop" id="addToFolderModal" style="display:none;">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeAddToFolderModal()" title="Close">×</button>
+    <h4>Add radicals to a folder</h4>
+    <p>Picks from whatever's currently shown below — the numbers match each card's own small ordinal badge.</p>
+    <div class="modal-field">
+      <label><input type="radio" name="radicalAddWhich" value="all" checked onchange="updateAddToFolderPreview()"> All <span id="radicalAddAllCount"></span> shown</label>
+      <label><input type="radio" name="radicalAddWhich" value="range" onchange="updateAddToFolderPreview()"> Range <input type="text" id="radicalAddRange" placeholder="1-30" oninput="document.querySelector('input[name=radicalAddWhich][value=range]').checked=true; updateAddToFolderPreview()"></label>
+      <label><input type="radio" name="radicalAddWhich" value="list" onchange="updateAddToFolderPreview()"> Specific <input type="text" id="radicalAddList" placeholder="1,5,12,40" oninput="document.querySelector('input[name=radicalAddWhich][value=list]').checked=true; updateAddToFolderPreview()"></label>
+      <div class="radical-add-preview" id="radicalAddPreview"></div>
+      <label>Add to: <select id="radicalAddFolderSelect"></select></label>
+    </div>
+    <div class="modal-actions"><button class="btn small" onclick="confirmAddToFolder()">Add</button></div>
+  </div>
+</div>
+
+</main>
+
+<footer>境 Context Chinese — a learning companion for Mandarin sound, script, geography and history.</footer>
+
+<script>
+/* ================= NAV DROPDOWN (click to open, does not navigate) ================= */
+function toggleNavDropdown(e){
+  const item = e.currentTarget.closest('.nav-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.nav-item.open').forEach(n=>{
+    n.classList.remove('open');
+    const dd = n.querySelector('.dropdown');
+    if(dd){ dd.style.position=''; dd.style.left=''; dd.style.top=''; }
+  });
+  if(!wasOpen){
+    item.classList.add('open');
+    // Below 920px the nav scrolls horizontally (nav.tabs{overflow-x:auto}).
+    // Anchoring the dropdown with position:fixed here — instead of the
+    // default position:absolute under the button — lets it escape that
+    // scroll container's clipping without ever touching its overflow
+    // property, so opening/closing a dropdown never resets the nav's
+    // scroll position back to the start.
+    if(window.matchMedia('(max-width:920px)').matches){
+      const dd = item.querySelector('.dropdown');
+      const btnRect = e.currentTarget.getBoundingClientRect();
+      dd.style.position = 'fixed';
+      dd.style.top = (btnRect.bottom + 6) + 'px';
+      const maxLeft = window.innerWidth - 208; // dropdown min-width 200px + 8px margin
+      dd.style.left = Math.max(8, Math.min(btnRect.left, maxLeft)) + 'px';
+    }
+  }
+}
+document.addEventListener('click', (e)=>{
+  if(e.target.closest('.dropdown-link') || !e.target.closest('.nav-item')){
+    document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+  }
+});
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='Escape') document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+});
+
+/* ================= SPEECH ================= */
+function speak(text, lang){
+  if(!('speechSynthesis' in window) || !text || text==='—') return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang || 'zh-CN';
+  u.rate = (typeof getSpeechRate === 'function') ? getSpeechRate() : 0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+function shuffle(array){
+  for(let i=array.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function stripTones(s){
+  const map = {'ā':'a','á':'a','ǎ':'a','à':'a','ē':'e','é':'e','ě':'e','è':'e','ī':'i','í':'i','ǐ':'i','ì':'i',
+    'ō':'o','ó':'o','ǒ':'o','ò':'o','ū':'u','ú':'u','ǔ':'u','ù':'u','ǖ':'u','ǘ':'u','ǚ':'u','ǜ':'u','ü':'u'};
+  return s.toLowerCase().split('').map(c=>map[c]||c).join('');
+}
+
+/* ================= WORD BANK (persisted via localStorage, shared across pages) =================
+   Note: localStorage is scoped per-origin. If these files are opened directly from disk (file://),
+   most browsers share storage across files in the same folder, but this can vary — hosting the
+   site (even a simple local server) guarantees the Word Bank stays in sync across every page. */
+let wordBankMem = [];
+function loadWordBank(){
+  try{
+    const raw = localStorage.getItem('ccWordBank');
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return wordBankMem; }
+}
+function saveWordBank(arr){
+  wordBankMem = arr;
+  try{
+    localStorage.setItem('ccWordBank', JSON.stringify(arr));
+    return true;
+  }catch(e){
+    // Most common real-world cause: Private Browsing on iOS Safari throws on
+    // every localStorage write — this used to fail silently here, so
+    // addToWordBank's own .saved flag (added alongside the Add to Folder
+    // feature) always read false even on a real success. Matches
+    // search.html's own version of this function exactly.
+    console.warn('Word Bank failed to save — storage may be blocked (e.g. Private Browsing).', e);
+    return false;
+  }
+}
+// Adds to the general Word Bank when folder is falsy, or to that folder's own
+// independent collection otherwise — ported verbatim from search.html (itself
+// ported from word-bank.html, the canonical version) so this page can write
+// into a folder, not just define the folder helpers below without ever using
+// them. This replaces the page's own former one-argument version, which
+// always wrote a dead `folder:''` field nothing ever read — the same bug
+// search.html itself used to have.
+function addToWordBank(entries, folder){
+  const target = folder ? loadFolderWords(folder) : loadWordBank();
+  const existing = new Set(target.map(w=>w.hz));
+  let added=0, skipped=0;
+  entries.forEach(e=>{
+    if(!e || !e.hz) return;
+    if(existing.has(e.hz)){ skipped++; return; }
+    existing.add(e.hz);
+    target.push({hz:e.hz, py:e.py||'—', en:e.en||'—'});
+    added++;
+  });
+  const saved = folder ? saveFolderWords(folder, target) : saveWordBank(target);
+  return {added, skipped, total:target.length, saved};
+}
+function removeFromWordBankRaw(hz){
+  saveWordBank(loadWordBank().filter(w=>w.hz!==hz));
+}
+function clearWordBankRaw(){
+  saveWordBank([]);
+}
+
+/* ---- folders: organize Word Bank entries into named study groups ---- */
+function loadFolders(){
+  try{ const raw = localStorage.getItem('ccFolders'); return raw ? JSON.parse(raw) : []; }catch(e){ return []; }
+}
+function saveFolders(arr){
+  try{ localStorage.setItem('ccFolders', JSON.stringify(arr)); }catch(e){}
+}
+// Each folder is its own independent word collection, entirely separate from
+// the general Word Bank above (see word-bank.html for the full CRUD UI) —
+// ported verbatim from search.html so this page can actually write a radical
+// into a folder, not just list folder names.
+function loadAllFolderWords(){
+  try{ const raw = localStorage.getItem('ccFolderWords'); return raw ? JSON.parse(raw) : {}; }catch(e){ return {}; }
+}
+function loadFolderWords(name){
+  return loadAllFolderWords()[name] || [];
+}
+function saveFolderWords(name, arr){
+  const all = loadAllFolderWords();
+  all[name] = arr;
+  try{
+    localStorage.setItem('ccFolderWords', JSON.stringify(all));
+    return true;
+  }catch(e){
+    console.warn('Folder failed to save — storage may be blocked (e.g. Private Browsing).', e);
+    return false;
+  }
+}
+function createFolder(name){
+  name = (name||'').trim();
+  if(!name) return loadFolders();
+  const folders = loadFolders();
+  if(!folders.includes(name)){ folders.push(name); saveFolders(folders); }
+  return folders;
+}
+// Finds every collection (general Word Bank + each folder) that already has
+// a word with this hanzi — used for cross-collection duplicate detection,
+// same as search.html's own bulk add.
+function findExistingCopies(hz){
+  const hits = [];
+  if(loadWordBank().some(w=>w.hz===hz)) hits.push('your Word Bank');
+  loadFolders().forEach(f=>{ if(loadFolderWords(f).some(w=>w.hz===hz)) hits.push(`folder "${f}"`); });
+  return hits;
+}
+// Batch add-with-duplicate-check for the Add to Folder modal below — mirrors
+// search.html's own addEntriesWithDuplicateCheckBatch (asking ONCE how to
+// handle a whole batch of duplicates, not once per radical), minus its
+// "mark Known" side effect: that's this site's vocabulary-focus system
+// (setFocusCategory/KNOWN_TAG), which radicals.html never loads and which
+// doesn't apply to radicals in the first place.
+function addEntriesWithDuplicateCheckBatch(entries, folder){
+  const dupes = [], fresh = [];
+  entries.forEach(e=>{
+    if(!e || !e.hz) return;
+    const elsewhere = findExistingCopies(e.hz).filter(src => !(folder ? src === `folder "${folder}"` : src === 'your Word Bank'));
+    (elsewhere.length ? dupes : fresh).push(e);
+  });
+  if(!dupes.length) return addToWordBank(fresh, folder);
+  const keepDupes = confirm(`${dupes.length} of these ${entries.length} radicals are already saved elsewhere (your Word Bank or another folder).\n\nOK = keep all ${dupes.length} as new copies here too\nCancel = skip those ${dupes.length} here`);
+  const toAdd = keepDupes ? fresh.concat(dupes) : fresh;
+  const res = addToWordBank(toAdd, folder);
+  res.skippedDupes = keepDupes ? 0 : dupes.length;
+  return res;
+}
+function deleteFolder(name){
+  saveFolders(loadFolders().filter(f=>f!==name));
+  saveWordBank(loadWordBank().map(w => w.folder===name ? Object.assign({}, w, {folder:''}) : w));
+}
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3/dist/hanzi-writer.min.js"></script>
+<script>
+// All 214 Kangxi radicals, including the first 4 (一 丨 丶 丿) that are also
+// basic strokes in their own right (see strokes.html / writing-practice.html's
+// Strokes mode) — this is a reference page, so the full canonical set
+// belongs here even though Writing Practice's own Radicals mode
+// deliberately leaves those 4 out of hwRadicalsList, to avoid practicing
+// the same 4 marks twice over under two different mode names there. Where
+// a radical has multiple written forms (人/亻, 心/忄, etc.), only the
+// first — its standalone form — is used, same as Writing Practice.
+//
+// Each radical also carries:
+//   - `num`   — 1-214, explicit (not just array position) so every sort mode
+//               below can key off it directly rather than assuming index+1.
+//   - `freq`  — a "how common is this radical" ranking value used by the
+//               Frequency organize-by mode. The top 10 (140,85,75,64,30,61,
+//               142,118,149,120) are Wikipedia's own exact figures (character
+//               count in the Kangxi Dictionary — see the "Statistics"
+//               section of https://en.wikipedia.org/wiki/Kangxi_radicals,
+//               read directly since the article doesn't rank the other 204
+//               numerically anywhere). Those other 204 use a supplementary
+//               count derived from Unicode's own Unihan database
+//               (Unihan_RadicalStrokeCounts.txt's kRSAdobe_Japan1_6 field —
+//               how many of ~13,450 CJK characters cite each radical as
+//               their primary one) — a different corpus/scale (max ~749 vs.
+//               Wikipedia's max 1902), but every one of its values sits
+//               below Wikipedia's smallest top-10 figure (823), so merging
+//               them into one field preserves Wikipedia's top-10 ranking
+//               exactly and gives a reasonable full ordering underneath it.
+//   - `tier`  — drives the three-level Relevancy study path above the grid
+//               (see RADICAL_TIERS/renderRadicals), calibrated against
+//               mandarintutor.com's own Basic/Advanced radical lists (their
+//               glyphs mapped back to the underlying Kangxi radical each
+//               belongs to — several are bound/variant forms of a radical
+//               already counted via its standalone entry, e.g. Basic's 灬
+//               is Fire's own bottom-variant, already covered by 火):
+//     - 'starter'   — the 34 radicals in mandarintutor's own Basic list
+//                     (https://www.mandarintutor.com/resources/commonradicals).
+//     - 'expanded'  — the 122 radicals (Starter included) in mandarintutor's
+//                     own Advanced list
+//                     (https://www.mandarintutor.com/resources/advancedradicals).
+//     - no `tier` field — "Extended-only": the remaining 92 radicals, shown
+//                     only once Extended is selected — same "every radical
+//                     always shows up eventually, tiering only ever narrows
+//                     which show up EARLIER" cumulative shape the old
+//                     Basic/Intermediate/Complete system already had.
+//   - `alt`   — present on exactly 10 radicals whose only entry here is a
+//               practical/bound-component glyph (刂, 扌, 讠, 艹, 辶, 川, 覀,
+//               青, plus 母 and 王, which are outright mislabeled rather than
+//               just an alternate glyph — see below) with no traditional or
+//               canonical form recorded anywhere else on the site. `ch`
+//               itself is UNCHANGED for all 10 (still what HanziWriter
+//               draws) — `alt` is purely an additional display field,
+//               rendered as `${ch}, (${alt})` next to the pinyin. Checked
+//               against the Unicode Standard's own Kangxi Radicals code
+//               chart (2F00–2FDF) for the true canonical form of every one
+//               of the 214 radicals; the OTHER 20 mismatches found that way
+//               (门/門, 见/見, 鱼/魚, etc.) already resolve correctly through
+//               settings.js's own SIMP_TO_TRAD map and need no `alt` at all.
+//               3 of these 10 (80, 96, 146) had `mean`/`py` for a
+//               completely different character, not just an alternate glyph
+//               of the same radical — 母 "Mother" and 王 "King" aren't
+//               Kangxi radicals at all, and radical 146's meaning is
+//               "West", not "Cover" (that's radical 14's own meaning) — so
+//               those 3 got their `mean`/`py` corrected to match the real
+//               radical; every other radical's `mean`/`py` is byte-for-byte
+//               unchanged from before.
+const radicals = [
+  {num:1, ch:'一', py:'yī', mean:'One', freq:54},
+  {num:2, ch:'丨', py:'shù', mean:'Line', freq:14},
+  {num:3, ch:'丶', py:'diǎn', mean:'Dot', freq:12},
+  {num:4, ch:'丿', py:'piě', mean:'Slash', freq:30},
+  {num:5, ch:'乙', py:'yǐ', mean:'Second', freq:37},
+  {num:6, ch:'亅', py:'jué', mean:'Hook', freq:7},
+  {num:7, ch:'二', py:'èr', mean:'Two', freq:27},
+  {num:8, ch:'亠', py:'tóu', mean:'Lid', freq:33, tier:'expanded'},
+  {num:9, ch:'人', py:'rén', mean:'Person', freq:497, tier:'starter'},
+  {num:10, ch:'儿', py:'rén', mean:'Legs', freq:43},
+  {num:11, ch:'入', py:'rù', mean:'Enter', freq:16},
+  {num:12, ch:'八', py:'bā', mean:'Eight', freq:27},
+  {num:13, ch:'冂', py:'jiōng', mean:'Down box', freq:22},
+  {num:14, ch:'冖', py:'mì', mean:'Cover', freq:22, tier:'expanded'},
+  {num:15, ch:'冫', py:'bīng', mean:'Ice', freq:52, tier:'starter'},
+  {num:16, ch:'几', py:'jǐ', mean:'Table', freq:34, tier:'expanded'},
+  {num:17, ch:'凵', py:'qiǎn', mean:'Open box', freq:11, tier:'expanded'},
+  {num:18, ch:'刂', py:'dāo', mean:'Knife', alt:'刀', freq:129, tier:'expanded'},
+  {num:19, ch:'力', py:'lì', mean:'Power', freq:100, tier:'starter'},
+  {num:20, ch:'勹', py:'bāo', mean:'Wrap', freq:27, tier:'expanded'},
+  {num:21, ch:'匕', py:'bǐ', mean:'Ladle / Dagger', freq:21},
+  {num:22, ch:'匚', py:'fāng', mean:'Right open box', freq:31},
+  {num:23, ch:'匸', py:'xì', mean:'Hiding enclosure', freq:3},
+  {num:24, ch:'十', py:'shí', mean:'Ten', freq:55},
+  {num:25, ch:'卜', py:'bǔ', mean:'Divination', freq:19},
+  {num:26, ch:'卩', py:'jié', mean:'Seal / Joint', freq:26, tier:'expanded'},
+  {num:27, ch:'厂', py:'hǎn', mean:'Cliff / House', freq:49, tier:'starter'},
+  {num:28, ch:'厶', py:'mǒu', mean:'Private', freq:32},
+  {num:29, ch:'又', py:'yòu', mean:'Again', freq:39, tier:'expanded'},
+  {num:30, ch:'口', py:'kǒu', mean:'Mouth', freq:1146, tier:'starter'},
+  {num:31, ch:'囗', py:'wéi', mean:'Enclosure', freq:54, tier:'starter'},
+  {num:32, ch:'土', py:'tǔ', mean:'Earth', freq:315, tier:'starter'},
+  {num:33, ch:'士', py:'shì', mean:'Scholar', freq:29},
+  {num:34, ch:'夂', py:'zhǐ', mean:'Go', freq:13},
+  {num:35, ch:'夊', py:'suī', mean:'Go slowly', freq:11},
+  {num:36, ch:'夕', py:'xī', mean:'Night', freq:23, tier:'expanded'},
+  {num:37, ch:'大', py:'dà', mean:'Big', freq:89, tier:'expanded'},
+  {num:38, ch:'女', py:'nǚ', mean:'Woman', freq:239, tier:'starter'},
+  {num:39, ch:'子', py:'zǐ', mean:'Child', freq:46, tier:'starter'},
+  {num:40, ch:'宀', py:'mián', mean:'Roof', freq:128, tier:'starter'},
+  {num:41, ch:'寸', py:'cùn', mean:'Inch', freq:33},
+  {num:42, ch:'小', py:'xiǎo', mean:'Small', freq:36, tier:'expanded'},
+  {num:43, ch:'尢', py:'wāng', mean:'Lame', freq:27},
+  {num:44, ch:'尸', py:'shī', mean:'Corpse', freq:49, tier:'expanded'},
+  {num:45, ch:'屮', py:'chè', mean:'Sprout', freq:8},
+  {num:46, ch:'山', py:'shān', mean:'Mountain', freq:232, tier:'expanded'},
+  {num:47, ch:'川', py:'chuān', mean:'River', alt:'巛', freq:24, tier:'expanded'},
+  {num:48, ch:'工', py:'gōng', mean:'Work', freq:37, tier:'expanded'},
+  {num:49, ch:'己', py:'jǐ', mean:'Oneself', freq:34},
+  {num:50, ch:'巾', py:'jīn', mean:'Towel', freq:80},
+  {num:51, ch:'干', py:'gān', mean:'Dry / Do', freq:46},
+  {num:52, ch:'幺', py:'yāo', mean:'Youngest', freq:8},
+  {num:53, ch:'广', py:'guǎng', mean:'Shelter', freq:92, tier:'starter'},
+  {num:54, ch:'廴', py:'yǐn', mean:'Stride', freq:10, tier:'expanded'},
+  {num:55, ch:'廾', py:'gǒng', mean:'Hands joined', freq:23},
+  {num:56, ch:'弋', py:'yì', mean:'Shoot with a bow', freq:15},
+  {num:57, ch:'弓', py:'gōng', mean:'Bow', freq:60},
+  {num:58, ch:'彐', py:'jì', mean:'Snout', freq:22},
+  {num:59, ch:'彡', py:'shān', mean:'Hair', freq:30, tier:'expanded'},
+  {num:60, ch:'彳', py:'chì', mean:'Step', freq:61, tier:'starter'},
+  {num:61, ch:'心', py:'xīn', mean:'Heart', freq:1115, tier:'starter'},
+  {num:62, ch:'戈', py:'gē', mean:'Spear', freq:50},
+  {num:63, ch:'戶', py:'hù', mean:'Door', freq:35, tier:'expanded'},
+  {num:64, ch:'扌', py:'shǒu', mean:'Hand', alt:'手', freq:1203, tier:'starter'},
+  {num:65, ch:'支', py:'zhī', mean:'Branch', freq:21, tier:'expanded'},
+  {num:66, ch:'攴', py:'pū', mean:'Rap / Beat', freq:68, tier:'expanded'},
+  {num:67, ch:'文', py:'wén', mean:'Script', freq:30, tier:'expanded'},
+  {num:68, ch:'斗', py:'dǒu', mean:'Vessel', freq:22},
+  {num:69, ch:'斤', py:'jīn', mean:'Axe', freq:40, tier:'expanded'},
+  {num:70, ch:'方', py:'fāng', mean:'Square', freq:54, tier:'expanded'},
+  {num:71, ch:'无', py:'wú', mean:'Not', freq:6},
+  {num:72, ch:'日', py:'rì', mean:'Sun', freq:241, tier:'starter'},
+  {num:73, ch:'曰', py:'yuē', mean:'Say', freq:19},
+  {num:74, ch:'月', py:'yuè', mean:'Moon', freq:49, tier:'starter'},
+  {num:75, ch:'木', py:'mù', mean:'Tree', freq:1369, tier:'starter'},
+  {num:76, ch:'欠', py:'qiàn', mean:'Lack', freq:57},
+  {num:77, ch:'止', py:'zhǐ', mean:'Stop', freq:32},
+  {num:78, ch:'歹', py:'dǎi', mean:'Death', freq:43, tier:'expanded'},
+  {num:79, ch:'殳', py:'shū', mean:'Weapon', freq:46},
+  {num:80, ch:'母', py:'wú', mean:'Do not', alt:'毋', freq:13, tier:'expanded'},
+  {num:81, ch:'比', py:'bǐ', mean:'Compare', freq:27, tier:'expanded'},
+  {num:82, ch:'毛', py:'máo', mean:'Fur', freq:37, tier:'expanded'},
+  {num:83, ch:'氏', py:'shì', mean:'Clan', freq:18},
+  {num:84, ch:'气', py:'qì', mean:'Steam', freq:14, tier:'expanded'},
+  {num:85, ch:'水', py:'shuǐ', mean:'Water', freq:1595, tier:'starter'},
+  {num:86, ch:'火', py:'huǒ', mean:'Fire', freq:237, tier:'starter'},
+  {num:87, ch:'爪', py:'zhǎo', mean:'Claw', freq:24, tier:'expanded'},
+  {num:88, ch:'父', py:'fù', mean:'Father', freq:9},
+  {num:89, ch:'爻', py:'yáo', mean:'Lines on a trigram', freq:7},
+  {num:90, ch:'爿', py:'pán', mean:'Half of a tree trunk', freq:17},
+  {num:91, ch:'片', py:'piàn', mean:'Slice', freq:15, tier:'expanded'},
+  {num:92, ch:'牙', py:'yá', mean:'Tooth', freq:18, tier:'expanded'},
+  {num:93, ch:'牛', py:'niú', mean:'Cow', freq:52, tier:'expanded'},
+  {num:94, ch:'犬', py:'quǎn', mean:'Dog', freq:149, tier:'expanded'},
+  {num:95, ch:'玄', py:'xuán', mean:'Profound', freq:22},
+  {num:96, ch:'王', py:'yù', mean:'Jade', alt:'玉', freq:234, tier:'expanded'},
+  {num:97, ch:'瓜', py:'guā', mean:'Melon', freq:20, tier:'expanded'},
+  {num:98, ch:'瓦', py:'wǎ', mean:'Tile', freq:37},
+  {num:99, ch:'甘', py:'gān', mean:'Sweet', freq:19, tier:'expanded'},
+  {num:100, ch:'生', py:'shēng', mean:'Life', freq:25, tier:'expanded'},
+  {num:101, ch:'用', py:'yòng', mean:'Use', freq:8, tier:'expanded'},
+  {num:102, ch:'田', py:'tián', mean:'Field', freq:92, tier:'expanded'},
+  {num:103, ch:'疋', py:'pǐ', mean:'Foot', freq:10},
+  {num:104, ch:'疒', py:'nè', mean:'Sick', freq:168, tier:'starter'},
+  {num:105, ch:'癶', py:'bō', mean:'Unbalanced footsteps', freq:6},
+  {num:106, ch:'白', py:'bái', mean:'White', freq:62, tier:'expanded'},
+  {num:107, ch:'皮', py:'pí', mean:'Skin', freq:32, tier:'expanded'},
+  {num:108, ch:'皿', py:'mǐn', mean:'Dish', freq:47, tier:'expanded'},
+  {num:109, ch:'目', py:'mù', mean:'Eye', freq:154, tier:'expanded'},
+  {num:110, ch:'矛', py:'máo', mean:'Spear', freq:12},
+  {num:111, ch:'矢', py:'shǐ', mean:'Arrow', freq:22},
+  {num:112, ch:'石', py:'shí', mean:'Stone', freq:193, tier:'expanded'},
+  {num:113, ch:'示', py:'shì', mean:'Spirit', freq:105, tier:'expanded'},
+  {num:114, ch:'禸', py:'róu', mean:'Rub', freq:5},
+  {num:115, ch:'禾', py:'hé', mean:'Grain', freq:138, tier:'expanded'},
+  {num:116, ch:'穴', py:'xué', mean:'Cave', freq:69, tier:'expanded'},
+  {num:117, ch:'立', py:'lì', mean:'Stand', freq:55, tier:'expanded'},
+  {num:118, ch:'竹', py:'zhú', mean:'Bamboo', freq:953, tier:'starter'},
+  {num:119, ch:'米', py:'mǐ', mean:'Rice', freq:109, tier:'expanded'},
+  {num:120, ch:'糸', py:'sī', mean:'Silk', freq:823, tier:'starter'},
+  {num:121, ch:'缶', py:'fǒu', mean:'Jar', freq:24},
+  {num:122, ch:'网', py:'wǎng', mean:'Net', freq:48, tier:'expanded'},
+  {num:123, ch:'羊', py:'yáng', mean:'Sheep', freq:61, tier:'expanded'},
+  {num:124, ch:'羽', py:'yǔ', mean:'Feather', freq:50, tier:'expanded'},
+  {num:125, ch:'老', py:'lǎo', mean:'Old', freq:20, tier:'expanded'},
+  {num:126, ch:'而', py:'ér', mean:'And', freq:16},
+  {num:127, ch:'耒', py:'lěi', mean:'Plow', freq:20},
+  {num:128, ch:'耳', py:'ěr', mean:'Ear', freq:61, tier:'expanded'},
+  {num:129, ch:'聿', py:'yù', mean:'Brush', freq:18},
+  {num:130, ch:'肉', py:'ròu', mean:'Meat', freq:226, tier:'expanded'},
+  {num:131, ch:'臣', py:'chén', mean:'Minister', freq:20},
+  {num:132, ch:'自', py:'zì', mean:'Oneself', freq:14, tier:'expanded'},
+  {num:133, ch:'至', py:'zhì', mean:'Arrive', freq:35, tier:'expanded'},
+  {num:134, ch:'臼', py:'jiù', mean:'Mortar', freq:24},
+  {num:135, ch:'舌', py:'shé', mean:'Tongue', freq:32, tier:'expanded'},
+  {num:136, ch:'舛', py:'chuǎn', mean:'Contrary', freq:9},
+  {num:137, ch:'舟', py:'zhōu', mean:'Boat', freq:59, tier:'expanded'},
+  {num:138, ch:'艮', py:'gèn', mean:'Mountain', freq:19},
+  {num:139, ch:'色', py:'sè', mean:'Color', freq:9, tier:'expanded'},
+  {num:140, ch:'艹', py:'cǎo', mean:'Grass', alt:'艸', freq:1902, tier:'starter'},
+  {num:141, ch:'虍', py:'hū', mean:'Stripes on a tiger', freq:30, tier:'expanded'},
+  {num:142, ch:'虫', py:'chóng', mean:'Insect', freq:1067, tier:'expanded'},
+  {num:143, ch:'血', py:'xuè', mean:'Blood', freq:17, tier:'expanded'},
+  {num:144, ch:'行', py:'xíng', mean:'Walk', freq:35, tier:'expanded'},
+  {num:145, ch:'衣', py:'yī', mean:'Clothes', freq:193, tier:'starter'},
+  {num:146, ch:'覀', py:'yà', mean:'West', alt:'襾', freq:27, tier:'expanded'},
+  {num:147, ch:'见', py:'jiàn', mean:'See', freq:56, tier:'expanded'},
+  {num:148, ch:'角', py:'jiǎo', mean:'Horn', freq:32, tier:'expanded'},
+  {num:149, ch:'讠', py:'yán', mean:'Speech', alt:'言', freq:861, tier:'starter'},
+  {num:150, ch:'谷', py:'gǔ', mean:'Valley', freq:27},
+  {num:151, ch:'豆', py:'dòu', mean:'Bean', freq:28, tier:'expanded'},
+  {num:152, ch:'豕', py:'shǐ', mean:'Pig', freq:30, tier:'expanded'},
+  {num:153, ch:'豸', py:'zhì', mean:'Legless insect', freq:26},
+  {num:154, ch:'贝', py:'bèi', mean:'Shell', freq:121, tier:'expanded'},
+  {num:155, ch:'赤', py:'chì', mean:'Red', freq:14},
+  {num:156, ch:'走', py:'zǒu', mean:'Walk', freq:33, tier:'expanded'},
+  {num:157, ch:'足', py:'zú', mean:'Foot', freq:165, tier:'starter'},
+  {num:158, ch:'身', py:'shēn', mean:'Body', freq:27, tier:'expanded'},
+  {num:159, ch:'车', py:'chē', mean:'Cart', freq:122, tier:'starter'},
+  {num:160, ch:'辛', py:'xīn', mean:'Bitter', freq:25},
+  {num:161, ch:'辰', py:'chén', mean:'Day time', freq:22},
+  {num:162, ch:'辶', py:'chuò', mean:'Walk', alt:'辵', freq:182, tier:'starter'},
+  {num:163, ch:'邑', py:'yì', mean:'City', freq:118, tier:'starter'},
+  {num:164, ch:'酉', py:'yǒu', mean:'Wine vessel', freq:89, tier:'expanded'},
+  {num:165, ch:'釆', py:'biàn', mean:'Distinguish', freq:6},
+  {num:166, ch:'里', py:'lǐ', mean:'Village', freq:23},
+  {num:167, ch:'金', py:'jīn', mean:'Metal', freq:466, tier:'starter'},
+  {num:168, ch:'长', py:'cháng', mean:'Long', freq:24, tier:'expanded'},
+  {num:169, ch:'门', py:'mén', mean:'Gate', freq:91, tier:'starter'},
+  {num:170, ch:'阜', py:'fù', mean:'Mound', freq:118, tier:'starter'},
+  {num:171, ch:'隶', py:'lì', mean:'Slave', freq:8},
+  {num:172, ch:'隹', py:'zhuī', mean:'Short-tailed bird', freq:67, tier:'expanded'},
+  {num:173, ch:'雨', py:'yǔ', mean:'Rain', freq:69, tier:'expanded'},
+  {num:174, ch:'青', py:'qīng', mean:'Blue / Green', alt:'靑', freq:36},
+  {num:175, ch:'非', py:'fēi', mean:'Wrong', freq:34},
+  {num:176, ch:'面', py:'miàn', mean:'Face', freq:13, tier:'expanded'},
+  {num:177, ch:'革', py:'gé', mean:'Leather', freq:70, tier:'expanded'},
+  {num:178, ch:'韦', py:'wěi', mean:'Soft leather', freq:35},
+  {num:179, ch:'韭', py:'jiǔ', mean:'Leek', freq:5},
+  {num:180, ch:'音', py:'yīn', mean:'Sound', freq:24, tier:'expanded'},
+  {num:181, ch:'页', py:'yè', mean:'Page', freq:94, tier:'expanded'},
+  {num:182, ch:'风', py:'fēng', mean:'Wind', freq:33, tier:'expanded'},
+  {num:183, ch:'飞', py:'fēi', mean:'Fly', freq:2, tier:'expanded'},
+  {num:184, ch:'食', py:'shí', mean:'Eat', freq:102, tier:'starter'},
+  {num:185, ch:'首', py:'shǒu', mean:'Head', freq:4, tier:'expanded'},
+  {num:186, ch:'香', py:'xiāng', mean:'Fragrant', freq:11},
+  {num:187, ch:'马', py:'mǎ', mean:'Horse', freq:135, tier:'expanded'},
+  {num:188, ch:'骨', py:'gǔ', mean:'Bone', freq:46, tier:'expanded'},
+  {num:189, ch:'高', py:'gāo', mean:'High', freq:34, tier:'expanded'},
+  {num:190, ch:'髟', py:'biāo', mean:'Long hair', freq:52},
+  {num:191, ch:'鬥', py:'dòu', mean:'Fight', freq:11},
+  {num:192, ch:'鬯', py:'chàng', mean:'Sacrificial wine', freq:2},
+  {num:193, ch:'鬲', py:'lì', mean:'Cauldron', freq:17},
+  {num:194, ch:'鬼', py:'guǐ', mean:'Ghost', freq:36},
+  {num:195, ch:'鱼', py:'yú', mean:'Fish', freq:215, tier:'starter'},
+  {num:196, ch:'鸟', py:'niǎo', mean:'Bird', freq:200, tier:'expanded'},
+  {num:197, ch:'卤', py:'lǔ', mean:'Brine', freq:8},
+  {num:198, ch:'鹿', py:'lù', mean:'Deer', freq:34},
+  {num:199, ch:'麦', py:'mài', mean:'Wheat', freq:18},
+  {num:200, ch:'麻', py:'má', mean:'Hemp', freq:14},
+  {num:201, ch:'黄', py:'huáng', mean:'Yellow', freq:20},
+  {num:202, ch:'黍', py:'shǔ', mean:'Millet', freq:4},
+  {num:203, ch:'黑', py:'hēi', mean:'Black', freq:36, tier:'expanded'},
+  {num:204, ch:'黹', py:'zhǐ', mean:'Embroidery', freq:3},
+  {num:205, ch:'黾', py:'měng', mean:'Frog', freq:11},
+  {num:206, ch:'鼎', py:'dǐng', mean:'Tripod', freq:5},
+  {num:207, ch:'鼓', py:'gǔ', mean:'Drum', freq:10},
+  {num:208, ch:'鼠', py:'shǔ', mean:'Rat', freq:14},
+  {num:209, ch:'鼻', py:'bí', mean:'Nose', freq:18},
+  {num:210, ch:'齐', py:'qí', mean:'Neat', freq:26},
+  {num:211, ch:'齿', py:'chǐ', mean:'Tooth', freq:40},
+  {num:212, ch:'龙', py:'lóng', mean:'Dragon', freq:39},
+  {num:213, ch:'龟', py:'guī', mean:'Turtle', freq:8},
+  {num:214, ch:'龠', py:'yuè', mean:'Flute', freq:11},
+];
+// Settings → hanziScript ('simplified' | 'traditional', see settings.js)
+// picks which written FORM of a radical to actually draw — e.g. 门 vs 門,
+// 见 vs 見. This array itself is a fixed, arbitrary mix of both (whichever
+// form happens to be that radical's own standalone Kangxi form), so it
+// can't be read directly; every radical's simplified/traditional pair has
+// to be resolved from settings.js's own SIMP_TO_TRAD map instead — inverted
+// once into TRAD_TO_SIMP for the reverse lookup — same source of truth
+// oracle-bone.js and every other trad/simp-aware feature on the site
+// already uses, so this radical grid stays in sync with a single canonical
+// mapping rather than carrying its own separate one.
+// IMPORTANT: HanziWriter draws each radical's glyph from its own stroke
+// data, not from a DOM text node, so it's the one piece of this page
+// settings.js's own site-wide live text-converting observer (applyHanziScript)
+// can never reach — this resolution has to happen explicitly, once, at
+// build time, same as Writing Practice's canvas.
+const TRAD_TO_SIMP = {};
+for(const simp in SIMP_TO_TRAD) TRAD_TO_SIMP[SIMP_TO_TRAD[simp]] = simp;
+// SIMP_TO_TRAD is a curated CC-CEDICT-derived map, mostly one-directional
+// (simplified key -> traditional value) — but at least one pair (儿/兒) is
+// registered BOTH ways (儿->兒 for the "child" character, and also 兒->儿),
+// which would make a naive reverse-lookup ambiguous for that pair. Checking
+// "is ch already a recognized simplified KEY" first, before ever falling
+// back to the inverted map, sidesteps that: a character already registered
+// as simplified is trusted as-is rather than risking a wrong flip through
+// TRAD_TO_SIMP.
+function radicalDisplayForm(ch){
+  const mode = (typeof loadSettings === 'function' && loadSettings().hanziScript) || 'simplified';
+  const isKnownSimp = Object.prototype.hasOwnProperty.call(SIMP_TO_TRAD, ch);
+  if(mode === 'traditional') return isKnownSimp ? SIMP_TO_TRAD[ch] : ch;
+  return isKnownSimp ? ch : (TRAD_TO_SIMP[ch] || ch);
+}
+
+// Three-level study path above the grid — see each radical's own `tier`
+// field for what belongs in Basic/Intermediate; Complete always shows
+// every radical in the array regardless of tier. Basic is the default: the
+// point of the tiers is to give a newcomer an actual starting point rather
+// than 214 radicals at once, so that's what a fresh visit opens on —
+// Complete (today's old behavior, everything at once) is one click away.
+/* ================= ORGANIZE BY — 4 ways to view the same 214 cards =================
+   Cards are still created ONCE, up front (see below) — none of these ever
+   rebuild the DOM or touch a HanziWriter instance. Reordering is done purely
+   via each card's own CSS `order` (grid honors it same as flex), computed
+   fresh in renderRadicals() below every time the sort/tier/search changes. */
+const RADICAL_SORTS = [
+  {key:'kangxi', label:'Kangxi', desc:'Numeric order from the Kangxi Dictionary, 1 to 214.'},
+  {key:'unicode', label:'Unicode', desc:"The order these cards' own glyphs actually sit at in Unicode."},
+  {key:'relevancy', label:'Relevancy', desc:'Starter, Expanded, and Extended radicals.'},
+  {key:'frequency', label:'Frequency', desc:'Most-used radicals across Chinese characters first.'},
+];
+let radicalSort = 'kangxi';
+// 'unicode' sorts by the codepoint of whatever glyph the card actually shows
+// (ch) — sorting by each radical's own CANONICAL Kangxi form instead turned
+// out to be a no-op (checked directly against the Unicode Standard's own
+// Kangxi Radicals code chart: all 214 canonical forms already sit in exactly
+// Kangxi order in the CJK block), so this is the one sort that's actually
+// distinct from Kangxi order, since the 10 `alt`-paired radicals and every
+// other bound-component glyph here sit scattered across the CJK block
+// unrelated to Kangxi numbering. 'relevancy' groups by tier (see
+// RADICAL_TIER_GROUPS below) — Starter, then Expanded, then Extended, each
+// sub-sorted by Kangxi number within its own group; *1000 keeps the three
+// groups from ever overlapping (nowhere near 1000 radicals in any one).
+function radicalGroupOf(r){
+  return r.tier === 'starter' ? 'starter' : r.tier === 'expanded' ? 'expanded' : 'extended';
+}
+const RADICAL_TIER_RANK = {starter:0, expanded:1, extended:2};
+function radicalSortRank(r, sort){
+  if(sort === 'unicode') return r.ch.codePointAt(0);
+  if(sort === 'frequency') return -r.freq;
+  if(sort === 'relevancy') return RADICAL_TIER_RANK[radicalGroupOf(r)] * 1000 + r.num;
+  return r.num;
+}
+document.getElementById('radicalSortNav').innerHTML = RADICAL_SORTS.map(s=>
+  `<button class="subnav-pill${s.key===radicalSort ? ' active' : ''}" onclick="selectRadicalSort('${s.key}')" title="${s.desc}">${s.label}</button>`
+).join('');
+function selectRadicalSort(sort){
+  radicalSort = sort;
+  document.querySelectorAll('#radicalSortNav .subnav-pill').forEach((btn,i)=>btn.classList.toggle('active', RADICAL_SORTS[i].key===sort));
+  renderRadicals();
+}
+
+/* ================= RELEVANCY GROUPS (Starter/Expanded/Extended) =================
+   Membership calibrated directly against mandarintutor.com's own Basic
+   (-> Starter) and Advanced (-> Expanded) radical lists — see each
+   radical's own `tier` field comment above for the full sourcing/mapping.
+   Used to be three separate pill buttons that FILTERED the grid down to
+   just one group at a time (Starter ⊆ Expanded ⊆ Extended-shows-
+   everything) — replaced with plain section-divider rows inside ONE
+   continuous list instead, reported directly ("make the three categories
+   in Relevancy... line breaks in one full list... not their own pill
+   buttons"). Each radical now belongs to exactly ONE group (radicalGroupOf
+   above) rather than the old cumulative membership, so Expanded's and
+   Extended's own counts/descriptions below are each group's OWN size, not
+   the old running total. */
+const RADICAL_TIER_GROUPS = [
+  {key:'starter', label:'Starter', desc:'The most essential radicals — a starting point.'},
+  {key:'expanded', label:'Expanded', desc:'More common radicals for everyday reading.'},
+  {key:'extended', label:'Extended', desc:'The remaining radicals, for complete coverage.'},
+];
+// Sits between each group's own radicals in the sort order set by
+// radicalSortRank above (Starter tops out at 0*1000+214, comfortably below
+// 999; Expanded at 1*1000+214, comfortably below 1999) — see
+// renderRadicals for where these actually get assigned to each divider's
+// own `order`.
+const RADICAL_TIER_DIVIDER_ORDER = {starter:-1, expanded:999, extended:1999};
+// grid-column:1/-1 (see .radical-tier-divider's own CSS) is what turns
+// this into an actual line break in the grid — inserted here as real
+// siblings of the cards (not a separate container) so the shared CSS
+// `order` on both is what interleaves them correctly.
+const radicalTierDividerHTML = RADICAL_TIER_GROUPS.map(g =>
+  `<div class="radical-tier-divider" id="radicalTierDivider${g.key}"><span class="radical-tier-divider-label">${g.label}</span><span class="radical-tier-divider-desc">${g.desc}</span></div>`
+).join('');
+document.getElementById('radicalGrid').innerHTML = radicalTierDividerHTML + radicals.map((r,i)=>`
+  <div class="radical-card" data-num="${r.num}" data-py="${r.py.toLowerCase()}" data-mean="${r.mean.toLowerCase()}" data-ch="${r.ch}" data-tier="${r.tier||''}" onclick="this.classList.toggle('flipped')">
+    <div class="radical-ordinal" id="radicalOrdinal${i}"></div>
+    <div class="radical-inner">
+      <div class="radical-face front"><div class="radical-target" id="radicalTarget${i}"></div><div class="py">${r.py}</div>${r.alt ? `<div class="radical-alt">${r.ch}, (${r.alt})</div>` : ''}</div>
+      <div class="radical-face back"><div class="mean">${r.mean}</div></div>
+    </div>
+  </div>`).join('');
+// HanziWriter parses strokeColor as a literal color value, not a CSS custom
+// property — resolve --seal to its actual current (light/dark) value once.
+const radicalStrokeColor = getComputedStyle(document.documentElement).getPropertyValue('--seal').trim() || '#AE3B1C';
+radicals.forEach(function(r, i){
+  try{
+    HanziWriter.create('radicalTarget'+i, radicalDisplayForm(r.ch), {
+      width:52, height:52, padding:4,
+      showCharacter:true, showOutline:false,
+      strokeColor:radicalStrokeColor,
+    });
+  }catch(e){}
+});
+// Cards are created once, up front — Organize-by, the tier pills, and
+// search all just reorder/show/hide them via CSS rather than tearing down
+// and recreating 200+ HanziWriter instances every time any of the three
+// changes.
+function renderRadicals(){
+  const q = (document.getElementById('radicalSearch').value||'').toLowerCase().trim();
+  const isRelevancy = radicalSort === 'relevancy';
+  const cards = Array.from(document.querySelectorAll('.radical-card'));
+  const visibleCountByGroup = {starter:0, expanded:0, extended:0};
+  cards.forEach(function(card){
+    const r = radicals.find(x=>x.num===+card.dataset.num);
+    card.style.order = radicalSortRank(r, radicalSort);
+    const match = !q || card.dataset.py.includes(q) || card.dataset.mean.includes(q) || card.dataset.ch.includes(q);
+    card.style.display = match ? '' : 'none';
+    if(match && isRelevancy) visibleCountByGroup[radicalGroupOf(r)]++;
+  });
+  // Relevancy's own section dividers — see RADICAL_TIER_GROUPS's own
+  // comment for why these replaced the old filter pills. Each sits at its
+  // own fixed `order` between its group's radicals and the next group's
+  // (RADICAL_TIER_DIVIDER_ORDER), and hides itself if a search has
+  // filtered its whole group down to nothing — an empty "STARTER" header
+  // floating above no cards would just look broken — same as every other
+  // sort, which never shows these at all.
+  RADICAL_TIER_GROUPS.forEach(function(g){
+    const el = document.getElementById('radicalTierDivider'+g.key);
+    if(!el) return;
+    el.style.order = RADICAL_TIER_DIVIDER_ORDER[g.key];
+    el.style.display = (isRelevancy && visibleCountByGroup[g.key] > 0) ? 'flex' : 'none';
+  });
+  // Live ordinal badges — the actual on-screen sequence, not array order:
+  // sorting a copy of the visible cards by their own just-assigned `order`
+  // (a stable sort, same tie-break-by-original-position behavior the CSS
+  // grid itself uses for equal `order` values) reproduces exactly what's
+  // rendered. This is also what the Add to Folder modal's Range/Specific
+  // pickers key off — see currentVisibleRadicalsOrdered below.
+  const visibleCards = cards.filter(c => c.style.display !== 'none')
+    .sort((a,b) => (+a.style.order) - (+b.style.order));
+  visibleCards.forEach((card, idx) => {
+    const badge = card.querySelector('.radical-ordinal');
+    if(badge) badge.textContent = idx+1;
+  });
+  document.getElementById('radicalCount').textContent = q ? `${visibleCards.length} of ${radicals.length} radicals` : `${radicals.length} radicals`;
+}
+renderRadicals();
+
+/* ================= ADD TO FOLDER — print-dialog-style bulk picker =================
+   Targets whatever's CURRENTLY on screen (current Organize-by + Relevancy
+   tier + search), identified by each card's own live ordinal badge — so
+   "1-30" or "5,12,40" always means exactly what's visibly numbered 1-30 or
+   5/12/40 at the moment the modal is open. */
+function currentVisibleRadicalsOrdered(){
+  const cards = Array.from(document.querySelectorAll('.radical-card')).filter(c=>c.style.display!=='none');
+  cards.sort((a,b)=>(+a.style.order)-(+b.style.order));
+  return cards.map(c => radicals.find(r=>r.num===+c.dataset.num));
+}
+function parseRadicalSelection(view){
+  const checked = document.querySelector('input[name="radicalAddWhich"]:checked');
+  const which = checked ? checked.value : 'all';
+  if(which === 'all') return view.slice();
+  if(which === 'range'){
+    const m = (document.getElementById('radicalAddRange').value||'').trim().match(/^(\d+)\s*-\s*(\d+)$/);
+    if(!m) return [];
+    let lo = parseInt(m[1],10), hi = parseInt(m[2],10);
+    if(lo > hi){ const t=lo; lo=hi; hi=t; }
+    return view.slice(Math.max(0,lo-1), hi);
+  }
+  // 'list'
+  const raw = (document.getElementById('radicalAddList').value||'').split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n));
+  return raw.map(n => view[n-1]).filter(Boolean);
+}
+function updateAddToFolderPreview(){
+  const view = currentVisibleRadicalsOrdered();
+  document.getElementById('radicalAddAllCount').textContent = view.length;
+  const selected = parseRadicalSelection(view);
+  document.getElementById('radicalAddPreview').textContent = `${selected.length} radical${selected.length===1?'':'s'} selected`;
+}
+function openAddToFolderModal(){
+  document.getElementById('radicalAddFolderSelect').innerHTML =
+    `<option value="">Word Bank</option>` +
+    loadFolders().map(f=>`<option value="${f}">${f}</option>`).join('') +
+    `<option value="__new__">+ New folder…</option>`;
+  document.querySelector('input[name="radicalAddWhich"][value="all"]').checked = true;
+  document.getElementById('radicalAddRange').value = '';
+  document.getElementById('radicalAddList').value = '';
+  updateAddToFolderPreview();
+  document.getElementById('addToFolderModal').style.display = 'flex';
+}
+function closeAddToFolderModal(){
+  document.getElementById('addToFolderModal').style.display = 'none';
+}
+function confirmAddToFolder(){
+  const view = currentVisibleRadicalsOrdered();
+  const selected = parseRadicalSelection(view);
+  if(!selected.length){ alert('No radicals matched your selection.'); return; }
+  const targetValue = document.getElementById('radicalAddFolderSelect').value;
+  let folder = targetValue;
+  if(targetValue === '__new__'){
+    const name = prompt('New folder name:');
+    if(!name || !name.trim()) return;
+    createFolder(name.trim());
+    folder = name.trim();
+  }
+  const entries = selected.map(r => ({hz:r.ch, py:r.py, en:r.mean}));
+  const res = addEntriesWithDuplicateCheckBatch(entries, folder || '');
+  if(!res.saved){ alert("Couldn't save — your browser may be blocking storage (e.g. Private Browsing)."); return; }
+  const dest = folder || 'your Word Bank';
+  alert(`Added ${res.added} radical${res.added===1?'':'s'} to ${dest}${res.skipped?` (${res.skipped} already there)`:''}.`);
+  closeAddToFolderModal();
+}
+</script>
+</body>
+</html>

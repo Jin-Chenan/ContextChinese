@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>html{visibility:hidden;}</style>
+<title>Multiple Choice — Context Chinese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDE4D2;
+  --paper-deep:#E1D4B9;
+  --paper-shadow:#cbbb96;
+  --ink:#22241F;
+  --ink-soft:#514E42;
+  --seal:#AE3B1C;
+  --seal-dark:#8C2E15;
+  --jade:#3E6B5B;
+  --jade-dark:#2E5346;
+  --gold:#A9832E;
+  --slate:#4C6169;
+  --paper-rgb:237,228,210;
+  --radius:2px;
+  --serif-cn:'Noto Serif SC', serif;
+  --serif-en:'Zilla Slab', 'Noto Serif', serif;
+  --sans:'Inter', sans-serif;
+}
+
+/* ---------- dark mode ---------- */
+:root[data-theme="dark"]{
+  --paper:#1C1B18;
+  --paper-deep:#242220;
+  --paper-shadow:#3A352C;
+  --ink:#EDE6D6;
+  --ink-soft:#B9AF9C;
+  --seal:#E2703F;
+  --seal-dark:#C8592C;
+  --jade:#5FA98D;
+  --jade-dark:#3E8068;
+  --gold:#D9AE5C;
+  --slate:#93A9B1;
+  --paper-rgb:28,27,24;
+}
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .settings-card,
+:root[data-theme="dark"] .modal-card,
+:root[data-theme="dark"] .round-summary,
+:root[data-theme="dark"] .rs-stat,
+:root[data-theme="dark"] .mc-card{
+  background:rgba(0,0,0,0.28) !important;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(0,0,0,0.025) 0, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(0,0,0,0.03) 0, transparent 50%);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.5;
+}
+::selection{background:var(--seal); color:var(--paper);}
+a{color:inherit;}
+button{font-family:inherit;}
+:focus-visible{outline:2px solid var(--seal); outline-offset:2px;}
+
+/* ---------- layout shell ---------- */
+.wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+header.top{
+  position:sticky; top:0; z-index:50;
+  background:rgba(var(--paper-rgb),0.94);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--paper-shadow);
+}
+.top-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 28px; max-width:1120px; margin:0 auto; gap:20px;}
+.brand{display:flex; align-items:center; gap:12px; cursor:pointer; user-select:none; flex-shrink:0;}
+.seal-mark{
+  width:38px; height:38px; background:var(--seal); color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif-cn); font-size:22px; font-weight:700;
+  border-radius:3px; transform:rotate(-3deg);
+  box-shadow:2px 2px 0 rgba(0,0,0,0.15);
+  flex-shrink:0;
+}
+.brand-text{display:flex; flex-direction:column; line-height:1.1; gap:3px;}
+.brand-text b{font-family:var(--serif-en); font-size:19px; letter-spacing:0.3px; white-space:nowrap;}
+.brand-text span{font-size:11px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;}
+
+nav.tabs{display:flex; flex-wrap:wrap; gap:2px;}
+.nav-item{position:relative;}
+.tab-btn{
+  background:none; border:none; cursor:pointer;
+  padding:8px 12px; font-size:13.5px; font-weight:600; color:var(--ink-soft);
+  border-radius:2px; letter-spacing:0.2px; white-space:nowrap;
+  transition:color .15s, background .15s;
+}
+.tab-btn .cn{font-family:var(--serif-cn); margin-right:5px; font-weight:600;}
+.tab-btn:hover{color:var(--ink); background:rgba(0,0,0,0.05);}
+.tab-btn.active{color:var(--ink); background:rgba(0,0,0,0.06);}
+
+.dropdown{
+  position:absolute; top:100%; left:0; margin-top:6px; background:var(--paper);
+  border:1px solid var(--paper-shadow); box-shadow:4px 6px 0 rgba(0,0,0,0.1);
+  width:0; min-width:0; display:flex; flex-direction:column; z-index:60;
+  opacity:0; max-height:0; overflow:hidden; pointer-events:none;
+  transform:translateY(-6px);
+  transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease .28s, min-width 0s ease .28s;
+  padding:0 4px;
+}
+.nav-item.open .dropdown{opacity:1; max-height:480px; width:auto; min-width:200px; transform:translateY(0); pointer-events:auto; padding:4px; transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease, min-width 0s ease;}
+.nav-item.open .tab-btn{color:var(--ink); background:rgba(0,0,0,0.06);}
+.tab-btn .caret{display:inline-block; margin-left:5px; font-size:10px; transition:transform .2s ease; opacity:0.6;}
+.nav-item.open .tab-btn .caret{transform:rotate(180deg);}
+.dropdown-link{
+  padding:10px 14px; text-align:left; background:none; border:none; cursor:pointer;
+  font-size:13px; font-weight:600; color:var(--ink-soft); white-space:nowrap; border-radius:2px;
+  text-decoration:none;
+}
+.dropdown-link:hover{background:rgba(0,0,0,0.06); color:var(--ink);}
+.dropdown-link.active{color:var(--seal);}
+@media (max-width:920px){
+  .top-inner{flex-direction:column; align-items:flex-start; position:relative;}
+  nav.tabs{width:100%; overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px;}
+  .top-inner > .nav-item{position:absolute; top:14px; right:28px;}
+}
+
+main{max-width:1120px; margin:0 auto; padding:40px 28px 100px;}
+
+.section-head{margin-bottom:28px; position:relative;}
+.eyebrow{
+  font-family:var(--sans); font-size:12px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--seal); display:flex; align-items:center; gap:8px;
+}
+.eyebrow::before{content:''; width:22px; height:2px; background:var(--seal);}
+p.lede{color:var(--ink-soft); font-size:16px; max-width:640px; margin:10px 0 0;}
+
+.card{
+  background:rgba(255,255,255,0.35);
+  border:1px solid var(--paper-shadow);
+  border-radius:var(--radius);
+  padding:22px;
+}
+
+/* ---- modal (the "continue where you left off?" resume prompt) — same
+   visual pattern as every other Rapid Fire/Folders mode on the site. ---- */
+.modal-backdrop{position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:300; display:flex; align-items:center; justify-content:center; padding:20px;}
+.modal-card{background:var(--paper); border:1px solid var(--paper-shadow); border-radius:2px; max-width:420px; width:100%; padding:26px; box-shadow:6px 8px 0 rgba(0,0,0,0.25); position:relative;}
+.modal-card h4{margin:0 0 8px; font-family:var(--serif-en); font-size:19px; font-weight:700;}
+.modal-card p{font-size:13.5px; color:var(--ink-soft); margin:0 0 18px;}
+.modal-close{position:absolute; top:14px; right:14px; background:none; border:none; font-size:18px; cursor:pointer; color:var(--ink-soft); line-height:1; padding:2px;}
+.modal-close:hover{color:var(--ink);}
+.modal-field{display:flex; flex-direction:column; gap:12px; margin-bottom:22px;}
+.modal-field label{display:flex; align-items:center; gap:8px; font-size:13.5px; cursor:pointer; flex-wrap:wrap;}
+.modal-actions{display:flex; gap:10px;}
+:root[data-theme="dark"] .modal-card{background:var(--paper) !important;}
+
+.btn{
+  background:var(--ink); color:var(--paper); border:none; cursor:pointer;
+  padding:10px 18px; font-weight:600; font-size:13.5px; border-radius:2px;
+  letter-spacing:0.3px; transition:transform .12s, background .12s;
+}
+.btn:hover{background:var(--seal-dark);}
+.btn:active{transform:scale(0.97);}
+.btn:disabled{opacity:0.4; cursor:not-allowed;}
+.btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+.btn.ghost:hover{background:var(--ink); color:var(--paper);}
+.btn.small{padding:6px 12px; font-size:12px;}
+
+/* ---------- MODES (Rapid Fire / Folders) — same shared pattern as Hanzi
+   Writing Practice / Match Pinyin / Type Pinyin. ---------- */
+.hw-mode-panel{margin-bottom:26px; padding-bottom:22px; text-align:center; border-bottom:1px dashed var(--paper-shadow);}
+.hw-mode-buttons{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:14px;}
+.mode-pill{
+  background:var(--seal); color:var(--paper); font-size:11.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase;
+  padding:10px 22px; border-radius:30px; border:none; cursor:pointer; transition:background .15s, transform .1s;
+}
+.mode-pill:hover{background:var(--seal-dark);}
+.mode-pill:active{transform:scale(0.97);}
+.mode-pill.inactive{background:transparent; color:var(--ink-soft); border:1.5px solid var(--paper-shadow);}
+.mode-pill.inactive:hover{border-color:var(--ink); color:var(--ink); background:rgba(0,0,0,0.04);}
+.hw-mode-desc{font-size:13px; color:var(--ink-soft); margin-bottom:6px; text-align:center;}
+/* text-align:center (not the left it started as) so "Start studying
+   selected" and the folder-checkbox rows both sit centered under the mode
+   pills, matching how Writing Practice's OWN fullscreen mode centers this
+   same picker — applied unconditionally rather than only in fullscreen, per
+   direct request, so it looks the same at every screen size on this page. */
+.hw-folder-picker{margin-top:16px; max-width:420px; margin-left:auto; margin-right:auto;}
+/* Rows used to be centered as a whole unit (justify-content:center on
+   .hw-folder-check, text-align:center up on .hw-folder-picker) — with
+   folder names of varying length that put each row's checkbox at a
+   different x position depending on how wide its own name+count text
+   happened to be, reading as checkboxes scattered all over once there
+   were more than a couple of folders. Left-aligned flex rows instead:
+   the checkbox is always the first flex item (so it lands at the same
+   fixed x on every row), the name is the one flexible, truncating
+   column in the middle, and the count is pinned to the right — see
+   .hw-folder-name/.hw-folder-check .hw-folder-count below. */
+.hw-folder-checks{display:flex; flex-direction:column; gap:8px; margin-bottom:14px; text-align:left;}
+.hw-folder-check{display:flex; align-items:center; gap:8px; font-size:13.5px; cursor:pointer;}
+.hw-folder-check input[type=checkbox]{flex-shrink:0;}
+/* The flexible middle column — grows to fill whatever space the fixed
+   checkbox and count columns leave, and clips its own text with an
+   ellipsis rather than wrapping or pushing the count out of the row. */
+.hw-folder-name{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.hw-folder-check .hw-folder-count{color:var(--ink-soft); font-size:12px; flex-shrink:0; white-space:nowrap;}
+/* Same dedicated sizing as Writing Practice's own "Start studying selected"
+   button — plain .btn.small (6px/12px, no bold) read as noticeably smaller
+   and less prominent than Writing Practice's version once placed side by
+   side, since this is the one action that actually starts a whole study
+   session, not an incidental control. */
+.hw-study-selected-btn{padding:10px 22px; font-size:11.5px; font-weight:700; display:block; margin-left:auto; margin-right:auto;}
+.hw-empty-inline{font-size:13px; color:var(--ink-soft); text-align:center; max-width:420px; margin:0 auto;}
+.hw-empty{text-align:center; padding:50px 20px; color:var(--ink-soft); font-size:14px;}
+.bank-notice{background:rgba(169,131,46,0.12); border-left:3px solid var(--gold); padding:10px 16px; font-size:12.5px; color:var(--ink-soft); margin-bottom:20px;}
+
+/* Mode panel as a left sidebar (same idea as Writing Practice/Match
+   Pinyin/Type Pinyin's own non-fullscreen desktop layout) instead of
+   stacked centered above the board — pulls the mode buttons over to the
+   left and lets the board itself use the width that frees up on the
+   right, rather than both sitting centered with empty margins on either
+   side. Below this width there's no room for a real sidebar, so it just
+   stacks back to the panel-above-board layout the mobile styles already
+   expect. */
+@media (min-width:860px){
+  .mc-layout{
+    display:grid;
+    grid-template-columns:minmax(180px, 240px) minmax(0, 1fr);
+    align-items:start;
+    column-gap:32px;
+    /* Clears the 36px .hw-fullscreen-btn (position:absolute, top:0/right:0
+       of .hw-wrap) — without this the board's own top edge lines up with
+       top:0 too, so the button sits right on top of/overlapping its
+       border instead of above it. */
+    padding-top:56px;
+  }
+  /* align-self (not the grid's own align-items above, which would also
+     shift the board) — the mode panel sits centered against the row's
+     full height, however tall the board on the right makes that, rather
+     than pinned to the top of it. */
+  .mc-layout .hw-mode-panel{text-align:left; margin-bottom:0; padding-bottom:0; border-bottom:none; align-self:center;}
+  .mc-layout .hw-mode-buttons{flex-direction:column; align-items:stretch; justify-content:flex-start;}
+  .mc-layout .hw-folder-picker{margin-left:0; margin-right:0; max-width:none;}
+}
+
+/* ---------- FULL SCREEN — same mechanism as Writing Practice/Match
+   Pinyin/Type Pinyin (native Fullscreen API, falling back to a pinned
+   in-page overlay where it's unsupported/denied — see mcToggleFullscreen).
+   Two columns here (mode panel / board), not three — Multiple Choice has
+   no separate keyboard/reference panel the other pages' third column
+   holds. ---------- */
+.hw-fullscreen-btn{
+  position:absolute; top:0; right:0;
+  width:36px; height:36px; border-radius:50%; border:1.5px solid var(--paper-shadow);
+  background:rgba(var(--paper-rgb),0.92); box-shadow:2px 3px 0 rgba(0,0,0,0.08);
+  color:var(--ink-soft); cursor:pointer; padding:0;
+  display:flex; align-items:center; justify-content:center;
+  transition:background .15s, color .15s, border-color .15s;
+}
+.hw-fullscreen-btn svg{width:18px; height:18px;}
+.hw-fullscreen-btn:hover{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+.hw-wrap{position:relative;}
+@media (max-width:640px){
+  .hw-wrap:not(.is-fullscreen){padding-top:60px;} /* clears the 36px .hw-fullscreen-btn */
+}
+.hw-wrap.is-fullscreen{
+  /* position:fixed unconditionally, not just on mobile: when the
+     Fullscreen API isn't available or the request is refused,
+     mcSetFullscreenState's fallback just toggles this class, which would
+     otherwise leave the wrap in normal document flow — still constrained
+     by <main>'s centered max-width, so at a wide viewport the grid renders
+     off-center and can overflow past the real screen edge. No-op when
+     real fullscreen DOES succeed (the browser's own top-layer promotion
+     already supersedes it). */
+  position:fixed; top:0; left:0; right:0; bottom:0; z-index:9999;
+  background:var(--paper); width:100vw; height:100vh; max-width:none;
+  display:grid;
+  grid-template-columns:minmax(210px, 320px) minmax(0, 1fr);
+  grid-template-rows:1fr;
+  align-items:center;
+  column-gap:28px;
+  padding:24px 56px;
+  overflow:hidden; box-sizing:border-box;
+}
+.hw-wrap.is-fullscreen #mcModePanel{
+  grid-column:1; grid-row:1; min-width:0;
+  display:flex; flex-direction:column; justify-content:center; gap:14px;
+  max-height:100%; overflow-y:auto;
+  margin-bottom:0; padding-bottom:0; padding-right:6px; border-bottom:none; text-align:left;
+}
+.hw-wrap.is-fullscreen #mcModePanel .hw-mode-buttons{flex-direction:column; align-items:stretch;}
+.hw-wrap.is-fullscreen #mcModePanel .mode-pill{font-size:13px; padding:11px 16px; text-align:center;}
+.hw-wrap.is-fullscreen #mcModePanel .hw-study-selected-btn{font-size:13px; padding:11px 16px;}
+.hw-wrap.is-fullscreen #mcModePanel .hw-folder-picker{max-width:none;}
+.hw-wrap.is-fullscreen #mcCard{
+  grid-column:2; grid-row:1; min-width:0;
+  max-height:100%; overflow-y:auto;
+  /* No max-width/auto-centering here (unlike the old 860px-capped version) —
+     that left a wide, unused gap between the mode panel and the card on any
+     screen wider than ~860px+mode-panel+padding. Filling the whole grid
+     column instead means the card's left edge sits right up against the
+     mode panel (only the column-gap between them), and .mc-board below
+     grows to fill more of it too. */
+  width:100%; margin:0;
+}
+.hw-wrap.is-fullscreen #mcCard .mc-board{max-width:1000px;}
+@media (max-width:800px){
+  .hw-wrap.is-fullscreen{
+    display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start;
+    height:100dvh; padding:8px 12px; overflow:hidden; column-gap:0; gap:4px;
+    box-sizing:border-box;
+    /* The fullscreen button is position:absolute at top:0/right:0 of this
+       wrap, on top of whatever's scrolled to that corner — reserve real
+       space above the mode panel so its pill row never sits underneath it. */
+    padding-top:46px;
+  }
+  .hw-wrap.is-fullscreen #mcModePanel{
+    width:100%; max-width:none; flex:0 1 auto; max-height:23vh; overflow-y:auto;
+    gap:4px; text-align:center; align-items:center;
+  }
+  .hw-wrap.is-fullscreen #mcModePanel .hw-mode-buttons{flex-direction:row; align-items:center; flex-wrap:wrap; justify-content:center; gap:6px;}
+  .hw-wrap.is-fullscreen #mcModePanel .mode-pill{font-size:12px; padding:8px 12px;}
+  .hw-wrap.is-fullscreen #mcModePanel .hw-mode-desc{font-size:11px; margin-bottom:0;}
+  .hw-wrap.is-fullscreen #mcModePanel .hw-study-selected-btn{font-size:12px; padding:8px 12px;}
+  .hw-wrap.is-fullscreen #mcModePanel .hw-folder-picker{margin-top:6px;}
+  .hw-wrap.is-fullscreen #mcCard{
+    flex:1 1 auto; min-height:0; max-height:none; width:100%; max-width:none;
+    overflow-y:auto; padding:14px 16px;
+  }
+}
+
+/* ---------- left-handed mode: mirror mode-panel/board to the opposite side ----------
+   Same 2-column swap as Translate's own left-handed block — Multiple Choice
+   has no third column either. .mc-layout's own mode-panel/board columns are
+   auto-placed (no explicit grid-column of their own outside fullscreen), so
+   this adds one here rather than relying on order. */
+html[data-left-handed="1"] .hw-wrap.is-fullscreen{grid-template-columns:minmax(0, 1fr) minmax(210px, 320px);}
+html[data-left-handed="1"] .hw-wrap.is-fullscreen #mcModePanel{grid-column:2; text-align:right; padding-right:0; padding-left:6px;}
+html[data-left-handed="1"] .hw-wrap.is-fullscreen #mcCard{grid-column:1;}
+@media (min-width:860px){
+  html[data-left-handed="1"] .mc-layout{grid-template-columns:minmax(0, 1fr) minmax(180px, 240px);}
+  html[data-left-handed="1"] .mc-layout #mcModePanel{grid-column:2; text-align:right;}
+  html[data-left-handed="1"] .mc-layout #mcCard{grid-column:1;}
+}
+
+/* Universal round-summary — same markup, CSS, and renderRoundSummaryHTML
+   signature copied verbatim across every practice page (Writing Practice,
+   Match Pinyin, Type Pinyin, Dictate, Multiple Choice, Translate), replacing
+   each page's own previously-drifted version. Two real bugs drove the
+   rewrite, both from the SAME root cause: the "Practice again" button used
+   to be appended as a raw string AFTER renderRoundSummaryHTML's own return
+   value, as a sibling with no shared container — harmless in a plain
+   single-column layout, but on pages whose fullscreen mode uses a
+   multi-column CSS grid (Type Pinyin's mode-panel/card/tone-key three-up
+   layout), that stray sibling could end up pulled into a totally different
+   part of the grid than the card it was supposed to sit under. Fixed by
+   moving it inside .round-summary itself, in a dedicated
+   .round-summary-actions row, so it's structurally impossible for it to
+   separate from the stats above it regardless of the surrounding layout.
+   Second bug: .round-summary-grid used to hard-code 4 fixed columns and
+   only drop to 2 via a viewport-width media query — which never fired
+   inside a fullscreen grid's narrow center column, since that's a
+   CONTAINER width problem, not a viewport width one, so stat numbers like
+   "2m 44s" wrapped mid-box on a squeezed page. auto-fit below sizes columns
+   off the actual available width, wherever this component happens to be
+   placed, with no media query needed. */
+.round-summary{
+  width:100%; max-width:520px; margin:0 auto; box-sizing:border-box; text-align:center;
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:34px 28px;
+  /* Makes this element itself a container-query context, so the grid below
+     can respond to the space IT actually has (post-padding), not the
+     viewport — the same problem repeat(auto-fit, minmax()) was solving for
+     originally, but auto-fit has its own failure mode: at some in-between
+     widths it fits exactly 3 columns, stranding the 4th stat alone on its
+     own row — an asymmetric wrap none of the four stats deserve. */
+  container-type:inline-size;
+  /* Positioned ancestor for .rs-confetti's inset:0 below — without this the
+     burst would resolve against whatever positioned ancestor happens to be
+     further up the page instead of this card. */
+  position:relative;
+}
+/* #mcCard itself is class="card" (border+background of its own, see .card
+   above) — unlike the other five pages, which each wrap this component in
+   a page-specific class already covered by their own no-double-box
+   override, .card was never in that list, so its border/background sat
+   right behind .round-summary's own, reading as a box drawn around a
+   near-identical box. */
+.card .round-summary{background:none; border:none; padding:0;}
+.round-summary-head{font-family:var(--serif-en); font-weight:700; font-size:24px; margin-bottom:6px; animation:rsFadeUp 420ms ease both; animation-delay:150ms;}
+.round-summary-sub{font-size:13px; color:var(--ink-soft); margin-bottom:26px; animation:rsFadeUp 420ms ease both; animation-delay:220ms;}
+/* Explicit 2 or 4 — never 3 — so every page's completion screen wraps the
+   same way at the same size, instead of each one's own surrounding layout
+   (a full-width card here, a narrow fullscreen side column there) landing
+   on a different, sometimes-asymmetric column count via auto-fit. 440px
+   is comfortably above what 4 columns need at .rs-stat's own real content
+   width, with some margin so it doesn't fire right at the edge. */
+.round-summary-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;}
+@container (min-width:440px){
+  .round-summary-grid{grid-template-columns:repeat(4, 1fr);}
+}
+/* Each tile fades/slides up on its own delay (--rs-i, set inline per tile:
+   0..3) so the four stats visibly land one after another instead of all
+   snapping in at once — animateRoundSummary's count-up below reads the same
+   --rs-i (via each .rs-num's data-rs-i) so a tile's number starts ticking
+   right as the tile itself finishes arriving. The hover/active lift is a
+   second, independent touch — a tile still has something to do after the
+   entrance is over. */
+.rs-stat{
+  background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow); border-radius:2px; padding:16px 10px; min-width:0;
+  opacity:0; animation:rsStatIn 420ms cubic-bezier(.22,.8,.28,1) both;
+  animation-delay:calc(300ms + var(--rs-i, 0) * 80ms);
+  transition:transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+.rs-stat:hover, .rs-stat:focus-visible{transform:translateY(-3px); border-color:var(--seal); box-shadow:0 8px 18px -10px rgba(0,0,0,0.3);}
+.rs-stat:active{transform:translateY(-1px) scale(0.98);}
+.rs-num{font-family:var(--serif-en); font-weight:700; font-size:26px; color:var(--seal); font-variant-numeric:tabular-nums;}
+.rs-label{font-size:10.5px; text-transform:uppercase; letter-spacing:0.8px; color:var(--ink-soft); margin-top:4px;}
+.rs-sub{font-size:11px; color:var(--ink-soft); margin-top:6px;}
+.round-summary-actions{margin-top:24px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; animation:rsFadeUp 420ms ease both; animation-delay:660ms;}
+.round-summary + .btn{display:block; margin:20px auto 0;}
+.rs-copy-btn{font-size:12px; transition:color 160ms ease, border-color 160ms ease;}
+.rs-copy-btn.rs-copied{color:var(--jade); border-color:var(--jade);}
+/* Draw-in ring behind the headline emoji, and a small celebratory particle
+   burst (both JS-driven, see animateRoundSummary) — the round-summary's one
+   purely decorative flourish, separate from the count-up numbers below
+   which are the actual stats animating. Colors pull from the site's own
+   --seal/--jade/--gold/--slate palette rather than an arbitrary rainbow, and
+   everything here freezes into its final state under prefers-reduced-motion
+   (see the media query at the end of this block) instead of animating. */
+.round-summary-badge{position:relative; width:60px; height:60px; margin:0 auto 8px; animation:rsBadgePop 520ms cubic-bezier(.34,1.56,.64,1) both;}
+.rs-badge-ring{position:absolute; inset:0; width:60px; height:60px; transform:rotate(-90deg);}
+.rs-badge-ring-bg{fill:none; stroke:var(--paper-shadow); stroke-width:4;}
+.rs-badge-ring-fg{fill:none; stroke:var(--seal); stroke-width:4; stroke-linecap:round; transition:stroke-dashoffset 700ms cubic-bezier(.2,.7,.2,1);}
+.round-summary-badge.rs-flawless .rs-badge-ring-fg{stroke:var(--gold);}
+.rs-badge-emoji{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:24px;}
+.rs-confetti{position:absolute; inset:0; pointer-events:none;}
+.rs-confetti-piece{
+  position:absolute; top:40px; left:50%; width:6px; height:6px; margin:-3px 0 0 -3px;
+  background:var(--rs-color, var(--seal)); border-radius:1px; opacity:0;
+  animation:rsConfettiBurst 900ms ease-out both; animation-delay:var(--rs-delay, 0ms);
+}
+@keyframes rsFadeUp{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+@keyframes rsStatIn{from{opacity:0; transform:translateY(10px) scale(0.96);} to{opacity:1; transform:translateY(0) scale(1);}}
+@keyframes rsBadgePop{from{opacity:0; transform:scale(0.4);} to{opacity:1; transform:scale(1);}}
+@keyframes rsConfettiBurst{
+  0%{opacity:1; transform:translate(0,0) rotate(0deg) scale(1);}
+  100%{opacity:0; transform:translate(var(--rs-tx, 0), var(--rs-ty, 0)) rotate(var(--rs-rot, 0deg)) scale(0.4);}
+}
+@media (prefers-reduced-motion: reduce){
+  .round-summary-badge, .round-summary-head, .round-summary-sub, .rs-stat, .round-summary-actions{
+    animation:none !important; opacity:1 !important; transform:none !important;
+  }
+  .rs-badge-ring-fg{transition:none !important;}
+  .rs-confetti-piece{display:none !important;}
+}
+
+/* ---------- MULTIPLE CHOICE MATCHING BOARD ----------
+   Two independently-shuffled columns (see mcRender): the left shows each
+   board word as EITHER its hanzi or its pinyin (decided once per word when
+   it enters the board — see mcRefillBoard), the right always shows its
+   English definition. Click one card on each side; matching data-mc-id
+   values (both reference the same underlying word) means a correct pair. */
+.mc-board{display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:820px; margin:0 auto;}
+.mc-col-head{font-size:11.5px; text-transform:uppercase; letter-spacing:1.2px; color:var(--ink-soft); text-align:center; margin-bottom:12px;}
+/* perspective gives the .mc-flip-in cards below an actual vanishing point
+   to rotate toward — without it on an ancestor, a rotateY() transform
+   renders as a flat horizontal squash instead of a real 3D turn. */
+.mc-list{display:flex; flex-direction:column; gap:10px; min-height:64px; perspective:900px;}
+/* Fixed height (not just a min) is what actually makes every card in both
+   columns match — a hanzi/pinyin card's two short lines and a
+   several-word definition would otherwise size very differently. Content
+   is centered inside that fixed box either way; a definition long enough
+   to overflow it is clamped to 3 lines with an ellipsis (see .mc-en)
+   rather than growing the card or spilling out of it. */
+.mc-card{
+  background:rgba(255,255,255,0.4); border:1.5px solid var(--paper-shadow); border-radius:2px;
+  padding:14px 16px; cursor:pointer; text-align:center;
+  height:84px; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden;
+  transition:border-color .15s, background .15s, transform .1s, opacity .3s, filter .3s;
+}
+.mc-card:hover{border-color:var(--ink);}
+/* Same selection highlight Word Bank/Search use for a picked .dict-entry —
+   see .dict-entry.selected in word-bank.html/search.html. */
+.mc-card.mc-picked{border-color:var(--seal); background:rgba(174,59,28,0.08); transform:scale(1.006);}
+.mc-card.mc-correct{background:rgba(62,107,91,0.16); border-color:var(--jade); color:var(--jade-dark); cursor:default; opacity:0.55;}
+.mc-card.mc-wrong{border-color:var(--seal); background:rgba(174,59,28,0.12); animation:mcShake .3s ease;}
+/* The last two unmatched cards, held on screen for a beat before the board
+   wipes to a fresh batch (see mcCheckMatch's mcTransitionPending) — grayed
+   out to signal they're about to cycle out, on top of already being
+   unclickable during that pause. */
+.mc-card.mc-stale{opacity:0.4; filter:grayscale(65%); cursor:default;}
+/* A fresh batch of 5 "deals" in with a little shuffle wobble rather than
+   just appearing — each card settles from an offset/rotated/faded start
+   into place, staggered slightly per card (see the nth-child delays below)
+   so the five don't all land in the same instant. Only ever applied right
+   after mcRefillBoard (see mcAnimateNextRender) — re-rendering for a pick,
+   match, or stale-graying never replays it. */
+@keyframes mcShuffleIn{
+  0%{opacity:0; transform:translateX(-18px) rotate(-4deg) scale(0.94);}
+  55%{opacity:1; transform:translateX(4px) rotate(2deg) scale(1.01);}
+  100%{opacity:1; transform:translateX(0) rotate(0) scale(1);}
+}
+.mc-card.mc-shuffle-in{animation:mcShuffleIn .38s cubic-bezier(.34,1.56,.64,1) both;}
+.mc-list .mc-card.mc-shuffle-in:nth-child(2){animation-delay:.05s;}
+.mc-list .mc-card.mc-shuffle-in:nth-child(3){animation-delay:.10s;}
+.mc-list .mc-card.mc-shuffle-in:nth-child(4){animation-delay:.15s;}
+.mc-list .mc-card.mc-shuffle-in:nth-child(5){animation-delay:.20s;}
+/* Every OTHER refill (mid-round, once the board cycles to its next batch —
+   see mcRefillBoard's isFirstRender param) gets an actual 180deg card flip
+   instead of mcShuffleIn's bounce-in, which stays reserved for a round's
+   very first deal — and a real two-phase one, not just cards appearing
+   pre-rotated: the CURRENT cards (still showing their own old word) flip
+   OUT first (mc-flip-out, 0deg to -90deg, added by mcFlipToNextBatch before
+   the board is actually touched), and only once they've turned edge-on
+   does the board actually swap to the next batch, which flips IN
+   (mc-flip-in) continuing that same turn from -90deg to 0deg -- negative,
+   not positive, degrees both times: rotateY's sign is which way the card
+   visually swings, and positive read backwards from how the rest of the
+   site's motion (this list reads top-to-bottom, English left-to-right)
+   suggested it should. Together the two halves read as one continuous
+   180deg turn from old word to new, not the old card vanishing and a new
+   one flicking in from nothing.
+   backface-visibility:hidden is what sells both halves: a card rotated to
+   exactly 90deg (either sign) is edge-on to the viewer, so fading it out
+   right at that angle (mc-flip-out's end, mc-flip-in's start) hides the
+   transition completely -- no second, backside face markup needed either. */
+@keyframes mcFlipOut{
+  0%{opacity:1; transform:rotateY(0deg);}
+  100%{opacity:0; transform:rotateY(-90deg);}
+}
+.mc-card.mc-flip-out{animation:mcFlipOut .25s cubic-bezier(.5,0,1,.5) both; backface-visibility:hidden; pointer-events:none;}
+/* -270deg, not -90deg, is what makes the pair total a full 360deg turn
+   instead of 180 -- but the VISIBLE motion here is identical to before:
+   backface-visibility:hidden already keeps anything between -90deg and
+   -270deg invisible regardless (a card edge-on or facing away is edge-on
+   or facing away no matter which of those two equivalent "hidden" angles
+   it's rotated to), so starting the swap-in from -270deg instead of -90deg
+   changes nothing anyone can actually see -- mc-flip-out ends at -90deg,
+   this jumps straight to -270deg the instant the classes swap (both
+   invisible, so the jump itself is invisible too), then this last 90deg
+   stretch (-270deg to -360deg, i.e. all the way back around to facing
+   forward) is the exact same size/duration/easing arc mc-flip-in's old
+   -90deg-to-0deg version was, just completing the OTHER 270deg of the
+   circle first, off-screen, on the way there. */
+@keyframes mcFlipIn{
+  0%{opacity:0; transform:rotateY(-270deg);}
+  100%{opacity:1; transform:rotateY(-360deg);}
+}
+.mc-card.mc-flip-in{animation:mcFlipIn .25s cubic-bezier(0,.5,.5,1) both; backface-visibility:hidden;}
+/* Reading order, not per-column order: row 1 left, row 1 right, row 2 left,
+   row 2 right, and so on down the board -- each card's own flip (both the
+   out half and the in half) starts a flat 1/50s (20ms) after the previous
+   one in that sequence, so the whole board turns over in one cascading
+   wave top to bottom rather than every card flipping at once. 1/50s is a
+   clean 20ms with no rounding needed (unlike 1/30s before it), so
+   mcFlipToNextBatch's own wait-time math can go back to a plain
+   step-times-position multiply instead of needing Math.round per step.
+   #mcLeftList's own row N sits at position 2N-2 in that sequence (0, 40,
+   80, ... ms); #mcRightList's row N sits one slot later at 2N-1 (20, 60,
+   100, ... ms) -- hence the two lists needing their own separate, offset
+   rules rather than one shared :nth-child pattern. Both mc-flip-out and
+   mc-flip-in repeat the exact same per-row delays, so a given card's own
+   exit and entrance stay on the same offset relative to every other
+   card's, even though the two halves themselves are two separate waves
+   (see mcFlipToNextBatch's own comment on why the whole board still swaps
+   content in one bulk step between them, not per-card independently). */
+#mcLeftList .mc-card.mc-flip-out:nth-child(1), #mcLeftList .mc-card.mc-flip-in:nth-child(1){animation-delay:0ms;}
+#mcRightList .mc-card.mc-flip-out:nth-child(1), #mcRightList .mc-card.mc-flip-in:nth-child(1){animation-delay:20ms;}
+#mcLeftList .mc-card.mc-flip-out:nth-child(2), #mcLeftList .mc-card.mc-flip-in:nth-child(2){animation-delay:40ms;}
+#mcRightList .mc-card.mc-flip-out:nth-child(2), #mcRightList .mc-card.mc-flip-in:nth-child(2){animation-delay:60ms;}
+#mcLeftList .mc-card.mc-flip-out:nth-child(3), #mcLeftList .mc-card.mc-flip-in:nth-child(3){animation-delay:80ms;}
+#mcRightList .mc-card.mc-flip-out:nth-child(3), #mcRightList .mc-card.mc-flip-in:nth-child(3){animation-delay:100ms;}
+#mcLeftList .mc-card.mc-flip-out:nth-child(4), #mcLeftList .mc-card.mc-flip-in:nth-child(4){animation-delay:120ms;}
+#mcRightList .mc-card.mc-flip-out:nth-child(4), #mcRightList .mc-card.mc-flip-in:nth-child(4){animation-delay:140ms;}
+#mcLeftList .mc-card.mc-flip-out:nth-child(5), #mcLeftList .mc-card.mc-flip-in:nth-child(5){animation-delay:160ms;}
+#mcRightList .mc-card.mc-flip-out:nth-child(5), #mcRightList .mc-card.mc-flip-in:nth-child(5){animation-delay:180ms;}
+.mc-hz{font-family:var(--serif-cn); font-size:26px; font-weight:700; line-height:1.1;}
+.mc-py{font-family:var(--serif-en); font-size:15px; font-weight:700; color:var(--seal); margin-top:2px;}
+.mc-en{font-size:13.5px; line-height:1.4; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;}
+@keyframes mcShake{0%,100%{transform:translateX(0);} 20%{transform:translateX(-5px);} 40%{transform:translateX(5px);} 60%{transform:translateX(-3px);} 80%{transform:translateX(3px);}}
+.mc-progress{text-align:center; font-size:12px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase; margin-top:22px;}
+.mc-mistakes{text-align:center; font-size:12px; color:var(--ink-soft); margin-top:4px;}
+@media (max-width:620px){
+  .mc-board{gap:12px;}
+  .mc-card{padding:11px 10px; height:74px;}
+  .mc-hz{font-size:21px;}
+  .mc-py{font-size:13px;}
+  .mc-en{font-size:12px;}
+}
+
+footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:center; font-size:12.5px; color:var(--ink-soft);}
+
+</style>
+<script src="settings.js?v=6"></script>
+<script src="auth-guard.js?v=2"></script>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html" style="text-decoration:none;">
+      <div class="seal-mark">境</div>
+      <div class="brand-text"><b>Context Chinese</b><span data-i18n="brand.tagline">Your One-Stop China Shop</span></div>
+    </a>
+    <nav class="tabs" id="navTabs" style="flex:1 1 auto;">
+
+      <div class="nav-item" data-nav-cat="learn">
+        <button class="tab-btn active" onclick="toggleNavDropdown(event)"><span class="cn">学习</span><span class="i18n-label" data-i18n="nav.learn">Learn</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="read.html" data-i18n="learn.read">Read</a>
+          <a class="dropdown-link" href="dictate.html" data-i18n="learn.dictate">Dictate</a>
+          <a class="dropdown-link active" href="multiple-choice.html" data-i18n="learn.multiplechoice">Multiple Choice</a>
+          <a class="dropdown-link" href="translate.html" data-i18n="learn.translate">Translate</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="vocabulary">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">词汇</span><span class="i18n-label" data-i18n="nav.vocabulary">Vocabulary</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="search.html" data-i18n="vocab.search">Search</a>
+          <a class="dropdown-link" href="word-bank.html" data-i18n="vocab.wordbank">Word Bank</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="hanzi">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">汉字</span><span class="i18n-label" data-i18n="nav.hanzi">Hanzi</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="strokes.html" data-i18n="hanzi.strokes">Strokes</a>
+          <a class="dropdown-link" href="radicals.html" data-i18n="hanzi.radicals">Radicals</a>
+          <a class="dropdown-link" href="writing-practice.html" data-i18n="hanzi.writing">Writing Practice</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="pinyin">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">拼音</span><span class="i18n-label" data-i18n="nav.pinyin">Pinyin</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="pinyin-components.html" data-i18n="pinyin.components">Components</a>
+          <a class="dropdown-link" href="match-pinyin.html" data-i18n="pinyin.match">Match Pinyin</a>
+          <a class="dropdown-link" href="type-pinyin.html" data-i18n="pinyin.typing">Type Pinyin</a>
+        </div>
+      </div>
+</nav>
+
+      <div class="nav-item" style="flex-shrink:0;">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)" style="line-height:1; display:inline-flex; align-items:center; justify-content:center;" title="More"><svg viewBox="0 0 24 24" fill="black" style="width:18px; height:18px;"><path d="M19.14,12.94c0.04,-0.3,0.06,-0.61,0.06,-0.94c0,-0.32,-0.02,-0.64,-0.07,-0.94l2.03,-1.58c0.18,-0.14,0.23,-0.41,0.12,-0.61 l-1.92,-3.32c-0.12,-0.22,-0.37,-0.29,-0.59,-0.22l-2.39,0.96c-0.5,-0.38,-1.03,-0.7,-1.62,-0.94L14.4,2.81 c-0.04,-0.24,-0.24,-0.41,-0.48,-0.41h-3.84c-0.24,0,-0.43,0.17,-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33 c-0.22,-0.08,-0.47,0,-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94 l-2.03,1.58c-0.18,0.14,-0.23,0.41,-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39,-0.96c0.5,0.38,1.03,0.7,1.62,0.94 l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44,-0.17,0.47,-0.41l0.36,-2.54c0.59,-0.24,1.13,-0.56,1.62,-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59,-0.22l1.92,-3.32c0.12,-0.22,0.07,-0.47,-0.12,-0.61L19.14,12.94z M12,15.6c-1.98,0,-3.6,-1.62,-3.6,-3.6 s1.62,-3.6,3.6,-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"></path></svg></button>
+        <div class="dropdown" style="left:auto; right:0;">
+          <a class="dropdown-link" href="settings.html" data-i18n="gear.settings">Settings</a>
+          <a class="dropdown-link" href="help.html" data-i18n="gear.help">Help</a>
+          <button class="dropdown-link" onclick="signOutUser()" data-i18n="gear.logout">Logout</button>
+        </div>
+      </div>
+  </div>
+</header>
+
+<main>
+
+<div class="section-head">
+  <div class="eyebrow">Multiple Choice · 选择题</div>
+  <p class="lede">Five words appear on the left as hanzi/pinyin, five definitions on the right, shuffled — tap one from each side to match them. Match three and a fresh five take their place; the deck keeps cycling until every word's been matched at least once.</p>
+</div>
+
+<div class="bank-notice" id="mcBankNotice" style="display:none;">Practicing your saved Word Bank vocabulary. Add or remove words from Vocabulary to change this deck.</div>
+
+<div class="hw-wrap mc-layout" id="mcWrap">
+  <button class="hw-fullscreen-btn" id="mcFullscreenBtn" onclick="mcToggleFullscreen()" title="Full screen this practice area" aria-label="Full screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path></svg></button>
+
+  <div class="hw-mode-panel" id="mcModePanel">
+    <div class="hw-mode-buttons">
+      <button class="mode-pill inactive" id="mcModeBtnRadicals" onclick="mcSetMode('radicals')">Radicals</button>
+      <button class="mode-pill" id="mcModeBtnRapid" onclick="mcSetMode('rapid')">Rapid Fire</button>
+      <button class="mode-pill inactive" id="mcModeBtnFolders" onclick="mcSetMode('folders')">Folders</button>
+    </div>
+    <div class="hw-mode-desc" id="mcModeDesc"></div>
+    <div class="hw-folder-picker" id="mcFolderPicker" style="display:none;"></div>
+  </div>
+
+  <div class="card" id="mcCard"></div>
+</div>
+
+</main>
+
+<footer>境 Context Chinese — a learning companion for Mandarin sound, script, geography and history.</footer>
+
+<script>
+/* ================= NAV DROPDOWN (click to open, does not navigate) ================= */
+function toggleNavDropdown(e){
+  const item = e.currentTarget.closest('.nav-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.nav-item.open').forEach(n=>{
+    n.classList.remove('open');
+    const dd = n.querySelector('.dropdown');
+    if(dd){ dd.style.position=''; dd.style.left=''; dd.style.top=''; }
+  });
+  if(!wasOpen){
+    item.classList.add('open');
+    if(window.matchMedia('(max-width:920px)').matches){
+      const dd = item.querySelector('.dropdown');
+      const btnRect = e.currentTarget.getBoundingClientRect();
+      dd.style.position = 'fixed';
+      dd.style.top = (btnRect.bottom + 6) + 'px';
+      const maxLeft = window.innerWidth - 208;
+      dd.style.left = Math.max(8, Math.min(btnRect.left, maxLeft)) + 'px';
+    }
+  }
+}
+document.addEventListener('click', (e)=>{
+  if(e.target.closest('.dropdown-link') || !e.target.closest('.nav-item')){
+    document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+  }
+});
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='Escape') document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+});
+
+function shuffle(array){
+  for(let i=array.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+/* ================= WORD BANK (persisted via localStorage, shared across pages) ================= */
+let wordBankMem = [];
+function loadWordBank(){
+  try{
+    const raw = localStorage.getItem('ccWordBank');
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return wordBankMem; }
+}
+function loadFolders(){
+  try{ const raw = localStorage.getItem('ccFolders'); return raw ? JSON.parse(raw) : []; }catch(e){ return []; }
+}
+function loadAllFolderWords(){
+  try{ const raw = localStorage.getItem('ccFolderWords'); return raw ? JSON.parse(raw) : {}; }catch(e){ return {}; }
+}
+function loadFolderWords(name){
+  return loadAllFolderWords()[name] || [];
+}
+
+/* ================= DEFAULT FALLBACK DECK =================
+   Same default 16 as Writing Practice's hwFallbackChars, Type Pinyin's
+   ptVocabSource, and (minus 5 whose finals aren't in its taught set) Match
+   Pinyin's mpVocab — so whichever 16 words a brand-new Word Bank sees
+   first are the same everywhere, not a different curated list per tool. */
+const mcVocabSource = [
+  {hz:'人', py:'rén', en:'person'},
+  {hz:'大', py:'dà', en:'big'},
+  {hz:'小', py:'xiǎo', en:'small'},
+  {hz:'中', py:'zhōng', en:'middle; China'},
+  {hz:'国', py:'guó', en:'country'},
+  {hz:'山', py:'shān', en:'mountain'},
+  {hz:'水', py:'shuǐ', en:'water'},
+  {hz:'火', py:'huǒ', en:'fire'},
+  {hz:'木', py:'mù', en:'tree; wood'},
+  {hz:'日', py:'rì', en:'sun; day'},
+  {hz:'月', py:'yuè', en:'moon; month'},
+  {hz:'好', py:'hǎo', en:'good'},
+  {hz:'我', py:'wǒ', en:'I; me'},
+  {hz:'你', py:'nǐ', en:'you'},
+  {hz:'他', py:'tā', en:'he; him'},
+  {hz:'爱', py:'ài', en:'love'},
+];
+
+// The 210 Kangxi radicals (minus the 4 that are just basic strokes) — same
+// list as Writing Practice's own Radicals mode (hwRadicalsList), duplicated
+// here under this page's hz/py/en shape rather than shared, per this site's
+// usual per-page convention. A fixed practice set, not derived from the
+// Word Bank, so it's exempt from mcFilterOutKnown/mcFilterOutBroken (there's
+// nothing to filter — every entry here is already a real, clean radical).
+const mcRadicalsList = [
+  {hz:'乙', py:'yǐ', en:'Second'}, {hz:'亅', py:'jué', en:'Hook'},
+  {hz:'二', py:'èr', en:'Two'}, {hz:'亠', py:'tóu', en:'Lid'},
+  {hz:'人', py:'rén', en:'Person'}, {hz:'儿', py:'rén', en:'Legs'},
+  {hz:'入', py:'rù', en:'Enter'}, {hz:'八', py:'bā', en:'Eight'},
+  {hz:'冂', py:'jiōng', en:'Down box'}, {hz:'冖', py:'mì', en:'Cover'},
+  {hz:'冫', py:'bīng', en:'Ice'}, {hz:'几', py:'jǐ', en:'Table'},
+  {hz:'凵', py:'qiǎn', en:'Open box'}, {hz:'刂', py:'dāo', en:'Knife'},
+  {hz:'力', py:'lì', en:'Power'}, {hz:'勹', py:'bāo', en:'Wrap'},
+  {hz:'匕', py:'bǐ', en:'Ladle / Dagger'}, {hz:'匚', py:'fāng', en:'Right open box'},
+  {hz:'匸', py:'xì', en:'Hiding enclosure'}, {hz:'十', py:'shí', en:'Ten'},
+  {hz:'卜', py:'bǔ', en:'Divination'}, {hz:'卩', py:'jié', en:'Seal / Joint'},
+  {hz:'厂', py:'hǎn', en:'Cliff / House'}, {hz:'厶', py:'mǒu', en:'Private'},
+  {hz:'又', py:'yòu', en:'Again'}, {hz:'口', py:'kǒu', en:'Mouth'},
+  {hz:'囗', py:'wéi', en:'Enclosure'}, {hz:'土', py:'tǔ', en:'Earth'},
+  {hz:'士', py:'shì', en:'Scholar'}, {hz:'夂', py:'zhǐ', en:'Go'},
+  {hz:'夊', py:'suī', en:'Go slowly'}, {hz:'夕', py:'xī', en:'Night'},
+  {hz:'大', py:'dà', en:'Big'}, {hz:'女', py:'nǚ', en:'Woman'},
+  {hz:'子', py:'zǐ', en:'Child'}, {hz:'宀', py:'mián', en:'Roof'},
+  {hz:'寸', py:'cùn', en:'Inch'}, {hz:'小', py:'xiǎo', en:'Small'},
+  {hz:'尢', py:'wāng', en:'Lame'}, {hz:'尸', py:'shī', en:'Corpse'},
+  {hz:'屮', py:'chè', en:'Sprout'}, {hz:'山', py:'shān', en:'Mountain'},
+  {hz:'川', py:'chuān', en:'River'}, {hz:'工', py:'gōng', en:'Work'},
+  {hz:'己', py:'jǐ', en:'Oneself'}, {hz:'巾', py:'jīn', en:'Towel'},
+  {hz:'干', py:'gān', en:'Dry / Do'}, {hz:'幺', py:'yāo', en:'Youngest'},
+  {hz:'广', py:'guǎng', en:'Shelter'}, {hz:'廴', py:'yǐn', en:'Stride'},
+  {hz:'廾', py:'gǒng', en:'Hands joined'}, {hz:'弋', py:'yì', en:'Shoot with a bow'},
+  {hz:'弓', py:'gōng', en:'Bow'}, {hz:'彐', py:'jì', en:'Snout'},
+  {hz:'彡', py:'shān', en:'Hair'}, {hz:'彳', py:'chì', en:'Step'},
+  {hz:'心', py:'xīn', en:'Heart'}, {hz:'戈', py:'gē', en:'Spear'},
+  {hz:'戶', py:'hù', en:'Door'}, {hz:'扌', py:'shǒu', en:'Hand'},
+  {hz:'支', py:'zhī', en:'Branch'}, {hz:'攴', py:'pū', en:'Rap / Beat'},
+  {hz:'文', py:'wén', en:'Script'}, {hz:'斗', py:'dǒu', en:'Vessel'},
+  {hz:'斤', py:'jīn', en:'Axe'}, {hz:'方', py:'fāng', en:'Square'},
+  {hz:'无', py:'wú', en:'Not'}, {hz:'日', py:'rì', en:'Sun'},
+  {hz:'曰', py:'yuē', en:'Say'}, {hz:'月', py:'yuè', en:'Moon'},
+  {hz:'木', py:'mù', en:'Tree'}, {hz:'欠', py:'qiàn', en:'Lack'},
+  {hz:'止', py:'zhǐ', en:'Stop'}, {hz:'歹', py:'dǎi', en:'Death'},
+  {hz:'殳', py:'shū', en:'Weapon'}, {hz:'母', py:'mǔ', en:'Mother'},
+  {hz:'比', py:'bǐ', en:'Compare'}, {hz:'毛', py:'máo', en:'Fur'},
+  {hz:'氏', py:'shì', en:'Clan'}, {hz:'气', py:'qì', en:'Steam'},
+  {hz:'水', py:'shuǐ', en:'Water'}, {hz:'火', py:'huǒ', en:'Fire'},
+  {hz:'爪', py:'zhǎo', en:'Claw'}, {hz:'父', py:'fù', en:'Father'},
+  {hz:'爻', py:'yáo', en:'Lines on a trigram'}, {hz:'爿', py:'pán', en:'Half of a tree trunk'},
+  {hz:'片', py:'qiáng', en:'Slice'}, {hz:'牙', py:'yá', en:'Tooth'},
+  {hz:'牛', py:'niú', en:'Cow'}, {hz:'犬', py:'quǎn', en:'Dog'},
+  {hz:'玄', py:'xuán', en:'Profound'}, {hz:'王', py:'wáng', en:'King'},
+  {hz:'瓜', py:'guā', en:'Melon'}, {hz:'瓦', py:'wǎ', en:'Tile'},
+  {hz:'甘', py:'gān', en:'Sweet'}, {hz:'生', py:'shēng', en:'Life'},
+  {hz:'用', py:'yòng', en:'Use'}, {hz:'田', py:'tián', en:'Field'},
+  {hz:'疋', py:'pǐ', en:'Foot'}, {hz:'疒', py:'nè', en:'Sick'},
+  {hz:'癶', py:'bō', en:'Unbalanced footsteps'}, {hz:'白', py:'bái', en:'White'},
+  {hz:'皮', py:'pí', en:'Skin'}, {hz:'皿', py:'mǐn', en:'Dish'},
+  {hz:'目', py:'mù', en:'Eye'}, {hz:'矛', py:'máo', en:'Spear'},
+  {hz:'矢', py:'shǐ', en:'Arrow'}, {hz:'石', py:'shí', en:'Stone'},
+  {hz:'示', py:'shì', en:'Spirit'}, {hz:'禸', py:'róu', en:'Rub'},
+  {hz:'禾', py:'hé', en:'Grain'}, {hz:'穴', py:'xué', en:'Cave'},
+  {hz:'立', py:'lì', en:'Stand'}, {hz:'竹', py:'zhú', en:'Bamboo'},
+  {hz:'米', py:'mǐ', en:'Rice'}, {hz:'糸', py:'sī', en:'Silk'},
+  {hz:'缶', py:'fǒu', en:'Jar'}, {hz:'网', py:'wǎng', en:'Net'},
+  {hz:'羊', py:'yáng', en:'Sheep'}, {hz:'羽', py:'yǔ', en:'Feather'},
+  {hz:'老', py:'lǎo', en:'Old'}, {hz:'而', py:'ér', en:'And'},
+  {hz:'耒', py:'lěi', en:'Plow'}, {hz:'耳', py:'ěr', en:'Ear'},
+  {hz:'聿', py:'yù', en:'Brush'}, {hz:'肉', py:'ròu', en:'Meat'},
+  {hz:'臣', py:'chén', en:'Minister'}, {hz:'自', py:'zì', en:'Oneself'},
+  {hz:'至', py:'zhì', en:'Arrive'}, {hz:'臼', py:'jiù', en:'Mortar'},
+  {hz:'舌', py:'shé', en:'Tongue'}, {hz:'舛', py:'chuǎn', en:'Contrary'},
+  {hz:'舟', py:'zhōu', en:'Boat'}, {hz:'艮', py:'gèn', en:'Mountain'},
+  {hz:'色', py:'sè', en:'Color'}, {hz:'艹', py:'cǎo', en:'Grass'},
+  {hz:'虍', py:'hū', en:'Stripes on a tiger'}, {hz:'虫', py:'chóng', en:'Insect'},
+  {hz:'血', py:'xuè', en:'Blood'}, {hz:'行', py:'xíng', en:'Walk'},
+  {hz:'衣', py:'yī', en:'Clothes'}, {hz:'覀', py:'yà', en:'Cover'},
+  {hz:'见', py:'jiàn', en:'See'}, {hz:'角', py:'jiǎo', en:'Horn'},
+  {hz:'讠', py:'yán', en:'Speech'}, {hz:'谷', py:'gǔ', en:'Valley'},
+  {hz:'豆', py:'dòu', en:'Bean'}, {hz:'豕', py:'shǐ', en:'Pig'},
+  {hz:'豸', py:'zhì', en:'Legless insect'}, {hz:'贝', py:'bèi', en:'Shell'},
+  {hz:'赤', py:'chì', en:'Red'}, {hz:'走', py:'zǒu', en:'Walk'},
+  {hz:'足', py:'zú', en:'Foot'}, {hz:'身', py:'shēn', en:'Body'},
+  {hz:'车', py:'chē', en:'Cart'}, {hz:'辛', py:'xīn', en:'Bitter'},
+  {hz:'辰', py:'chén', en:'Day time'}, {hz:'辶', py:'chuò', en:'Walk'},
+  {hz:'邑', py:'yì', en:'City'}, {hz:'酉', py:'yǒu', en:'Wine vessel'},
+  {hz:'釆', py:'biàn', en:'Distinguish'}, {hz:'里', py:'lǐ', en:'Village'},
+  {hz:'金', py:'jīn', en:'Metal'}, {hz:'长', py:'cháng', en:'Long'},
+  {hz:'门', py:'mén', en:'Gate'}, {hz:'阜', py:'fù', en:'Mound'},
+  {hz:'隶', py:'lì', en:'Slave'}, {hz:'隹', py:'zhuī', en:'Short-tailed bird'},
+  {hz:'雨', py:'yǔ', en:'Rain'}, {hz:'青', py:'qīng', en:'Blue / Green'},
+  {hz:'非', py:'fēi', en:'Wrong'}, {hz:'面', py:'miàn', en:'Face'},
+  {hz:'革', py:'gé', en:'Leather'}, {hz:'韦', py:'wěi', en:'Soft leather'},
+  {hz:'韭', py:'jiǔ', en:'Leek'}, {hz:'音', py:'yīn', en:'Sound'},
+  {hz:'页', py:'yè', en:'Page'}, {hz:'风', py:'fēng', en:'Wind'},
+  {hz:'飞', py:'fēi', en:'Fly'}, {hz:'食', py:'shí', en:'Eat'},
+  {hz:'首', py:'shǒu', en:'Head'}, {hz:'香', py:'xiāng', en:'Fragrant'},
+  {hz:'马', py:'mǎ', en:'Horse'}, {hz:'骨', py:'gǔ', en:'Bone'},
+  {hz:'高', py:'gāo', en:'High'}, {hz:'髟', py:'biāo', en:'Long hair'},
+  {hz:'鬥', py:'dòu', en:'Fight'}, {hz:'鬯', py:'chàng', en:'Sacrificial wine'},
+  {hz:'鬲', py:'lì', en:'Cauldron'}, {hz:'鬼', py:'guǐ', en:'Ghost'},
+  {hz:'鱼', py:'yú', en:'Fish'}, {hz:'鸟', py:'niǎo', en:'Bird'},
+  {hz:'卤', py:'lǔ', en:'Brine'}, {hz:'鹿', py:'lù', en:'Deer'},
+  {hz:'麦', py:'mài', en:'Wheat'}, {hz:'麻', py:'má', en:'Hemp'},
+  {hz:'黄', py:'huáng', en:'Yellow'}, {hz:'黍', py:'shǔ', en:'Millet'},
+  {hz:'黑', py:'hēi', en:'Black'}, {hz:'黹', py:'zhǐ', en:'Embroidery'},
+  {hz:'黾', py:'měng', en:'Frog'}, {hz:'鼎', py:'dǐng', en:'Tripod'},
+  {hz:'鼓', py:'gǔ', en:'Drum'}, {hz:'鼠', py:'shǔ', en:'Rat'},
+  {hz:'鼻', py:'bí', en:'Nose'}, {hz:'齐', py:'qí', en:'Neat'},
+  {hz:'齿', py:'chǐ', en:'Tooth'}, {hz:'龙', py:'lóng', en:'Dragon'},
+  {hz:'龟', py:'guī', en:'Turtle'}, {hz:'龠', py:'yuè', en:'Flute'},
+];
+
+function mcGetDeck(){
+  const bank = loadWordBank();
+  if(bank.length) return mcFilterOutKnown(mcFilterOutBroken(bank.map(w=>({hz:w.hz, py:w.py, en:w.en}))));
+  return mcVocabSource.slice();
+}
+// Settings → "exclude Known words from practice" (off by default) drops any
+// word tagged K — same convention as every other Rapid Fire/Folders mode.
+function mcFilterOutKnown(words){
+  if(!loadSettings().excludeKnownFromPractice) return words;
+  return words.filter(w => !isFocusedIn(w.hz, KNOWN_TAG.key));
+}
+// Drops a word whose hz field isn't actually Chinese text at all — a badly
+// imported or otherwise corrupted Word Bank entry (e.g. an English phrase
+// or definition that ended up in the hz field instead of a real word,
+// possibly from a mismatched import) rather than a genuine word missing an
+// English gloss — that's still a real, useful entry (see mcCardHTML's own
+// "(no definition on file)" fallback for it), just one nobody's gotten
+// around to translating yet, so only the hz side is checked here.
+function mcFilterOutBroken(words){
+  return words.filter(w => /\p{Script=Han}/u.test(w.hz || ''));
+}
+function mcGetDeckForMode(){
+  if(mcMode === 'radicals') return mcRadicalsList.slice();
+  if(mcMode === 'rapid') return mcGetDeck();
+  if(mcMode === 'folders') return mcFilterOutKnown(mcFilterOutBroken(mcSelectedFolders.flatMap(loadFolderWords).map(w=>({hz:w.hz, py:w.py, en:w.en}))));
+  return [];
+}
+
+/* ================= ROUND / BOARD STATE ================= */
+let mcMode = 'rapid';          // 'radicals' | 'rapid' | 'folders'
+let mcSelectedFolders = [];
+let mcQueue = [];              // words not yet placed on the board this round, pre-shuffled
+let mcBoard = [];              // up to 5 {id, hz, py, en, matched} currently on screen
+let mcNextId = 1;
+let mcLeftOrder = [];          // board ids, left column's own shuffled display order
+let mcRightOrder = [];         // board ids, right column's own shuffled display order (independent of the left)
+let mcPickedLeft = null;
+let mcPickedRight = null;
+let mcOriginalCount = 0;
+// How many words this deck already had matched, from a PRIOR session, at
+// the moment the current queue was built — 0 for a fresh start, or
+// doneWords.size when the user picked "Continue where I left off". Kept
+// separate from mcRoundWordsSeen/mcOriginalCount (both scoped to just this
+// visit's own pace, for the round-summary's words/mistakes/WPM stats) —
+// this one exists purely so the on-card progress fraction ("N / M matched")
+// can show true position in the whole deck instead of restarting from 0
+// after a resume, without corrupting those other, session-local stats.
+let mcBaselineDone = 0;
+// True for the ~0.5s pause between hitting the configured "matches before
+// reshuffling" threshold (Settings → Practice → Multiple Choice) and the
+// board actually clearing to a fresh batch — see mcCheckMatch —
+// so the board holds still (and stops accepting picks, see mcPickCard)
+// long enough to actually see that last match land before everything
+// changes.
+let mcTransitionPending = false;
+// Set right before the one mcRender() call that follows mcRefillBoard —
+// 'shuffle' on a round's very first deal (mc-shuffle-in's bounce-in),
+// 'flip' on every later mid-round refill (mc-flip-in's 180deg turn — see
+// mcRefillBoard's isFirstRender param) — every card painted by that render
+// gets the matching entrance animation (see mcCardHTML); mcRender clears
+// it back to false immediately after, so a later re-render for a pick,
+// match, or stale-graying never replays either one.
+let mcAnimateNextRender = false;
+// Bumped every time mcBuildQueueFromDeck starts a genuinely new round (mode
+// switch, folder change, resume/restart) — a pending transition's own
+// setTimeout captures the value at the moment it was scheduled, so if the
+// user switches away mid-pause, its callback can tell its round is stale
+// and skip touching what's since become a totally different board/queue.
+let mcRoundGen = 0;
+
+/* ---- round stats (reset each time a fresh deck is built) ---- */
+let mcRoundStartTime = null;
+let mcRoundMistakes = 0;
+let mcRoundWordsSeen = new Set();
+
+function formatDuration(ms){
+  const totalSec = Math.max(1, Math.round(ms / 1000));
+  const m = Math.floor(totalSec / 60), s = totalSec % 60;
+  return m > 0 ? `${m}m ${s}s` : `${s}s`;
+}
+// opts.actionsHTML holds the "Practice again" button (and, on Writing
+// Practice, an extra test-mode button) — built INSIDE this markup rather
+// than appended after the fact by each call site, so it can never end up
+// separated from its own stats by an unrelated surrounding layout. See the
+// long comment on .round-summary in the CSS for why that used to happen.
+//
+// The markup below renders every stat starting at its resting "0" value —
+// animateRoundSummary (called by every call site immediately after setting
+// this HTML) is what actually counts each one up, staggers the tiles in,
+// draws the ring, and fires the confetti burst. Splitting it this way (data
+// attributes here, animation in one shared function) means the real stats
+// are always sitting right there in data-rs-target regardless of whether
+// the animation step runs — the JS layer only ever changes how they're
+// revealed, never what they are.
+function renderRoundSummaryHTML(opts){
+  const words = opts.wordsSeen.size;
+  const elapsedMs = Math.max(1000, Date.now() - opts.startTime);
+  const minutes = elapsedMs / 60000;
+  const mistakesPerWord = words ? (opts.mistakes / words) : 0;
+  const wpm = words ? (words / minutes) : 0;
+  const flawless = words > 0 && opts.mistakes === 0;
+  const wordsLabel = opts.wordsLabel || 'Words matched';
+  const summaryText = `${flawless ? '🎯' : '🎉'} ${words} ${wordsLabel.toLowerCase()} · ${mistakesPerWord.toFixed(1)} mistakes/word · ${formatDuration(elapsedMs)} · ${wpm.toFixed(1)} wpm — Context Chinese`
+    .replace(/"/g, '&quot;');
+  return `
+    <div class="round-summary">
+      <div class="rs-confetti" aria-hidden="true"></div>
+      <div class="round-summary-badge${flawless ? ' rs-flawless' : ''}">
+        <svg class="rs-badge-ring" viewBox="0 0 60 60" aria-hidden="true">
+          <circle class="rs-badge-ring-bg" cx="30" cy="30" r="26"></circle>
+          <circle class="rs-badge-ring-fg" cx="30" cy="30" r="26"></circle>
+        </svg>
+        <span class="rs-badge-emoji">${flawless ? '🎯' : '🎉'}</span>
+      </div>
+      <div class="round-summary-head">${flawless ? 'Flawless round!' : 'Round complete!'}</div>
+      <div class="round-summary-sub">${opts.subtitle || ''}</div>
+      <div class="round-summary-grid">
+        <div class="rs-stat" style="--rs-i:0"><div class="rs-num" data-rs-i="0" data-rs-target="${words}" data-rs-decimals="0">0</div><div class="rs-label">${wordsLabel}</div></div>
+        <div class="rs-stat" style="--rs-i:1"><div class="rs-num" data-rs-i="1" data-rs-target="${mistakesPerWord}" data-rs-decimals="1">0.0</div><div class="rs-label">Mistakes / word</div><div class="rs-sub">${opts.mistakes} mistake${opts.mistakes===1?'':'s'} total</div></div>
+        <div class="rs-stat" style="--rs-i:2"><div class="rs-num" data-rs-i="2" data-rs-target="${elapsedMs}" data-rs-format="duration">0s</div><div class="rs-label">Time</div></div>
+        <div class="rs-stat" style="--rs-i:3"><div class="rs-num" data-rs-i="3" data-rs-target="${wpm}" data-rs-decimals="1">0.0</div><div class="rs-label">Words / minute</div></div>
+      </div>
+      <div class="round-summary-actions">
+        ${opts.actionsHTML || ''}
+        <button type="button" class="btn ghost small rs-copy-btn" data-rs-summary="${summaryText}" onclick="rsCopySummary(this)">📋 Copy results</button>
+      </div>
+    </div>`;
+}
+
+// Called by every call site immediately after dropping renderRoundSummaryHTML's
+// markup into the page — draws the ring, fires the confetti burst, and counts
+// each .rs-num up from 0 to its real data-rs-target, staggered by the same
+// --rs-i each tile uses for its own CSS entrance (see .rs-stat) so a tile's
+// number starts ticking right as the tile finishes sliding in. Skipped in
+// favor of showing final values immediately under prefers-reduced-motion.
+function animateRoundSummary(root){
+  if(!root) return;
+  const reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ring = root.querySelector('.rs-badge-ring-fg');
+  if(ring){
+    const c = 2 * Math.PI * 26;
+    ring.style.strokeDasharray = String(c);
+    ring.style.strokeDashoffset = String(reduced ? 0 : c);
+    if(!reduced){
+      // Two nested rAFs: the first lets the browser paint the "hidden" 0%
+      // state set above, the second (a frame later) then changes the target
+      // value so the CSS transition on stroke-dashoffset has an actual
+      // before/after to animate between — setting both in the same frame
+      // would just jump straight to the end state with no visible draw-in.
+      requestAnimationFrame(() => requestAnimationFrame(() => { ring.style.strokeDashoffset = '0'; }));
+    }
+  }
+  const confettiWrap = root.querySelector('.rs-confetti');
+  if(confettiWrap && !reduced){
+    const colors = ['var(--seal)', 'var(--jade)', 'var(--gold)', 'var(--slate)'];
+    let html = '';
+    for(let i = 0; i < 18; i++){
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 55 + Math.random() * 70;
+      const tx = (Math.cos(angle) * dist).toFixed(1);
+      const ty = (Math.sin(angle) * dist).toFixed(1);
+      const rot = Math.round(Math.random() * 360);
+      const delay = Math.round(Math.random() * 120);
+      html += `<span class="rs-confetti-piece" style="--rs-tx:${tx}px; --rs-ty:${ty}px; --rs-rot:${rot}deg; --rs-delay:${delay}ms; --rs-color:${colors[i % colors.length]};"></span>`;
+    }
+    confettiWrap.innerHTML = html;
+  }
+  root.querySelectorAll('.rs-num[data-rs-target]').forEach(el => {
+    const target = parseFloat(el.getAttribute('data-rs-target')) || 0;
+    const decimals = parseInt(el.getAttribute('data-rs-decimals') || '0', 10);
+    const isDuration = el.getAttribute('data-rs-format') === 'duration';
+    if(reduced){
+      el.textContent = isDuration ? formatDuration(target) : target.toFixed(decimals);
+      return;
+    }
+    const delay = parseInt(el.getAttribute('data-rs-i') || '0', 10) * 80 + 300;
+    const duration = 800;
+    setTimeout(() => {
+      const start = performance.now();
+      function tick(now){
+        const p = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const val = target * eased;
+        el.textContent = isDuration ? formatDuration(val) : val.toFixed(decimals);
+        if(p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }, delay);
+  });
+}
+
+// Copies a one-line plain-text recap of this round's stats to the clipboard
+// — the completion screen's one genuinely interactive element beyond
+// "Practice again". Silently no-ops if the Clipboard API isn't available
+// (e.g. a non-secure context) rather than throwing.
+function rsCopySummary(btn){
+  const text = btn.getAttribute('data-rs-summary') || '';
+  if(!navigator.clipboard || !navigator.clipboard.writeText) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const original = btn.textContent;
+    btn.textContent = '✓ Copied';
+    btn.classList.add('rs-copied');
+    clearTimeout(btn._rsCopyTimer);
+    btn._rsCopyTimer = setTimeout(() => {
+      btn.textContent = original;
+      btn.classList.remove('rs-copied');
+    }, 1600);
+  }).catch(() => {});
+}
+
+function mcInit(){
+  mcMode = 'rapid';
+  mcSelectedFolders = [];
+  mcSetMode('rapid');
+}
+// Picking a mode pill only stages it now — same as Writing Practice's own
+// hwSetMode — it never builds a queue or checks for an in-progress session
+// on its own, so switching pills (or landing here fresh on page load, see
+// mcInit) never pops the "Continue where you left off?" prompt by itself.
+// That only happens once "Start studying selected" is actually clicked
+// (mcStartStudying below, or mcStartFolderStudy for Folders specifically,
+// which also needs a folder picked first) — see mcRebuildQueue.
+function mcSetMode(mode){
+  mcMode = mode;
+  document.querySelectorAll('#mcModePanel .mode-pill').forEach(b=>b.classList.add('inactive'));
+  const btn = document.getElementById('mcModeBtn' + mode.charAt(0).toUpperCase() + mode.slice(1));
+  if(btn) btn.classList.remove('inactive');
+  mcRenderFolderPicker();
+  mcShowStartPrompt();
+}
+
+const MC_START_PROMPT_TEXT = {
+  radicals: "Match every radical's own reading.",
+  rapid: 'Match hanzi/pinyin to their definitions for your whole Word Bank.',
+  folders: 'Select one or more folders below, then click "Start studying selected".',
+};
+function mcShowStartPrompt(){
+  mcQueue = []; mcBoard = []; mcOriginalCount = 0; mcBaselineDone = 0;
+  // The instructional sentence that used to sit inside the box (now the
+  // live preview's home instead — see mcStartPreview) moves here so it's
+  // not lost, replacing the old generic "Ready when you are"/"Pick folders
+  // to study" with the actual per-mode instructions.
+  document.getElementById('mcModeDesc').textContent = MC_START_PROMPT_TEXT[mcMode] || '';
+  mcStopPreview();
+  mcStartPreview();
+}
+// ---------------- IDLE-STATE PREVIEW ----------------
+// Mirrors the real board/queue mechanic (mcRefillBoard/mcCheckMatch)
+// directly, not a simplified stand-in: mcPreviewQueue holds the words not
+// yet on the board, mcPreviewBoard holds up to 5 (mcRefillBoard's own
+// board size). Pairs get matched one at a time; the moment the configured
+// Settings → Practice → Multiple Choice match count is reached (default 5,
+// i.e. the whole board) AND there's more still in the queue, the remaining
+// unmatched stragglers go gray (.mc-stale) and, after a beat, get
+// reshuffled back into the queue and the whole board flips to a fresh one
+// — exactly mcCheckMatch's own "entering the final stretch" branch, not
+// "keep matching until the board of 5 is empty." A board only ever plays
+// all the way down to 0 remaining when the queue is genuinely empty (the
+// deck's last few), which for this endless preview just means the queue
+// refills with a freshly-shuffled copy of the whole 16-word source — an
+// infinite loop, unlike a real round, which ends there instead (see
+// mcFinishRound). Shown only while nothing has actually been started yet.
+// Entirely self-contained: never reads or writes mcBoard/mcQueue/
+// localStorage, uses its own board/queue state (not mcPickedLeft/
+// mcPickedRight/mcTransitionPending), and is torn down the instant a real
+// session starts (mcRebuildQueue calls mcStopPreview before building
+// anything) or a mode pill is re-clicked (mcShowStartPrompt restarts it
+// fresh via the same two calls).
+let mcPreviewActive = false; // true only while the preview owns #mcCard
+let mcPreviewToken = 0;
+let mcPreviewTimer = null;
+let mcPreviewQueue = [];
+let mcPreviewBoard = [];
+let mcPreviewLeftOrder = [];
+let mcPreviewRightOrder = [];
+let mcPreviewNextId = 1;
+let mcPreviewTransitionPending = false;
+// Real-time timestamp captured when the tab goes hidden while the preview
+// is active; null whenever it isn't currently hidden. Used by the
+// visibilitychange listener below to advance the preview's own queue by
+// roughly how many matches that much real time covers, instead of always
+// just reshuffling the exact same board it was showing — see that
+// listener's own comment.
+let mcPreviewHiddenAt = null;
+// Rough nominal duration of one preview match, used ONLY to estimate how
+// many matches' worth of real time passed while the tab was hidden — never
+// to drive the moment-to-moment demo itself. Being off by even a match or
+// two only changes which words happen to already be on the board the
+// instant the tab becomes visible again, not anything that reads as wrong
+// (same reasoning as landing.html's own STOP_DEFAULT_GAP_MS).
+const MC_PREVIEW_NOMINAL_MATCH_MS = 2000;
+function mcStopPreview(){
+  mcPreviewActive = false;
+  mcPreviewToken++;
+  mcPreviewTransitionPending = false;
+  mcPreviewHiddenAt = null;
+  if(mcPreviewTimer){ clearTimeout(mcPreviewTimer); mcPreviewTimer = null; }
+}
+function mcStartPreview(){
+  mcPreviewActive = true;
+  mcPreviewQueue = [];
+  mcPreviewBoard = [];
+  mcPreviewTransitionPending = false;
+  mcPreviewHiddenAt = null; // discard any stale hidden-timestamp from a previous preview session
+  // Same #mcLeftList/#mcRightList ids the real board uses — reusing them
+  // (rather than inventing new ones) means the existing per-row
+  // animation-delay stagger CSS for .mc-flip-out/.mc-flip-in (scoped to
+  // those exact ids) applies here too, with no extra CSS needed. Safe: the
+  // real board only ever exists once a session has actually started, by
+  // which point mcRebuildQueue has already called mcStopPreview and
+  // overwritten #mcCard itself.
+  document.getElementById('mcCard').innerHTML = `
+    <div class="mc-board">
+      <div class="mc-col">
+        <div class="mc-col-head">Hanzi / Pinyin</div>
+        <div class="mc-list" id="mcLeftList"></div>
+      </div>
+      <div class="mc-col">
+        <div class="mc-col-head">Definition</div>
+        <div class="mc-list" id="mcRightList"></div>
+      </div>
+    </div>`;
+  mcPlayPreviewBoard(++mcPreviewToken, 'shuffle');
+}
+// mcRefillBoard's own top-up loop, plus the endless-preview twist: a real
+// round just stops once mcQueue runs dry (mcFinishRound) — this reshuffles
+// a fresh copy of the whole source back in instead, so the preview never
+// actually ends.
+function mcPreviewRefillBoard(){
+  if(!mcPreviewQueue.length) mcPreviewQueue = shuffle(mcVocabSource.map(e=>({hz:e.hz, py:e.py, en:e.en})));
+  while(mcPreviewBoard.length < 5 && mcPreviewQueue.length){
+    const w = mcPreviewQueue.shift();
+    mcPreviewBoard.push({ id: mcPreviewNextId++, hz:w.hz, py:w.py, en:w.en, matched:false, stale:false, pickedLeft:false, pickedRight:false });
+  }
+}
+function mcPreviewCardHTML(item, side, animMode){
+  const inner = side === 'left'
+    ? `<div class="mc-hz">${item.hz}</div><div class="mc-py dict-py">${item.py}</div>`
+    : `<div class="mc-en">${item.en}</div>`;
+  const animClass = animMode === 'shuffle' ? ' mc-shuffle-in' : animMode === 'flip' ? ' mc-flip-in' : '';
+  if(item.matched) return `<div class="mc-card mc-correct${animClass}" data-mc-id="${item.id}" data-mc-side="${side}">${inner}</div>`;
+  const staleClass = item.stale ? ' mc-stale' : '';
+  const picked = side === 'left' ? item.pickedLeft : item.pickedRight;
+  return `<div class="mc-card${staleClass}${picked ? ' mc-picked' : ''}${animClass}" data-mc-id="${item.id}" data-mc-side="${side}">${inner}</div>`;
+}
+function mcPreviewRenderBoard(animMode){
+  const leftList = document.getElementById('mcLeftList');
+  const rightList = document.getElementById('mcRightList');
+  if(!leftList || !rightList) return;
+  const byId = new Map(mcPreviewBoard.map(x=>[x.id,x]));
+  leftList.innerHTML = mcPreviewLeftOrder.map(id=>byId.get(id)).filter(Boolean).map(x=>mcPreviewCardHTML(x,'left',animMode)).join('');
+  rightList.innerHTML = mcPreviewRightOrder.map(id=>byId.get(id)).filter(Boolean).map(x=>mcPreviewCardHTML(x,'right',animMode)).join('');
+}
+// How long an entrance animation's own stagger takes to fully settle
+// before it's safe to mutate the board again — mirrors the exact per-type
+// CSS timing (see mcShuffleIn's/mcFlipOut's own comments): shuffle-in
+// staggers (rows-1)*50ms then runs .38s; flip-in uses the same
+// reading-order 20ms-per-card stagger flip-out does, up to (rows*2-1)*20ms,
+// then runs .25s. Calling mcPreviewMatchNext (which re-renders on its very
+// first line, picking the first card) before this elapses replaces the DOM
+// in the same tick the entrance render happened in — the browser never
+// gets to paint the intermediate state, so the "entrance" never visibly
+// plays at all and the fresh batch just pops in instead of shuffling or
+// flipping into place.
+function mcPreviewEntranceSettleMs(entranceAnim, rows){
+  if(entranceAnim === 'shuffle') return rows > 0 ? (rows-1)*50 + 380 : 380;
+  if(entranceAnim === 'flip') return rows > 0 ? (rows*2-1)*20 + 250 : 250;
+  return 0;
+}
+function mcPlayPreviewBoard(token, entranceAnim){
+  if(token !== mcPreviewToken || !mcPreviewActive) return;
+  if(document.hidden) return; // picked back up by the visibilitychange listener below once the tab is visible again
+  mcPreviewRefillBoard();
+  mcPreviewLeftOrder = shuffle(mcPreviewBoard.map(x=>x.id));
+  mcPreviewRightOrder = shuffle(mcPreviewBoard.map(x=>x.id));
+  mcPreviewRenderBoard(entranceAnim);
+  mcPreviewTimer = setTimeout(function(){
+    if(token !== mcPreviewToken) return;
+    mcPreviewMatchNext(token);
+  }, mcPreviewEntranceSettleMs(entranceAnim, mcPreviewBoard.length));
+}
+// Flips the CURRENT board out and the next one in — no built-in hold of
+// its own; callers that need a pause before the turn starts (the
+// final-stretch gray-out below) hold for exactly as long as real practice
+// does and only THEN call this, rather than this adding extra time on top.
+function mcPreviewDoFlip(token){
+  if(token !== mcPreviewToken) return;
+  document.querySelectorAll('#mcLeftList .mc-card, #mcRightList .mc-card').forEach(c=>c.classList.add('mc-flip-out'));
+  // Same formula mcFlipToNextBatch itself uses (see its own comment) —
+  // waits for the LAST card's own staggered exit to finish, not just the
+  // base .25s duration: the CSS reading-order stagger means the
+  // bottom-right card doesn't even start turning until (rows*2-1)*20ms in
+  // (180ms for a full 5-row board, less for a smaller final-stretch one).
+  const rows = document.querySelectorAll('#mcLeftList .mc-card').length;
+  const lastCardDelayMs = rows > 0 ? (rows * 2 - 1) * 20 : 0;
+  mcPreviewTimer = setTimeout(function(){
+    if(token !== mcPreviewToken) return;
+    mcPreviewBoard = []; // matched pairs and any requeued stragglers alike all leave the board here
+    mcPlayPreviewBoard(token, 'flip');
+  }, lastCardDelayMs + 250);
+}
+// Picks the next unmatched, not-yet-stale card and animates it to a match
+// — word card picked, then its definition, then both flagged matched.
+// After each match, checks the SAME "entering the final stretch" condition
+// mcCheckMatch itself does, including reading the same configurable
+// Settings → Practice → Multiple Choice threshold — so the preview
+// demonstrates the board actually reshuffling at whatever point the user
+// has it configured for, not a fixed guess that might not match what
+// they'll really see once they start practicing.
+function mcPreviewMatchNext(token){
+  if(token !== mcPreviewToken) return;
+  if(document.hidden) return;
+  const item = mcPreviewBoard.find(x=>!x.matched && !x.stale);
+  // Nothing left to match at all (the board's own final stretch already
+  // wiped it, or a genuinely empty board) — flip immediately, same as a
+  // real board with no queue left to draw from (mcCheckMatch's own
+  // "!remaining.length" branch calls mcFlipToNextBatch with no pause
+  // either — only the gray-out-stragglers path below actually holds).
+  if(!item){ mcPreviewDoFlip(token); return; }
+  item.pickedLeft = true;
+  mcPreviewRenderBoard(null);
+  mcPreviewTimer = setTimeout(function(){
+    if(token !== mcPreviewToken) return;
+    item.pickedRight = true;
+    mcPreviewRenderBoard(null);
+    mcPreviewTimer = setTimeout(function(){
+      if(token !== mcPreviewToken) return;
+      item.matched = true;
+      item.pickedLeft = false; item.pickedRight = false;
+      const remaining = mcPreviewBoard.filter(x=>!x.matched);
+      // Figured out (and .stale set) BEFORE this match's own render, so the
+      // gray-out lands in the same paint as the green "matched" card —
+      // same ordering mcCheckMatch itself uses and for the same reason.
+      const previewMatchesBeforeShuffle = loadSettings().mcMatchesBeforeShuffle || 3;
+      const previewMatchedCount = mcPreviewBoard.length - remaining.length;
+      const enteringFinalStretch = remaining.length && previewMatchedCount >= previewMatchesBeforeShuffle && mcPreviewQueue.length && !mcPreviewTransitionPending;
+      if(enteringFinalStretch) remaining.forEach(x=>{ x.stale = true; });
+      mcPreviewRenderBoard(null);
+      if(!remaining.length){ mcPreviewDoFlip(token); return; }
+      if(enteringFinalStretch){
+        mcPreviewTransitionPending = true;
+        // 500ms — exactly mcCheckMatch's own hold on the grayed-out
+        // stragglers before it wipes the board, not a slower "preview
+        // pace" guess on top of it; the pick/reveal/match beats above are
+        // where this preview is deliberately paced slower than real
+        // practice, not this hold.
+        mcPreviewTimer = setTimeout(function(){
+          if(token !== mcPreviewToken) return;
+          mcPreviewTransitionPending = false;
+          // The stragglers go back into the queue reshuffled in, not just
+          // appended — so they can turn up anywhere in a later board
+          // rather than always dead last, same as mcCheckMatch.
+          remaining.forEach(x=>{ mcPreviewQueue.push({hz:x.hz, py:x.py, en:x.en}); });
+          shuffle(mcPreviewQueue);
+          mcPreviewDoFlip(token);
+        }, 500);
+        return;
+      }
+      mcPreviewTimer = setTimeout(function(){ mcPreviewMatchNext(token); }, 500);
+    }, 650);
+  }, 800);
+}
+document.addEventListener('visibilitychange', function(){
+  if(document.hidden){
+    if(mcPreviewActive) mcPreviewHiddenAt = performance.now();
+    return;
+  }
+  if(!mcPreviewActive) return;
+  // Restarts with a whole fresh board (mcPlayPreviewBoard, not just
+  // replaying the interrupted match) — simpler than trying to resume
+  // mid-match, and clears mcPreviewBoard first so the restart doesn't just
+  // re-add a second refill on top of whatever was already there. Not gated
+  // on whether a timer happens to be pending — the preview's own
+  // "if(document.hidden) return" guards leave a stale, already-fired timer
+  // ID sitting in mcPreviewTimer once they trip, which reads as truthy
+  // just like a genuinely pending one, so a pending-timer check alone left
+  // this stuck permanently after switching tabs away and back. Bumping the
+  // token first invalidates whatever that stale in-flight match was about
+  // to do once it does eventually resolve, so it can't fire a stray extra
+  // advance on top of this fresh restart.
+  //
+  // Which words end up back on the board is what changed: real elapsed
+  // hidden time (against MC_PREVIEW_NOMINAL_MATCH_MS's own estimate) now
+  // shifts that many words off mcPreviewQueue first, as if they'd already
+  // been matched — a brief glance away still comes back to the same board
+  // (advanceBy comes out to 0), but a real stretch of time away arrives at
+  // a board however far into the deck it would naturally be by now, same
+  // standing site-wide rule landing.html's own sphere tour follows.
+  if(mcPreviewTimer){ clearTimeout(mcPreviewTimer); mcPreviewTimer = null; }
+  if(mcPreviewHiddenAt !== null){
+    const hiddenMs = performance.now() - mcPreviewHiddenAt;
+    mcPreviewHiddenAt = null;
+    const advanceBy = Math.floor(hiddenMs / MC_PREVIEW_NOMINAL_MATCH_MS);
+    for(let i=0;i<advanceBy;i++){
+      if(!mcPreviewQueue.length) mcPreviewQueue = shuffle(mcVocabSource.map(e=>({hz:e.hz, py:e.py, en:e.en})));
+      mcPreviewQueue.shift();
+    }
+  }
+  mcPreviewTransitionPending = false;
+  mcPreviewBoard = [];
+  mcPlayPreviewBoard(++mcPreviewToken, 'shuffle');
+});
+function mcStartStudying(){
+  mcRebuildQueue();
+}
+
+// mcFolderPicker doubles as the general "start studying" action spot for
+// every mode, not just Folders — putting the button in one shared container
+// (rather than one copy per mode, positioned wherever that mode's own markup
+// happens to put it) is what keeps it landing in the exact same place
+// regardless of which mode pill is selected — same pattern as Writing
+// Practice's own hwRenderFolderPicker.
+function mcRenderFolderPicker(){
+  const picker = document.getElementById('mcFolderPicker');
+  picker.style.display = 'block';
+  if(mcMode !== 'folders'){
+    picker.innerHTML = `<button class="btn hw-study-selected-btn" onclick="mcStartStudying()">Start studying selected</button>`;
+    return;
+  }
+  const folders = loadFolders();
+  if(!folders.length){
+    picker.innerHTML = `<div class="hw-empty-inline">You haven't created any folders yet. Head to <a href="word-bank.html" style="color:var(--seal); font-weight:600;">Vocabulary → Word Bank</a> to make one and add words to it.</div>`;
+    return;
+  }
+  picker.innerHTML = `
+    <div class="hw-folder-checks">
+      ${folders.map(f=>{
+        const count = loadFolderWords(f).length;
+        return `<label class="hw-folder-check"><input type="checkbox" value="${f}" ${mcSelectedFolders.includes(f)?'checked':''} onchange="mcToggleFolderSelection('${f}')"><span class="hw-folder-name" title="${f}">${f}</span> <span class="hw-folder-count">(${count} word${count===1?'':'s'})</span></label>`;
+      }).join('')}
+    </div>
+    <button class="btn hw-study-selected-btn" onclick="mcStartFolderStudy()">Start studying selected</button>`;
+}
+function mcToggleFolderSelection(name){
+  const idx = mcSelectedFolders.indexOf(name);
+  if(idx===-1) mcSelectedFolders.push(name); else mcSelectedFolders.splice(idx,1);
+}
+function mcStartFolderStudy(){
+  if(!mcSelectedFolders.length) return;
+  mcRebuildQueue();
+}
+function mcShowEmptyState(){
+  const card = document.getElementById('mcCard');
+  let msg, desc;
+  if(mcMode==='folders'){
+    msg = `The selected folder${mcSelectedFolders.length===1?'':'s'} ${mcSelectedFolders.length===1?"doesn't":"don't"} have any words yet.`;
+    desc = 'No words in the selected folders';
+  } else {
+    msg = `Your Word Bank is empty.`;
+    desc = '';
+  }
+  card.innerHTML = `<div class="hw-empty">${msg}</div>`;
+  document.getElementById('mcModeDesc').textContent = desc;
+}
+function mcRebuildQueue(){
+  mcStopPreview();
+  const deck = mcGetDeckForMode();
+  const notice = document.getElementById('mcBankNotice');
+  if(notice) notice.style.display = (mcMode==='rapid' && loadWordBank().length) ? 'block' : 'none';
+
+  if(!deck.length){
+    mcQueue = []; mcBoard = []; mcOriginalCount = 0; mcBaselineDone = 0;
+    mcShowEmptyState();
+    return;
+  }
+
+  // Rapid Fire and Folders are the two modes worth remembering progress
+  // for, same convention as every other study mode on the site — Radicals
+  // is a fixed practice run (same reasoning as Writing Practice's own
+  // Radicals mode), not something you'd expect to pick back up later.
+  // Tracked per-word (w.hz) — Multiple Choice never decomposes a word into
+  // characters, it matches whole words to their whole definition.
+  if(mcMode === 'rapid' || mcMode === 'folders'){
+    const deckIds = new Set(deck.map(w => w.hz));
+    const done = Array.from(getStudyProgressDone('mc', mcMode, mcSelectedFolders)).filter(id => deckIds.has(id));
+    if(done.length && done.length < deckIds.size){
+      showResumeStudyPrompt({
+        title: 'Continue where you left off?',
+        message: `You've already matched ${done.length} of ${deckIds.size} words here. Continue with the rest, or start over from the top?`,
+        onContinue: function(){ mcBuildQueueFromDeck(deck, new Set(done)); },
+        onRestart: function(){ clearStudyProgress('mc', mcMode, mcSelectedFolders); mcBuildQueueFromDeck(deck, new Set()); },
+      });
+      return;
+    }
+    // Nothing left unseen (a fully-finished run from before) — that record
+    // no longer means anything useful, so drop it rather than prompt.
+    if(done.length) clearStudyProgress('mc', mcMode, mcSelectedFolders);
+  }
+  mcBuildQueueFromDeck(deck, new Set());
+}
+function mcBuildQueueFromDeck(deck, doneWords){
+  mcRoundGen++;
+  mcTransitionPending = false;
+  const usableDeck = doneWords.size ? deck.filter(w => !doneWords.has(w.hz)) : deck;
+  mcQueue = shuffle(usableDeck.slice());
+  mcOriginalCount = mcQueue.length;
+  mcBaselineDone = doneWords.size;
+  mcBoard = [];
+  mcPickedLeft = null;
+  mcPickedRight = null;
+  mcRoundStartTime = Date.now();
+  mcRoundMistakes = 0;
+  mcRoundWordsSeen = new Set();
+
+  let desc = '';
+  if(mcMode==='radicals') desc = `Practicing all ${deck.length} radicals`;
+  else if(mcMode==='rapid') desc = loadWordBank().length
+    ? `Studying all ${deck.length} word${deck.length===1?'':'s'} in your Word Bank`
+    : `Studying a default set of ${deck.length} words`;
+  else desc = `Studying ${deck.length} word${deck.length===1?'':'s'} from: ${mcSelectedFolders.join(', ')}`;
+  document.getElementById('mcModeDesc').textContent = desc;
+
+  document.getElementById('mcCard').innerHTML = `
+    <div class="mc-board">
+      <div class="mc-col">
+        <div class="mc-col-head">Hanzi / Pinyin</div>
+        <div class="mc-list" id="mcLeftList"></div>
+      </div>
+      <div class="mc-col">
+        <div class="mc-col-head">Definition</div>
+        <div class="mc-list" id="mcRightList"></div>
+      </div>
+    </div>
+    <div class="mc-progress" id="mcProgress"></div>
+    <div class="mc-mistakes" id="mcMistakes"></div>`;
+  mcRefillBoard(true);
+}
+
+/* The actual "flip to the next batch" transition, called from both of
+   mcCheckMatch's refill points instead of wiping mcBoard and calling
+   mcRefillBoard directly. Two-phase, mirroring a real flip card: this half
+   turns the CURRENT cards — the ones the player's just been looking at —
+   edge-on (mc-flip-out) before anything about the board actually changes,
+   then only once they're turned away does the swap happen, with the new
+   batch continuing that same turn back into view (mc-flip-in, see its own
+   CSS comment). Without this, the old cards would just vanish the instant
+   mcBoard is cleared and the new ones would flip in from nothing — not
+   wrong exactly, but not a card actually flipping into its replacement
+   either, which is the whole point. */
+function mcFlipToNextBatch(){
+  const gen = mcRoundGen;
+  document.querySelectorAll('.mc-card').forEach(function(c){ c.classList.add('mc-flip-out'); });
+  // Waits for the LAST card's own staggered exit to finish, not just the
+  // base .25s duration — the CSS reading-order stagger (see .mc-flip-out's
+  // own CSS comment) means the bottom-right card doesn't even start
+  // turning until 180ms in (5 rows) or less for a smaller final batch.
+  // Firing this on the un-staggered base duration alone would yank later
+  // cards' content out from under them mid-turn, same bug fixed once
+  // already when stagger was still flat across the whole board. A plain
+  // multiply (not Math.round per step, unlike 1/30s's stagger before this
+  // one) is enough here — 1/50s is a clean 20ms with no rounding drift to
+  // account for.
+  const rows = document.querySelectorAll('#mcLeftList .mc-card').length;
+  const lastCardDelayMs = rows > 0 ? (rows * 2 - 1) * 20 : 0;
+  setTimeout(function(){
+    // Same staleness guard mcCheckMatch's own delayed refill already used —
+    // a mode switch, folder change, or restart mid-flip rebuilds
+    // mcBoard/mcQueue itself, and this stale callback would otherwise wipe
+    // THAT new round's board instead.
+    if(gen !== mcRoundGen) return;
+    mcBoard = [];
+    mcRefillBoard();
+  }, lastCardDelayMs + 250);
+}
+/* Tops the board back up to 5 (or however many remain in the queue) — the
+   left column always shows a word's hanzi and pinyin together; the right
+   column always shows its definition. A correctly-matched pair is NOT
+   pulled off the board the instant it's solved — see mcCardHTML/mcRender —
+   it stays put, locked in green, so the board only actually empties and
+   refills once mcCheckMatch's own configured "matches before reshuffling"
+   check fires below (Settings → Practice → Multiple Choice).
+   isFirstRender: true only from mcBuildQueueFromDeck's own call, right as
+   a round starts — picks mc-shuffle-in's bounce for that one deal; every
+   other call (always from mcFlipToNextBatch above) leaves it false/
+   omitted, picking mc-flip-in's continued turn instead. */
+function mcRefillBoard(isFirstRender){
+  while(mcBoard.length < 5 && mcQueue.length){
+    const w = mcQueue.shift();
+    mcBoard.push({
+      id: mcNextId++,
+      hz: w.hz, py: w.py, en: w.en,
+      matched: false,
+    });
+  }
+  mcLeftOrder = shuffle(mcBoard.map(x=>x.id));
+  mcRightOrder = shuffle(mcBoard.map(x=>x.id));
+  if(!mcBoard.length && !mcQueue.length){
+    mcFinishRound();
+    return;
+  }
+  mcAnimateNextRender = isFirstRender ? 'shuffle' : 'flip';
+  mcRender();
+}
+function mcFinishRound(){
+  if(mcMode === 'rapid' || mcMode === 'folders') clearStudyProgress('mc', mcMode, mcSelectedFolders);
+  const mcCardEl = document.getElementById('mcCard');
+  mcCardEl.innerHTML = renderRoundSummaryHTML({
+    wordsSeen: mcRoundWordsSeen, mistakes: mcRoundMistakes, startTime: mcRoundStartTime,
+    subtitle: 'You matched every word in this deck. Pick a mode above to start a fresh session.',
+    actionsHTML: `<button class="btn" onclick="mcRebuildQueue()">Practice again</button>`
+  });
+  animateRoundSummary(mcCardEl.querySelector('.round-summary'));
+}
+
+function mcCardHTML(item, side){
+  const inner = side === 'left'
+    ? `<div class="mc-hz">${item.hz}</div><div class="mc-py dict-py">${item.py}</div>`
+    : `<div class="mc-en">${item.en && item.en !== '—' ? item.en : '(no definition on file)'}</div>`;
+  // Only ever set for the render immediately after mcRefillBoard — see
+  // mcAnimateNextRender's own comment.
+  const shuffleClass = mcAnimateNextRender === 'shuffle' ? ' mc-shuffle-in'
+    : mcAnimateNextRender === 'flip' ? ' mc-flip-in' : '';
+  if(item.matched){
+    // Already-matched pairs stay on the board (see mcRefillBoard's own
+    // comment on why) rather than vanishing the instant they're solved —
+    // locked in green, no longer clickable.
+    return `<div class="mc-card mc-correct${shuffleClass}" data-mc-id="${item.id}" data-mc-side="${side}">${inner}</div>`;
+  }
+  // The last two unmatched cards during mcTransitionPending's hold — see
+  // .mc-stale and mcCheckMatch.
+  const staleClass = item.stale ? ' mc-stale' : '';
+  const picked = side === 'left' ? mcPickedLeft === item.id : mcPickedRight === item.id;
+  return `<div class="mc-card${shuffleClass}${staleClass}${picked ? ' mc-picked' : ''}" data-mc-id="${item.id}" data-mc-side="${side}" onclick="mcPickCard('${side}', ${item.id})">${inner}</div>`;
+}
+function mcRender(){
+  const byId = new Map(mcBoard.map(x=>[x.id, x]));
+  const leftList = document.getElementById('mcLeftList');
+  const rightList = document.getElementById('mcRightList');
+  if(!leftList || !rightList) return;
+  // Matched pairs are included here too (not filtered out) — they stay
+  // visible, greened out, until the whole board cycles to a fresh batch.
+  leftList.innerHTML = mcLeftOrder.map(id=>byId.get(id)).filter(Boolean).map(x=>mcCardHTML(x,'left')).join('');
+  rightList.innerHTML = mcRightOrder.map(id=>byId.get(id)).filter(Boolean).map(x=>mcCardHTML(x,'right')).join('');
+  // One-shot — only the render mcRefillBoard just triggered gets the
+  // shuffle-in entrance; every later re-render (a pick, a match, graying
+  // the final two) renders plain.
+  mcAnimateNextRender = false;
+  const progress = document.getElementById('mcProgress');
+  if(progress){
+    // Offset by mcBaselineDone (0 for a fresh start) so a resumed session
+    // shows true position in the whole deck — e.g. "266 / 281 matched"
+    // picking back up after 265 were already matched last time — instead
+    // of restarting the fraction at "0 / 16" against just the words left
+    // over from before. mcRoundWordsSeen itself stays session-local
+    // (unoffset) since the round-summary's own WPM stat also reads it.
+    const done = mcBaselineDone + mcRoundWordsSeen.size;
+    const total = mcBaselineDone + mcOriginalCount;
+    progress.textContent = `${done} / ${total} matched`;
+  }
+  const mistakes = document.getElementById('mcMistakes');
+  if(mistakes) mistakes.textContent = mcRoundMistakes ? `${mcRoundMistakes} mistake${mcRoundMistakes===1?'':'s'} so far` : '';
+}
+
+function mcPickCard(side, id){
+  if(mcTransitionPending) return; // board's holding on the last match, see mcCheckMatch
+  const current = side === 'left' ? mcPickedLeft : mcPickedRight;
+  if(current === id){
+    // toggle off
+    if(side === 'left') mcPickedLeft = null; else mcPickedRight = null;
+    mcRender();
+    return;
+  }
+  if(side === 'left') mcPickedLeft = id; else mcPickedRight = id;
+  mcRender();
+  if(mcPickedLeft != null && mcPickedRight != null) mcCheckMatch();
+}
+
+function mcCheckMatch(){
+  const leftId = mcPickedLeft, rightId = mcPickedRight;
+  const item = mcBoard.find(x=>x.id===leftId);
+  if(leftId === rightId && item){
+    item.matched = true;
+    mcPickedLeft = null; mcPickedRight = null;
+    mcRoundWordsSeen.add(item.hz);
+    if(mcMode === 'rapid' || mcMode === 'folders') addStudyProgressDone('mc', mcMode, mcSelectedFolders, item.hz);
+    const remaining = mcBoard.filter(x=>!x.matched);
+    // Settings → Practice → Multiple Choice → "Matches before reshuffling":
+    // how many of the board's own pairs (5 by default, could be fewer on
+    // the deck's last batch) need to be matched before the rest get
+    // reshuffled back into the deck for a fresh 5+5, rather than always
+    // waiting for the whole board. Default 3 shuffles in a new batch once
+    // just over half the board clears, leaving any remaining stragglers
+    // graylisted and reshuffled back into the queue rather than served
+    // dead-last; setting it to 5 (mcBoard.length's own max) restores the
+    // original always-wait-for-the-whole-board behavior exactly, since at
+    // that value this can never fire before the unconditional
+    // !remaining.length check below already has (matchedCount reaching
+    // mcBoard.length IS remaining.length hitting 0). Figured out (and the
+    // .stale flag set) BEFORE this match's own mcRender() call below, so
+    // the gray-out lands in the same paint as the green "matched" card, not
+    // a separate flash a moment later.
+    const matchesBeforeShuffle = loadSettings().mcMatchesBeforeShuffle || 3;
+    const matchedCount = mcBoard.length - remaining.length;
+    const enteringFinalStretch = remaining.length && matchedCount >= matchesBeforeShuffle && mcQueue.length && !mcTransitionPending;
+    if(enteringFinalStretch) remaining.forEach(x=>{ x.stale = true; });
+    mcRender();
+    if(!remaining.length){
+      mcFlipToNextBatch();
+      return;
+    }
+    if(enteringFinalStretch){
+      // Reached the configured match count with stragglers still left, and
+      // there's more deck to bring in — clear the whole board rather than
+      // topping up around them (see the file-level design note above
+      // mcRefillBoard): the stragglers go back into the queue — reshuffled
+      // in, not just appended to the end, so they can turn up again
+      // anywhere in a later batch rather than always being served dead
+      // last. mcTransitionPending holds the board exactly as it is
+      // (matched pairs and the stragglers — now grayed-out — both still
+      // visible, and no longer clickable — see mcPickCard) for a beat
+      // before the wipe, so the last match doesn't vanish the instant it
+      // lands.
+      remaining.forEach(x=>{ mcQueue.push({hz:x.hz, py:x.py, en:x.en}); });
+      shuffle(mcQueue);
+      mcTransitionPending = true;
+      const gen = mcRoundGen;
+      setTimeout(function(){
+        // A mode switch, folder change, or restart mid-pause bumps
+        // mcRoundGen and rebuilds mcBoard/mcQueue itself — this stale
+        // callback would otherwise wipe THAT new round's board instead.
+        if(gen !== mcRoundGen) return;
+        mcTransitionPending = false;
+        mcFlipToNextBatch();
+      }, 500);
+    }
+    return;
+  }
+  // Wrong pair — brief shake/flash on both cards, then clear the picks so
+  // they can try again. Doesn't touch mcBoard/mcQueue at all.
+  mcRoundMistakes++;
+  const leftEl = document.querySelector(`.mc-card[data-mc-side="left"][data-mc-id="${leftId}"]`);
+  const rightEl = document.querySelector(`.mc-card[data-mc-side="right"][data-mc-id="${rightId}"]`);
+  [leftEl, rightEl].forEach(el=>{ if(el) el.classList.add('mc-wrong'); });
+  document.getElementById('mcMistakes').textContent = `${mcRoundMistakes} mistake${mcRoundMistakes===1?'':'s'} so far`;
+  setTimeout(function(){
+    mcPickedLeft = null; mcPickedRight = null;
+    mcRender();
+  }, 550);
+}
+
+/* ================= FULL SCREEN =================
+   Same approach as Writing Practice/Match Pinyin/Type Pinyin: try the real
+   Fullscreen API first, fall back to a pinned in-page overlay (the
+   .hw-wrap.is-fullscreen CSS) if it's unsupported or the request is denied. */
+let mcIsFullscreen = false;
+function mcHasNativeFullscreenSupport(el){
+  return !!(el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen);
+}
+function mcNativeFullscreenElement(){
+  return document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement || null;
+}
+function mcToggleFullscreen(){
+  const el = document.getElementById('mcWrap');
+  if(!mcIsFullscreen){
+    if(mcHasNativeFullscreenSupport(el)){
+      try{
+        const req = el.requestFullscreen ? el.requestFullscreen()
+          : el.webkitRequestFullscreen ? el.webkitRequestFullscreen()
+          : el.mozRequestFullScreen ? el.mozRequestFullScreen()
+          : el.msRequestFullscreen();
+        if(req && req.catch){
+          req.catch(function(err){
+            console.warn('Full screen request was blocked or denied — using an in-page expanded view instead.', err);
+            mcSetFullscreenState(true);
+          });
+        }
+      }catch(err){
+        console.warn('Full screen request was blocked or denied — using an in-page expanded view instead.', err);
+        mcSetFullscreenState(true);
+      }
+    } else {
+      mcSetFullscreenState(true);
+    }
+  } else {
+    if(mcNativeFullscreenElement()){
+      if(document.exitFullscreen) document.exitFullscreen().catch(function(){});
+      else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+      else if(document.mozCancelFullScreen) document.mozCancelFullScreen();
+      else if(document.msExitFullscreen) document.msExitFullscreen();
+    } else {
+      mcSetFullscreenState(false);
+    }
+  }
+}
+function mcSetFullscreenState(makeFull){
+  mcIsFullscreen = makeFull;
+  const el = document.getElementById('mcWrap');
+  el.classList.toggle('is-fullscreen', mcIsFullscreen);
+  mcUpdateFullscreenBtn();
+  // On mobile the fallback view is pinned with position:fixed (see
+  // .hw-wrap.is-fullscreen media query) rather than real native fullscreen,
+  // so the page underneath is still technically scrollable — a touch-drag
+  // could rubber-band it behind the pinned overlay. Lock it while showing.
+  if(window.matchMedia('(max-width:800px)').matches){
+    document.body.style.overflow = mcIsFullscreen ? 'hidden' : '';
+  }
+}
+const MC_FULLSCREEN_ICON = '<path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path>';
+const MC_EXIT_FULLSCREEN_ICON = '<path d="M8 3v3a2 2 0 0 1-2 2H3"></path><path d="M21 8h-3a2 2 0 0 1-2-2V3"></path><path d="M3 16h3a2 2 0 0 1 2 2v3"></path><path d="M16 21v-3a2 2 0 0 1 2-2h3"></path>';
+function mcUpdateFullscreenBtn(){
+  const btn = document.getElementById('mcFullscreenBtn');
+  if(!btn) return;
+  const label = mcIsFullscreen ? 'Exit full screen' : 'Full screen this practice area';
+  btn.title = label;
+  btn.setAttribute('aria-label', label);
+  const svg = btn.querySelector('svg');
+  if(svg) svg.innerHTML = mcIsFullscreen ? MC_EXIT_FULLSCREEN_ICON : MC_FULLSCREEN_ICON;
+}
+function mcOnNativeFullscreenChange(){
+  const nativeFull = mcNativeFullscreenElement() === document.getElementById('mcWrap');
+  if(nativeFull !== mcIsFullscreen) mcSetFullscreenState(nativeFull);
+}
+// Forces a reflow after the mode panel's own size changes while in
+// fullscreen (a mode switch or folder pick rewrites its innerHTML) — same
+// Safari position:fixed re-layout workaround Writing Practice/Match
+// Pinyin/Type Pinyin use, see their own copy of this for the full story.
+(function(){
+  const wrap = document.getElementById('mcWrap');
+  if(!wrap || typeof ResizeObserver === 'undefined') return;
+  const ro = new ResizeObserver(function(){
+    if(!wrap.classList.contains('is-fullscreen')) return;
+    wrap.style.display = 'none';
+    void wrap.offsetHeight;
+    wrap.style.display = '';
+  });
+  document.querySelectorAll('.hw-mode-panel').forEach(function(el){ ro.observe(el); });
+})();
+document.addEventListener('fullscreenchange', mcOnNativeFullscreenChange);
+document.addEventListener('webkitfullscreenchange', mcOnNativeFullscreenChange);
+document.addEventListener('mozfullscreenchange', mcOnNativeFullscreenChange);
+
+mcInit();
+</script>
+</body>
+</html>

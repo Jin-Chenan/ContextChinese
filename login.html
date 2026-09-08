@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In — Context Chinese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDE4D2;
+  --paper-deep:#E1D4B9;
+  --paper-shadow:#cbbb96;
+  --ink:#22241F;
+  --ink-soft:#514E42;
+  --seal:#AE3B1C;
+  --seal-dark:#8C2E15;
+  --jade:#3E6B5B;
+  --jade-dark:#2E5346;
+  --gold:#A9832E;
+  --slate:#4C6169;
+  --paper-rgb:237,228,210;
+  --radius:2px;
+  --serif-cn:'Noto Serif SC', serif;
+  --serif-en:'Zilla Slab', 'Noto Serif', serif;
+  --sans:'Inter', sans-serif;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(0,0,0,0.025) 0, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(0,0,0,0.03) 0, transparent 50%);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.5;
+}
+::selection{background:var(--seal); color:var(--paper);}
+button{font-family:inherit;}
+:focus-visible{outline:2px solid var(--seal); outline-offset:2px;}
+
+.login-wrap{width:100%; max-width:380px; padding:24px; transition:max-width .18s ease;}
+/* Widened only while the sign-up form (with its plan picker) is showing —
+   log-in mode has no pricing to display, so it stays at the original narrow
+   width. See toggleMode(). */
+body.mode-signup .login-wrap{max-width:1000px;}
+.login-brand{display:flex; flex-direction:column; align-items:center; gap:12px; margin:0 auto 28px; max-width:380px;}
+.login-brand .seal-mark{
+  width:52px; height:52px; background:var(--seal); color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif-cn); font-size:28px; font-weight:700;
+  border-radius:3px; transform:rotate(-3deg);
+  box-shadow:2px 2px 0 rgba(0,0,0,0.15);
+}
+.login-brand b{font-family:var(--serif-en); font-size:22px; letter-spacing:0.3px;}
+
+.login-card{
+  background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow);
+  border-radius:2px; padding:32px 28px; max-width:380px; margin:0 auto;
+}
+
+/* ---------- sign-up plan picker ---------- */
+.signup-pricing{margin-bottom:32px;}
+.pricing-heading{font-family:var(--serif-en); font-size:20px; font-weight:700; text-align:center; margin:0 0 18px;}
+.price-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+@media (max-width:820px){.price-grid{grid-template-columns:repeat(2,1fr); max-width:460px; margin:0 auto;}}
+@media (max-width:480px){.price-grid{grid-template-columns:1fr;}}
+.price-card{
+  background:rgba(255,255,255,0.4); border:1.5px solid var(--paper-shadow); border-radius:2px;
+  padding:18px 16px; text-align:left; position:relative; cursor:pointer;
+  transition:border-color .15s, background .15s, box-shadow .15s;
+}
+.price-card:hover{border-color:var(--ink);}
+.price-card.selected{border-color:var(--seal); background:rgba(255,255,255,0.65); box-shadow:0 0 0 1px var(--seal);}
+.price-card.disabled{cursor:not-allowed; opacity:0.6;}
+.price-card.disabled:hover{border-color:var(--paper-shadow);}
+.price-featured-tag{
+  position:absolute; top:-11px; left:14px;
+  background:var(--seal); color:var(--paper); font-size:9.5px; font-weight:700; letter-spacing:0.8px;
+  text-transform:uppercase; padding:3px 9px; border-radius:20px;
+}
+.price-name{font-family:var(--serif-en); font-size:15px; font-weight:700; margin:4px 0 3px;}
+.price-desc{font-size:11.5px; color:var(--ink-soft); margin-bottom:12px; min-height:28px; line-height:1.4;}
+.price-amount{font-family:var(--serif-en); font-size:24px; font-weight:700;}
+.price-amount small{font-size:12px; font-weight:600; color:var(--ink-soft);}
+.price-amount.price-tbd{font-size:14.5px; color:var(--ink-soft);}
+.price-period{font-size:10.5px; color:var(--ink-soft); margin-top:3px;}
+.plan-selected-note{text-align:center; font-size:12.5px; color:var(--ink-soft); margin:0 0 18px;}
+.plan-selected-note b{color:var(--ink);}
+.login-field{margin-bottom:16px;}
+.login-field label{
+  display:block; font-size:12px; text-transform:uppercase; letter-spacing:1px;
+  color:var(--ink-soft); margin-bottom:6px; font-weight:600;
+}
+.login-field input{
+  width:100%; padding:10px 14px; border:1.5px solid var(--paper-shadow); border-radius:2px;
+  background:rgba(255,255,255,0.6); font-size:15px; font-family:var(--sans); outline:none;
+  color:var(--ink);
+}
+.login-field input:focus{border-color:var(--ink);}
+
+.btn{
+  background:var(--ink); color:var(--paper); border:none; cursor:pointer;
+  padding:10px 18px; font-weight:600; font-size:13.5px; border-radius:2px;
+  letter-spacing:0.3px; transition:transform .12s, background .12s;
+}
+.btn:hover{background:var(--seal-dark);}
+.btn:active{transform:scale(0.97);}
+.btn:disabled{opacity:0.5; cursor:not-allowed;}
+.login-submit{width:100%; margin-top:6px;}
+
+.login-error{color:var(--seal-dark); font-size:13px; margin-top:12px; min-height:18px;}
+.login-toggle{text-align:center; margin-top:18px; font-size:13px; color:var(--ink-soft);}
+.login-toggle button{
+  background:none; border:none; color:var(--seal); font-weight:700; cursor:pointer;
+  text-decoration:underline; padding:0; font-size:13px; font-family:inherit;
+}
+</style>
+</head>
+<body>
+
+<div class="login-wrap">
+  <div class="login-brand">
+    <div class="seal-mark">境</div>
+    <b>Context Chinese</b>
+  </div>
+
+  <!-- Only shown in sign-up mode — see toggleMode(). Picking a card is purely
+       informational for now (there's no billing system behind this site
+       yet): it just tracks selectedPlan and shows it back in
+       #planSelectedNote below. Account creation itself is unaffected either
+       way, still just email+password. -->
+  <div class="signup-pricing" id="signupPricing" style="display:none;">
+    <h2 class="pricing-heading">Choose your plan</h2>
+    <div class="price-grid">
+      <div class="price-card" data-plan="student" onclick="selectPlan('student', this)">
+        <div class="price-name">Student</div>
+        <div class="price-desc">Discounted pricing for verified students.</div>
+        <div class="price-amount">$7<small>.99/mo</small></div>
+        <div class="price-period">billed monthly, cancel anytime</div>
+      </div>
+      <div class="price-card featured selected" data-plan="individual" onclick="selectPlan('individual', this)">
+        <div class="price-featured-tag">Most Popular</div>
+        <div class="price-name">Individual</div>
+        <div class="price-desc">Full access, billed monthly.</div>
+        <div class="price-amount">$9<small>.99/mo</small></div>
+        <div class="price-period">billed monthly, cancel anytime</div>
+      </div>
+      <div class="price-card disabled" data-plan="quarterly">
+        <div class="price-name">Quarterly</div>
+        <div class="price-desc">Billed every 3 months.</div>
+        <div class="price-amount price-tbd">Pricing TBD</div>
+        <div class="price-period">coming soon</div>
+      </div>
+      <div class="price-card disabled" data-plan="biannual">
+        <div class="price-name">Biannual</div>
+        <div class="price-desc">Billed every 6 months.</div>
+        <div class="price-amount price-tbd">Pricing TBD</div>
+        <div class="price-period">coming soon</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-card">
+    <p class="plan-selected-note" id="planSelectedNote" style="display:none;">Signing up for the <b id="planSelectedName">Individual</b> plan.</p>
+    <div class="login-field">
+      <label for="loginEmail">Email</label>
+      <input type="email" id="loginEmail" autocomplete="email">
+    </div>
+    <div class="login-field">
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" autocomplete="current-password">
+    </div>
+    <button class="btn login-submit" id="submitBtn" onclick="submitAuth()">Log In</button>
+    <div class="login-error" id="loginError"></div>
+    <div class="login-toggle">
+      <span id="toggleText">Need an account?</span>
+      <button onclick="toggleMode()" id="toggleBtn">Sign up</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+let mode = 'login'; // 'login' | 'signup'
+
+function toggleMode(){
+  mode = mode === 'login' ? 'signup' : 'login';
+  document.getElementById('submitBtn').textContent = mode === 'login' ? 'Log In' : 'Sign Up';
+  document.getElementById('toggleText').textContent = mode === 'login' ? 'Need an account?' : 'Already have an account?';
+  document.getElementById('toggleBtn').textContent = mode === 'login' ? 'Sign up' : 'Log in';
+  document.getElementById('loginError').textContent = '';
+  document.body.classList.toggle('mode-signup', mode === 'signup');
+  document.getElementById('signupPricing').style.display = mode === 'signup' ? '' : 'none';
+  document.getElementById('planSelectedNote').style.display = mode === 'signup' ? '' : 'none';
+}
+
+// Picking a plan card is purely informational right now (see the comment
+// above #signupPricing) — it just tracks which plan to show back in
+// #planSelectedNote, it doesn't gate or change what submitAuth() actually
+// does. The two undetermined-price cards (quarterly/biannual) have no
+// onclick at all, so they can't reach this.
+let selectedPlan = 'individual';
+const PLAN_NAMES = {student:'Student', individual:'Individual'};
+function selectPlan(plan, el){
+  selectedPlan = plan;
+  document.querySelectorAll('.price-card').forEach(function(c){ c.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('planSelectedName').textContent = PLAN_NAMES[plan] || plan;
+}
+
+function getRedirectTarget(){
+  const params = new URLSearchParams(location.search);
+  return params.get('redirect') || 'index.html';
+}
+
+function submitAuth(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errorEl = document.getElementById('loginError');
+  errorEl.textContent = '';
+  errorEl.style.color = '';
+  if(!email || !password){
+    errorEl.textContent = 'Enter both an email and a password.';
+    return;
+  }
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  try{
+    const action = mode === 'login'
+      ? supabaseClient.auth.signInWithPassword({ email: email, password: password })
+      : supabaseClient.auth.signUp({ email: email, password: password });
+    // Unlike Firebase's signInWithEmailAndPassword/createUserWithEmailAndPassword
+    // (which reject the promise on failure), Supabase always RESOLVES with
+    // {data, error} — a wrong password or a duplicate signup shows up as
+    // result.error, never a caught exception.
+    action.then(function(result){
+      if(result.error){
+        errorEl.textContent = result.error.message;
+        submitBtn.disabled = false;
+        return;
+      }
+      // If this Supabase project has email confirmation turned on (Dashboard >
+      // Authentication > Providers > Email), signUp() succeeds but returns no
+      // active session yet — unlike Firebase's createUserWithEmailAndPassword,
+      // which always signs someone in immediately with no verification step.
+      if(mode === 'signup' && !result.data.session){
+        errorEl.style.color = 'var(--jade-dark)';
+        errorEl.textContent = 'Check your email to confirm your account, then log in.';
+        submitBtn.disabled = false;
+        return;
+      }
+      location.replace(getRedirectTarget());
+    });
+  }catch(e){
+    errorEl.textContent = 'Supabase is not set up yet — check supabase-config.js.';
+    submitBtn.disabled = false;
+  }
+}
+
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Enter') submitAuth();
+});
+
+// A link can arrive here already wanting the sign-up form open — landing.html's
+// primary CTA does this (login.html?mode=signup) so a new visitor isn't
+// dropped onto the Log In form and forced to notice/click "Sign up" first.
+if(new URLSearchParams(location.search).get('mode') === 'signup') toggleMode();
+
+try{
+  supabaseClient.auth.getSession().then(function(result){
+    if(result.data.session) location.replace(getRedirectTarget());
+  });
+}catch(e){
+  document.getElementById('loginError').textContent = 'Supabase is not set up yet — check supabase-config.js.';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>html{visibility:hidden;}</style>
+<title>Pinyin — Type Pinyin — Context Chinese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDE4D2;
+  --paper-deep:#E1D4B9;
+  --paper-shadow:#cbbb96;
+  --ink:#22241F;
+  --ink-soft:#514E42;
+  --seal:#AE3B1C;
+  --seal-dark:#8C2E15;
+  --jade:#3E6B5B;
+  --jade-dark:#2E5346;
+  --gold:#A9832E;
+  --slate:#4C6169;
+  --paper-rgb:237,228,210;
+  --radius:2px;
+  --serif-cn:'Noto Serif SC', serif;
+  --serif-en:'Zilla Slab', 'Noto Serif', serif;
+  --sans:'Inter', sans-serif;
+  --tone-1:#2d6bd6;
+  --tone-2:#27974f;
+  --tone-3:#E0B400;
+  --tone-4:#c0392b;
+  --tone-0:#6b6b6b;
+}
+
+/* ---------- dark mode ---------- */
+:root[data-theme="dark"]{
+  --paper:#1C1B18;
+  --paper-deep:#242220;
+  --paper-shadow:#3A352C;
+  --ink:#EDE6D6;
+  --ink-soft:#B9AF9C;
+  --seal:#E2703F;
+  --seal-dark:#C8592C;
+  --jade:#5FA98D;
+  --jade-dark:#3E8068;
+  --gold:#D9AE5C;
+  --slate:#93A9B1;
+  --paper-rgb:28,27,24;
+  --tone-1:#7fb0ff;
+  --tone-2:#6bd98f;
+  --tone-3:#F2D24B;
+  --tone-4:#ff8a72;
+  --tone-0:#b9af9c;
+}
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .dict-search,
+:root[data-theme="dark"] .dict-entry,
+:root[data-theme="dark"] .dict-filter,
+:root[data-theme="dark"] .import-card,
+:root[data-theme="dark"] .dialogue-card,
+:root[data-theme="dark"] .tone-card,
+:root[data-theme="dark"] .trainer-card,
+:root[data-theme="dark"] .route-card,
+:root[data-theme="dark"] .word-card,
+:root[data-theme="dark"] .radical-face.front,
+:root[data-theme="dark"] .flash-face.front,
+:root[data-theme="dark"] .province-chip,
+:root[data-theme="dark"] .province-detail,
+:root[data-theme="dark"] .tone-desc-panel,
+:root[data-theme="dark"] .converse-card,
+:root[data-theme="dark"] .dictate-card,
+:root[data-theme="dark"] .read-card,
+:root[data-theme="dark"] .translate-card,
+:root[data-theme="dark"] .hw-target-wrap,
+:root[data-theme="dark"] .hw-focused-panel,
+:root[data-theme="dark"] .search-bar,
+:root[data-theme="dark"] .settings-card,
+:root[data-theme="dark"] .round-summary,
+:root[data-theme="dark"] .rs-stat,
+:root[data-theme="dark"] .quiz-box{
+  background:rgba(0,0,0,0.28) !important;
+}
+:root[data-theme="dark"] .dict-search input,
+:root[data-theme="dark"] .trainer-input,
+:root[data-theme="dark"] .converse-input,
+:root[data-theme="dark"] .dictate-input,
+:root[data-theme="dark"] .import-textarea,
+:root[data-theme="dark"] .search-bar input,
+:root[data-theme="dark"] .settings-select,
+:root[data-theme="dark"] .settings-input{
+  background:rgba(0,0,0,0.25) !important;
+}
+:root[data-theme="dark"] .keycap{
+  background:linear-gradient(160deg, #2c2a25 0%, #201f1b 100%) !important;
+}
+
+/* ---------- tone colouring ---------- */
+.tone-c-1{color:var(--tone-1);}
+.tone-c-2{color:var(--tone-2);}
+.tone-c-3{color:var(--tone-3);}
+.tone-c-4{color:var(--tone-4);}
+.tone-c-0{color:var(--tone-0);}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(0,0,0,0.025) 0, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(0,0,0,0.03) 0, transparent 50%);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.5;
+}
+::selection{background:var(--seal); color:var(--paper);}
+a{color:inherit;}
+button{font-family:inherit;}
+:focus-visible{outline:2px solid var(--seal); outline-offset:2px;}
+
+/* ---------- layout shell ---------- */
+.wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+header.top{
+  position:sticky; top:0; z-index:50;
+  background:rgba(var(--paper-rgb),0.94);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--paper-shadow);
+}
+.top-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 28px; max-width:1120px; margin:0 auto; gap:20px;}
+.brand{display:flex; align-items:center; gap:12px; cursor:pointer; user-select:none; flex-shrink:0;}
+.seal-mark{
+  width:38px; height:38px; background:var(--seal); color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif-cn); font-size:22px; font-weight:700;
+  border-radius:3px; transform:rotate(-3deg);
+  box-shadow:2px 2px 0 rgba(0,0,0,0.15);
+  flex-shrink:0;
+}
+.brand-text{display:flex; flex-direction:column; line-height:1.1; gap:3px;}
+.brand-text b{font-family:var(--serif-en); font-size:19px; letter-spacing:0.3px; white-space:nowrap;}
+.brand-text span{font-size:11px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;}
+
+nav.tabs{display:flex; flex-wrap:wrap; gap:2px;}
+.nav-item{position:relative;}
+.tab-btn{
+  background:none; border:none; cursor:pointer;
+  padding:8px 12px; font-size:13.5px; font-weight:600; color:var(--ink-soft);
+  border-radius:2px; letter-spacing:0.2px; white-space:nowrap;
+  transition:color .15s, background .15s;
+}
+.tab-btn .cn{font-family:var(--serif-cn); margin-right:5px; font-weight:600;}
+.tab-btn:hover{color:var(--ink); background:rgba(0,0,0,0.05);}
+.tab-btn.active{color:var(--ink); background:rgba(0,0,0,0.06);}
+
+.dropdown{
+  position:absolute; top:100%; left:0; margin-top:6px; background:var(--paper);
+  border:1px solid var(--paper-shadow); box-shadow:4px 6px 0 rgba(0,0,0,0.1);
+  width:0; min-width:0; display:flex; flex-direction:column; z-index:60;
+  opacity:0; max-height:0; overflow:hidden; pointer-events:none;
+  transform:translateY(-6px);
+  transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease .28s, min-width 0s ease .28s;
+  padding:0 4px;
+}
+.nav-item.open .dropdown{opacity:1; max-height:480px; width:auto; min-width:200px; transform:translateY(0); pointer-events:auto; padding:4px; transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease, min-width 0s ease;}
+.nav-item.open .tab-btn{color:var(--ink); background:rgba(0,0,0,0.06);}
+.tab-btn .caret{display:inline-block; margin-left:5px; font-size:10px; transition:transform .2s ease; opacity:0.6;}
+.nav-item.open .tab-btn .caret{transform:rotate(180deg);}
+.dropdown-link{
+  padding:10px 14px; text-align:left; background:none; border:none; cursor:pointer;
+  font-size:13px; font-weight:600; color:var(--ink-soft); white-space:nowrap; border-radius:2px;
+  text-decoration:none;
+}
+.dropdown-link:hover{background:rgba(0,0,0,0.06); color:var(--ink);}
+.dropdown-link.active{color:var(--seal);}
+@media (max-width:920px){
+  .top-inner{flex-direction:column; align-items:flex-start; position:relative;}
+  nav.tabs{width:100%; overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px;}
+  /* The gear/settings nav-item is a direct sibling of nav.tabs in .top-inner
+     (not nested inside it), so once .top-inner stacks into a column here it
+     falls onto its own row below the whole nav strip. Pin it to the
+     top-right corner instead, next to the brand row, freeing that row and
+     matching where it already sits on desktop's single-row layout. */
+  .top-inner > .nav-item{position:absolute; top:14px; right:28px;}
+}
+
+main{max-width:1120px; margin:0 auto; padding:40px 28px 100px;}
+section.view{display:none; animation:fadein .35s ease;}
+section.view.active{display:block;}
+@keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+.subview{display:none;}
+.subview.active{display:block;}
+
+.section-head{margin-bottom:28px; position:relative;}
+.eyebrow{
+  font-family:var(--sans); font-size:12px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--seal); display:flex; align-items:center; gap:8px;
+}
+.eyebrow::before{content:''; width:22px; height:2px; background:var(--seal);}
+h1.headline{
+  font-family:var(--serif-en); font-weight:700; font-size:44px; margin:6px 0 10px;
+  letter-spacing:-0.5px;
+}
+h1.headline .cn{font-family:var(--serif-cn); color:var(--seal); font-weight:700;}
+p.lede{color:var(--ink-soft); font-size:16px; max-width:640px; margin:10px 0 0;}
+.brush-rule{width:100%; height:3px; margin:26px 0; background:
+  linear-gradient(90deg, var(--ink) 0%, var(--ink) 60%, transparent 60%),
+  linear-gradient(90deg, var(--seal) 65%, transparent 65%);
+  background-size:100% 3px, 20% 3px; background-repeat:no-repeat;
+  opacity:0.85;
+}
+
+.subnav{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:30px;}
+.subnav-pill{
+  padding:8px 16px; border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4);
+  border-radius:20px; font-size:13px; font-weight:600; color:var(--ink-soft); cursor:pointer;
+}
+.subnav-pill:hover{border-color:var(--ink); color:var(--ink);}
+.subnav-pill.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+.card{
+  background:rgba(255,255,255,0.35);
+  border:1px solid var(--paper-shadow);
+  border-radius:var(--radius);
+  padding:22px;
+}
+.grid{display:grid; gap:16px;}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+@media (max-width:800px){.grid-2,.grid-3,.grid-4{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:520px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+
+/* ---- modal (the "continue where you left off?" resume prompt) — same
+   visual pattern as the Vocabulary List subscribe prompt on Word Bank. ---- */
+.modal-backdrop{position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:300; display:flex; align-items:center; justify-content:center; padding:20px;}
+.modal-card{background:var(--paper); border:1px solid var(--paper-shadow); border-radius:2px; max-width:420px; width:100%; padding:26px; box-shadow:6px 8px 0 rgba(0,0,0,0.25); position:relative;}
+.modal-card h4{margin:0 0 8px; font-family:var(--serif-en); font-size:19px; font-weight:700;}
+.modal-card p{font-size:13.5px; color:var(--ink-soft); margin:0 0 18px;}
+.modal-close{position:absolute; top:14px; right:14px; background:none; border:none; font-size:18px; cursor:pointer; color:var(--ink-soft); line-height:1; padding:2px;}
+.modal-close:hover{color:var(--ink);}
+.modal-field{display:flex; flex-direction:column; gap:12px; margin-bottom:22px;}
+.modal-field label{display:flex; align-items:center; gap:8px; font-size:13.5px; cursor:pointer; flex-wrap:wrap;}
+.modal-actions{display:flex; gap:10px;}
+:root[data-theme="dark"] .modal-card{background:var(--paper) !important;}
+
+.btn{
+  background:var(--ink); color:var(--paper); border:none; cursor:pointer;
+  padding:10px 18px; font-weight:600; font-size:13.5px; border-radius:2px;
+  letter-spacing:0.3px; transition:transform .12s, background .12s;
+}
+.btn:hover{background:var(--seal-dark);}
+.btn:active{transform:scale(0.97);}
+.btn:disabled{opacity:0.4; cursor:not-allowed;}
+.btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+.btn.ghost:hover{background:var(--ink); color:var(--paper);}
+.btn.small{padding:6px 12px; font-size:12px;}
+/* Icon always follows its label, never precedes it. */
+.btn-icon{width:1em; height:1em; vertical-align:-0.15em; margin-left:6px; flex-shrink:0;}
+
+/* ---------- HOME ---------- */
+.hero{position:relative; padding:20px 0 10px;}
+.hero-grid{display:grid; grid-template-columns:1.2fr 1fr; gap:40px; align-items:center;}
+@media (max-width:820px){.hero-grid{grid-template-columns:1fr;}}
+.hero h1{font-family:var(--serif-en); font-size:52px; line-height:1.05; margin:0 0 18px; font-weight:700;}
+.hero h1 .cn{font-family:var(--serif-cn); color:var(--seal); display:block; font-size:64px; margin-bottom:6px;}
+.hero p{font-size:17px; color:var(--ink-soft); max-width:480px; margin-bottom:26px;}
+.hero-seals{position:relative; height:340px;}
+.float-seal{
+  position:absolute; font-family:var(--serif-cn); font-weight:700;
+  color:var(--paper); display:flex; align-items:center; justify-content:center;
+  border-radius:3px; box-shadow:3px 3px 0 rgba(0,0,0,0.15);
+}
+.route-cards{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:44px;}
+@media (max-width:900px){.route-cards{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:480px){.route-cards{grid-template-columns:1fr;}}
+.route-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px;
+  padding:20px; cursor:pointer; text-align:left; transition:transform .15s, box-shadow .15s, border-color .15s;
+  display:flex; flex-direction:column; gap:8px;
+}
+.route-card:hover{transform:translateY(-3px); box-shadow:4px 6px 0 rgba(0,0,0,0.08); border-color:var(--ink);}
+.route-card .cn-big{font-family:var(--serif-cn); font-size:30px; color:var(--seal); font-weight:700;}
+.route-card b{font-family:var(--serif-en); font-size:17px;}
+.route-card span{font-size:13px; color:var(--ink-soft);}
+
+/* ---------- DICTIONARY ---------- */
+.dict-search{display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.5); border:1.5px solid var(--ink);
+  border-radius:2px; padding:10px 16px; max-width:460px; margin-bottom:8px;}
+.dict-search input{border:none; background:none; outline:none; font-size:15px; width:100%; font-family:var(--sans);}
+.dict-filters{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 20px;}
+.dict-filter{
+  border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4); padding:6px 13px;
+  border-radius:20px; font-size:12.5px; cursor:pointer; font-weight:600; color:var(--ink-soft);
+}
+.dict-filter:hover{border-color:var(--ink); color:var(--ink);}
+.dict-filter.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+.import-card{background:rgba(255,255,255,0.4); border:1px dashed var(--paper-shadow); border-radius:2px; padding:18px 20px; margin:0 0 26px;}
+.import-card h4{margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:1.2px; color:var(--gold);}
+.import-hint{font-size:12.5px; color:var(--ink-soft); margin:0 0 12px; line-height:1.6;}
+.import-hint code{background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:3px; padding:1px 5px; font-family:monospace; font-size:11px;}
+.import-row{display:flex; align-items:center; gap:12px; margin-bottom:10px; flex-wrap:wrap;}
+.import-or{font-size:12.5px; color:var(--ink-soft);}
+.file-label{cursor:pointer;}
+.import-textarea{width:100%; font-family:var(--sans); font-size:13px; padding:10px 12px; border:1.5px solid var(--paper-shadow);
+  border-radius:2px; background:rgba(255,255,255,0.6); resize:vertical; margin-bottom:10px;}
+.import-status{font-size:12.5px; color:var(--jade-dark); font-weight:600; min-height:18px; opacity:0; transition:opacity .3s;}
+
+.mass-toolbar{display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:14px; font-size:13px; color:var(--ink-soft);}
+.mass-select-all{display:flex; align-items:center; gap:7px; cursor:pointer; font-weight:600;}
+.dict-check{width:16px; height:16px; accent-color:var(--seal); cursor:pointer; flex-shrink:0;}
+
+.dict-count{font-size:12.5px; color:var(--ink-soft); margin-bottom:14px;}
+.dict-list{display:flex; flex-direction:column; gap:10px;}
+.dict-entry{
+  display:flex; align-items:center; gap:18px; background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow);
+  border-radius:2px; padding:16px 20px;
+}
+.dict-hz{font-family:var(--serif-cn); font-size:34px; font-weight:700; color:var(--seal); min-width:52px; text-align:center;}
+.dict-mid{flex:1; min-width:0;}
+.dict-py{font-family:var(--serif-en); font-weight:700; font-size:16px;}
+.dict-en{font-size:13.5px; color:var(--ink-soft); margin-top:2px;}
+.dict-meta{display:flex; align-items:center; gap:10px; flex-shrink:0;}
+.dict-pos{font-size:10.5px; text-transform:uppercase; letter-spacing:0.8px; color:var(--gold); border:1px solid var(--gold);
+  border-radius:20px; padding:3px 9px; white-space:nowrap;}
+.dict-empty{padding:40px 20px; text-align:center; color:var(--ink-soft); font-size:14px;}
+.add-btn{width:28px; height:28px; border-radius:50%; border:1.5px solid var(--jade); color:var(--jade-dark);
+  background:none; font-size:16px; font-weight:700; cursor:pointer; line-height:1; flex-shrink:0;}
+.add-btn:hover{background:var(--jade); color:#fff;}
+.wb-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap; gap:10px;}
+.wb-note{background:rgba(62,107,91,0.1); border-left:3px solid var(--jade); padding:12px 16px; font-size:13px; color:var(--ink-soft); margin-bottom:20px;}
+
+/* ---------- TONES ---------- */
+.tone-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:14px;}
+@media (max-width:900px){.tone-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:560px){.tone-grid{grid-template-columns:repeat(2,1fr);}}
+.tone-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); padding:18px 14px;
+  border-radius:2px; text-align:center; cursor:pointer; transition:border-color .15s, transform .15s;
+}
+.tone-card:hover{border-color:var(--seal); transform:translateY(-2px);}
+.tone-num{font-family:var(--serif-en); font-weight:700; font-size:13px; color:var(--ink-soft);}
+.tone-svg{margin:8px auto;}
+.tone-mark{font-family:var(--serif-cn); font-size:34px; font-weight:700; color:var(--seal);}
+.tone-name{font-weight:600; font-size:13.5px; margin-top:4px;}
+.tone-example{font-size:12px; color:var(--ink-soft); margin-top:6px;}
+.tone-desc-panel{
+  margin-top:22px; padding:20px; background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow);
+  border-radius:2px; min-height:60px;
+}
+
+/* ---------- QUIZ ---------- */
+.quiz-box{background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow); padding:24px; border-radius:2px; margin-top:20px;}
+.quiz-prompt{font-family:var(--serif-cn); font-size:46px; text-align:center; margin:6px 0 4px; font-weight:700;}
+.quiz-pinyin{text-align:center; color:var(--ink-soft); font-size:15px; margin-bottom:18px;}
+.quiz-opts{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; max-width:520px; margin:0 auto;}
+@media (max-width:520px){.quiz-opts{grid-template-columns:repeat(3,1fr);}}
+.quiz-opt{
+  padding:12px 4px; text-align:center; border:1.5px solid var(--ink); background:transparent;
+  cursor:pointer; font-weight:700; border-radius:2px; font-size:15px;
+}
+.quiz-opt:hover{background:var(--ink); color:var(--paper);}
+.quiz-opt.correct{background:var(--jade); border-color:var(--jade); color:#fff;}
+.quiz-opt.wrong{background:var(--seal); border-color:var(--seal); color:#fff;}
+.quiz-status{text-align:center; margin-top:16px; font-size:14px; color:var(--ink-soft); min-height:20px;}
+.quiz-score{text-align:center; font-weight:700; font-family:var(--serif-en); font-size:15px;}
+
+/* ---------- PINYIN SYLLABLE BUILDER ---------- */
+.syl-builder{display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start;}
+.syl-col{flex:1; min-width:220px;}
+.syl-col h4{font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--ink-soft); margin:0 0 10px;}
+.chip-grid{display:flex; flex-wrap:wrap; gap:9px;}
+.chip{
+  border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4); padding:6px 11px;
+  border-radius:20px; font-size:13px; cursor:pointer; font-weight:600;
+}
+.chip:hover{border-color:var(--ink);}
+.chip.picked{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+.syl-result{
+  background:var(--ink); color:var(--paper); border-radius:2px; padding:26px; text-align:center;
+  font-family:var(--serif-en); font-size:34px; font-weight:700; min-width:220px; align-self:stretch;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+}
+.syl-result small{font-size:12px; font-weight:400; color:#c9c2ac; letter-spacing:1px; text-transform:uppercase;}
+
+.word-list{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:10px;}
+@media (max-width:760px){.word-list{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:480px){.word-list{grid-template-columns:1fr;}}
+.word-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:14px;
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+}
+.word-card .hz{font-family:var(--serif-cn); font-size:22px; font-weight:700;}
+.word-card .py{font-size:12.5px; color:var(--ink-soft);}
+.speak-btn{
+  background:none; border:1.5px solid var(--ink); border-radius:50%; width:32px; height:32px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.speak-btn:hover{background:var(--ink); color:var(--paper);}
+
+/* ---------- PINYIN TRAINER ---------- */
+.trainer-card{
+  background:rgba(255,255,255,0.45); border:1px solid var(--paper-shadow); border-radius:2px;
+  padding:38px 34px; max-width:460px; margin:0 auto; text-align:center;
+}
+/* justify-content:center on the flex container itself centers the glyph +
+   button as one group — so adding the button never throws the character off
+   center the way it would if the button were an absolutely-positioned or
+   otherwise unaccounted-for overlay. */
+.trainer-char{
+  font-family:var(--serif-cn); font-size:72px; font-weight:700; color:var(--ink);
+  margin-bottom:20px; min-height:88px; display:flex; align-items:center; justify-content:center; gap:0.15em;
+}
+/* Never wrap the word onto a second line — CJK line-breaking treats every
+   character as its own break opportunity, so a 3+ character word would
+   otherwise wrap mid-word the moment it doesn't fit, instead of just
+   shrinking (see ptFitGlyphToCard, which measures this true single-line
+   width and scales the font down if it's still too wide for the card). */
+#ptCharGlyph{white-space:nowrap;}
+.audio-btn{
+  display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; padding:0;
+  /* <button> doesn't inherit font-size from its context by default (browser
+     UA stylesheet quirk) — without this, the em units below resolve against
+     the button's own tiny default size instead of the hanzi's actual size,
+     so the button never actually scales with it. */
+  font-size:inherit;
+  width:clamp(28px, 0.4em, 56px); height:clamp(28px, 0.4em, 56px);
+  border-radius:50%; border:1.5px solid var(--paper-shadow); background:none; color:var(--ink-soft); cursor:pointer;
+  transition:background .15s, color .15s, border-color .15s;
+}
+.audio-btn svg{width:55%; height:55%; display:block;}
+.audio-btn:hover{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+/* font-family is var(--sans) (Inter), not the site's usual pinyin serif
+   (var(--serif-en), Zilla Slab) — deliberately. Neither Zilla Slab nor Noto
+   Serif ships real glyphs for the precomposed tone-marked vowels this box
+   actually displays once ptAddTone inserts one (ā, ǎ, etc. — see settings.js's
+   own comment on why the rest of the site never renders these directly and
+   instead decomposes them into a base letter + a separately-sized accent
+   span). A plain <input>'s VALUE can't be wrapped in spans that way — it's
+   real browser-rendered form-control text, not DOM text nodes — so typing a
+   toned vowel here silently fell back to whatever font the browser picks
+   for that one missing glyph, rendering its accent mark noticeably
+   oversized next to the rest of the word. Inter actually ships those glyphs
+   natively, so every character comes from the same face and the accent
+   renders at its correct, proportionate size. */
+.trainer-input{
+  font-family:var(--sans); font-size:20px; padding:12px 16px; text-align:center; width:100%;
+  border:2px solid var(--paper-shadow); border-radius:2px; outline:none; background:rgba(255,255,255,0.6);
+  color:var(--ink); transition:border-color .15s, background .15s; font-weight:600;
+}
+.trainer-input:focus{border-color:var(--ink);}
+.trainer-input.correct{border-color:var(--jade); background:rgba(62,107,91,0.14); color:var(--jade-dark);}
+.trainer-reveal{
+  font-family:var(--serif-en); font-size:19px; font-weight:700; color:var(--seal); min-height:28px; margin:14px 0 2px;
+}
+.trainer-controls{display:flex; gap:10px; justify-content:center; margin-top:16px; flex-wrap:wrap;}
+/* Idle-preview-only "this button was just used" cue (see ptPlayPreviewWord)
+   — a brief press-down, same beat a real click's own momentary
+   active-state would have, standing in for an actual click on a control
+   that has no onclick wired up in the preview. */
+@keyframes ptPreviewPress{
+  0%{ transform:scale(1); }
+  40%{ transform:scale(0.93); }
+  100%{ transform:scale(1); }
+}
+.btn.pt-preview-pressed{ animation:ptPreviewPress .35s ease; }
+/* Reveal/Focus both read as .btn.small (12px, 6px/12px padding) by
+   default — noticeably smaller than this same set of controls on Writing
+   Practice, which never uses .small for them at all. Bumped here to plain
+   .btn's own size instead (13.5px, 10px/18px) — an already-established
+   size elsewhere on this page (e.g. "Practice again"), not a new one-off
+   value. */
+.trainer-controls button.btn{font-size:13.5px; padding:10px 18px;}
+.trainer-progress{margin-top:20px; font-size:12px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;}
+.trainer-done{font-family:var(--serif-en); font-size:24px; font-weight:700; padding:20px 0 8px;}
+.trainer-done-sub{font-size:14px; color:var(--ink-soft); margin-bottom:18px;}
+
+.tone-key{margin:20px auto 0; max-width:420px;}
+.tone-key-title{font-size:12px; text-transform:uppercase; letter-spacing:1.2px; color:var(--ink-soft); text-align:center; margin-bottom:14px;}
+.tone-key-list{display:flex; flex-direction:column; gap:11px;}
+/* One line per vowel — the tone-key column below is sized wide enough
+   (see the non-fullscreen grid rule further down) that this never needs to
+   wrap; flex-wrap:nowrap makes that assumption explicit instead of leaving
+   an awkward wrap as a silent fallback. */
+.tone-key-row{display:flex; align-items:center; justify-content:center; flex-wrap:nowrap; gap:6px; font-size:13.5px; color:var(--ink-soft); white-space:nowrap;}
+.tone-key-row b{font-family:var(--serif-cn); color:var(--seal); font-size:16px; width:16px; flex:0 0 auto; text-align:center;}
+.tone-key-arrow{color:var(--ink-soft); opacity:0.6; margin-right:1px; display:inline-flex; align-items:center;}
+.tone-key-arrow svg{width:0.85em; height:0.85em;}
+.tone-key-row code{background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:4px; padding:2px 7px; font-size:12.5px; font-family:monospace; color:var(--ink);}
+.tone-key-row .sep{color:var(--ink-soft); opacity:0.6;}
+.bank-notice{background:rgba(169,131,46,0.12); border-left:3px solid var(--gold); padding:10px 16px; font-size:12.5px; color:var(--ink-soft); margin-bottom:20px;}
+
+/* ---------- MODES (Rapid Fire / Focused / Folders) — shared with Hanzi Writing Practice ---------- */
+.hw-mode-panel{margin-bottom:30px; padding-bottom:26px; text-align:center;}
+.hw-mode-buttons{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:14px;}
+.mode-pill{
+  background:var(--seal); color:var(--paper); font-size:11.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase;
+  padding:10px 22px; border-radius:30px; border:none; cursor:pointer; transition:background .15s, transform .1s;
+}
+.mode-pill:hover{background:var(--seal-dark);}
+.mode-pill:active{transform:scale(0.97);}
+.mode-pill.inactive{background:transparent; color:var(--ink-soft); border:1.5px solid var(--paper-shadow);}
+.mode-pill.inactive:hover{border-color:var(--ink); color:var(--ink); background:rgba(0,0,0,0.04);}
+.hw-mode-desc{font-size:13px; color:var(--ink-soft); margin-bottom:6px; text-align:center;}
+/* text-align:center (not the left it started as) so "Start studying
+   selected" and the folder-checkbox rows both sit centered under the mode
+   pills, matching how Writing Practice's OWN fullscreen mode centers this
+   same picker — applied unconditionally rather than only in fullscreen, per
+   direct request, so it looks the same at every screen size on this page. */
+.hw-folder-picker{margin-top:16px; max-width:420px; margin-left:auto; margin-right:auto;}
+/* Rows used to be centered as a whole unit (justify-content:center on
+   .hw-folder-check, text-align:center up on .hw-folder-picker) — with
+   folder names of varying length that put each row's checkbox at a
+   different x position depending on how wide its own name+count text
+   happened to be, reading as checkboxes scattered all over once there
+   were more than a couple of folders. Left-aligned flex rows instead:
+   the checkbox is always the first flex item (so it lands at the same
+   fixed x on every row), the name is the one flexible, truncating
+   column in the middle, and the count is pinned to the right — see
+   .hw-folder-name/.hw-folder-check .hw-folder-count below. */
+.hw-folder-checks{display:flex; flex-direction:column; gap:8px; margin-bottom:14px; text-align:left;}
+.hw-folder-check{display:flex; align-items:center; gap:8px; font-size:13.5px; cursor:pointer;}
+.hw-folder-check input[type=checkbox]{flex-shrink:0;}
+/* The flexible middle column — grows to fill whatever space the fixed
+   checkbox and count columns leave, and clips its own text with an
+   ellipsis rather than wrapping or pushing the count out of the row. */
+.hw-folder-name{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.hw-folder-check .hw-folder-count{color:var(--ink-soft); font-size:12px; flex-shrink:0; white-space:nowrap;}
+/* Same dedicated sizing as Writing Practice's own "Start studying selected"
+   button — plain .btn.small (6px/12px, no bold) read as noticeably smaller
+   and less prominent than Writing Practice's version once placed side by
+   side, since this is the one action that actually starts a whole study
+   session, not an incidental control. */
+.hw-study-selected-btn{padding:10px 22px; font-size:11.5px; font-weight:700; display:block; margin-left:auto; margin-right:auto;}
+.hw-empty-inline{font-size:13px; color:var(--ink-soft); text-align:center; max-width:420px; margin:0 auto;}
+/* margin-left/right:auto (not just text-align:center) — a <button>, even
+   with display:block, still sizes itself to its own content width rather
+   than stretching to fill its container the way a div does, so centering
+   it needs the same margin:auto treatment as .hw-folder-picker just above,
+   not just an inherited/self text-align. Without this it only happened to
+   look centered wherever its ancestor's own text-align was already center
+   (or, in fullscreen, where the mode panel is a flex column that stretches
+   every child to full width regardless) — and sat left-aligned in desktop
+   non-fullscreen mode, where the mode panel is plain-block text-align:left. */
+.hw-focused-link{font-size:12px; color:var(--jade-dark); cursor:pointer; text-decoration:underline; background:none; border:none; padding:0; font-family:var(--sans); font-weight:600; margin-top:18px; display:block; margin-left:auto; margin-right:auto; text-align:center;}
+.hw-focused-panel{display:none; margin-top:14px; background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:16px 18px; max-width:520px; margin-left:auto; margin-right:auto; text-align:left;}
+.hw-focused-panel.open{display:block;}
+.hw-focused-panel h4{margin:0 0 8px; font-size:11.5px; text-transform:uppercase; letter-spacing:1px; color:var(--ink-soft);}
+.hw-focused-chip-list{display:flex; flex-wrap:wrap; gap:8px;}
+.hw-focused-chip{display:flex; align-items:center; gap:7px; background:rgba(255,255,255,0.6); border:1px solid var(--paper-shadow); border-radius:20px; padding:5px 8px 5px 13px; font-family:var(--serif-cn); font-size:15px; font-weight:700; color:var(--seal);}
+.hw-focused-chip button{border:none; background:var(--paper-deep); color:var(--ink-soft); border-radius:50%; width:18px; height:18px; cursor:pointer; font-size:11px; line-height:1; padding:0; font-family:var(--sans);}
+.hw-focused-chip button:hover{background:var(--seal); color:var(--paper);}
+.hw-focused-empty{font-size:13px; color:var(--ink-soft);}
+.hw-empty{text-align:center; padding:50px 20px; color:var(--ink-soft); font-size:14px;}
+.btn.focus-active{background:var(--gold); color:#fff; border-color:var(--gold);}
+.btn.focus-active:hover{filter:brightness(0.92);}
+/* Universal round-summary — same markup, CSS, and renderRoundSummaryHTML
+   signature copied verbatim across every practice page (Writing Practice,
+   Match Pinyin, Type Pinyin, Dictate, Multiple Choice, Translate), replacing
+   each page's own previously-drifted version. Two real bugs drove the
+   rewrite, both from the SAME root cause: the "Practice again" button used
+   to be appended as a raw string AFTER renderRoundSummaryHTML's own return
+   value, as a sibling with no shared container — harmless in a plain
+   single-column layout, but on pages whose fullscreen mode uses a
+   multi-column CSS grid (THIS page's own mode-panel/card/tone-key three-up
+   layout is exactly where it actually broke), that stray sibling could end
+   up pulled into a totally different part of the grid than the card it was
+   supposed to sit under. Fixed by moving it inside .round-summary itself,
+   in a dedicated .round-summary-actions row, so it's structurally
+   impossible for it to separate from the stats above it regardless of the
+   surrounding layout. Second bug: .round-summary-grid used to hard-code 4
+   fixed columns and only drop to 2 via a viewport-width media query —
+   which never fired inside this page's fullscreen grid's narrow center
+   column, since that's a CONTAINER width problem, not a viewport width
+   one, so stat numbers like "2m 44s" wrapped mid-box once the tone-key
+   sidebar was also competing for space. auto-fit below sizes columns off
+   the actual available width, wherever this component happens to be
+   placed, with no media query needed. */
+.round-summary{
+  width:100%; max-width:520px; margin:0 auto; box-sizing:border-box; text-align:center;
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:34px 28px;
+  /* Makes this element itself a container-query context, so the grid below
+     can respond to the space IT actually has (post-padding), not the
+     viewport — the same problem repeat(auto-fit, minmax()) was solving for
+     originally, but auto-fit has its own failure mode: at some in-between
+     widths it fits exactly 3 columns, stranding the 4th stat alone on its
+     own row — an asymmetric wrap none of the four stats deserve. */
+  container-type:inline-size;
+  /* Positioned ancestor for .rs-confetti's inset:0 below — without this the
+     burst would resolve against whatever positioned ancestor happens to be
+     further up the page instead of this card. */
+  position:relative;
+}
+.trainer-card .round-summary{background:none; border:none; padding:0;}
+.round-summary-head{font-family:var(--serif-en); font-weight:700; font-size:24px; margin-bottom:6px; animation:rsFadeUp 420ms ease both; animation-delay:150ms;}
+.round-summary-sub{font-size:13px; color:var(--ink-soft); margin-bottom:26px; animation:rsFadeUp 420ms ease both; animation-delay:220ms;}
+/* Explicit 2 or 4 — never 3 — so every page's completion screen wraps the
+   same way at the same size, instead of each one's own surrounding layout
+   (a full-width card here, a narrow fullscreen side column there) landing
+   on a different, sometimes-asymmetric column count via auto-fit. 440px
+   is comfortably above what 4 columns need at .rs-stat's own real content
+   width, with some margin so it doesn't fire right at the edge. */
+.round-summary-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;}
+@container (min-width:440px){
+  .round-summary-grid{grid-template-columns:repeat(4, 1fr);}
+}
+/* Each tile fades/slides up on its own delay (--rs-i, set inline per tile:
+   0..3) so the four stats visibly land one after another instead of all
+   snapping in at once — animateRoundSummary's count-up below reads the same
+   --rs-i (via each .rs-num's data-rs-i) so a tile's number starts ticking
+   right as the tile itself finishes arriving. The hover/active lift is a
+   second, independent touch — a tile still has something to do after the
+   entrance is over. */
+.rs-stat{
+  background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow); border-radius:2px; padding:16px 10px; min-width:0;
+  opacity:0; animation:rsStatIn 420ms cubic-bezier(.22,.8,.28,1) both;
+  animation-delay:calc(300ms + var(--rs-i, 0) * 80ms);
+  transition:transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+.rs-stat:hover, .rs-stat:focus-visible{transform:translateY(-3px); border-color:var(--seal); box-shadow:0 8px 18px -10px rgba(0,0,0,0.3);}
+.rs-stat:active{transform:translateY(-1px) scale(0.98);}
+.rs-num{font-family:var(--serif-en); font-weight:700; font-size:26px; color:var(--seal); font-variant-numeric:tabular-nums;}
+.rs-label{font-size:10.5px; text-transform:uppercase; letter-spacing:0.8px; color:var(--ink-soft); margin-top:4px;}
+.rs-sub{font-size:11px; color:var(--ink-soft); margin-top:6px;}
+.round-summary-actions{margin-top:24px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; animation:rsFadeUp 420ms ease both; animation-delay:660ms;}
+.rs-copy-btn{font-size:12px; transition:color 160ms ease, border-color 160ms ease;}
+.rs-copy-btn.rs-copied{color:var(--jade); border-color:var(--jade);}
+/* Draw-in ring behind the headline emoji, and a small celebratory particle
+   burst (both JS-driven, see animateRoundSummary) — the round-summary's one
+   purely decorative flourish, separate from the count-up numbers below
+   which are the actual stats animating. Colors pull from the site's own
+   --seal/--jade/--gold/--slate palette rather than an arbitrary rainbow, and
+   everything here freezes into its final state under prefers-reduced-motion
+   (see the media query at the end of this block) instead of animating. */
+.round-summary-badge{position:relative; width:60px; height:60px; margin:0 auto 8px; animation:rsBadgePop 520ms cubic-bezier(.34,1.56,.64,1) both;}
+.rs-badge-ring{position:absolute; inset:0; width:60px; height:60px; transform:rotate(-90deg);}
+.rs-badge-ring-bg{fill:none; stroke:var(--paper-shadow); stroke-width:4;}
+.rs-badge-ring-fg{fill:none; stroke:var(--seal); stroke-width:4; stroke-linecap:round; transition:stroke-dashoffset 700ms cubic-bezier(.2,.7,.2,1);}
+.round-summary-badge.rs-flawless .rs-badge-ring-fg{stroke:var(--gold);}
+.rs-badge-emoji{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:24px;}
+.rs-confetti{position:absolute; inset:0; pointer-events:none;}
+.rs-confetti-piece{
+  position:absolute; top:40px; left:50%; width:6px; height:6px; margin:-3px 0 0 -3px;
+  background:var(--rs-color, var(--seal)); border-radius:1px; opacity:0;
+  animation:rsConfettiBurst 900ms ease-out both; animation-delay:var(--rs-delay, 0ms);
+}
+@keyframes rsFadeUp{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+@keyframes rsStatIn{from{opacity:0; transform:translateY(10px) scale(0.96);} to{opacity:1; transform:translateY(0) scale(1);}}
+@keyframes rsBadgePop{from{opacity:0; transform:scale(0.4);} to{opacity:1; transform:scale(1);}}
+@keyframes rsConfettiBurst{
+  0%{opacity:1; transform:translate(0,0) rotate(0deg) scale(1);}
+  100%{opacity:0; transform:translate(var(--rs-tx, 0), var(--rs-ty, 0)) rotate(var(--rs-rot, 0deg)) scale(0.4);}
+}
+@media (prefers-reduced-motion: reduce){
+  .round-summary-badge, .round-summary-head, .round-summary-sub, .rs-stat, .round-summary-actions{
+    animation:none !important; opacity:1 !important; transform:none !important;
+  }
+  .rs-badge-ring-fg{transition:none !important;}
+  .rs-confetti-piece{display:none !important;}
+}
+
+/* ---------- TYPE PINYIN — FULLSCREEN (same mechanics as Hanzi Writing
+   Practice's fullscreen: desktop gets a 3-column grid — mode panel / practice
+   card / tone key — and mobile collapses to a fixed, non-scrolling stack.
+   See writing-practice.html for the full rationale on each piece below. ---------- */
+.hw-wrap{position:relative;}
+/* .hw-wrap's flex align-items:center (below) makes its children shrink to
+   their own content width by default — harmless for #ptCard/#ptToneKey (they
+   already size themselves via max-width+margin:auto) but #ptModePanel relied
+   on filling the full width it's given, e.g. so its dashed border-bottom
+   divider spans edge to edge instead of shrinking to a short dash under the
+   pills. Restoring that here doesn't affect fullscreen, which sizes it via
+   its own grid column instead. */
+#ptModePanel{width:100%;}
+.hw-fullscreen-btn{
+  position:absolute; top:0; right:0;
+  width:36px; height:36px; border-radius:50%; border:1.5px solid var(--paper-shadow);
+  background:rgba(var(--paper-rgb),0.92); box-shadow:2px 3px 0 rgba(0,0,0,0.08);
+  color:var(--ink-soft); cursor:pointer; padding:0;
+  display:flex; align-items:center; justify-content:center;
+  transition:background .15s, color .15s, border-color .15s;
+}
+.hw-fullscreen-btn svg{width:18px; height:18px;}
+.hw-fullscreen-btn:hover{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+/* .hw-fullscreen-btn sits at the very top-right corner (position:absolute,
+   removed from flex flow, so it doesn't push anything else down on its own).
+   On desktop the mode pills stay well clear of that corner, but on a narrow
+   phone screen (in NORMAL, non-fullscreen mode) they wrap and stretch close
+   enough to the right edge to sit right under/behind the button. Padding-top
+   on the wrap pushes the actual flex content down to clear it, while leaving
+   the button's own top:0 position — measured from the padding edge, not
+   affected by adding padding — exactly where it was. Matches the equivalent
+   fix in writing-practice.html. */
+@media (max-width:640px){
+  .hw-wrap:not(.is-fullscreen){padding-top:60px;} /* clears the now-36px .hw-fullscreen-btn with the same ~24px buffer the old 26px button had at 50px */
+}
+.hw-wrap.is-fullscreen{
+  /* position:fixed unconditionally (not just on mobile): when the Fullscreen
+     API isn't available or the request is refused, hwSetFullscreenState's
+     fallback just toggles this class, which otherwise leaves the wrap in
+     normal document flow — still constrained by <main>'s centered max-width,
+     so at a wide viewport the grid renders off-center and can overflow past
+     the real screen edge. This is a no-op when real fullscreen DOES succeed
+     (the browser's own top-layer promotion already supersedes it). */
+  position:fixed; top:0; left:0; right:0; bottom:0; z-index:9999;
+  background:var(--paper); width:100vw; height:100vh; max-width:none;
+  display:grid;
+  grid-template-columns:minmax(210px, 320px) minmax(0, 1fr) minmax(210px, 320px);
+  grid-template-rows:1fr;
+  align-items:center;
+  column-gap:28px;
+  padding:24px 56px;
+  overflow:hidden; box-sizing:border-box;
+}
+.hw-wrap.is-fullscreen #ptModePanel{
+  grid-column:1; grid-row:1; min-width:0;
+  display:flex; flex-direction:column; justify-content:center; gap:14px;
+  max-height:100%; overflow-y:auto;
+  margin-bottom:0; padding-bottom:0; padding-right:6px; border-bottom:none; text-align:left;
+}
+.hw-wrap.is-fullscreen #ptModePanel .hw-mode-buttons{flex-direction:column; align-items:stretch;}
+.hw-wrap.is-fullscreen #ptModePanel .mode-pill{font-size:13px; padding:11px 16px; text-align:center;}
+.hw-wrap.is-fullscreen #ptModePanel .hw-study-selected-btn{font-size:13px; padding:11px 16px;}
+.hw-wrap.is-fullscreen #ptCard{
+  grid-column:2; grid-row:1; min-width:0;
+  max-height:100%; overflow-y:auto;
+  max-width:520px; width:100%; margin:0 auto;
+}
+.hw-wrap.is-fullscreen #ptCard .trainer-char{font-size:clamp(72px, 9vw, 130px); min-height:auto;}
+/* Scaled up to actually match the much larger fullscreen hanzi, instead of
+   the small fixed-ish size tuned for normal mode's 72px text. */
+.hw-wrap.is-fullscreen #ptCard .audio-btn{width:clamp(36px, 0.6em, 90px); height:clamp(36px, 0.6em, 90px);}
+.hw-wrap.is-fullscreen #ptCard .trainer-input{font-size:clamp(20px, 2.2vw, 28px); padding:16px 20px;}
+.hw-wrap.is-fullscreen #ptToneKey{
+  grid-column:3; grid-row:1; min-width:0;
+  max-height:100%; overflow-y:auto; margin:0;
+}
+/* 1100px, not 800px — the 3-column fullscreen grid's two side columns
+   (mode-panel and tone-key, minmax(210px,320px) each) can each grow to a
+   full 320px before the center card's own minmax(0,1fr) gets anything, so
+   at viewport widths in the 800-1100px range the two sides alone were
+   already consuming most of the available width, squeezing the actual
+   practice card (round-summary included) into as little as ~90px — narrow
+   enough to visibly break its layout even though nothing was overflowing
+   its own container outright. Below 1100px there genuinely isn't enough
+   room for three real side-by-side columns to all look reasonable, so the
+   single-column mobile fallback (already existed, just needed to kick in
+   sooner) takes over instead. */
+@media (max-width:1100px){
+  .hw-wrap.is-fullscreen{
+    display:flex; flex-direction:column; align-items:stretch;
+    /* space-evenly (not flex-start): mode panel, card, and tone key are all
+       sized to their own content below (none of them flex-grow anymore) —
+       any leftover vertical space gets spread as even gaps between all
+       three sections instead of dumping it all in one spot (previously the
+       tone key alone flex-grew to fill it, leaving a slab of dead space
+       inside its own box, below the last row). */
+    justify-content:space-evenly;
+    height:100dvh; padding:8px 12px; overflow:hidden; column-gap:0; gap:4px;
+    box-sizing:border-box;
+    /* The fullscreen button is position:absolute at top:0/right:0 of this
+       wrap, on top of whatever's scrolled to that corner — reserve real
+       space above the mode panel so its pill row never sits underneath it. */
+    padding-top:46px;
+  }
+  .hw-wrap.is-fullscreen #ptModePanel{
+    width:100%; max-width:none; flex:0 1 auto; max-height:21vh; overflow-y:auto;
+    gap:4px; text-align:center; align-items:center;
+  }
+  .hw-wrap.is-fullscreen #ptModePanel .hw-mode-buttons{flex-direction:row; align-items:center; flex-wrap:wrap; justify-content:center; gap:6px;}
+  .hw-wrap.is-fullscreen #ptModePanel .mode-pill{font-size:12px; padding:8px 12px;}
+  .hw-wrap.is-fullscreen #ptModePanel .hw-mode-desc{font-size:11px; margin-bottom:0;}
+  .hw-wrap.is-fullscreen #ptModePanel .hw-study-selected-btn{font-size:12px; padding:8px 12px;}
+  .hw-wrap.is-fullscreen #ptModePanel .hw-focused-link{margin-top:4px; font-size:11px;}
+  .hw-wrap.is-fullscreen #ptModePanel .hw-folder-picker{margin-top:6px;}
+  .hw-wrap.is-fullscreen #ptCard{
+    flex:0 1 auto; min-height:0; max-height:none; width:100%; max-width:none;
+    overflow-y:auto; padding:10px 16px;
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .hw-wrap.is-fullscreen #ptCard .trainer-char{font-size:clamp(40px, 11vw, 68px); min-height:auto; margin-bottom:6px;}
+  .hw-wrap.is-fullscreen #ptCard .audio-btn{width:clamp(24px, 0.5em, 44px); height:clamp(24px, 0.5em, 44px);}
+  .hw-wrap.is-fullscreen #ptCard .trainer-input{padding:10px 14px; margin-bottom:0;}
+  .hw-wrap.is-fullscreen #ptCard .trainer-controls{margin-top:8px;}
+  .hw-wrap.is-fullscreen #ptCard .trainer-progress{margin-top:6px;}
+  /* The tone-key content is full-width now — .tone-key-row's own
+     justify-content:center (base rule) already centers each row as a unit. */
+  .hw-wrap.is-fullscreen #ptToneKey{
+    width:100%; max-width:none; flex:0 1 auto; min-height:0; overflow-y:auto; margin:0;
+  }
+  .hw-wrap.is-fullscreen #ptToneKey .tone-key-title{margin-bottom:8px;}
+  .hw-wrap.is-fullscreen #ptToneKey .tone-key-list{gap:6px;}
+}
+
+/* Non-fullscreen side-by-side layout, echoing the fullscreen 3-column
+   arrangement (mode panel / practice card / tone key) at normal size —
+   nothing here is scaled up like the fullscreen clamp()s, it's just a
+   rearrangement. Below this width the original stacked flex column (the
+   unconditional .hw-wrap rule further down) still applies untouched. */
+@media (min-width:900px){
+  .hw-wrap:not(.is-fullscreen){
+    /* The tone key's third column is wider than the mode panel's first —
+       each row needs to fit its vowel label AND all 4 tone chips on one
+       line (see .tone-key-row), which takes more horizontal room than the
+       mode panel's pills or description ever need. */
+    display:grid; grid-template-columns:minmax(170px, 230px) minmax(0, 1fr) minmax(230px, 300px);
+    /* align-items:start, not center — plain center re-centers #ptModePanel
+       (and #ptToneKey) every time the ROW's own height changes, which
+       includes #ptModePanel's OWN height changing (Folders mode's extra
+       folder-picker checkboxes render taller than Rapid Fire/Focused) —
+       confirmed directly: switching to Folders grows #ptModePanel from
+       262px to 286.5px, which under plain center shifted its own top edge
+       up by 12.25px even though #ptCard's height never changed at all.
+       #ptModePanel's/#ptToneKey's own margin-top (see ptAnchorModePanel)
+       reproduces the same centered position center would have given them
+       for whichever mode/phase was shown FIRST, then holds there regardless
+       of later height changes on either side. Same fix, same reasoning, as
+       read.html's own #readModePanel/translate.html's own #tsModePanel/
+       dictate.html's own #dtModePanel. */
+    align-items:start; column-gap:24px;
+    /* The tone key column runs content flush to the row's own top edge (it's
+       usually the tallest column), which puts it directly under the
+       top-right fullscreen button — unlike Writing Practice/Match Pinyin,
+       where the tallest column is naturally shorter than the row and leaves
+       clearance there. Reserving space up top, the same way the mobile
+       breakpoint already does for the mode pills, keeps the button off the
+       tone key's own corner. */
+    padding-top:60px; /* clears the now-36px .hw-fullscreen-btn with the same ~24px buffer the old 26px button had at 50px */
+  }
+  .hw-wrap:not(.is-fullscreen) #ptModePanel{grid-column:1; text-align:left; margin-bottom:0; padding-bottom:0;}
+  /* Row-wrapping the 3 mode pills into this narrower side column breaks their
+     reading order into an uneven wrap — stack one per line instead, same as
+     fullscreen's own #ptModePanel .hw-mode-buttons column. */
+  .hw-wrap:not(.is-fullscreen) #ptModePanel .hw-mode-buttons{flex-direction:column; align-items:stretch;}
+  .hw-wrap:not(.is-fullscreen) #ptCard{grid-column:2; width:100%; margin:0 auto;}
+  .hw-wrap:not(.is-fullscreen) #ptToneKey{grid-column:3; margin:0;}
+}
+
+/* ---------- left-handed mode: mirror mode-panel/tone-key to the opposite side ----------
+   Same idea as Writing Practice's own left-handed override: only the
+   desktop side-by-side layouts (fullscreen, and non-fullscreen ≥900px) have
+   a real left/right side to mirror. Fullscreen's two side columns share the
+   same minmax(210px,320px) bounds, so swapping the grid-column assignment
+   alone is enough there; the non-fullscreen grid's tone-key column is
+   deliberately wider than the mode-panel column (see the comment on that
+   rule above), so its grid-template-columns needs reversing too, not just
+   which named column sits where. */
+html[data-left-handed="1"] .hw-wrap.is-fullscreen #ptModePanel{grid-column:3; text-align:right; padding-right:0; padding-left:6px;}
+html[data-left-handed="1"] .hw-wrap.is-fullscreen #ptToneKey{grid-column:1;}
+@media (min-width:900px){
+  html[data-left-handed="1"] .hw-wrap:not(.is-fullscreen){grid-template-columns:minmax(230px, 300px) minmax(0, 1fr) minmax(170px, 230px);}
+  html[data-left-handed="1"] .hw-wrap:not(.is-fullscreen) #ptModePanel{grid-column:3; text-align:right;}
+  html[data-left-handed="1"] .hw-wrap:not(.is-fullscreen) #ptToneKey{grid-column:1;}
+}
+
+/* ---------- TYPEWRITER KEYCAPS (zhuyin keyboard + pinyin initials/finals) ---------- */
+.keyboard{display:flex; flex-direction:column; gap:12px; align-items:center; margin:22px 0;}
+.keyboard-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+.keycap{
+  width:62px; height:62px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(160deg, #f6f0e0 0%, #e7ddc2 100%);
+  border:1px solid var(--paper-shadow);
+  box-shadow:0 3px 0 var(--paper-shadow), 0 6px 9px rgba(0,0,0,0.18), inset 0 1px 1px rgba(255,255,255,0.7);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent;
+  transition:transform .08s ease, box-shadow .08s ease, background .1s ease;
+  position:relative; padding:0;
+}
+.keycap:hover{transform:translateY(-2px); box-shadow:0 5px 0 var(--paper-shadow), 0 10px 14px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.7);}
+.keycap:active{transform:translateY(2px); box-shadow:0 1px 0 var(--paper-shadow), 0 2px 4px rgba(0,0,0,0.15), inset 0 1px 2px rgba(0,0,0,0.15);}
+.keycap.picked{background:linear-gradient(160deg, var(--ink) 0%, #34372f 100%); color:var(--paper); border-color:var(--ink); transform:translateY(2px); box-shadow:0 1px 0 var(--ink), 0 2px 4px rgba(0,0,0,0.25), inset 0 1px 2px rgba(0,0,0,0.2);}
+.keycap .kc-main{font-family:var(--serif-cn); font-size:23px; font-weight:700; line-height:1; color:var(--seal);}
+.keycap.picked .kc-main{color:var(--paper);}
+.keycap .kc-sub{font-family:var(--serif-en); font-size:9.5px; color:var(--ink-soft); margin-top:3px; letter-spacing:0.5px;}
+.keycap.picked .kc-sub{color:#c9c2ac;}
+.keycap.small{width:52px; height:52px;}
+.keycap.small .kc-main{font-family:var(--serif-en); font-size:13px; font-weight:700; color:var(--ink);}
+.keycap.small.picked .kc-main{color:var(--paper);}
+.keyboard-note{font-size:12.5px; color:var(--ink-soft); text-align:center; max-width:520px; margin:4px auto 0;}
+
+/* ---------- STROKES ---------- */
+.stroke-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+@media (max-width:760px){.stroke-grid{grid-template-columns:repeat(2,1fr);}}
+.stroke-card{background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:16px; text-align:center;}
+.stroke-card svg{margin:4px 0 8px;}
+.stroke-card b{font-family:var(--serif-cn); font-size:15px; display:block;}
+.stroke-card span{font-size:11.5px; color:var(--ink-soft);}
+.rules-list{list-style:none; margin:24px 0 0; padding:0; display:grid; gap:10px;}
+.rules-list li{
+  display:flex; gap:12px; align-items:flex-start; background:rgba(255,255,255,0.35);
+  border:1px solid var(--paper-shadow); padding:12px 16px; border-radius:2px; font-size:14px;
+}
+.rules-list b{font-family:var(--serif-en); color:var(--seal); min-width:22px;}
+
+/* ---------- RADICALS ---------- */
+.search-bar{
+  display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.5); border:1.5px solid var(--ink);
+  border-radius:2px; padding:8px 14px; max-width:320px; margin-bottom:20px;
+}
+.search-bar input{border:none; background:none; outline:none; font-size:14px; width:100%; font-family:var(--sans);}
+.radical-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:12px;}
+@media (max-width:800px){.radical-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:520px){.radical-grid{grid-template-columns:repeat(2,1fr);}}
+.radical-card{perspective:800px; height:118px; cursor:pointer;}
+.radical-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;}
+.radical-card.flipped .radical-inner{transform:rotateY(180deg);}
+.radical-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:2px; border:1px solid var(--paper-shadow);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; padding:8px; text-align:center;
+}
+.radical-face.front{background:rgba(255,255,255,0.4);}
+.radical-face.front .ch{font-family:var(--serif-cn); font-size:34px; font-weight:700; color:var(--seal);}
+.radical-face.front .py{font-size:11px; color:var(--ink-soft); margin-top:4px;}
+.radical-face.back{background:var(--ink); color:var(--paper); transform:rotateY(180deg);}
+.radical-face.back .mean{font-weight:700; font-size:13px;}
+.radical-face.back .ex{font-size:11px; margin-top:6px; color:#c9c2ac;}
+
+/* ---------- CHARACTERS flashcards ---------- */
+.deck-wrap{display:flex; flex-direction:column; align-items:center; gap:18px;}
+.flashcard{width:280px; height:280px; perspective:1000px; cursor:pointer;}
+.flash-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;}
+.flashcard.flipped .flash-inner{transform:rotateY(180deg);}
+.flash-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:4px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow:5px 6px 0 rgba(0,0,0,0.12);
+}
+.flash-face.front{background:rgba(255,255,255,0.55); border:1px solid var(--paper-shadow);}
+.flash-face.front .ch{font-family:var(--serif-cn); font-size:100px; font-weight:700;}
+.flash-face.back{background:var(--ink); color:var(--paper); transform:rotateY(180deg);}
+.flash-face.back .py{font-family:var(--serif-en); font-size:26px; font-weight:700;}
+.flash-face.back .mean{margin-top:10px; font-size:15px; color:#d9d2ba;}
+.flash-face.back .strokes{margin-top:16px; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--gold);}
+.deck-controls{display:flex; gap:10px; align-items:center;}
+.deck-progress{font-size:12.5px; color:var(--ink-soft); font-weight:600;}
+
+/* ---------- WRITING PRACTICE ---------- */
+.hw-wrap{display:flex; flex-direction:column; align-items:center;}
+.hw-target-wrap{position:relative; width:280px; height:280px; margin:0 auto; border:2px solid var(--paper-shadow); background:rgba(255,255,255,0.55);}
+.hw-target-wrap::before{content:''; position:absolute; left:50%; top:0; bottom:0; width:1px; background:var(--paper-shadow); opacity:0.8; z-index:1;}
+.hw-target-wrap::after{content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:var(--paper-shadow); opacity:0.8; z-index:1;}
+.hw-diag{position:absolute; top:50%; left:50%; width:396px; height:0; border-top:1px dashed var(--paper-shadow); opacity:0.55; z-index:1;}
+.hw-diag1{transform:translate(-50%,-50%) rotate(45deg);}
+.hw-diag2{transform:translate(-50%,-50%) rotate(-45deg);}
+#hwTarget{position:relative; z-index:2;}
+.hw-context{text-align:center; font-size:14px; color:var(--ink-soft); margin:16px 0 2px;}
+.hw-progress{text-align:center; font-size:12px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase; margin-bottom:6px;}
+.hw-controls{display:flex; gap:10px; justify-content:center; margin-top:20px; flex-wrap:wrap;}
+.hw-result{text-align:center; font-size:14px; font-weight:600; color:var(--jade-dark); min-height:20px; margin-top:14px;}
+.hw-empty{text-align:center; padding:50px 20px; color:var(--ink-soft); font-size:14px;}
+
+/* ---------- DIALOGUE ---------- */
+.dialogue-list{display:flex; flex-direction:column; gap:12px;}
+.dialogue-card{border:1px solid var(--paper-shadow); border-radius:2px; background:rgba(255,255,255,0.4); overflow:hidden;}
+.dialogue-header{display:flex; align-items:center; justify-content:space-between; padding:16px 20px; cursor:pointer;}
+.dialogue-header b{font-family:var(--serif-en); font-size:17px;}
+.dialogue-header .icon{font-family:var(--serif-cn); font-size:22px; color:var(--seal); margin-right:10px;}
+.dialogue-body{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+.dialogue-card.open .dialogue-body{max-height:900px;}
+.dialogue-body-inner{padding:0 20px 20px;}
+.line{display:flex; gap:14px; padding:10px 0; border-top:1px dashed var(--paper-shadow);}
+.line:first-child{border-top:none;}
+.line .who{
+  flex-shrink:0; width:26px; height:26px; border-radius:50%; background:var(--ink); color:var(--paper);
+  display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;
+}
+.line.b .who{background:var(--seal);}
+.line-text .hz{font-family:var(--serif-cn); font-size:18px; font-weight:600;}
+.line-text .py{font-size:12.5px; color:var(--ink-soft); margin-top:2px;}
+.line-text .en{font-size:12.5px; color:var(--slate); margin-top:2px; display:none;}
+.show-en .line-text .en{display:block;}
+.toggle-en-btn{margin-bottom:16px;}
+
+/* ---------- ZHUYIN ---------- */
+.zhuyin-table{width:100%; border-collapse:collapse; font-size:13.5px;}
+.zhuyin-table th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--ink-soft); padding:6px 10px; border-bottom:2px solid var(--ink);}
+.zhuyin-table td{padding:6px 10px; border-bottom:1px solid var(--paper-shadow);}
+.zy-symbol{font-family:var(--serif-cn); font-size:20px; color:var(--seal); font-weight:700; cursor:pointer;}
+.zy-symbol:hover{text-decoration:underline;}
+.zhuyin-note{background:rgba(255,255,255,0.4); border-left:3px solid var(--gold); padding:14px 18px; font-size:13.5px; margin-top:20px; color:var(--ink-soft);}
+
+/* ---------- GEOGRAPHY ---------- */
+.province-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+@media (max-width:820px){.province-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:560px){.province-grid{grid-template-columns:repeat(2,1fr);}}
+.province-chip{
+  background:rgba(255,255,255,0.4); border:1.5px solid var(--paper-shadow); border-radius:2px; padding:16px 10px;
+  text-align:center; cursor:pointer; transition:border-color .15s, background .15s;
+}
+.province-chip:hover{border-color:var(--seal);}
+.province-chip.active{background:var(--ink); border-color:var(--ink); color:var(--paper);}
+.province-chip .cn{font-family:var(--serif-cn); font-size:20px; font-weight:700; display:block;}
+.province-chip .en{font-size:11px; color:inherit; opacity:0.75;}
+.province-detail{margin-top:24px; background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow); border-radius:2px; padding:28px;}
+.pd-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:6px;}
+.pd-head .cn{font-family:var(--serif-cn); font-size:36px; font-weight:700; color:var(--seal);}
+.pd-head .en{font-family:var(--serif-en); font-size:20px; color:var(--ink-soft);}
+.pd-sub{color:var(--ink-soft); font-size:14px; margin-bottom:20px;}
+.pd-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:20px;}
+@media (max-width:700px){.pd-grid{grid-template-columns:1fr;}}
+.pd-block h4{font-size:11.5px; text-transform:uppercase; letter-spacing:1.2px; color:var(--gold); margin:0 0 10px;}
+.tag-row{display:flex; flex-wrap:wrap; gap:6px;}
+.tag{background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:20px; padding:5px 12px; font-size:12.5px;}
+.pd-list{list-style:none; margin:0; padding:0; display:grid; gap:6px; font-size:13.5px;}
+.pd-list li{padding-left:14px; position:relative;}
+.pd-list li::before{content:'—'; position:absolute; left:0; color:var(--seal);}
+
+/* ---------- HISTORY ---------- */
+.timeline{position:relative; margin-top:10px; padding-left:26px;}
+.timeline::before{content:''; position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:var(--paper-shadow);}
+.dyn-item{position:relative; padding-bottom:22px; cursor:pointer;}
+.dyn-item::before{
+  content:''; position:absolute; left:-26px; top:6px; width:12px; height:12px; border-radius:50%;
+  background:var(--paper); border:2.5px solid var(--ink);
+}
+.dyn-item.open::before{background:var(--seal); border-color:var(--seal);}
+.dyn-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;}
+.dyn-head .cn{font-family:var(--serif-cn); font-size:24px; font-weight:700;}
+.dyn-head .period{font-size:12.5px; color:var(--ink-soft); font-family:var(--serif-en); font-weight:600;}
+.dyn-body{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+.dyn-item.open .dyn-body{max-height:400px;}
+.dyn-body-inner{padding:12px 0 4px; font-size:14px; color:var(--ink-soft); max-width:640px;}
+.dyn-body-inner ul{margin:10px 0 0; padding-left:18px;}
+.dyn-body-inner li{margin-bottom:4px;}
+
+footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:center; font-size:12.5px; color:var(--ink-soft);}
+
+</style>
+<script src="settings.js?v=6"></script>
+<script src="auth-guard.js?v=2"></script>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html" style="text-decoration:none;">
+      <div class="seal-mark">境</div>
+      <div class="brand-text"><b>Context Chinese</b><span data-i18n="brand.tagline">Your One-Stop China Shop</span></div>
+    </a>
+    <nav class="tabs" id="navTabs" style="flex:1 1 auto;">
+
+      <div class="nav-item" data-nav-cat="learn">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">学习</span><span class="i18n-label" data-i18n="nav.learn">Learn</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="read.html" data-i18n="learn.read">Read</a>
+          <a class="dropdown-link" href="dictate.html" data-i18n="learn.dictate">Dictate</a>
+          <a class="dropdown-link" href="multiple-choice.html" data-i18n="learn.multiplechoice">Multiple Choice</a>
+          <a class="dropdown-link" href="translate.html" data-i18n="learn.translate">Translate</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="vocabulary">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">词汇</span><span class="i18n-label" data-i18n="nav.vocabulary">Vocabulary</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="search.html" data-i18n="vocab.search">Search</a>
+          <a class="dropdown-link" href="word-bank.html" data-i18n="vocab.wordbank">Word Bank</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="hanzi">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">汉字</span><span class="i18n-label" data-i18n="nav.hanzi">Hanzi</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="strokes.html" data-i18n="hanzi.strokes">Strokes</a>
+          <a class="dropdown-link" href="radicals.html" data-i18n="hanzi.radicals">Radicals</a>
+          <a class="dropdown-link" href="writing-practice.html" data-i18n="hanzi.writing">Writing Practice</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="pinyin">
+        <button class="tab-btn active" onclick="toggleNavDropdown(event)"><span class="cn">拼音</span><span class="i18n-label" data-i18n="nav.pinyin">Pinyin</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="pinyin-components.html" data-i18n="pinyin.components">Components</a>
+          <a class="dropdown-link" href="match-pinyin.html" data-i18n="pinyin.match">Match Pinyin</a>
+          <a class="dropdown-link active" href="type-pinyin.html" data-i18n="pinyin.typing">Type Pinyin</a>
+        </div>
+      </div>
+</nav>
+
+      <div class="nav-item" style="flex-shrink:0;">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)" style="line-height:1; display:inline-flex; align-items:center; justify-content:center;" title="More"><svg viewBox="0 0 24 24" fill="black" style="width:18px; height:18px;"><path d="M19.14,12.94c0.04,-0.3,0.06,-0.61,0.06,-0.94c0,-0.32,-0.02,-0.64,-0.07,-0.94l2.03,-1.58c0.18,-0.14,0.23,-0.41,0.12,-0.61 l-1.92,-3.32c-0.12,-0.22,-0.37,-0.29,-0.59,-0.22l-2.39,0.96c-0.5,-0.38,-1.03,-0.7,-1.62,-0.94L14.4,2.81 c-0.04,-0.24,-0.24,-0.41,-0.48,-0.41h-3.84c-0.24,0,-0.43,0.17,-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33 c-0.22,-0.08,-0.47,0,-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94 l-2.03,1.58c-0.18,0.14,-0.23,0.41,-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39,-0.96c0.5,0.38,1.03,0.7,1.62,0.94 l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44,-0.17,0.47,-0.41l0.36,-2.54c0.59,-0.24,1.13,-0.56,1.62,-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59,-0.22l1.92,-3.32c0.12,-0.22,0.07,-0.47,-0.12,-0.61L19.14,12.94z M12,15.6c-1.98,0,-3.6,-1.62,-3.6,-3.6 s1.62,-3.6,3.6,-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"></path></svg></button>
+        <div class="dropdown" style="left:auto; right:0;">
+          <a class="dropdown-link" href="settings.html" data-i18n="gear.settings">Settings</a>
+          <a class="dropdown-link" href="help.html" data-i18n="gear.help">Help</a>
+          <button class="dropdown-link" onclick="signOutUser()" data-i18n="gear.logout">Logout</button>
+        </div>
+      </div>
+  </div>
+</header>
+
+<main>
+
+<div class="section-head">
+  <div class="eyebrow">Type Pinyin · 拼音</div>
+  <p class="lede">See a character, type its pinyin from memory. Type the letters, then press a number key 1–4 right after a vowel to add its tone mark.</p>
+</div>
+
+<div class="bank-notice" id="ptBankNotice" style="display:none;">Practicing your saved Word Bank vocabulary. Add or remove words from Vocabulary to change this deck.</div>
+
+<div class="hw-wrap" id="ptWrap">
+  <button class="hw-fullscreen-btn" id="ptFullscreenBtn" onclick="ptToggleFullscreen()" title="Full screen this practice area" aria-label="Full screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path></svg></button>
+
+  <div class="hw-mode-panel" id="ptModePanel">
+    <div class="hw-mode-buttons">
+      <button class="mode-pill" id="ptModeBtnRapid" onclick="ptSetMode('rapid')">Rapid Fire</button>
+      <button class="mode-pill inactive" id="ptModeBtnFocused" onclick="ptSetMode('focused')">Focused</button>
+      <button class="mode-pill inactive" id="ptModeBtnFolders" onclick="ptSetMode('folders')">Folders</button>
+    </div>
+    <div class="hw-mode-desc" id="ptModeDesc"></div>
+    <div class="hw-folder-picker" id="ptFolderPicker" style="display:none;"></div>
+    <button class="hw-focused-link" onclick="ptToggleFocusedPanel()" id="ptFocusedLink"></button>
+    <div class="hw-focused-panel" id="ptFocusedPanel"></div>
+  </div>
+
+  <div class="trainer-card" id="ptCard">
+    <div class="trainer-char" id="ptChar"><span id="ptCharGlyph"></span><button class="audio-btn" onclick="ptSpeakCurrent()" title="Play audio" aria-label="Play audio"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="#8A8A8A" fill="#8A8A8A"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#3B82F6"></path></svg></button></div>
+    <input id="ptInput" class="trainer-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type pinyin, e.g. ni3hao3" lang="en">
+    <div class="trainer-reveal" id="ptReveal">&nbsp;</div>
+    <div class="trainer-controls">
+      <button class="btn small" id="ptRevealBtn" type="button">Reveal<svg class="btn-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" fill="#fff"></path><circle cx="12" cy="12" r="3" fill="#000"></circle></svg></button>
+      <button class="btn ghost small" id="ptFocusBtn" type="button" onclick="ptToggleFocus()">Focus<svg class="btn-icon" viewBox="0 0 24 24" fill="var(--seal)" stroke="var(--seal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+    </div>
+    <div class="trainer-progress" id="ptProgress"></div>
+  </div>
+  <div class="tone-key" id="ptToneKey">
+    <div class="tone-key-title">Tone key</div>
+    <div class="tone-key-list">
+      <div class="tone-key-row"><b>a</b><span class="tone-key-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><code>a1=ā</code><span class="sep">,</span><code>a2=á</code><span class="sep">,</span><code>a3=ǎ</code><span class="sep">,</span><code>a4=à</code></div>
+      <div class="tone-key-row"><b>e</b><span class="tone-key-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><code>e1=ē</code><span class="sep">,</span><code>e2=é</code><span class="sep">,</span><code>e3=ě</code><span class="sep">,</span><code>e4=è</code></div>
+      <div class="tone-key-row"><b>i</b><span class="tone-key-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><code>i1=ī</code><span class="sep">,</span><code>i2=í</code><span class="sep">,</span><code>i3=ǐ</code><span class="sep">,</span><code>i4=ì</code></div>
+      <div class="tone-key-row"><b>o</b><span class="tone-key-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><code>o1=ō</code><span class="sep">,</span><code>o2=ó</code><span class="sep">,</span><code>o3=ǒ</code><span class="sep">,</span><code>o4=ò</code></div>
+      <div class="tone-key-row"><b>u</b><span class="tone-key-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><code>u1=ū</code><span class="sep">,</span><code>u2=ú</code><span class="sep">,</span><code>u3=ǔ</code><span class="sep">,</span><code>u4=ù</code></div>
+      <div class="tone-key-row"><b>ü</b><span class="tone-key-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><code>v1=ǖ</code><span class="sep">,</span><code>v2=ǘ</code><span class="sep">,</span><code>v3=ǚ</code><span class="sep">,</span><code>v4=ǜ</code></div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>境 Context Chinese — a learning companion for Mandarin sound, script, geography and history.</footer>
+
+<script>
+/* ================= NAV DROPDOWN (click to open, does not navigate) ================= */
+function toggleNavDropdown(e){
+  const item = e.currentTarget.closest('.nav-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.nav-item.open').forEach(n=>{
+    n.classList.remove('open');
+    const dd = n.querySelector('.dropdown');
+    if(dd){ dd.style.position=''; dd.style.left=''; dd.style.top=''; }
+  });
+  if(!wasOpen){
+    item.classList.add('open');
+    // Below 920px the nav scrolls horizontally (nav.tabs{overflow-x:auto}).
+    // Anchoring the dropdown with position:fixed here — instead of the
+    // default position:absolute under the button — lets it escape that
+    // scroll container's clipping without ever touching its overflow
+    // property, so opening/closing a dropdown never resets the nav's
+    // scroll position back to the start.
+    if(window.matchMedia('(max-width:920px)').matches){
+      const dd = item.querySelector('.dropdown');
+      const btnRect = e.currentTarget.getBoundingClientRect();
+      dd.style.position = 'fixed';
+      dd.style.top = (btnRect.bottom + 6) + 'px';
+      const maxLeft = window.innerWidth - 208; // dropdown min-width 200px + 8px margin
+      dd.style.left = Math.max(8, Math.min(btnRect.left, maxLeft)) + 'px';
+    }
+  }
+}
+document.addEventListener('click', (e)=>{
+  if(e.target.closest('.dropdown-link') || !e.target.closest('.nav-item')){
+    document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+  }
+});
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='Escape') document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+});
+
+/* ================= SPEECH ================= */
+function speak(text, lang){
+  if(!('speechSynthesis' in window) || !text || text==='—') return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang || 'zh-CN';
+  u.rate = (typeof getSpeechRate === 'function') ? getSpeechRate() : 0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+function ptSpeakCurrent(){
+  if(ptVocab[ptIdx]) speakDelayed(ptVocab[ptIdx].hz);
+  // Clicking the round audio button gives IT keyboard focus (default button
+  // behavior) and leaves it there, so typing right after does nothing — the
+  // keystrokes have nowhere to land since a <button> isn't a text field.
+  // Hand focus straight back to the pinyin input so typing continues to
+  // work without an extra click.
+  const inp = document.getElementById('ptInput');
+  if(inp) inp.focus();
+}
+// 1-2 character words fit fine at the card's normal font-size, but a 3+
+// character word (single-line only, see #ptCharGlyph{white-space:nowrap})
+// can run wider than the card — measure its true single-line width against
+// the space actually available (the card width minus the audio button and
+// its gap) and shrink the font just enough to fit, rather than letting it
+// wrap mid-word or spill past the card's edge.
+function ptFitGlyphToCard(){
+  const glyph = document.getElementById('ptCharGlyph');
+  const trainerChar = document.getElementById('ptChar');
+  if(!glyph || !trainerChar) return;
+  glyph.style.fontSize = '';
+  const audioBtn = trainerChar.querySelector('.audio-btn');
+  const audioWidth = audioBtn ? audioBtn.getBoundingClientRect().width : 0;
+  const gap = parseFloat(getComputedStyle(trainerChar).columnGap) || 0;
+  const usable = trainerChar.clientWidth - audioWidth - gap;
+  const glyphWidth = glyph.getBoundingClientRect().width;
+  if(usable > 0 && glyphWidth > usable){
+    const baseFontSize = parseFloat(getComputedStyle(glyph).fontSize);
+    glyph.style.fontSize = (baseFontSize * (usable / glyphWidth)) + 'px';
+  }
+}
+
+/* Feather-style icons replacing the old emoji glyphs — always placed after
+   the label they belong to (see .btn-icon), never before, per the site's
+   icon convention. */
+const ICON_ARROW_RIGHT = '<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+const ICON_BOOKMARK = '<svg class="btn-icon" viewBox="0 0 24 24" fill="var(--seal)" stroke="var(--seal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>';
+const ICON_EYE = '<svg class="btn-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" fill="#fff"></path><circle cx="12" cy="12" r="3" fill="#000"></circle></svg>';
+
+function shuffle(array){
+  for(let i=array.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function stripTones(s){
+  const map = {'ā':'a','á':'a','ǎ':'a','à':'a','ē':'e','é':'e','ě':'e','è':'e','ī':'i','í':'i','ǐ':'i','ì':'i',
+    'ō':'o','ó':'o','ǒ':'o','ò':'o','ū':'u','ú':'u','ǔ':'u','ù':'u','ǖ':'u','ǘ':'u','ǚ':'u','ǜ':'u','ü':'u'};
+  return s.toLowerCase().split('').map(c=>map[c]||c).join('');
+}
+
+/* ================= WORD BANK (persisted via localStorage, shared across pages) =================
+   Note: localStorage is scoped per-origin. If these files are opened directly from disk (file://),
+   most browsers share storage across files in the same folder, but this can vary — hosting the
+   site (even a simple local server) guarantees the Word Bank stays in sync across every page. */
+let wordBankMem = [];
+function loadWordBank(){
+  try{
+    const raw = localStorage.getItem('ccWordBank');
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return wordBankMem; }
+}
+function saveWordBank(arr){
+  wordBankMem = arr;
+  try{ localStorage.setItem('ccWordBank', JSON.stringify(arr)); }catch(e){}
+}
+function addToWordBank(entries){
+  const bank = loadWordBank();
+  const existing = new Set(bank.map(w=>w.hz));
+  let added=0, skipped=0;
+  entries.forEach(e=>{
+    if(!e || !e.hz) return;
+    if(existing.has(e.hz)){ skipped++; return; }
+    existing.add(e.hz);
+    bank.push({hz:e.hz, py:e.py||'—', en:e.en||'—', folder:''});
+    added++;
+  });
+  saveWordBank(bank);
+  return {added, skipped, total:bank.length};
+}
+function removeFromWordBankRaw(hz){
+  saveWordBank(loadWordBank().filter(w=>w.hz!==hz));
+}
+function clearWordBankRaw(){
+  saveWordBank([]);
+}
+
+/* ---- folders: organize Word Bank entries into named study groups ---- */
+function loadFolders(){
+  try{ const raw = localStorage.getItem('ccFolders'); return raw ? JSON.parse(raw) : []; }catch(e){ return []; }
+}
+function saveFolders(arr){
+  try{ localStorage.setItem('ccFolders', JSON.stringify(arr)); }catch(e){}
+}
+// Folders are independent word collections (their own storage, entirely
+// separate from the general Word Bank) — see word-bank.html for
+// the full CRUD UI; this page only needs to read one to study it.
+function loadFolderWords(name){
+  try{
+    const raw = localStorage.getItem('ccFolderWords');
+    const all = raw ? JSON.parse(raw) : {};
+    return all[name] || [];
+  }catch(e){ return []; }
+}
+function createFolder(name){
+  name = (name||'').trim();
+  if(!name) return loadFolders();
+  const folders = loadFolders();
+  if(!folders.includes(name)){ folders.push(name); saveFolders(folders); }
+  return folders;
+}
+function deleteFolder(name){
+  saveFolders(loadFolders().filter(f=>f!==name));
+  saveWordBank(loadWordBank().map(w => w.folder===name ? Object.assign({}, w, {folder:''}) : w));
+}
+
+</script>
+
+<script>
+// Same default set as Writing Practice's hwFallbackChars — kept consistent
+// sitewide, so whichever 16 characters a brand-new Word Bank sees first are
+// the same everywhere, not a different curated list per tool.
+const ptVocabSource = [
+  {hz:'人', py:'rén', en:'person'},
+  {hz:'大', py:'dà', en:'big'},
+  {hz:'小', py:'xiǎo', en:'small'},
+  {hz:'中', py:'zhōng', en:'middle / China'},
+  {hz:'国', py:'guó', en:'country'},
+  {hz:'山', py:'shān', en:'mountain'},
+  {hz:'水', py:'shuǐ', en:'water'},
+  {hz:'火', py:'huǒ', en:'fire'},
+  {hz:'木', py:'mù', en:'tree / wood'},
+  {hz:'日', py:'rì', en:'sun / day'},
+  {hz:'月', py:'yuè', en:'moon / month'},
+  {hz:'好', py:'hǎo', en:'good'},
+  {hz:'我', py:'wǒ', en:'I / me'},
+  {hz:'你', py:'nǐ', en:'you'},
+  {hz:'他', py:'tā', en:'he / him'},
+  {hz:'爱', py:'ài', en:'love'},
+];
+let ptVocab = [], ptIdx = 0, ptOriginalCount = 0;
+// How many words this deck already had done, from a PRIOR session, at the
+// moment the current queue was built — 0 for a fresh start, or
+// doneWords.size when the user picked "Continue where I left off". Kept
+// separate from ptRoundWordsSeen/ptOriginalCount (both scoped to just this
+// visit's own pace, for the round-summary's words/mistakes/WPM stats) —
+// this one exists purely so the on-card progress fraction can show true
+// position in the whole deck instead of restarting from 0 after a resume,
+// without corrupting those other, session-local stats.
+let ptBaselineDone = 0;
+let ptMode = 'rapid';          // 'rapid' | 'focused' | 'folders'
+let ptSelectedFolders = [];
+let ptFocusedPanelOpen = false;
+
+/* ---- round stats (reset each time a fresh deck is built) ---- */
+let ptRoundStartTime = null;
+let ptRoundMistakes = 0;
+let ptRoundWordsSeen = new Set();
+let ptMistakeCountedForAttempt = false; // debounces the "wrong at full length" heuristic below
+
+function formatDuration(ms){
+  const totalSec = Math.max(1, Math.round(ms / 1000));
+  const m = Math.floor(totalSec / 60), s = totalSec % 60;
+  return m > 0 ? `${m}m ${s}s` : `${s}s`;
+}
+// opts.actionsHTML holds the "Practice again" button (and, on Writing
+// Practice, an extra test-mode button) — built INSIDE this markup rather
+// than appended after the fact by each call site, so it can never end up
+// separated from its own stats by an unrelated surrounding layout. See the
+// long comment on .round-summary in the CSS for why that used to happen.
+// The markup below renders every stat starting at its resting "0" value —
+// animateRoundSummary (called by every call site immediately after setting
+// this HTML) is what actually counts each one up, staggers the tiles in,
+// draws the ring, and fires the confetti burst. Splitting it this way (data
+// attributes here, animation in one shared function) means the real stats
+// are always sitting right there in data-rs-target regardless of whether
+// the animation step runs — the JS layer only ever changes how they're
+// revealed, never what they are.
+function renderRoundSummaryHTML(opts){
+  const words = opts.wordsSeen.size;
+  const elapsedMs = Math.max(1000, Date.now() - opts.startTime);
+  const minutes = elapsedMs / 60000;
+  const mistakesPerWord = words ? (opts.mistakes / words) : 0;
+  const wpm = words ? (words / minutes) : 0;
+  const flawless = words > 0 && opts.mistakes === 0;
+  const wordsLabel = opts.wordsLabel || 'Words studied';
+  const summaryText = `${flawless ? '🎯' : '🎉'} ${words} ${wordsLabel.toLowerCase()} · ${mistakesPerWord.toFixed(1)} mistakes/word · ${formatDuration(elapsedMs)} · ${wpm.toFixed(1)} wpm — Context Chinese`
+    .replace(/"/g, '&quot;');
+  return `
+    <div class="round-summary">
+      <div class="rs-confetti" aria-hidden="true"></div>
+      <div class="round-summary-badge${flawless ? ' rs-flawless' : ''}">
+        <svg class="rs-badge-ring" viewBox="0 0 60 60" aria-hidden="true">
+          <circle class="rs-badge-ring-bg" cx="30" cy="30" r="26"></circle>
+          <circle class="rs-badge-ring-fg" cx="30" cy="30" r="26"></circle>
+        </svg>
+        <span class="rs-badge-emoji">${flawless ? '🎯' : '🎉'}</span>
+      </div>
+      <div class="round-summary-head">${flawless ? 'Flawless round!' : 'Round complete!'}</div>
+      <div class="round-summary-sub">${opts.subtitle || ''}</div>
+      <div class="round-summary-grid">
+        <div class="rs-stat" style="--rs-i:0"><div class="rs-num" data-rs-i="0" data-rs-target="${words}" data-rs-decimals="0">0</div><div class="rs-label">${wordsLabel}</div></div>
+        <div class="rs-stat" style="--rs-i:1"><div class="rs-num" data-rs-i="1" data-rs-target="${mistakesPerWord}" data-rs-decimals="1">0.0</div><div class="rs-label">Mistakes / word</div><div class="rs-sub">${opts.mistakes} mistake${opts.mistakes===1?'':'s'} total</div></div>
+        <div class="rs-stat" style="--rs-i:2"><div class="rs-num" data-rs-i="2" data-rs-target="${elapsedMs}" data-rs-format="duration">0s</div><div class="rs-label">Time</div></div>
+        <div class="rs-stat" style="--rs-i:3"><div class="rs-num" data-rs-i="3" data-rs-target="${wpm}" data-rs-decimals="1">0.0</div><div class="rs-label">Words / minute</div></div>
+      </div>
+      <div class="round-summary-actions">
+        ${opts.actionsHTML || ''}
+        <button type="button" class="btn ghost small rs-copy-btn" data-rs-summary="${summaryText}" onclick="rsCopySummary(this)">📋 Copy results</button>
+      </div>
+    </div>`;
+}
+
+// Called by every call site immediately after dropping renderRoundSummaryHTML's
+// markup into the page — draws the ring, fires the confetti burst, and counts
+// each .rs-num up from 0 to its real data-rs-target, staggered by the same
+// --rs-i each tile uses for its own CSS entrance (see .rs-stat) so a tile's
+// number starts ticking right as the tile finishes sliding in. Skipped in
+// favor of showing final values immediately under prefers-reduced-motion.
+function animateRoundSummary(root){
+  if(!root) return;
+  const reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ring = root.querySelector('.rs-badge-ring-fg');
+  if(ring){
+    const c = 2 * Math.PI * 26;
+    ring.style.strokeDasharray = String(c);
+    ring.style.strokeDashoffset = String(reduced ? 0 : c);
+    if(!reduced){
+      // Two nested rAFs: the first lets the browser paint the "hidden" 0%
+      // state set above, the second (a frame later) then changes the target
+      // value so the CSS transition on stroke-dashoffset has an actual
+      // before/after to animate between — setting both in the same frame
+      // would just jump straight to the end state with no visible draw-in.
+      requestAnimationFrame(() => requestAnimationFrame(() => { ring.style.strokeDashoffset = '0'; }));
+    }
+  }
+  const confettiWrap = root.querySelector('.rs-confetti');
+  if(confettiWrap && !reduced){
+    const colors = ['var(--seal)', 'var(--jade)', 'var(--gold)', 'var(--slate)'];
+    let html = '';
+    for(let i = 0; i < 18; i++){
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 55 + Math.random() * 70;
+      const tx = (Math.cos(angle) * dist).toFixed(1);
+      const ty = (Math.sin(angle) * dist).toFixed(1);
+      const rot = Math.round(Math.random() * 360);
+      const delay = Math.round(Math.random() * 120);
+      html += `<span class="rs-confetti-piece" style="--rs-tx:${tx}px; --rs-ty:${ty}px; --rs-rot:${rot}deg; --rs-delay:${delay}ms; --rs-color:${colors[i % colors.length]};"></span>`;
+    }
+    confettiWrap.innerHTML = html;
+  }
+  root.querySelectorAll('.rs-num[data-rs-target]').forEach(el => {
+    const target = parseFloat(el.getAttribute('data-rs-target')) || 0;
+    const decimals = parseInt(el.getAttribute('data-rs-decimals') || '0', 10);
+    const isDuration = el.getAttribute('data-rs-format') === 'duration';
+    if(reduced){
+      el.textContent = isDuration ? formatDuration(target) : target.toFixed(decimals);
+      return;
+    }
+    const delay = parseInt(el.getAttribute('data-rs-i') || '0', 10) * 80 + 300;
+    const duration = 800;
+    setTimeout(() => {
+      const start = performance.now();
+      function tick(now){
+        const p = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const val = target * eased;
+        el.textContent = isDuration ? formatDuration(val) : val.toFixed(decimals);
+        if(p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }, delay);
+  });
+}
+
+// Copies a one-line plain-text recap of this round's stats to the clipboard
+// — the completion screen's one genuinely interactive element beyond
+// "Practice again". Silently no-ops if the Clipboard API isn't available
+// (e.g. a non-secure context) rather than throwing.
+function rsCopySummary(btn){
+  const text = btn.getAttribute('data-rs-summary') || '';
+  if(!navigator.clipboard || !navigator.clipboard.writeText) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const original = btn.textContent;
+    btn.textContent = '✓ Copied';
+    btn.classList.add('rs-copied');
+    clearTimeout(btn._rsCopyTimer);
+    btn._rsCopyTimer = setTimeout(() => {
+      btn.textContent = original;
+      btn.classList.remove('rs-copied');
+    }, 1600);
+  }).catch(() => {});
+}
+
+const ptToneMap = {
+  'a':['ā','á','ǎ','à'], 'e':['ē','é','ě','è'], 'o':['ō','ó','ǒ','ò'],
+  'i':['ī','í','ǐ','ì'], 'u':['ū','ú','ǔ','ù'], 'v':['ǖ','ǘ','ǚ','ǜ'], 'ü':['ǖ','ǘ','ǚ','ǜ'],
+};
+function ptAddTone(text, toneNum){
+  if(toneNum<1 || toneNum>4) return text;
+  const idx = toneNum-1;
+  if(text.includes('a')) return text.replace('a', ptToneMap['a'][idx]);
+  if(text.includes('e')) return text.replace('e', ptToneMap['e'][idx]);
+  if(text.includes('ou')) return text.replace('o', ptToneMap['o'][idx]);
+  if(text.includes('ui')) return text.replace('i', ptToneMap['i'][idx]);
+  if(text.includes('iu')) return text.replace('u', ptToneMap['u'][idx]);
+  for(let i=text.length-1; i>=0; i--){
+    const c = text[i];
+    if(ptToneMap[c]) return text.substring(0,i) + ptToneMap[c][idx] + text.substring(i+1);
+  }
+  return text;
+}
+function ptGetDeck(){
+  const bank = loadWordBank();
+  if(bank.length) return ptFilterOutKnown(bank.map(w=>({hz:w.hz, py:w.py, en:w.en})));
+  return ptVocabSource.slice();
+}
+// Settings → "exclude Known words from practice" (off by default) drops any
+// word tagged K, on top of whatever Typing already found.
+function ptFilterOutKnown(words){
+  if(!loadSettings().excludeKnownFromPractice) return words;
+  return words.filter(w => !isFocusedIn(w.hz, KNOWN_TAG.key));
+}
+
+/* Rapid Fire: weave focused words back into the queue every couple of normal
+   words, same mechanic as Hanzi Writing Practice's buildRapidFireQueue —
+   duplicated here rather than shared, since each page's deck items are keyed
+   differently (.hz here, .ch there). */
+function ptBuildRapidFireQueue(deckItems){
+  const focusedSet = new Set(getFocusedCharsIn('typing').filter(hz => deckItems.some(w=>w.hz===hz)));
+  const normal = deckItems.filter(w=>!focusedSet.has(w.hz));
+  const focused = deckItems.filter(w=>focusedSet.has(w.hz));
+  shuffle(normal); shuffle(focused);
+  if(!focused.length) return normal;
+  if(!normal.length) return focused;
+  const MAX_REPEATS = 3;
+  const repeatsLeft = new Map(focused.map(w=>[w.hz, MAX_REPEATS]));
+  const queue = [];
+  let fi = 0, sinceLastFocused = 0, gap = 1 + Math.floor(Math.random()*2);
+  for(let i=0;i<normal.length;i++){
+    queue.push(normal[i]);
+    sinceLastFocused++;
+    if(sinceLastFocused >= gap && repeatsLeft.size){
+      let attempts = 0, pick = null;
+      while(attempts < focused.length){
+        const candidate = focused[fi % focused.length];
+        fi++;
+        attempts++;
+        if(repeatsLeft.get(candidate.hz) > 0){ pick = candidate; break; }
+      }
+      if(pick){
+        queue.push(pick);
+        const left = repeatsLeft.get(pick.hz) - 1;
+        if(left <= 0) repeatsLeft.delete(pick.hz); else repeatsLeft.set(pick.hz, left);
+      }
+      sinceLastFocused = 0;
+      gap = 1 + Math.floor(Math.random()*2);
+    }
+  }
+  return queue;
+}
+
+function ptGetDeckForMode(){
+  if(ptMode === 'rapid') return ptGetDeck();
+  if(ptMode === 'focused'){
+    // A focus tag is a standalone signal, independent of which collection
+    // (if any) the word currently sits in — ptGetDeck() alone only covers
+    // the general Word Bank (or the default deck when that's empty), so
+    // filtering just that missed a word focused only from within a folder.
+    // Search the general Word Bank and every folder instead, each word
+    // counted once even if it appears in more than one of those places.
+    const focusedHz = new Set(getFocusedCharsIn('typing'));
+    const seen = new Set();
+    const all = loadWordBank().concat(loadFolders().flatMap(loadFolderWords)).filter(w=>{
+      if(seen.has(w.hz)) return false;
+      seen.add(w.hz);
+      return true;
+    });
+    return ptFilterOutKnown(all.filter(w => focusedHz.has(w.hz)).map(w=>({hz:w.hz, py:w.py, en:w.en})));
+  }
+  if(ptMode === 'folders'){
+    return ptFilterOutKnown(ptSelectedFolders.flatMap(loadFolderWords).map(w=>({hz:w.hz, py:w.py, en:w.en})));
+  }
+  return [];
+}
+
+// Pins #ptModePanel's and #ptToneKey's vertical position instead of the
+// desktop grid's own align-items:center re-centering them every time the
+// ROW's own height changes — see .hw-wrap:not(.is-fullscreen)'s own CSS
+// comment for the confirmed case (Folders mode's folder-picker growing
+// #ptModePanel itself, not #ptCard — this page's own practice card never
+// actually changes height, unlike Dictate/Translate/Read's own candidate
+// word-list panels, so only the mode-switch case needed checking here).
+//
+// Keyed by mode+phase — 'idle' is the "pick a mode, see the start prompt"
+// screen (ptSetMode), 'study' is an actual word on screen (ptLoadWord).
+// Re-measured fresh only when that key changes (a genuinely new mode or
+// session start), never while the SAME key is still active. Same fix, same
+// reasoning, as read.html's own readAnchorModePanelToDefaultHeight/
+// translate.html's own tsAnchorModePanel/dictate.html's own
+// dtAnchorModePanel.
+let ptModePanelAnchorKey = null;
+function ptAnchorModePanel(phase){
+  const panel = document.getElementById('ptModePanel');
+  const toneKey = document.getElementById('ptToneKey');
+  if(!panel) return;
+  if(!window.matchMedia('(min-width:900px)').matches){
+    panel.style.marginTop = '';
+    if(toneKey) toneKey.style.marginTop = '';
+    return;
+  }
+  const key = ptMode + '|' + phase;
+  if(key === ptModePanelAnchorKey) return;
+  const card = document.getElementById('ptCard');
+  if(!card) return;
+  panel.style.marginTop = '';
+  if(toneKey) toneKey.style.marginTop = '';
+  const cardH = card.getBoundingClientRect().height;
+  const panelH = panel.getBoundingClientRect().height;
+  panel.style.marginTop = (panelH && cardH ? Math.max(0, (cardH - panelH) / 2) : 0) + 'px';
+  if(toneKey){
+    const toneKeyH = toneKey.getBoundingClientRect().height;
+    toneKey.style.marginTop = (toneKeyH && cardH ? Math.max(0, (cardH - toneKeyH) / 2) : 0) + 'px';
+  }
+  ptModePanelAnchorKey = key;
+}
+function ptInit(){
+  ptMode = 'rapid';
+  ptSelectedFolders = [];
+  ptFocusedPanelOpen = false;
+  ptRenderFocusedLink();
+  ptSetMode('rapid');
+}
+
+// Picking a mode pill only stages it now — same as Writing Practice's own
+// hwSetMode — it never builds a queue or checks for an in-progress session
+// on its own, so switching pills (or landing here fresh on page load, see
+// ptInit) never pops the "Continue where you left off?" prompt by itself.
+// That only happens once "Start studying selected" is actually clicked
+// (ptStartStudying below, or ptStartFolderStudy for Folders specifically,
+// which also needs a folder picked first) — see ptRebuildQueue.
+function ptSetMode(mode){
+  ptMode = mode;
+  document.querySelectorAll('#ptModePanel .mode-pill').forEach(b=>b.classList.add('inactive'));
+  const btn = document.getElementById('ptModeBtn' + mode.charAt(0).toUpperCase() + mode.slice(1));
+  if(btn) btn.classList.remove('inactive');
+  ptRenderFolderPicker();
+  ptShowStartPrompt();
+  ptAnchorModePanel('idle');
+}
+
+const PT_START_PROMPT_TEXT = {
+  rapid: 'Type the pinyin from memory for your whole Word Bank.',
+  focused: "Practice just the words you've marked as focused.",
+  folders: 'Select one or more folders below, then click "Start studying selected".',
+};
+function ptShowStartPrompt(){
+  ptVocab = []; ptIdx = 0; ptOriginalCount = 0; ptBaselineDone = 0;
+  // The instructional sentence that used to sit inside the box (now the
+  // live preview's home instead — see ptStartPreview) moves here so it's
+  // not lost, replacing the old generic "Ready when you are"/"Pick folders
+  // to study" with the actual per-mode instructions.
+  document.getElementById('ptModeDesc').textContent = PT_START_PROMPT_TEXT[ptMode] || '';
+  ptStopPreview();
+  ptStartPreview();
+}
+// ---------------- IDLE-STATE PREVIEW ----------------
+// Auto-types the canonical default 16 (ptVocabSource — the same list every
+// other practice page previews its own copy of) into the pinyin input with
+// no user input, replacing the old plain instructional text box. Shown
+// only while nothing has actually been started yet. Entirely
+// self-contained: never reads or writes ptVocab/ptIdx/localStorage, and is
+// torn down the instant a real session starts (ptRebuildQueue calls
+// ptStopPreview before building anything) or a mode pill is re-clicked
+// (ptShowStartPrompt restarts it fresh via the same two calls).
+let ptPreviewActive = false; // true only while the preview owns #ptCard
+let ptPreviewToken = 0;
+let ptPreviewTimer = null;
+let ptPreviewIdx = 0;
+// Cycled by ptPreviewIdx so the demo isn't just plain typing forever —
+// every so often it shows Reveal or Focus actually being used, same real
+// buttons/classes normal practice itself renders (Type Pinyin has no
+// Shuffle button, unlike Dictate/Translate), just visual-only (no onclick)
+// since nothing behind them is real. A length that shares no factor with
+// the 16-word deck means which word gets which behavior keeps shifting
+// across repeated passes through the deck too.
+// 1 word in 4 plays the full "combo" — a struggling-user story chaining
+// both buttons in the order they'd naturally get used, rather than each
+// shown in isolation on its own separate word: type a wrong guess first,
+// so Reveal has a real reason to fire — then Reveal (now the answer's
+// known), then Focus (mark it for extra practice), then finally type the
+// correct answer in (Type Pinyin has no Shuffle to bail out with instead,
+// unlike Dictate/Translate) — see ptPlayPreviewWord's own comment.
+const PT_PREVIEW_BEHAVIORS = ['plain','plain','plain','combo'];
+// Real-time timestamp captured when the tab goes hidden while the preview
+// is active; null whenever it isn't currently hidden. Used by the
+// visibilitychange listener below to advance the preview by roughly how
+// many words that much real time covers, instead of always just replaying
+// the exact one it was on — see that listener's own comment.
+let ptPreviewHiddenAt = null;
+// Rough nominal duration of one preview word, used ONLY to estimate how
+// many words' worth of real time passed while the tab was hidden — never
+// to drive the moment-to-moment demo itself. A flat average across the
+// 'plain'/'combo' mix (PT_PREVIEW_BEHAVIORS) rather than an exact figure —
+// a 'combo' word runs several times longer than a 'plain' one, so any
+// single number here is already an approximation; being off by even a word
+// or two only changes which one happens to already be showing the instant
+// the tab becomes visible again, not anything that reads as wrong (same
+// reasoning as landing.html's own STOP_DEFAULT_GAP_MS).
+const PT_PREVIEW_NOMINAL_WORD_MS = 2600;
+function ptStopPreview(){
+  ptPreviewActive = false;
+  ptPreviewToken++;
+  ptPreviewHiddenAt = null;
+  if(ptPreviewTimer){ clearTimeout(ptPreviewTimer); ptPreviewTimer = null; }
+}
+function ptStartPreview(){
+  ptPreviewActive = true;
+  ptPreviewIdx = 0;
+  ptPreviewHiddenAt = null; // discard any stale hidden-timestamp from a previous preview session
+  // #ptCard's real markup (glyph + audio icon + input + reveal slot + the
+  // actual Reveal/Focus row) minus the progress line, which has no
+  // meaningful content with no real word/session behind it. The audio
+  // button, input, and two controls are all visual-only here (no onclick,
+  // tabindex="-1", aria-hidden) so a stray click/tab can't land on a
+  // control that does nothing; ptPlayPreviewWord drives their
+  // .pt-preview-pressed/.correct/etc. classes directly instead.
+  document.getElementById('ptCard').innerHTML = `
+    <div class="trainer-char" id="ptChar"><span id="ptCharGlyph"></span><button class="audio-btn" type="button" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="#8A8A8A" fill="#8A8A8A"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#3B82F6"></path></svg></button></div>
+    <input id="ptInput" class="trainer-input" type="text" readonly tabindex="-1" aria-hidden="true">
+    <div class="trainer-reveal" id="ptPreviewReveal">&nbsp;</div>
+    <div class="trainer-controls">
+      <button class="btn small" id="ptPreviewRevealBtn" type="button" tabindex="-1" aria-hidden="true">Reveal${ICON_EYE}</button>
+      <button class="btn ghost small" id="ptPreviewFocusBtn" type="button" tabindex="-1" aria-hidden="true">Focus${ICON_BOOKMARK}</button>
+    </div>`;
+  ptPlayPreviewWord(++ptPreviewToken);
+}
+// Brief press-down pulse (see its own CSS) standing in for an actual click.
+function ptPreviewPress(id, holdMs){
+  const btn = document.getElementById(id);
+  if(!btn) return;
+  btn.classList.remove('pt-preview-pressed');
+  void btn.offsetWidth; // restart the animation even mid-pulse from a fast previous word
+  btn.classList.add('pt-preview-pressed');
+  if(holdMs) setTimeout(function(){ btn.classList.remove('pt-preview-pressed'); }, holdMs);
+}
+function ptPlayPreviewWord(token){
+  if(token !== ptPreviewToken || !ptPreviewActive) return;
+  if(document.hidden) return; // picked back up by the visibilitychange listener below once the tab is visible again
+  const glyph = document.getElementById('ptCharGlyph');
+  const inp = document.getElementById('ptInput');
+  const revealText = document.getElementById('ptPreviewReveal');
+  const focusBtn = document.getElementById('ptPreviewFocusBtn');
+  if(!glyph || !inp) return;
+  const entry = ptVocabSource[ptPreviewIdx % ptVocabSource.length];
+  const behavior = PT_PREVIEW_BEHAVIORS[ptPreviewIdx % PT_PREVIEW_BEHAVIORS.length];
+  glyph.textContent = entry.hz;
+  inp.value = '';
+  inp.className = 'trainer-input';
+  if(revealText) revealText.innerHTML = '&nbsp;';
+  // Every word starts clean — Focus's "Focused" label/color from a
+  // PREVIOUS word otherwise keeps showing on every word after it forever,
+  // not just the one it was actually demonstrating.
+  if(focusBtn){ focusBtn.classList.remove('focus-active'); focusBtn.innerHTML = 'Focus' + ICON_BOOKMARK; }
+  let charIdx = 0;
+  const typeStep = function(){
+    if(token !== ptPreviewToken) return;
+    if(document.hidden) return; // visibilitychange restarts this word from the top once visible again
+    if(charIdx < entry.py.length){
+      inp.value += entry.py[charIdx];
+      charIdx++;
+      ptPreviewTimer = setTimeout(typeStep, 110 + Math.random()*90);
+    } else {
+      inp.classList.add('correct');
+      ptPreviewTimer = setTimeout(function(){
+        if(token !== ptPreviewToken) return;
+        ptPreviewIdx++;
+        ptPlayPreviewWord(token);
+      }, 1000);
+    }
+  };
+  const startTyping = function(delay){ ptPreviewTimer = setTimeout(typeStep, delay); };
+  if(behavior === 'combo'){
+    // The natural order a struggling real user would actually hit these
+    // buttons in, chained on one word instead of each shown in isolation
+    // on its own: type a guess that's actually wrong first, so Reveal has
+    // a real reason to fire — then Reveal (now the answer's known), then
+    // Focus (mark it for extra practice), then finally type the correct
+    // answer in (no Shuffle here to bail out with instead). Same
+    // beats/holds each button already used on its own, just run
+    // back-to-back.
+    const wrongEntry = ptVocabSource[(ptPreviewIdx + 5) % ptVocabSource.length];
+    let wrongIdx = 0;
+    const typeWrong = function(){
+      if(token !== ptPreviewToken) return;
+      if(document.hidden) return;
+      if(wrongIdx < wrongEntry.py.length){
+        inp.value += wrongEntry.py[wrongIdx];
+        wrongIdx++;
+        ptPreviewTimer = setTimeout(typeWrong, 110 + Math.random()*90);
+      } else {
+        ptPreviewTimer = setTimeout(function(){
+          if(token !== ptPreviewToken) return;
+          inp.value = '';
+          inp.className = 'trainer-input';
+          ptPreviewPress('ptPreviewRevealBtn', 900);
+          if(revealText) revealText.textContent = entry.py;
+          ptPreviewTimer = setTimeout(function(){
+            if(token !== ptPreviewToken) return;
+            ptPreviewPress('ptPreviewFocusBtn', 900);
+            if(focusBtn){ focusBtn.classList.add('focus-active'); focusBtn.innerHTML = 'Focused' + ICON_BOOKMARK; }
+            startTyping(1100);
+          }, 1400);
+        }, 700);
+      }
+    };
+    ptPreviewTimer = setTimeout(typeWrong, 500);
+  } else {
+    startTyping(500);
+  }
+}
+document.addEventListener('visibilitychange', function(){
+  if(document.hidden){
+    if(ptPreviewActive) ptPreviewHiddenAt = performance.now();
+    return;
+  }
+  if(!ptPreviewActive) return;
+  // Restarts whatever word the demo lands on (not gated on whether a timer
+  // happens to be pending) — the preview's own "if(document.hidden)
+  // return" guards leave a stale, already-fired timer ID sitting in
+  // ptPreviewTimer once they trip, which reads as truthy just like a
+  // genuinely pending one, so a pending-timer check alone left this stuck
+  // permanently after switching tabs away and back. Bumping the token
+  // first invalidates whatever that stale in-flight word was about to do
+  // once it does eventually resolve, so it can't fire a stray extra
+  // advance on top of this fresh restart.
+  //
+  // Which word it restarts on is what changed: real elapsed hidden time
+  // (against PT_PREVIEW_NOMINAL_WORD_MS's own estimate) now advances
+  // ptPreviewIdx first — a brief glance away still resumes the same word
+  // it was on (advanceBy comes out to 0), but a real stretch of time away
+  // arrives at whatever word it would naturally be on by now, same
+  // standing site-wide rule landing.html's own sphere tour follows.
+  if(ptPreviewTimer){ clearTimeout(ptPreviewTimer); ptPreviewTimer = null; }
+  if(ptPreviewHiddenAt !== null){
+    const hiddenMs = performance.now() - ptPreviewHiddenAt;
+    ptPreviewHiddenAt = null;
+    const advanceBy = Math.floor(hiddenMs / PT_PREVIEW_NOMINAL_WORD_MS);
+    if(advanceBy > 0) ptPreviewIdx += advanceBy;
+  }
+  ptPlayPreviewWord(++ptPreviewToken);
+});
+function ptStartStudying(){
+  ptRebuildQueue();
+}
+
+// ptFolderPicker doubles as the general "start studying" action spot for
+// every mode, not just Folders — putting the button in one shared container
+// (rather than one copy per mode, positioned wherever that mode's own markup
+// happens to put it) is what keeps it landing in the exact same place
+// regardless of which mode pill is selected — same pattern as Writing
+// Practice's own hwRenderFolderPicker.
+function ptRenderFolderPicker(){
+  const picker = document.getElementById('ptFolderPicker');
+  picker.style.display = 'block';
+  if(ptMode !== 'folders'){
+    picker.innerHTML = `<button class="btn hw-study-selected-btn" onclick="ptStartStudying()">Start studying selected</button>`;
+    return;
+  }
+  const folders = loadFolders();
+  if(!folders.length){
+    picker.innerHTML = `<div class="hw-empty-inline">You haven't created any folders yet. Head to <a href="word-bank.html" style="color:var(--seal); font-weight:600;">Vocabulary → Word Bank</a> to make one and add words to it.</div>`;
+    return;
+  }
+  picker.innerHTML = `
+    <div class="hw-folder-checks">
+      ${folders.map(f=>{
+        const count = loadFolderWords(f).length;
+        return `<label class="hw-folder-check"><input type="checkbox" value="${f}" ${ptSelectedFolders.includes(f)?'checked':''} onchange="ptToggleFolderSelection('${f}')"><span class="hw-folder-name" title="${f}">${f}</span> <span class="hw-folder-count">(${count} word${count===1?'':'s'})</span></label>`;
+      }).join('')}
+    </div>
+    <button class="btn hw-study-selected-btn" onclick="ptStartFolderStudy()">Start studying selected</button>`;
+}
+function ptToggleFolderSelection(name){
+  const idx = ptSelectedFolders.indexOf(name);
+  if(idx===-1) ptSelectedFolders.push(name); else ptSelectedFolders.splice(idx,1);
+}
+function ptStartFolderStudy(){
+  if(!ptSelectedFolders.length) return;
+  ptRebuildQueue();
+}
+
+function ptShowEmptyState(){
+  const card = document.getElementById('ptCard');
+  let msg, desc;
+  if(ptMode==='focused'){
+    msg = `No words focused in Typing yet. Switch to Rapid Fire and hit Focus${ICON_BOOKMARK} on a word that's giving you trouble.`;
+    desc = 'No focused words yet';
+  } else if(ptMode==='folders'){
+    msg = `The selected folder${ptSelectedFolders.length===1?'':'s'} ${ptSelectedFolders.length===1?"doesn't":"don't"} have any words yet.`;
+    desc = 'No words in the selected folders';
+  } else {
+    msg = `Your Word Bank is empty.`;
+    desc = '';
+  }
+  card.innerHTML = `<div class="hw-empty">${msg}</div>`;
+  document.getElementById('ptModeDesc').textContent = desc;
+}
+
+function ptRebuildQueue(){
+  ptStopPreview();
+  const deck = ptGetDeckForMode();
+  const notice = document.getElementById('ptBankNotice');
+  if(notice) notice.style.display = (ptMode==='rapid' && loadWordBank().length) ? 'block' : 'none';
+
+  if(!deck.length){
+    ptVocab = []; ptIdx = 0; ptOriginalCount = 0; ptBaselineDone = 0;
+    ptShowEmptyState();
+    return;
+  }
+
+  // Rapid Fire and Folders are the two modes worth remembering progress
+  // for — Focused's membership shifts too often (tags come and go) for a
+  // stale "done" list to mean much. Tracked per-word (w.hz) — Type Pinyin
+  // never decomposes a word into characters the way Writing/Match Pinyin do.
+  if(ptMode === 'rapid' || ptMode === 'folders'){
+    const deckIds = new Set(deck.map(w => w.hz));
+    const done = Array.from(getStudyProgressDone('pt', ptMode, ptSelectedFolders)).filter(id => deckIds.has(id));
+    if(done.length && done.length < deckIds.size){
+      showResumeStudyPrompt({
+        title: 'Continue where you left off?',
+        message: `You've already been through ${done.length} of ${deckIds.size} words here. Continue with the rest, or start over from the top?`,
+        onContinue: function(){ ptBuildQueueFromDeck(deck, new Set(done)); },
+        onRestart: function(){ clearStudyProgress('pt', ptMode, ptSelectedFolders); ptBuildQueueFromDeck(deck, new Set()); },
+      });
+      return;
+    }
+    // Nothing left unseen (a fully-finished run from before) — that record
+    // no longer means anything useful, so drop it rather than prompt.
+    if(done.length) clearStudyProgress('pt', ptMode, ptSelectedFolders);
+  }
+  ptBuildQueueFromDeck(deck, new Set());
+}
+function ptBuildQueueFromDeck(deck, doneWords){
+  const usableDeck = doneWords.size ? deck.filter(w => !doneWords.has(w.hz)) : deck;
+  ptVocab = ptMode === 'rapid' ? ptBuildRapidFireQueue(usableDeck) : shuffle(usableDeck.slice());
+  ptOriginalCount = ptVocab.length;
+  ptBaselineDone = doneWords.size;
+  ptIdx = 0;
+  ptRoundStartTime = Date.now();
+  ptRoundMistakes = 0;
+  ptRoundWordsSeen = new Set();
+
+  // Description keeps describing the FULL deck (not the resumed remainder),
+  // so it doesn't confusingly shrink just because some of it was skipped.
+  const focusedInDeck = deck.filter(w=>isFocusedIn(w.hz,'typing')).length;
+  let desc = '';
+  if(ptMode==='rapid') desc = loadWordBank().length
+    ? `Studying all ${deck.length} word${deck.length===1?'':'s'} in your Word Bank` + (focusedInDeck ? ` · ${focusedInDeck} focused` : '')
+    : `Studying a default set of ${deck.length} words`;
+  else if(ptMode==='focused') desc = `Studying ${deck.length} focused word${deck.length===1?'':'s'}`;
+  else if(ptMode==='folders') desc = `Studying ${deck.length} word${deck.length===1?'':'s'} from: ${ptSelectedFolders.join(', ')}`;
+  document.getElementById('ptModeDesc').textContent = desc;
+
+  ptRestoreCardMarkup();
+  ptLoadWord();
+}
+
+/* ---- focused-words link/panel (words focused in Typing specifically) ---- */
+function ptRenderFocusedLink(){
+  const n = getFocusedCharsIn('typing').length;
+  const link = document.getElementById('ptFocusedLink');
+  if(link) link.textContent = ptFocusedPanelOpen ? 'Hide focused words' : `View focused words (${n})`;
+}
+function ptToggleFocusedPanel(){
+  ptFocusedPanelOpen = !ptFocusedPanelOpen;
+  document.getElementById('ptFocusedPanel').classList.toggle('open', ptFocusedPanelOpen);
+  ptRenderFocusedLink();
+  if(ptFocusedPanelOpen) ptRenderFocusedPanel();
+}
+function ptRenderFocusedPanel(){
+  const focused = getFocusedCharsIn('typing');
+  const panel = document.getElementById('ptFocusedPanel');
+  if(!focused.length){
+    panel.innerHTML = `<h4>Focused words</h4><div class="hw-focused-empty">No words marked as focused yet — hit the Focus button on a word that's giving you trouble.</div>`;
+    return;
+  }
+  panel.innerHTML = `<h4>Focused words</h4><div class="hw-focused-chip-list">${focused.map(hz=>`
+    <span class="hw-focused-chip">${hz}<button onclick="toggleFocusCategory('${hz}','typing'); ptRenderFocusedPanel(); ptRenderFocusedLink();">×</button></span>`).join('')}</div>`;
+}
+function ptToggleFocus(){
+  if(!ptVocab[ptIdx]) return;
+  toggleFocusCategory(ptVocab[ptIdx].hz, 'typing');
+  ptUpdateFocusBtn();
+  ptRenderFocusedLink();
+  if(ptFocusedPanelOpen) ptRenderFocusedPanel();
+}
+function ptUpdateFocusBtn(){
+  const btn = document.getElementById('ptFocusBtn');
+  if(!btn || !ptVocab[ptIdx]) return;
+  const on = isFocusedIn(ptVocab[ptIdx].hz, 'typing');
+  btn.innerHTML = (on ? 'Focused' : 'Focus') + ICON_BOOKMARK;
+  btn.classList.toggle('focus-active', on);
+}
+function ptRestoreCardMarkup(){
+  const card = document.getElementById('ptCard');
+  card.innerHTML = `
+    <div class="trainer-char" id="ptChar"><span id="ptCharGlyph"></span><button class="audio-btn" onclick="ptSpeakCurrent()" title="Play audio" aria-label="Play audio"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="#8A8A8A" fill="#8A8A8A"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#3B82F6"></path></svg></button></div>
+    <input id="ptInput" class="trainer-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type pinyin, e.g. ni3hao3" lang="en">
+    <div class="trainer-reveal" id="ptReveal">&nbsp;</div>
+    <div class="trainer-controls">
+      <button class="btn small" id="ptRevealBtn" type="button">Reveal${ICON_EYE}</button>
+      <button class="btn ghost small" id="ptFocusBtn" type="button" onclick="ptToggleFocus()">Focus${ICON_BOOKMARK}</button>
+    </div>
+    <div class="trainer-progress" id="ptProgress"></div>`;
+  const inp = document.getElementById('ptInput');
+  document.getElementById('ptRevealBtn').addEventListener('click', ()=>{
+    if(ptIdx >= ptVocab.length) return;
+    document.getElementById('ptReveal').textContent = ptVocab[ptIdx].py;
+    inp.value = '';
+    ptRoundMistakes++;
+    ptMistakeCountedForAttempt = true;
+    const missed = ptVocab[ptIdx];
+    if(ptVocab[ptVocab.length-1] !== missed) ptVocab.push(missed);
+    inp.focus();
+  });
+  inp.addEventListener('keydown', (e)=>{
+    if(e.key>='1' && e.key<='4'){
+      e.preventDefault();
+      const toneNum = parseInt(e.key);
+      const val = inp.value;
+      if(!val) return;
+      const cursorIdx = inp.selectionStart;
+      const before = val.substring(0, cursorIdx);
+      const after = val.substring(cursorIdx);
+      const match = before.match(/([a-zA-ZüÜvV]+)$/);
+      if(match){
+        const syl = match[1];
+        const toned = ptAddTone(syl, toneNum);
+        const newBefore = before.substring(0, before.length - syl.length) + toned;
+        inp.value = newBefore + after;
+        const newCursor = newBefore.length;
+        inp.setSelectionRange(newCursor, newCursor);
+      }
+      ptCheckAnswer();
+    }
+  });
+  inp.addEventListener('input', ptCheckAnswer);
+}
+function ptLoadWord(){
+  if(loadSettings().forceStopAudioOnNext) window.speechSynthesis.cancel();
+  const card = document.getElementById('ptCard');
+  if(ptIdx >= ptVocab.length){
+    // The round just finished naturally (every word gone through) — no
+    // partial progress left to offer resuming into next time.
+    if(ptMode === 'rapid' || ptMode === 'folders') clearStudyProgress('pt', ptMode, ptSelectedFolders);
+    card.innerHTML = renderRoundSummaryHTML({
+      wordsSeen: ptRoundWordsSeen, mistakes: ptRoundMistakes, startTime: ptRoundStartTime,
+      subtitle: `You cleared the deck${ptVocab.length>ptOriginalCount ? ', including missed words' : ''}. Pick a mode above to start a fresh session.`,
+      actionsHTML: `<button class="btn" onclick="ptRebuildQueue()">Practice again</button>`
+    });
+    animateRoundSummary(card.querySelector('.round-summary'));
+    return;
+  }
+  const chrGlyph = document.getElementById('ptCharGlyph');
+  const inp = document.getElementById('ptInput');
+  const rev = document.getElementById('ptReveal');
+  if(!chrGlyph || !inp) return;
+  ptRoundWordsSeen.add(ptVocab[ptIdx].hz);
+  ptMistakeCountedForAttempt = false;
+  chrGlyph.textContent = ptVocab[ptIdx].hz;
+  ptFitGlyphToCard();
+  inp.value = '';
+  inp.className = 'trainer-input';
+  rev.innerHTML = '&nbsp;';
+  // Offset by ptBaselineDone (0 for a fresh start) so a resumed session
+  // shows true position in the whole deck — e.g. "266 / 281" picking back
+  // up after 265 were already done last time — instead of restarting the
+  // fraction at "1 / 16" against just the words left over from before.
+  document.getElementById('ptProgress').textContent = `${ptBaselineDone+ptIdx+1} / ${ptBaselineDone+ptOriginalCount}`;
+  ptUpdateFocusBtn();
+  inp.focus();
+  ptAnchorModePanel('study');
+}
+function ptCheckAnswer(){
+  const inp = document.getElementById('ptInput');
+  if(!inp) return;
+  const guess = inp.value.toLowerCase().replace(/\s+/g,'');
+  const target = ptVocab[ptIdx].py.toLowerCase().replace(/\s+/g,'');
+  if(guess && guess === target){
+    inp.classList.add('correct');
+    // Each deck entry is already a whole word (never split into
+    // per-character turns here), so this always speaks the complete word —
+    // see Settings → Practice → Audio on correct answer.
+    if(loadSettings().ptAudioOnCorrect) speakDelayed(ptVocab[ptIdx].hz);
+    // Only a genuinely correct answer passes a word here — Reveal (see
+    // ptRestoreCardMarkup) requeues it at the end of ptVocab instead of
+    // advancing, so it isn't "done" for resume purposes until it's actually
+    // typed correctly on some later attempt.
+    if(ptMode === 'rapid' || ptMode === 'folders') addStudyProgressDone('pt', ptMode, ptSelectedFolders, ptVocab[ptIdx].hz);
+    ptIdx++;
+    setTimeout(ptLoadWord, 250);
+    return;
+  }
+  // Count a mistake once per wrong "complete-length" attempt, not per keystroke —
+  // typing the correct answer naturally passes through many shorter, non-matching
+  // prefixes that shouldn't count against the round.
+  if(guess.length >= target.length){
+    if(!ptMistakeCountedForAttempt){ ptRoundMistakes++; ptMistakeCountedForAttempt = true; }
+  } else {
+    ptMistakeCountedForAttempt = false;
+  }
+}
+
+/* ================= FULLSCREEN (same approach as Hanzi Writing Practice) =================
+   Mirrors a video player's fullscreen button: ask the browser to actually take
+   over the screen, and only flip state once it's confirmed (via
+   ptOnNativeFullscreenChange) — the CSS-expanded (.is-fullscreen) view is only
+   ever a fallback, for a browser with no Fullscreen API or that refuses the
+   request. There's no dynamically-sized canvas on this page (unlike Writing
+   Practice's drawing box), so no resize/box-size syncing is needed here. */
+let ptIsFullscreen = false;
+function ptHasNativeFullscreenSupport(el){
+  return !!(el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen);
+}
+function ptNativeFullscreenElement(){
+  return document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement || null;
+}
+function ptToggleFullscreen(){
+  const el = document.getElementById('ptWrap');
+  if(!ptIsFullscreen){
+    if(ptHasNativeFullscreenSupport(el)){
+      try{
+        const req = el.requestFullscreen ? el.requestFullscreen()
+          : el.webkitRequestFullscreen ? el.webkitRequestFullscreen()
+          : el.mozRequestFullScreen ? el.mozRequestFullScreen()
+          : el.msRequestFullscreen();
+        if(req && req.catch){
+          req.catch(function(err){
+            console.warn('Full screen request was blocked or denied — using an in-page expanded view instead.', err);
+            ptSetFullscreenState(true);
+          });
+        }
+      }catch(err){
+        console.warn('Full screen request was blocked or denied — using an in-page expanded view instead.', err);
+        ptSetFullscreenState(true);
+      }
+    } else {
+      ptSetFullscreenState(true);
+    }
+  } else {
+    if(ptNativeFullscreenElement()){
+      if(document.exitFullscreen) document.exitFullscreen().catch(function(){});
+      else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+      else if(document.mozCancelFullScreen) document.mozCancelFullScreen();
+      else if(document.msExitFullscreen) document.msExitFullscreen();
+    } else {
+      ptSetFullscreenState(false);
+    }
+  }
+}
+function ptSetFullscreenState(makeFull){
+  ptIsFullscreen = makeFull;
+  const el = document.getElementById('ptWrap');
+  el.classList.toggle('is-fullscreen', ptIsFullscreen);
+  ptUpdateFullscreenBtn();
+  // On mobile the fallback view is pinned with position:fixed (see
+  // .hw-wrap.is-fullscreen media query) rather than real native fullscreen,
+  // so the page underneath is still technically scrollable — a touch-drag
+  // could rubber-band it behind the pinned overlay. Lock it while showing.
+  if(window.matchMedia('(max-width:800px)').matches){
+    document.body.style.overflow = ptIsFullscreen ? 'hidden' : '';
+  }
+}
+// Same expand/shrink icon pair (and swap-on-state approach) as the map's own
+// fullscreen button in geography.html — kept here rather than shared since
+// there's no common stylesheet/script across pages to hold it centrally.
+const PT_FULLSCREEN_ICON = '<path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path>';
+const PT_EXIT_FULLSCREEN_ICON = '<path d="M8 3v3a2 2 0 0 1-2 2H3"></path><path d="M21 8h-3a2 2 0 0 1-2-2V3"></path><path d="M3 16h3a2 2 0 0 1 2 2v3"></path><path d="M16 21v-3a2 2 0 0 1 2-2h3"></path>';
+function ptUpdateFullscreenBtn(){
+  const btn = document.getElementById('ptFullscreenBtn');
+  if(!btn) return;
+  const label = ptIsFullscreen ? 'Exit full screen' : 'Full screen this practice area';
+  btn.title = label;
+  btn.setAttribute('aria-label', label);
+  const svg = btn.querySelector('svg');
+  if(svg) svg.innerHTML = ptIsFullscreen ? PT_EXIT_FULLSCREEN_ICON : PT_FULLSCREEN_ICON;
+}
+function ptOnNativeFullscreenChange(){
+  const nativeFull = ptNativeFullscreenElement() === document.getElementById('ptWrap');
+  if(nativeFull !== ptIsFullscreen) ptSetFullscreenState(nativeFull);
+}
+// iOS Safari has a well-documented bug where a position:fixed flex
+// container can fail to re-layout ITS OTHER children after a sibling's
+// height changes via a plain DOM/innerHTML mutation — exactly what happens
+// every time a mode switch or "Start studying selected" rewrites the mode
+// panel's content while already in fullscreen. Left unfixed, the center
+// column can render stuck at its old position, visibly overlapping
+// whatever the panel grew into (reported: "View focused characters"
+// landing on top of the pinyin, on the sibling page this CSS/layout is
+// shared with — writing-practice.html). A forced reflow — toggling display
+// off and back on, a standard way to make WebKit actually recompute layout
+// rather than trust a stale cached one — after every panel/controls resize
+// nudges everything back onto the wrap's real, current content.
+// ResizeObserver's callback runs before the browser paints the frame that
+// triggered it, so this lands before anything stale is ever shown.
+// Harmless outside fullscreen too — nothing there depends on this precise
+// a layout, so the early-return just makes it a no-op.
+(function(){
+  const wrap = document.getElementById('ptWrap');
+  if(!wrap || typeof ResizeObserver === 'undefined') return;
+  const ro = new ResizeObserver(function(){
+    if(!wrap.classList.contains('is-fullscreen')) return;
+    wrap.style.display = 'none';
+    void wrap.offsetHeight;
+    wrap.style.display = '';
+  });
+  document.querySelectorAll('.hw-mode-panel, .hw-controls').forEach(function(el){ ro.observe(el); });
+})();
+document.addEventListener('fullscreenchange', ptOnNativeFullscreenChange);
+document.addEventListener('webkitfullscreenchange', ptOnNativeFullscreenChange);
+document.addEventListener('mozfullscreenchange', ptOnNativeFullscreenChange);
+
+ptInit();
+</script>
+</body>
+</html>

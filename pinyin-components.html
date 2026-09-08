@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>html{visibility:hidden;}</style>
+<title>Pinyin — Components — Context Chinese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDE4D2;
+  --paper-deep:#E1D4B9;
+  --paper-shadow:#cbbb96;
+  --ink:#22241F;
+  --ink-soft:#514E42;
+  --seal:#AE3B1C;
+  --seal-dark:#8C2E15;
+  --jade:#3E6B5B;
+  --jade-dark:#2E5346;
+  --gold:#A9832E;
+  --slate:#4C6169;
+  --paper-rgb:237,228,210;
+  --radius:2px;
+  --serif-cn:'Noto Serif SC', serif;
+  --serif-en:'Zilla Slab', 'Noto Serif', serif;
+  --sans:'Inter', sans-serif;
+  --tone-1:#2d6bd6;
+  --tone-2:#27974f;
+  --tone-3:#E0B400;
+  --tone-4:#c0392b;
+  --tone-0:#6b6b6b;
+}
+
+/* ---------- dark mode ---------- */
+:root[data-theme="dark"]{
+  --paper:#1C1B18;
+  --paper-deep:#242220;
+  --paper-shadow:#3A352C;
+  --ink:#EDE6D6;
+  --ink-soft:#B9AF9C;
+  --seal:#E2703F;
+  --seal-dark:#C8592C;
+  --jade:#5FA98D;
+  --jade-dark:#3E8068;
+  --gold:#D9AE5C;
+  --slate:#93A9B1;
+  --paper-rgb:28,27,24;
+  --tone-1:#7fb0ff;
+  --tone-2:#6bd98f;
+  --tone-3:#F2D24B;
+  --tone-4:#ff8a72;
+  --tone-0:#b9af9c;
+}
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .dict-search,
+:root[data-theme="dark"] .dict-entry,
+:root[data-theme="dark"] .dict-filter,
+:root[data-theme="dark"] .import-card,
+:root[data-theme="dark"] .dialogue-card,
+:root[data-theme="dark"] .trainer-card,
+:root[data-theme="dark"] .route-card,
+:root[data-theme="dark"] .radical-face.front,
+:root[data-theme="dark"] .flash-face.front,
+:root[data-theme="dark"] .province-chip,
+:root[data-theme="dark"] .province-detail,
+:root[data-theme="dark"] .tone-desc-panel,
+:root[data-theme="dark"] .converse-card,
+:root[data-theme="dark"] .dictate-card,
+:root[data-theme="dark"] .read-card,
+:root[data-theme="dark"] .translate-card,
+:root[data-theme="dark"] .hw-target-wrap,
+:root[data-theme="dark"] .search-bar,
+:root[data-theme="dark"] .settings-card,
+:root[data-theme="dark"] .quiz-box{
+  background:rgba(0,0,0,0.28) !important;
+}
+:root[data-theme="dark"] .dict-search input,
+:root[data-theme="dark"] .trainer-input,
+:root[data-theme="dark"] .converse-input,
+:root[data-theme="dark"] .dictate-input,
+:root[data-theme="dark"] .import-textarea,
+:root[data-theme="dark"] .search-bar input,
+:root[data-theme="dark"] .settings-select,
+:root[data-theme="dark"] .settings-input{
+  background:rgba(0,0,0,0.25) !important;
+}
+:root[data-theme="dark"] .keycap{
+  background:linear-gradient(160deg, #2c2a25 0%, #201f1b 100%) !important;
+}
+
+/* ---------- tone colouring ---------- */
+.tone-c-1{color:var(--tone-1);}
+.tone-c-2{color:var(--tone-2);}
+.tone-c-3{color:var(--tone-3);}
+.tone-c-4{color:var(--tone-4);}
+.tone-c-0{color:var(--tone-0);}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(0,0,0,0.025) 0, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(0,0,0,0.03) 0, transparent 50%);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.5;
+}
+::selection{background:var(--seal); color:var(--paper);}
+a{color:inherit;}
+button{font-family:inherit;}
+:focus-visible{outline:2px solid var(--seal); outline-offset:2px;}
+
+/* ---------- layout shell ---------- */
+.wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+header.top{
+  position:sticky; top:0; z-index:50;
+  background:rgba(var(--paper-rgb),0.94);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--paper-shadow);
+}
+.top-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 28px; max-width:1120px; margin:0 auto; gap:20px;}
+.brand{display:flex; align-items:center; gap:12px; cursor:pointer; user-select:none; flex-shrink:0;}
+.seal-mark{
+  width:38px; height:38px; background:var(--seal); color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif-cn); font-size:22px; font-weight:700;
+  border-radius:3px; transform:rotate(-3deg);
+  box-shadow:2px 2px 0 rgba(0,0,0,0.15);
+  flex-shrink:0;
+}
+.brand-text{display:flex; flex-direction:column; line-height:1.1; gap:3px;}
+.brand-text b{font-family:var(--serif-en); font-size:19px; letter-spacing:0.3px; white-space:nowrap;}
+.brand-text span{font-size:11px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;}
+
+nav.tabs{display:flex; flex-wrap:wrap; gap:2px;}
+.nav-item{position:relative;}
+.tab-btn{
+  background:none; border:none; cursor:pointer;
+  padding:8px 12px; font-size:13.5px; font-weight:600; color:var(--ink-soft);
+  border-radius:2px; letter-spacing:0.2px; white-space:nowrap;
+  transition:color .15s, background .15s;
+}
+.tab-btn .cn{font-family:var(--serif-cn); margin-right:5px; font-weight:600;}
+.tab-btn:hover{color:var(--ink); background:rgba(0,0,0,0.05);}
+.tab-btn.active{color:var(--ink); background:rgba(0,0,0,0.06);}
+
+.dropdown{
+  position:absolute; top:100%; left:0; margin-top:6px; background:var(--paper);
+  border:1px solid var(--paper-shadow); box-shadow:4px 6px 0 rgba(0,0,0,0.1);
+  width:0; min-width:0; display:flex; flex-direction:column; z-index:60;
+  opacity:0; max-height:0; overflow:hidden; pointer-events:none;
+  transform:translateY(-6px);
+  transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease .28s, min-width 0s ease .28s;
+  padding:0 4px;
+}
+.nav-item.open .dropdown{opacity:1; max-height:480px; width:auto; min-width:200px; transform:translateY(0); pointer-events:auto; padding:4px; transition:opacity .22s ease, transform .22s ease, max-height .28s ease, width 0s ease, min-width 0s ease;}
+.nav-item.open .tab-btn{color:var(--ink); background:rgba(0,0,0,0.06);}
+.tab-btn .caret{display:inline-block; margin-left:5px; font-size:10px; transition:transform .2s ease; opacity:0.6;}
+.nav-item.open .tab-btn .caret{transform:rotate(180deg);}
+.dropdown-link{
+  padding:10px 14px; text-align:left; background:none; border:none; cursor:pointer;
+  font-size:13px; font-weight:600; color:var(--ink-soft); white-space:nowrap; border-radius:2px;
+  text-decoration:none;
+}
+.dropdown-link:hover{background:rgba(0,0,0,0.06); color:var(--ink);}
+.dropdown-link.active{color:var(--seal);}
+@media (max-width:920px){
+  .top-inner{flex-direction:column; align-items:flex-start; position:relative;}
+  nav.tabs{width:100%; overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px;}
+  /* The gear/settings nav-item is a direct sibling of nav.tabs in .top-inner
+     (not nested inside it), so once .top-inner stacks into a column here it
+     falls onto its own row below the whole nav strip. Pin it to the
+     top-right corner instead, next to the brand row, freeing that row and
+     matching where it already sits on desktop's single-row layout. */
+  .top-inner > .nav-item{position:absolute; top:14px; right:28px;}
+}
+
+main{max-width:1120px; margin:0 auto; padding:40px 28px 100px;}
+section.view{display:none; animation:fadein .35s ease;}
+section.view.active{display:block;}
+@keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+.subview{display:none;}
+.subview.active{display:block;}
+
+.section-head{margin-bottom:28px; position:relative;}
+.eyebrow{
+  font-family:var(--sans); font-size:12px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--seal); display:flex; align-items:center; gap:8px;
+}
+.eyebrow::before{content:''; width:22px; height:2px; background:var(--seal);}
+h1.headline{
+  font-family:var(--serif-en); font-weight:700; font-size:44px; margin:6px 0 10px;
+  letter-spacing:-0.5px;
+}
+h1.headline .cn{font-family:var(--serif-cn); color:var(--seal); font-weight:700;}
+p.lede{color:var(--ink-soft); font-size:16px; max-width:640px; margin:10px 0 0;}
+.brush-rule{width:100%; height:3px; margin:26px 0; background:
+  linear-gradient(90deg, var(--ink) 0%, var(--ink) 60%, transparent 60%),
+  linear-gradient(90deg, var(--seal) 65%, transparent 65%);
+  background-size:100% 3px, 20% 3px; background-repeat:no-repeat;
+  opacity:0.85;
+}
+/* Introduces one of this page's two merged sections (Tones, Build a
+   Syllable) — smaller and plainer than .section-head's own eyebrow/headline
+   pair, which stays reserved for the page-level title above both. */
+.subsection-head{margin:0 0 20px;}
+.subsection-head h2{
+  font-family:var(--serif-en); font-weight:700; font-size:24px; margin:0 0 6px;
+  display:flex; align-items:baseline; gap:10px;
+}
+.subsection-head h2 .cn{font-family:var(--serif-cn); color:var(--seal); font-weight:700; font-size:22px;}
+.subsection-head p{color:var(--ink-soft); font-size:14px; margin:0; max-width:620px;}
+
+.subnav{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:30px;}
+.subnav-pill{
+  padding:8px 16px; border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4);
+  border-radius:20px; font-size:13px; font-weight:600; color:var(--ink-soft); cursor:pointer;
+}
+.subnav-pill:hover{border-color:var(--ink); color:var(--ink);}
+.subnav-pill.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+.card{
+  background:rgba(255,255,255,0.35);
+  border:1px solid var(--paper-shadow);
+  border-radius:var(--radius);
+  padding:22px;
+}
+.grid{display:grid; gap:16px;}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+@media (max-width:800px){.grid-2,.grid-3,.grid-4{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:520px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+
+.btn{
+  background:var(--ink); color:var(--paper); border:none; cursor:pointer;
+  padding:10px 18px; font-weight:600; font-size:13.5px; border-radius:2px;
+  letter-spacing:0.3px; transition:transform .12s, background .12s;
+}
+.btn:hover{background:var(--seal-dark);}
+.btn:active{transform:scale(0.97);}
+.btn:disabled{opacity:0.4; cursor:not-allowed;}
+.btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+.btn.ghost:hover{background:var(--ink); color:var(--paper);}
+.btn.small{padding:6px 12px; font-size:12px;}
+.btn-icon-audio{width:1em; height:1em; vertical-align:-0.15em; margin-right:5px; flex-shrink:0;}
+
+/* ---------- HOME ---------- */
+.hero{position:relative; padding:20px 0 10px;}
+.hero-grid{display:grid; grid-template-columns:1.2fr 1fr; gap:40px; align-items:center;}
+@media (max-width:820px){.hero-grid{grid-template-columns:1fr;}}
+.hero h1{font-family:var(--serif-en); font-size:52px; line-height:1.05; margin:0 0 18px; font-weight:700;}
+.hero h1 .cn{font-family:var(--serif-cn); color:var(--seal); display:block; font-size:64px; margin-bottom:6px;}
+.hero p{font-size:17px; color:var(--ink-soft); max-width:480px; margin-bottom:26px;}
+.hero-seals{position:relative; height:340px;}
+.float-seal{
+  position:absolute; font-family:var(--serif-cn); font-weight:700;
+  color:var(--paper); display:flex; align-items:center; justify-content:center;
+  border-radius:3px; box-shadow:3px 3px 0 rgba(0,0,0,0.15);
+}
+.route-cards{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:44px;}
+@media (max-width:900px){.route-cards{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:480px){.route-cards{grid-template-columns:1fr;}}
+.route-card{
+  background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px;
+  padding:20px; cursor:pointer; text-align:left; transition:transform .15s, box-shadow .15s, border-color .15s;
+  display:flex; flex-direction:column; gap:8px;
+}
+.route-card:hover{transform:translateY(-3px); box-shadow:4px 6px 0 rgba(0,0,0,0.08); border-color:var(--ink);}
+.route-card .cn-big{font-family:var(--serif-cn); font-size:30px; color:var(--seal); font-weight:700;}
+.route-card b{font-family:var(--serif-en); font-size:17px;}
+.route-card span{font-size:13px; color:var(--ink-soft);}
+
+/* ---------- DICTIONARY ---------- */
+.dict-search{display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.5); border:1.5px solid var(--ink);
+  border-radius:2px; padding:10px 16px; max-width:460px; margin-bottom:8px;}
+.dict-search input{border:none; background:none; outline:none; font-size:15px; width:100%; font-family:var(--sans);}
+.dict-filters{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 20px;}
+.dict-filter{
+  border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4); padding:6px 13px;
+  border-radius:20px; font-size:12.5px; cursor:pointer; font-weight:600; color:var(--ink-soft);
+}
+.dict-filter:hover{border-color:var(--ink); color:var(--ink);}
+.dict-filter.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+.import-card{background:rgba(255,255,255,0.4); border:1px dashed var(--paper-shadow); border-radius:2px; padding:18px 20px; margin:0 0 26px;}
+.import-card h4{margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:1.2px; color:var(--gold);}
+.import-hint{font-size:12.5px; color:var(--ink-soft); margin:0 0 12px; line-height:1.6;}
+.import-hint code{background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:3px; padding:1px 5px; font-family:monospace; font-size:11px;}
+.import-row{display:flex; align-items:center; gap:12px; margin-bottom:10px; flex-wrap:wrap;}
+.import-or{font-size:12.5px; color:var(--ink-soft);}
+.file-label{cursor:pointer;}
+.import-textarea{width:100%; font-family:var(--sans); font-size:13px; padding:10px 12px; border:1.5px solid var(--paper-shadow);
+  border-radius:2px; background:rgba(255,255,255,0.6); resize:vertical; margin-bottom:10px;}
+.import-status{font-size:12.5px; color:var(--jade-dark); font-weight:600; min-height:18px; opacity:0; transition:opacity .3s;}
+
+.mass-toolbar{display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:14px; font-size:13px; color:var(--ink-soft);}
+.mass-select-all{display:flex; align-items:center; gap:7px; cursor:pointer; font-weight:600;}
+.dict-check{width:16px; height:16px; accent-color:var(--seal); cursor:pointer; flex-shrink:0;}
+
+.dict-count{font-size:12.5px; color:var(--ink-soft); margin-bottom:14px;}
+.dict-list{display:flex; flex-direction:column; gap:10px;}
+.dict-entry{
+  display:flex; align-items:center; gap:18px; background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow);
+  border-radius:2px; padding:16px 20px;
+}
+.dict-hz{font-family:var(--serif-cn); font-size:34px; font-weight:700; color:var(--seal); min-width:52px; text-align:center;}
+.dict-mid{flex:1; min-width:0;}
+.dict-py{font-family:var(--serif-en); font-weight:700; font-size:16px;}
+.dict-en{font-size:13.5px; color:var(--ink-soft); margin-top:2px;}
+.dict-meta{display:flex; align-items:center; gap:10px; flex-shrink:0;}
+.dict-pos{font-size:10.5px; text-transform:uppercase; letter-spacing:0.8px; color:var(--gold); border:1px solid var(--gold);
+  border-radius:20px; padding:3px 9px; white-space:nowrap;}
+.dict-empty{padding:40px 20px; text-align:center; color:var(--ink-soft); font-size:14px;}
+.add-btn{width:28px; height:28px; border-radius:50%; border:1.5px solid var(--jade); color:var(--jade-dark);
+  background:none; font-size:16px; font-weight:700; cursor:pointer; line-height:1; flex-shrink:0;}
+.add-btn:hover{background:var(--jade); color:#fff;}
+.wb-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap; gap:10px;}
+.wb-note{background:rgba(62,107,91,0.1); border-left:3px solid var(--jade); padding:12px 16px; font-size:13px; color:var(--ink-soft); margin-bottom:20px;}
+
+/* ---------- TONES ---------- */
+.tone-desc-panel{
+  margin-top:22px; padding:20px; background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow);
+  border-radius:2px; min-height:60px;
+}
+/* Other dictionary words sharing the exact reading the top match does —
+   see renderSyllableLookup — listed beneath the primary word/definition
+   rather than left as just a "N more words" count, so homophones surface
+   directly instead of requiring a second trip through the Dictionary. */
+.syl-other-matches{margin-top:16px; padding-top:14px; border-top:1px dashed var(--paper-shadow);}
+.syl-other-matches-label{font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--ink-soft); margin-bottom:8px;}
+.syl-other-match{display:block; font-size:13.5px; color:var(--ink); text-decoration:none; padding:4px 0;}
+.syl-other-match:hover{color:var(--seal);}
+.syl-other-match:hover .dict-py{color:inherit;}
+.syl-other-match-overflow{font-size:12px; color:var(--ink-soft); margin-top:4px;}
+
+/* ---------- QUIZ ---------- */
+.quiz-box{background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow); padding:24px; border-radius:2px; margin-top:20px;}
+.quiz-prompt{font-family:var(--serif-cn); font-size:46px; text-align:center; margin:6px 0 4px; font-weight:700;}
+.quiz-pinyin{text-align:center; color:var(--ink-soft); font-size:15px; margin-bottom:18px;}
+.quiz-opts{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; max-width:520px; margin:0 auto;}
+@media (max-width:520px){.quiz-opts{grid-template-columns:repeat(3,1fr);}}
+.quiz-opt{
+  padding:12px 4px; text-align:center; border:1.5px solid var(--ink); background:transparent;
+  cursor:pointer; font-weight:700; border-radius:2px; font-size:15px;
+}
+.quiz-opt:hover{background:var(--ink); color:var(--paper);}
+.quiz-opt.correct{background:var(--jade); border-color:var(--jade); color:#fff;}
+.quiz-opt.wrong{background:var(--seal); border-color:var(--seal); color:#fff;}
+.quiz-status{text-align:center; margin-top:16px; font-size:14px; color:var(--ink-soft); min-height:20px;}
+.quiz-score{text-align:center; font-weight:700; font-family:var(--serif-en); font-size:15px;}
+
+/* ---------- PINYIN SYLLABLE BUILDER ---------- */
+.syl-builder{display:flex; flex-direction:column; gap:22px;}
+.syl-cols{display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start;}
+/* min-width raised from 220 to 300 — Initials/Finals need ~296px to fit 5
+   keycaps per row (matching the reference layout), so pinning the floor just
+   above that keeps them at 5-per-row even though .syl-col-tones now grows
+   more aggressively below. */
+.syl-col{flex:1; min-width:300px;}
+/* The Tones column carries the syllable output + Speak button beside its own
+   tone list now (see .tone-col-row) — plain flex:1 split it dead even with
+   Initials/Finals, which wasn't enough room for both side by side and
+   wrapped the output block underneath instead. Growing faster than its
+   flex:1 siblings (which are pinned at their min-width floor above, so this
+   extra share comes out of slack, not out of their own space) gives it the
+   room it actually needs. */
+.syl-col-tones{flex:1.6;}
+.syl-col h4{font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--ink-soft); margin:0 0 10px;}
+/* justify-content:center is a no-op on every full row (5 keycaps exactly
+   spans the row, leaving nothing to center) but centers a short leftover
+   last row within that same span — for Initials' 3 leftover keycaps (23
+   total ÷ 5/row) and Finals' 3 (18 total ÷ 5/row), that centers them under
+   columns 2/3/4 rather than stacking them flush left under columns 1/2/3. */
+/* row-gap is generous (much bigger than the 9px column-gap) purely to add
+   vertical breathing room — the Tones column beside it got taller once its
+   own elements were enlarged, and matching that height here keeps the
+   definition panel below from starting well past where this grid ends. */
+.chip-grid{display:flex; flex-wrap:wrap; column-gap:9px; row-gap:22px; justify-content:center;}
+/* Tones: a number next to an identical little mouth for every tone, each
+   with its own pitch-contour line (unchanged shape from the old five-card
+   tone grid — same grey-axis + red-contour treatment tones.html originally
+   used) reading out of it, stacked vertically. The number button is sized
+   to match the Initials/Finals keycaps (.keycap.small is 52px) and uses the
+   same flex+gap spacing those grids use, just kept in its own lighter
+   style rather than the keycaps' heavier gradient/shadow look. */
+.tone-face-wrap{display:flex; flex-direction:column; gap:10px;}
+.tone-row{display:flex; align-items:center; gap:12px;}
+.tone-num-item{
+  width:58px; height:58px; border-radius:50%; flex-shrink:0; padding:0;
+  border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4);
+  font-family:var(--serif-en); font-weight:700; font-size:15px; color:var(--ink-soft);
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:border-color .15s, color .15s, background .15s;
+}
+.tone-num-item:hover{border-color:var(--seal); color:var(--seal);}
+.tone-row.picked .tone-num-item{background:var(--ink); border-color:var(--ink); color:var(--paper);}
+.tone-row-svg{height:62px; width:auto; cursor:pointer; overflow:visible;}
+.tone-axis-line{stroke:var(--paper-shadow); stroke-width:1;}
+.tone-contour-line{stroke:var(--seal); stroke-width:3; stroke-linecap:round; transition:stroke-width .15s;}
+.tone-row-svg text{font-family:var(--serif-en); font-weight:700; fill:var(--ink-soft); transition:fill .15s;}
+.tone-row:hover .tone-contour-line{stroke-width:4;}
+.tone-row:hover .tone-row-svg text{fill:var(--seal);}
+.tone-row.picked .tone-contour-line{stroke-width:4.5;}
+.tone-row.picked .tone-row-svg text{fill:var(--seal);}
+/* Same dimmed treatment .keycap:disabled gives an incompatible initial/final
+   — see refreshToneAvailability. The number button is natively disabled
+   too (real keyboard-safe blocking); the SVG pitch line has no such native
+   state, so pointer-events:none does the same job for it here. */
+.tone-row.unavailable .tone-num-item{opacity:0.3; cursor:not-allowed;}
+.tone-row.unavailable .tone-row-svg{opacity:0.3; cursor:not-allowed; pointer-events:none;}
+.chip{
+  border:1.5px solid var(--paper-shadow); background:rgba(255,255,255,0.4); padding:6px 11px;
+  border-radius:20px; font-size:13px; cursor:pointer; font-weight:600;
+}
+.chip:hover{border-color:var(--ink);}
+.chip.picked{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+/* Sits inside the Tones column itself, beside .tone-face-wrap, rather than as
+   its own sibling of Initials/Finals/Tones — a 4th flex:1 column shrank all
+   four columns to fit, which shifted Tones out of its original position and
+   width. Living inside Tones' own (already fairly wide) column instead keeps
+   Initials/Finals/Tones untouched and lands in the same spare whitespace to
+   the right of the tone rows the original mockup pointed at. */
+.tone-col-row{display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
+/* The built syllable's own output — a plain text readout sitting directly
+   above a big standalone Speak button (no boxed/dark-card treatment, unlike
+   the old .syl-result). min-width trimmed to 140 — the Tones column only has
+   ~370px total to work with beside the (already sized-for-5-per-row)
+   Initials/Finals columns, and a wider floor here was pushing the whole row
+   over that budget and wrapping the button underneath instead of beside it. */
+.syl-output-col{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; min-width:140px;}
+.syl-out-text{font-family:var(--serif-en); font-size:38px; font-weight:700; color:var(--ink); min-height:46px; display:flex; align-items:center; justify-content:center;}
+.syl-speak-btn{
+  width:80px; height:80px; border-radius:50%; flex-shrink:0; padding:0;
+  border:1.5px solid var(--paper-shadow); background:none; color:var(--ink-soft); cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:background .15s, color .15s, border-color .15s;
+}
+.syl-speak-btn svg{width:46%; height:46%; display:block;}
+.syl-speak-btn:hover{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+/* ---------- PINYIN TRAINER ---------- */
+.trainer-card{
+  background:rgba(255,255,255,0.45); border:1px solid var(--paper-shadow); border-radius:2px;
+  padding:38px 34px; max-width:460px; margin:0 auto; text-align:center;
+}
+.trainer-char{
+  font-family:var(--serif-cn); font-size:72px; font-weight:700; color:var(--ink);
+  margin-bottom:20px; min-height:88px; display:flex; align-items:center; justify-content:center;
+}
+.trainer-input{
+  font-family:var(--serif-en); font-size:20px; padding:12px 16px; text-align:center; width:100%;
+  border:2px solid var(--paper-shadow); border-radius:2px; outline:none; background:rgba(255,255,255,0.6);
+  color:var(--ink); transition:border-color .15s, background .15s; font-weight:600;
+}
+.trainer-input:focus{border-color:var(--ink);}
+.trainer-input.correct{border-color:var(--jade); background:rgba(62,107,91,0.14); color:var(--jade-dark);}
+.trainer-reveal{
+  font-family:var(--serif-en); font-size:19px; font-weight:700; color:var(--seal); min-height:28px; margin:14px 0 2px;
+}
+.trainer-controls{display:flex; gap:10px; justify-content:center; margin-top:16px; flex-wrap:wrap;}
+.trainer-progress{margin-top:20px; font-size:12px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;}
+.trainer-done{font-family:var(--serif-en); font-size:24px; font-weight:700; padding:20px 0 8px;}
+.trainer-done-sub{font-size:14px; color:var(--ink-soft); margin-bottom:18px;}
+
+.tone-key{margin:28px auto 0; max-width:560px; border-top:1px dashed var(--paper-shadow); padding-top:18px;}
+.tone-key-title{font-size:12px; text-transform:uppercase; letter-spacing:1.2px; color:var(--ink-soft); text-align:center; margin-bottom:12px;}
+.tone-key-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:9px; font-size:12.5px; color:var(--ink-soft); text-align:center;}
+@media (max-width:620px){.tone-key-grid{grid-template-columns:repeat(2,1fr);}}
+.tone-key-grid b{font-family:var(--serif-cn); color:var(--seal); margin-right:4px; font-size:14px;}
+.tone-key-grid code{background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:3px; padding:1px 5px; font-size:11px; font-family:monospace;}
+.bank-notice{background:rgba(169,131,46,0.12); border-left:3px solid var(--gold); padding:10px 16px; font-size:12.5px; color:var(--ink-soft); margin-bottom:20px;}
+
+/* ---------- TYPEWRITER KEYCAPS (zhuyin keyboard + pinyin initials/finals) ---------- */
+.keyboard{display:flex; flex-direction:column; gap:12px; align-items:center; margin:22px 0;}
+.keyboard-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+.keycap{
+  width:62px; height:62px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(160deg, #f6f0e0 0%, #e7ddc2 100%);
+  border:1px solid var(--paper-shadow);
+  box-shadow:0 3px 0 var(--paper-shadow), 0 6px 9px rgba(0,0,0,0.18), inset 0 1px 1px rgba(255,255,255,0.7);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent;
+  transition:transform .08s ease, box-shadow .08s ease, background .1s ease;
+  position:relative; padding:0;
+}
+.keycap:hover{transform:translateY(-2px); box-shadow:0 5px 0 var(--paper-shadow), 0 10px 14px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.7);}
+.keycap:active{transform:translateY(2px); box-shadow:0 1px 0 var(--paper-shadow), 0 2px 4px rgba(0,0,0,0.15), inset 0 1px 2px rgba(0,0,0,0.15);}
+.keycap.picked{background:linear-gradient(160deg, var(--ink) 0%, #34372f 100%); color:var(--paper); border-color:var(--ink); transform:translateY(2px); box-shadow:0 1px 0 var(--ink), 0 2px 4px rgba(0,0,0,0.25), inset 0 1px 2px rgba(0,0,0,0.2);}
+.keycap .kc-main{font-family:var(--serif-cn); font-size:23px; font-weight:700; line-height:1; color:var(--seal);}
+.keycap.picked .kc-main{color:var(--paper);}
+.keycap .kc-sub{font-family:var(--serif-en); font-size:9.5px; color:var(--ink-soft); margin-top:3px; letter-spacing:0.5px;}
+.keycap.picked .kc-sub{color:#c9c2ac;}
+.keycap.small{width:52px; height:52px;}
+.keycap.small .kc-main{font-family:var(--serif-en); font-size:13px; font-weight:700; color:var(--ink);}
+.keycap.small.picked .kc-main{color:var(--paper);}
+/* A final that can't follow the picked initial (or vice versa) — grayed out
+   and inert, the same way pinyinflutter's own keyboard drops incompatible
+   combinations when you pick one side first. Real disabled:disabled, not
+   just a dimmed look, so it's not tab-reachable or clickable either. */
+.keycap:disabled{opacity:0.3; cursor:not-allowed; box-shadow:none; transform:none !important;}
+.keycap:disabled:hover{transform:none; box-shadow:none;}
+.keyboard-note{font-size:12.5px; color:var(--ink-soft); text-align:center; max-width:520px; margin:4px auto 0;}
+
+/* ---------- STROKES ---------- */
+.stroke-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+@media (max-width:760px){.stroke-grid{grid-template-columns:repeat(2,1fr);}}
+.stroke-card{background:rgba(255,255,255,0.4); border:1px solid var(--paper-shadow); border-radius:2px; padding:16px; text-align:center;}
+.stroke-card svg{margin:4px 0 8px;}
+.stroke-card b{font-family:var(--serif-cn); font-size:15px; display:block;}
+.stroke-card span{font-size:11.5px; color:var(--ink-soft);}
+.rules-list{list-style:none; margin:24px 0 0; padding:0; display:grid; gap:10px;}
+.rules-list li{
+  display:flex; gap:12px; align-items:flex-start; background:rgba(255,255,255,0.35);
+  border:1px solid var(--paper-shadow); padding:12px 16px; border-radius:2px; font-size:14px;
+}
+.rules-list b{font-family:var(--serif-en); color:var(--seal); min-width:22px;}
+
+/* ---------- RADICALS ---------- */
+.search-bar{
+  display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.5); border:1.5px solid var(--ink);
+  border-radius:2px; padding:8px 14px; max-width:320px; margin-bottom:20px;
+}
+.search-bar input{border:none; background:none; outline:none; font-size:14px; width:100%; font-family:var(--sans);}
+.radical-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:12px;}
+@media (max-width:800px){.radical-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:520px){.radical-grid{grid-template-columns:repeat(2,1fr);}}
+.radical-card{perspective:800px; height:118px; cursor:pointer;}
+.radical-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;}
+.radical-card.flipped .radical-inner{transform:rotateY(180deg);}
+.radical-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:2px; border:1px solid var(--paper-shadow);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; padding:8px; text-align:center;
+}
+.radical-face.front{background:rgba(255,255,255,0.4);}
+.radical-face.front .ch{font-family:var(--serif-cn); font-size:34px; font-weight:700; color:var(--seal);}
+.radical-face.front .py{font-size:11px; color:var(--ink-soft); margin-top:4px;}
+.radical-face.back{background:var(--ink); color:var(--paper); transform:rotateY(180deg);}
+.radical-face.back .mean{font-weight:700; font-size:13px;}
+.radical-face.back .ex{font-size:11px; margin-top:6px; color:#c9c2ac;}
+
+/* ---------- CHARACTERS flashcards ---------- */
+.deck-wrap{display:flex; flex-direction:column; align-items:center; gap:18px;}
+.flashcard{width:280px; height:280px; perspective:1000px; cursor:pointer;}
+.flash-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;}
+.flashcard.flipped .flash-inner{transform:rotateY(180deg);}
+.flash-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:4px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow:5px 6px 0 rgba(0,0,0,0.12);
+}
+.flash-face.front{background:rgba(255,255,255,0.55); border:1px solid var(--paper-shadow);}
+.flash-face.front .ch{font-family:var(--serif-cn); font-size:100px; font-weight:700;}
+.flash-face.back{background:var(--ink); color:var(--paper); transform:rotateY(180deg);}
+.flash-face.back .py{font-family:var(--serif-en); font-size:26px; font-weight:700;}
+.flash-face.back .mean{margin-top:10px; font-size:15px; color:#d9d2ba;}
+.flash-face.back .strokes{margin-top:16px; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--gold);}
+.deck-controls{display:flex; gap:10px; align-items:center;}
+.deck-progress{font-size:12.5px; color:var(--ink-soft); font-weight:600;}
+
+/* ---------- WRITING PRACTICE ---------- */
+.hw-wrap{display:flex; flex-direction:column; align-items:center;}
+.hw-target-wrap{position:relative; width:280px; height:280px; margin:0 auto; border:2px solid var(--paper-shadow); background:rgba(255,255,255,0.55);}
+.hw-target-wrap::before{content:''; position:absolute; left:50%; top:0; bottom:0; width:1px; background:var(--paper-shadow); opacity:0.8; z-index:1;}
+.hw-target-wrap::after{content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:var(--paper-shadow); opacity:0.8; z-index:1;}
+.hw-diag{position:absolute; top:50%; left:50%; width:396px; height:0; border-top:1px dashed var(--paper-shadow); opacity:0.55; z-index:1;}
+.hw-diag1{transform:translate(-50%,-50%) rotate(45deg);}
+.hw-diag2{transform:translate(-50%,-50%) rotate(-45deg);}
+#hwTarget{position:relative; z-index:2;}
+.hw-context{text-align:center; font-size:14px; color:var(--ink-soft); margin:16px 0 2px;}
+.hw-progress{text-align:center; font-size:12px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase; margin-bottom:6px;}
+.hw-controls{display:flex; gap:10px; justify-content:center; margin-top:20px; flex-wrap:wrap;}
+.hw-result{text-align:center; font-size:14px; font-weight:600; color:var(--jade-dark); min-height:20px; margin-top:14px;}
+.hw-empty{text-align:center; padding:50px 20px; color:var(--ink-soft); font-size:14px;}
+
+/* ---------- DIALOGUE ---------- */
+.dialogue-list{display:flex; flex-direction:column; gap:12px;}
+.dialogue-card{border:1px solid var(--paper-shadow); border-radius:2px; background:rgba(255,255,255,0.4); overflow:hidden;}
+.dialogue-header{display:flex; align-items:center; justify-content:space-between; padding:16px 20px; cursor:pointer;}
+.dialogue-header b{font-family:var(--serif-en); font-size:17px;}
+.dialogue-header .icon{font-family:var(--serif-cn); font-size:22px; color:var(--seal); margin-right:10px;}
+.dialogue-body{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+.dialogue-card.open .dialogue-body{max-height:900px;}
+.dialogue-body-inner{padding:0 20px 20px;}
+.line{display:flex; gap:14px; padding:10px 0; border-top:1px dashed var(--paper-shadow);}
+.line:first-child{border-top:none;}
+.line .who{
+  flex-shrink:0; width:26px; height:26px; border-radius:50%; background:var(--ink); color:var(--paper);
+  display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;
+}
+.line.b .who{background:var(--seal);}
+.line-text .hz{font-family:var(--serif-cn); font-size:18px; font-weight:600;}
+.line-text .py{font-size:12.5px; color:var(--ink-soft); margin-top:2px;}
+.line-text .en{font-size:12.5px; color:var(--slate); margin-top:2px; display:none;}
+.show-en .line-text .en{display:block;}
+.toggle-en-btn{margin-bottom:16px;}
+
+/* ---------- ZHUYIN ---------- */
+.zhuyin-table{width:100%; border-collapse:collapse; font-size:13.5px;}
+.zhuyin-table th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--ink-soft); padding:6px 10px; border-bottom:2px solid var(--ink);}
+.zhuyin-table td{padding:6px 10px; border-bottom:1px solid var(--paper-shadow);}
+.zy-symbol{font-family:var(--serif-cn); font-size:20px; color:var(--seal); font-weight:700; cursor:pointer;}
+.zy-symbol:hover{text-decoration:underline;}
+.zhuyin-note{background:rgba(255,255,255,0.4); border-left:3px solid var(--gold); padding:14px 18px; font-size:13.5px; margin-top:20px; color:var(--ink-soft);}
+
+/* ---------- GEOGRAPHY ---------- */
+.province-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+@media (max-width:820px){.province-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:560px){.province-grid{grid-template-columns:repeat(2,1fr);}}
+.province-chip{
+  background:rgba(255,255,255,0.4); border:1.5px solid var(--paper-shadow); border-radius:2px; padding:16px 10px;
+  text-align:center; cursor:pointer; transition:border-color .15s, background .15s;
+}
+.province-chip:hover{border-color:var(--seal);}
+.province-chip.active{background:var(--ink); border-color:var(--ink); color:var(--paper);}
+.province-chip .cn{font-family:var(--serif-cn); font-size:20px; font-weight:700; display:block;}
+.province-chip .en{font-size:11px; color:inherit; opacity:0.75;}
+.province-detail{margin-top:24px; background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow); border-radius:2px; padding:28px;}
+.pd-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:6px;}
+.pd-head .cn{font-family:var(--serif-cn); font-size:36px; font-weight:700; color:var(--seal);}
+.pd-head .en{font-family:var(--serif-en); font-size:20px; color:var(--ink-soft);}
+.pd-sub{color:var(--ink-soft); font-size:14px; margin-bottom:20px;}
+.pd-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:20px;}
+@media (max-width:700px){.pd-grid{grid-template-columns:1fr;}}
+.pd-block h4{font-size:11.5px; text-transform:uppercase; letter-spacing:1.2px; color:var(--gold); margin:0 0 10px;}
+.tag-row{display:flex; flex-wrap:wrap; gap:6px;}
+.tag{background:var(--paper-deep); border:1px solid var(--paper-shadow); border-radius:20px; padding:5px 12px; font-size:12.5px;}
+.pd-list{list-style:none; margin:0; padding:0; display:grid; gap:6px; font-size:13.5px;}
+.pd-list li{padding-left:14px; position:relative;}
+.pd-list li::before{content:'—'; position:absolute; left:0; color:var(--seal);}
+
+/* ---------- HISTORY ---------- */
+.timeline{position:relative; margin-top:10px; padding-left:26px;}
+.timeline::before{content:''; position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:var(--paper-shadow);}
+.dyn-item{position:relative; padding-bottom:22px; cursor:pointer;}
+.dyn-item::before{
+  content:''; position:absolute; left:-26px; top:6px; width:12px; height:12px; border-radius:50%;
+  background:var(--paper); border:2.5px solid var(--ink);
+}
+.dyn-item.open::before{background:var(--seal); border-color:var(--seal);}
+.dyn-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;}
+.dyn-head .cn{font-family:var(--serif-cn); font-size:24px; font-weight:700;}
+.dyn-head .period{font-size:12.5px; color:var(--ink-soft); font-family:var(--serif-en); font-weight:600;}
+.dyn-body{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+.dyn-item.open .dyn-body{max-height:400px;}
+.dyn-body-inner{padding:12px 0 4px; font-size:14px; color:var(--ink-soft); max-width:640px;}
+.dyn-body-inner ul{margin:10px 0 0; padding-left:18px;}
+.dyn-body-inner li{margin-bottom:4px;}
+
+footer{border-top:1px solid var(--paper-shadow); padding:30px 28px; text-align:center; font-size:12.5px; color:var(--ink-soft);}
+
+</style>
+<script src="settings.js?v=6"></script>
+<script src="cedict.js"></script>
+<script src="hsk-lists.js"></script>
+<script src="auth-guard.js?v=2"></script>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html" style="text-decoration:none;">
+      <div class="seal-mark">境</div>
+      <div class="brand-text"><b>Context Chinese</b><span data-i18n="brand.tagline">Your One-Stop China Shop</span></div>
+    </a>
+    <nav class="tabs" id="navTabs" style="flex:1 1 auto;">
+
+      <div class="nav-item" data-nav-cat="learn">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">学习</span><span class="i18n-label" data-i18n="nav.learn">Learn</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="read.html" data-i18n="learn.read">Read</a>
+          <a class="dropdown-link" href="dictate.html" data-i18n="learn.dictate">Dictate</a>
+          <a class="dropdown-link" href="multiple-choice.html" data-i18n="learn.multiplechoice">Multiple Choice</a>
+          <a class="dropdown-link" href="translate.html" data-i18n="learn.translate">Translate</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="vocabulary">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">词汇</span><span class="i18n-label" data-i18n="nav.vocabulary">Vocabulary</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="search.html" data-i18n="vocab.search">Search</a>
+          <a class="dropdown-link" href="word-bank.html" data-i18n="vocab.wordbank">Word Bank</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="hanzi">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)"><span class="cn">汉字</span><span class="i18n-label" data-i18n="nav.hanzi">Hanzi</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link" href="strokes.html" data-i18n="hanzi.strokes">Strokes</a>
+          <a class="dropdown-link" href="radicals.html" data-i18n="hanzi.radicals">Radicals</a>
+          <a class="dropdown-link" href="writing-practice.html" data-i18n="hanzi.writing">Writing Practice</a>
+        </div>
+      </div>
+
+      <div class="nav-item" data-nav-cat="pinyin">
+        <button class="tab-btn active" onclick="toggleNavDropdown(event)"><span class="cn">拼音</span><span class="i18n-label" data-i18n="nav.pinyin">Pinyin</span><span class="caret">▾</span></button>
+        <div class="dropdown">
+          <a class="dropdown-link active" href="pinyin-components.html" data-i18n="pinyin.components">Components</a>
+          <a class="dropdown-link" href="match-pinyin.html" data-i18n="pinyin.match">Match Pinyin</a>
+          <a class="dropdown-link" href="type-pinyin.html" data-i18n="pinyin.typing">Type Pinyin</a>
+        </div>
+      </div>
+</nav>
+
+      <div class="nav-item" style="flex-shrink:0;">
+        <button class="tab-btn" onclick="toggleNavDropdown(event)" style="line-height:1; display:inline-flex; align-items:center; justify-content:center;" title="More"><svg viewBox="0 0 24 24" fill="black" style="width:18px; height:18px;"><path d="M19.14,12.94c0.04,-0.3,0.06,-0.61,0.06,-0.94c0,-0.32,-0.02,-0.64,-0.07,-0.94l2.03,-1.58c0.18,-0.14,0.23,-0.41,0.12,-0.61 l-1.92,-3.32c-0.12,-0.22,-0.37,-0.29,-0.59,-0.22l-2.39,0.96c-0.5,-0.38,-1.03,-0.7,-1.62,-0.94L14.4,2.81 c-0.04,-0.24,-0.24,-0.41,-0.48,-0.41h-3.84c-0.24,0,-0.43,0.17,-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33 c-0.22,-0.08,-0.47,0,-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94 l-2.03,1.58c-0.18,0.14,-0.23,0.41,-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39,-0.96c0.5,0.38,1.03,0.7,1.62,0.94 l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44,-0.17,0.47,-0.41l0.36,-2.54c0.59,-0.24,1.13,-0.56,1.62,-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59,-0.22l1.92,-3.32c0.12,-0.22,0.07,-0.47,-0.12,-0.61L19.14,12.94z M12,15.6c-1.98,0,-3.6,-1.62,-3.6,-3.6 s1.62,-3.6,3.6,-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"></path></svg></button>
+        <div class="dropdown" style="left:auto; right:0;">
+          <a class="dropdown-link" href="settings.html" data-i18n="gear.settings">Settings</a>
+          <a class="dropdown-link" href="help.html" data-i18n="gear.help">Help</a>
+          <button class="dropdown-link" onclick="signOutUser()" data-i18n="gear.logout">Logout</button>
+        </div>
+      </div>
+  </div>
+</header>
+
+<main>
+
+<div class="section-head">
+  <div class="eyebrow">Components · 拼音</div>
+  <p class="lede">The building blocks of every pinyin syllable — the four tones that carry meaning through pitch, and the initial + final combinations that spell out each sound.</p>
+</div>
+
+<div class="syl-builder card">
+  <div class="syl-cols">
+    <div class="syl-col">
+      <h4>Initials</h4>
+      <div class="chip-grid" id="initialsGrid"></div>
+    </div>
+    <div class="syl-col">
+      <h4>Finals</h4>
+      <div class="chip-grid" id="finalsGrid"></div>
+    </div>
+    <div class="syl-col syl-col-tones">
+      <h4>Tones</h4>
+      <div class="tone-col-row">
+        <div class="tone-face-wrap" id="toneFaceWrap"></div>
+        <div class="syl-output-col">
+          <div class="syl-out-text" id="sylOut">—</div>
+          <button class="syl-speak-btn" id="sylSpeakBtn" onclick="speakBuiltSyllable()" title="Speak the syllable" aria-label="Speak the syllable">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="#8A8A8A" fill="#8A8A8A"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#3B82F6"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tone-desc-panel" id="tonePanel">Pick an initial, final, and tone to see if it spells a real word — and hear it.</div>
+</div>
+
+</main>
+
+<footer>境 Context Chinese — a learning companion for Mandarin sound, script, geography and history.</footer>
+
+<script>
+/* ================= NAV DROPDOWN (click to open, does not navigate) ================= */
+function toggleNavDropdown(e){
+  const item = e.currentTarget.closest('.nav-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.nav-item.open').forEach(n=>{
+    n.classList.remove('open');
+    const dd = n.querySelector('.dropdown');
+    if(dd){ dd.style.position=''; dd.style.left=''; dd.style.top=''; }
+  });
+  if(!wasOpen){
+    item.classList.add('open');
+    // Below 920px the nav scrolls horizontally (nav.tabs{overflow-x:auto}).
+    // Anchoring the dropdown with position:fixed here — instead of the
+    // default position:absolute under the button — lets it escape that
+    // scroll container's clipping without ever touching its overflow
+    // property, so opening/closing a dropdown never resets the nav's
+    // scroll position back to the start.
+    if(window.matchMedia('(max-width:920px)').matches){
+      const dd = item.querySelector('.dropdown');
+      const btnRect = e.currentTarget.getBoundingClientRect();
+      dd.style.position = 'fixed';
+      dd.style.top = (btnRect.bottom + 6) + 'px';
+      const maxLeft = window.innerWidth - 208; // dropdown min-width 200px + 8px margin
+      dd.style.left = Math.max(8, Math.min(btnRect.left, maxLeft)) + 'px';
+    }
+  }
+}
+document.addEventListener('click', (e)=>{
+  if(e.target.closest('.dropdown-link') || !e.target.closest('.nav-item')){
+    document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+  }
+});
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='Escape') document.querySelectorAll('.nav-item.open').forEach(n=>n.classList.remove('open'));
+});
+
+/* ================= SPEECH ================= */
+function speak(text, lang){
+  if(!('speechSynthesis' in window) || !text || text==='—') return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang || 'zh-CN';
+  u.rate = (typeof getSpeechRate === 'function') ? getSpeechRate() : 0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+function shuffle(array){
+  for(let i=array.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function stripTones(s){
+  const map = {'ā':'a','á':'a','ǎ':'a','à':'a','ē':'e','é':'e','ě':'e','è':'e','ī':'i','í':'i','ǐ':'i','ì':'i',
+    'ō':'o','ó':'o','ǒ':'o','ò':'o','ū':'u','ú':'u','ǔ':'u','ù':'u','ǖ':'u','ǘ':'u','ǚ':'u','ǜ':'u','ü':'u'};
+  return s.toLowerCase().split('').map(c=>map[c]||c).join('');
+}
+
+/* ================= WORD BANK (persisted via localStorage, shared across pages) =================
+   Note: localStorage is scoped per-origin. If these files are opened directly from disk (file://),
+   most browsers share storage across files in the same folder, but this can vary — hosting the
+   site (even a simple local server) guarantees the Word Bank stays in sync across every page. */
+let wordBankMem = [];
+function loadWordBank(){
+  try{
+    const raw = localStorage.getItem('ccWordBank');
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return wordBankMem; }
+}
+function saveWordBank(arr){
+  wordBankMem = arr;
+  try{ localStorage.setItem('ccWordBank', JSON.stringify(arr)); }catch(e){}
+}
+function addToWordBank(entries){
+  const bank = loadWordBank();
+  const existing = new Set(bank.map(w=>w.hz));
+  let added=0, skipped=0;
+  entries.forEach(e=>{
+    if(!e || !e.hz) return;
+    if(existing.has(e.hz)){ skipped++; return; }
+    existing.add(e.hz);
+    bank.push({hz:e.hz, py:e.py||'—', en:e.en||'—', folder:''});
+    added++;
+  });
+  saveWordBank(bank);
+  return {added, skipped, total:bank.length};
+}
+function removeFromWordBankRaw(hz){
+  saveWordBank(loadWordBank().filter(w=>w.hz!==hz));
+}
+function clearWordBankRaw(){
+  saveWordBank([]);
+}
+
+/* ---- folders: organize Word Bank entries into named study groups ---- */
+function loadFolders(){
+  try{ const raw = localStorage.getItem('ccFolders'); return raw ? JSON.parse(raw) : []; }catch(e){ return []; }
+}
+function saveFolders(arr){
+  try{ localStorage.setItem('ccFolders', JSON.stringify(arr)); }catch(e){}
+}
+function createFolder(name){
+  name = (name||'').trim();
+  if(!name) return loadFolders();
+  const folders = loadFolders();
+  if(!folders.includes(name)){ folders.push(name); saveFolders(folders); }
+  return folders;
+}
+function deleteFolder(name){
+  saveFolders(loadFolders().filter(f=>f!==name));
+  saveWordBank(loadWordBank().map(w => w.folder===name ? Object.assign({}, w, {folder:''}) : w));
+}
+
+</script>
+
+<script>
+/* ---- Tones (merged in from the former tones.html) ---- */
+const tones = [
+  {num:1, mark:'mā', name:'High level', desc:'The pitch stays flat and high, like holding a single musical note.', hz:'妈', mean:'mother', contour:'flat-high'},
+  {num:2, mark:'má', name:'Rising', desc:'The pitch rises from mid to high, like asking "huh?" in English.', hz:'麻', mean:'hemp / numb', contour:'rising'},
+  {num:3, mark:'mǎ', name:'Dipping', desc:'The pitch dips down and then rises back up — low and drawn out.', hz:'马', mean:'horse', contour:'dip'},
+  {num:4, mark:'mà', name:'Falling', desc:'The pitch drops sharply from high to low, like a firm command.', hz:'骂', mean:'to scold', contour:'falling'},
+  {num:5, mark:'ma', name:'Neutral', desc:'Short and light, with no strong pitch of its own — it takes its pitch from context.', hz:'吗', mean:'question particle', contour:'flat-mid'},
+];
+// The exact five pitch-contour path shapes from the original tone grid,
+// byte-for-byte unchanged (still local x 6→54, y 4→40) — same grey axis +
+// red contour line treatment the original tones.html used. (The mouth icon
+// that used to sit to the left of this is pulled for now, which still
+// leaves room to bring one back later.)
+const TONE_LINE_ORIGINAL = {
+  'flat-high':'M6 12 L54 12',
+  'rising':'M6 34 L54 8',
+  'dip':'M6 14 Q30 40 54 14',
+  'falling':'M6 8 L54 34',
+  'flat-mid':'M6 22 L54 22',
+};
+// The standalone Unicode tone-mark characters (macron/acute/caron/grave) —
+// same glyphs settings.js's own wrapPinyinGlyphFixes decomposes accented
+// pinyin vowels into — read out next to each tone's pitch line instead of a
+// full worked example syllable like "mā". Neutral (5th) tone carries no mark
+// of its own, so it gets none here either.
+const TONE_GLYPH = {1:'ˉ', 2:'ˊ', 3:'ˇ', 4:'ˋ', 5:''};
+function toneRowSVG(t){
+  const lx = 54 + 8;
+  const glyph = TONE_GLYPH[t.num];
+  // Vertically centered on the viewBox's own mid-height (dominant-baseline,
+  // not tied to TONE_LINE_END like the old small mark was) rather than
+  // glued to that particular contour's line-end height — at this much
+  // larger size, anchoring to a rising/falling line's own high/low endpoint
+  // would push the glyph's cap-height or descender past the viewBox edge
+  // for some contours. The viewBox is widened (70→104) to give a size-32
+  // mark enough clearance beside the line before wrapping/clipping.
+  return `<svg class="tone-row-svg" onclick="selectTone(${t.num})" viewBox="0 0 104 48" xmlns="http://www.w3.org/2000/svg">
+    <line class="tone-axis-line" x1="6" y1="4" x2="6" y2="40"></line>
+    <path class="tone-contour-line" d="${TONE_LINE_ORIGINAL[t.contour]}" fill="none"></path>
+    ${glyph ? `<text x="${lx}" y="24" dominant-baseline="central" font-size="32">${glyph}</text>` : ''}
+  </svg>`;
+}
+// 1st/2nd/3rd/4th/5th, per tone number.
+function ordinal(n){
+  const suffixes = {1:'st', 2:'nd', 3:'rd'};
+  return n + (suffixes[n] || 'th');
+}
+// An ordinal button next to each tone's pitch line — either one picks that
+// tone. The old worked-example text (name/desc/hz/mean) that used to fill
+// the description panel below now lives only in this hover tooltip — the
+// panel itself is reserved for whatever real word the built syllable spells,
+// see updateSyllableCombo/renderSyllableLookup.
+function renderToneFace(){
+  document.getElementById('toneFaceWrap').innerHTML = tones.map(t => `
+    <div class="tone-row" data-num="${t.num}" title="Tone ${t.num} — ${t.name} (${t.mark}): ${t.desc}">
+      <button type="button" class="tone-num-item" onclick="selectTone(${t.num})">${ordinal(t.num)}</button>
+      ${toneRowSVG(t)}
+    </div>`).join('');
+}
+// Picking a tone becomes the third piece of the combined syllable, once a
+// final is also picked (an initial is optional — see updateSyllableCombo,
+// which drives both the syllable readout and the dictionary-lookup panel
+// below it). No audio plays here or from picking an initial/final chip (see
+// pickChip) — the Speak button (speakBuiltSyllable) is the only way to hear
+// anything, including a tone, initial, or final picked on its own.
+let pickedTone = null;
+function selectTone(num){
+  const wasPicked = pickedTone === num;
+  document.querySelectorAll('.tone-row').forEach(g=>g.classList.remove('picked'));
+  pickedTone = wasPicked ? null : num;
+  if(pickedTone != null){
+    const g = document.querySelector(`.tone-row[data-num="${num}"]`);
+    if(g) g.classList.add('picked');
+  }
+  updateSyllableCombo();
+}
+renderToneFace();
+
+/* ---- Build a Syllable ----
+   VALID_FINALS_BY_INITIAL: which of the 18 finals below can actually follow
+   each initial in standard Hanyu Pinyin — e.g. "bo/ba/bi" are real
+   syllables but "be/bü" aren't, so "e" and "ü" gray out the moment "b" is
+   picked (and vice versa: picking a final grays out initials that can't
+   precede it). Read off the standard Hanyu Pinyin syllable table, not
+   derived programmatically — a handful of rare/dialectal syllables (lo,
+   miu, zhei, shei, yo) are included since they're in the standard table,
+   but this is a best-effort reference, not a machine-verified one. */
+// iao/uo/ui/ue (added alongside the finals array below) follow the same
+// standard-syllable-chart sourcing as everything else here, with one
+// deliberate gap: n/l's real üe syllables (nüe/lüe, "cruel"/"omit") keep
+// their umlaut in real pinyin — spelled with an actual ü, not the plain
+// "ue" j/q/x/y collapse to — so they're left out rather than wrongly
+// listing "ue" (which would suggest "nue"/"lue" as if they were the same
+// kind of umlaut-drop that j/q/x/y get) for a final n/l can't actually take
+// this spelled way.
+const VALID_FINALS_BY_INITIAL = {
+  b: ['a','o','i','u','ai','ei','ao','an','en','ang','eng','ie','iao'],
+  p: ['a','o','i','u','ai','ei','ao','ou','an','en','ang','eng','ie','iao'],
+  m: ['a','o','e','i','u','ai','ei','ao','ou','an','en','ang','eng','ie','iu','iao'],
+  f: ['a','o','u','ei','ou','an','en','ang','eng'],
+  d: ['a','e','i','u','ai','ei','ao','ou','an','ang','eng','ong','ie','iu','iao','uo','ui'],
+  t: ['a','e','i','u','ai','ao','ou','an','ang','eng','ong','ie','iao','uo','ui'],
+  n: ['a','e','i','u','ü','ai','ei','ao','ou','an','en','ang','eng','ong','ie','iu','iao','uo'],
+  l: ['a','o','e','i','u','ü','ai','ei','ao','ou','an','ang','eng','ong','ie','iu','iao','uo'],
+  g: ['a','e','u','ai','ei','ao','ou','an','en','ang','eng','ong','uo','ui'],
+  k: ['a','e','u','ai','ao','ou','an','en','ang','eng','ong','uo','ui'],
+  h: ['a','e','u','ai','ei','ao','ou','an','en','ang','eng','ong','uo','ui'],
+  j: ['i','u','ie','iu','iao','ue'],
+  q: ['i','u','ie','iu','iao','ue'],
+  x: ['i','u','ie','iu','iao','ue'],
+  zh: ['a','e','i','u','ai','ei','ao','ou','an','en','ang','eng','ong','uo','ui'],
+  ch: ['a','e','i','u','ai','ao','ou','an','en','ang','eng','ong','uo','ui'],
+  sh: ['a','e','i','u','ai','ei','ao','ou','an','en','ang','eng','uo','ui'],
+  r: ['e','i','u','ao','ou','an','en','ang','eng','ong','uo','ui'],
+  z: ['a','e','i','u','ai','ei','ao','ou','an','en','ang','eng','ong','uo','ui'],
+  c: ['a','e','i','u','ai','ao','ou','an','en','ang','eng','ong','uo','ui'],
+  s: ['a','e','i','u','ai','ao','ou','an','en','ang','eng','ong','uo','ui'],
+  y: ['a','e','i','o','u','ao','ou','an','ang','ong','ue'],
+  w: ['a','o','u','ai','ei','an','ang','en','eng'],
+};
+VALID_FINALS_BY_INITIAL.__sets = {};
+Object.keys(VALID_FINALS_BY_INITIAL).forEach(function(k){
+  if(k==='__sets') return;
+  VALID_FINALS_BY_INITIAL.__sets[k] = new Set(VALID_FINALS_BY_INITIAL[k]);
+});
+function initialAllowsFinal(initial, final){
+  const set = VALID_FINALS_BY_INITIAL.__sets[initial];
+  return !!set && set.has(final);
+}
+// Which letter in each final actually carries the tone mark (standard
+// placement rule: a > o/e > the second vowel of iu/ui > the lone vowel).
+const TONE_MARK_VOWEL = {
+  a:'a', o:'o', e:'e', i:'i', u:'u', 'ü':'ü',
+  ai:'a', ei:'e', ao:'a', ou:'o', an:'a', en:'e',
+  ang:'a', eng:'e', ong:'o', ie:'e', iu:'u', er:'e',
+  iao:'a', uo:'o', ui:'i', ue:'e',
+};
+const TONE_MARKS = {
+  a:{1:'ā',2:'á',3:'ǎ',4:'à'}, o:{1:'ō',2:'ó',3:'ǒ',4:'ò'}, e:{1:'ē',2:'é',3:'ě',4:'è'},
+  i:{1:'ī',2:'í',3:'ǐ',4:'ì'}, u:{1:'ū',2:'ú',3:'ǔ',4:'ù'}, 'ü':{1:'ǖ',2:'ǘ',3:'ǚ',4:'ǜ'},
+};
+function applyToneMark(final, toneNum){
+  if(!toneNum || toneNum===5) return final; // neutral tone carries no mark
+  const vowel = TONE_MARK_VOWEL[final];
+  const marked = vowel && TONE_MARKS[vowel] && TONE_MARKS[vowel][toneNum];
+  return marked ? final.replace(vowel, marked) : final;
+}
+
+const initials = ['b','p','m','f','d','t','n','l','g','k','h','j','q','x','zh','ch','sh','r','z','c','s','y','w'];
+// iao/uo/ui/ue are the 4 compound finals added so this page's own default
+// 16-character fallback (see hwFallbackChars in writing-practice.html,
+// mirrored here and in Match Pinyin/Type Pinyin) is fully buildable —
+// 小/国/水/火/月 (xiǎo/guó/shuǐ/huǒ/yuè) each need one of these. 'ue' is the
+// real spelling after j/q/x/y (which drop ü's umlaut) — see
+// VALID_FINALS_BY_INITIAL's own comment for why n/l's true-ü üe syllables
+// are deliberately not folded into this same final.
+const finals = ['a','o','e','i','u','ü','ai','ei','ao','ou','an','en','ang','eng','ong','ie','iu','er','iao','uo','ui','ue'];
+let pickedInitial='', pickedFinal='';
+function renderSyllableBuilder(){
+  document.getElementById('initialsGrid').innerHTML = initials.map(i=>`<button class="keycap small" data-val="${i}" onclick="pickChip('initial','${i}',this)"><span class="kc-main">${i}</span></button>`).join('');
+  document.getElementById('finalsGrid').innerHTML = finals.map(f=>`<button class="keycap small" data-val="${f}" onclick="pickChip('final','${f}',this)"><span class="kc-main">${f}</span></button>`).join('');
+}
+// Grays out (disables) whichever side of the keyboard is now incompatible
+// with the current pick on the OTHER side — the same behavior pinyinflutter
+// itself shows when tapping "b" first. With nothing picked yet, or once
+// both sides already agree, nothing is disabled.
+function refreshChipAvailability(){
+  document.querySelectorAll('#finalsGrid .keycap').forEach(function(el){
+    el.disabled = !!pickedInitial && !initialAllowsFinal(pickedInitial, el.dataset.val);
+  });
+  document.querySelectorAll('#initialsGrid .keycap').forEach(function(el){
+    el.disabled = !!pickedFinal && !initialAllowsFinal(el.dataset.val, pickedFinal);
+  });
+  refreshToneAvailability();
+}
+// A plain lowercased-syllable membership set, built once — just enough to
+// answer "does ANY dictionary entry read exactly this way" in O(1), for
+// graying out tones below. findWordsForSyllable itself (a full CEDICT scan
+// + sort, tuned for picking the single best match to actually display) is
+// overkill to run five times on every initial/final click just to check
+// existence, so this is a separate, cheaper index built purely for that.
+const CEDICT_PY_SET = (typeof CEDICT !== 'undefined') ? new Set(CEDICT.map(e => e[1].toLowerCase())) : new Set();
+// Grays out (disables, same treatment as an incompatible initial/final)
+// any tone that — combined with whichever final (and initial, if any) are
+// already picked — would spell a syllable with no dictionary entry at all,
+// e.g. once "b" + "an" are picked, 2nd tone (bán) and neutral (ban) gray
+// out since neither is a real CC-CEDICT reading, while 1st/3rd/4th
+// (bān/bǎn/bàn) stay available. Unlike the phonetic initial/final
+// incompatibility check above, this is a soft "likely worth trying" signal
+// rather than a hard constraint — a real, valid syllable can still have no
+// dictionary entry (that's its own normal, already-handled outcome, see
+// renderSyllableLookup) — so an ALREADY-picked tone that becomes
+// unavailable this way is only visually grayed, never auto-cleared the way
+// a genuinely impossible initial/final pairing is.
+// Nothing to check without a final yet (a tone can't complete a syllable
+// on its own — see updateSyllableCombo), so every tone stays available
+// until one is picked.
+function refreshToneAvailability(){
+  document.querySelectorAll('.tone-row').forEach(function(row){
+    const num = Number(row.dataset.num);
+    let available = true;
+    if(pickedFinal){
+      const syllable = ((pickedInitial||'') + applyToneMark(pickedFinal, num)).toLowerCase();
+      available = CEDICT_PY_SET.has(syllable);
+    }
+    row.classList.toggle('unavailable', !available);
+    const btn = row.querySelector('.tone-num-item');
+    if(btn) btn.disabled = !available;
+  });
+}
+// A syllable can be the reading of a dozen-plus obscure/literary characters
+// (CEDICT has no frequency data of its own to rank them by) — HSK_LISTS
+// (levels 1-6, already shipped for Word Bank's list-subscription feature) is
+// reused purely as a "is this actually a common word" signal, so discovery
+// surfaces something a learner has a real chance of recognizing instead of
+// whichever obscure character happens to sort first.
+const HSK_COMMON_WORDS = (function(){
+  const set = new Set();
+  if(typeof HSK_LISTS === 'undefined') return set;
+  Object.keys(HSK_LISTS).forEach(function(level){
+    if(level==='7') return; // the advanced 7-9 tier skews toward rarer vocab, not "common"
+    HSK_LISTS[level].forEach(function(w){ set.add(w.s); });
+  });
+  return set;
+})();
+// CC-CEDICT's own convention for a "this character is (also/only) a
+// surname" gloss — either standalone ("surname Ding") or as the two-character
+// variant ("two-character surname Shangguan"), always as its own leading
+// clause. A surname-primary entry is a poor first pick for someone just
+// discovering what a syllable spells — checked against the FIRST clause
+// only, so a word whose primary sense is something else entirely (surname
+// merely listed as one more sense further down its definition) isn't
+// penalized just for a character that can also be used as a surname.
+function isSurnamePrimaryDef(en){
+  const firstClause = (en || '').split(';')[0].trim().toLowerCase();
+  return /^(two-character )?surname\b/.test(firstClause);
+}
+// CC-CEDICT's own convention for "this character's actual definition is
+// just a pointer to a different, more standard character" — "variant of
+// X[pinyin]", optionally qualified ("old variant of", "erhua variant of",
+// "Taiwan variant of", "nonstandard simplified variant of", etc.) — same
+// "poor first pick" reasoning and same first-clause-only check as
+// isSurnamePrimaryDef above: a word whose real definition merely starts by
+// noting a variant relationship before getting to actual content isn't
+// penalized, only one whose ENTIRE leading clause is just the pointer.
+function isVariantOfOnlyDef(en){
+  const firstClause = (en || '').split(';')[0].trim().toLowerCase();
+  return /^([a-z]+\s+)*variant of\b/.test(firstClause);
+}
+// CC-CEDICT's own convention for "this word's real definition is just
+// naming which ethnic group/people it refers to" — "[Name] ethnic group",
+// optionally followed by more detail about that SAME fact ("...of
+// Guizhou", "...(Chinese Muslims)", "...the largest ethnic minority in
+// China") but never a genuinely different, more general meaning — same
+// "poor first pick for someone just discovering what a syllable spells"
+// reasoning, and same first-clause-only check, as
+// isSurnamePrimaryDef/isVariantOfOnlyDef above. Reported directly: a
+// syllable's own primary match kept landing on an obscure ethnic-group
+// name (e.g. 傣 "Dai ethnic group") ahead of a much more common,
+// actually-useful word sharing the same reading (歹 "bad; wicked; evil").
+// Checked against every CC-CEDICT entry mentioning "ethnic group" (192 of
+// them) to confirm this phrase is always the core, defining fact of its
+// own clause in this dataset, never an incidental aside tacked onto some
+// other, more substantive definition.
+function isEthnicGroupPrimaryDef(en){
+  const firstClause = (en || '').split(';')[0].trim().toLowerCase();
+  return /\bethnic group\b/.test(firstClause);
+}
+// Real dictionary words that read exactly as the built syllable — lets
+// picking initial+final+tone double as a way to discover vocabulary, not
+// just drill the mechanics of syllable-building. Matches on the whole
+// accented syllable (e.g. "měi"), not a substring, so "e" doesn't match every
+// word starting with e. Prioritizes a non-surname, non-"variant of",
+// non-"ethnic group" entry first (none of those three is an actual
+// definition to learn from), then an HSK-common word (a learner has a real
+// chance of recognizing it), then
+// single-character entries, since a bare syllable most naturally corresponds
+// to one character's reading rather than a multi-character compound that
+// merely starts with it.
+function findWordsForSyllable(syllable){
+  if(!syllable || typeof CEDICT === 'undefined') return [];
+  const target = syllable.toLowerCase();
+  const matches = CEDICT.filter(e => e[1].toLowerCase() === target)
+    .map(e => { const f = parentalFilterCedictEntry(e[0], e[1], e[2]); return f ? [f.hz, f.py, f.en] : null; })
+    .filter(Boolean); // parental controls: drops entries whose every sense was flagged
+  return matches.sort((a,b) => {
+      const surnameDiff = (isSurnamePrimaryDef(a[2]) ? 1 : 0) - (isSurnamePrimaryDef(b[2]) ? 1 : 0);
+      if(surnameDiff) return surnameDiff;
+      const variantDiff = (isVariantOfOnlyDef(a[2]) ? 1 : 0) - (isVariantOfOnlyDef(b[2]) ? 1 : 0);
+      if(variantDiff) return variantDiff;
+      const ethnicDiff = (isEthnicGroupPrimaryDef(a[2]) ? 1 : 0) - (isEthnicGroupPrimaryDef(b[2]) ? 1 : 0);
+      if(ethnicDiff) return ethnicDiff;
+      const commonDiff = (HSK_COMMON_WORDS.has(b[0]) ? 1 : 0) - (HSK_COMMON_WORDS.has(a[0]) ? 1 : 0);
+      if(commonDiff) return commonDiff;
+      return Array.from(a[0]).length - Array.from(b[0]).length;
+    });
+}
+// Which hanzi (if any) the big Speak button should actually say — see
+// speakBuiltSyllable. Kept in sync by renderSyllableLookup alone, so it
+// always reflects whatever word (or lack of one) is currently on screen.
+let currentSpeakHz = null;
+function renderSyllableLookup(syllable){
+  const panel = document.getElementById('tonePanel');
+  if(!syllable){
+    currentSpeakHz = null;
+    panel.innerHTML = 'Pick an initial, final, and tone to see if it spells a real word — and hear it.';
+    return;
+  }
+  const matches = findWordsForSyllable(syllable);
+  if(!matches.length){
+    currentSpeakHz = null;
+    panel.innerHTML = `<b>${syllable}</b> — no dictionary entry for this exact syllable yet. Try a different initial, final, or tone.`;
+    return;
+  }
+  const [hz, py, en] = matches[0];
+  currentSpeakHz = hz;
+  const rest = matches.slice(1);
+  const OTHER_MATCH_CAP = 8;
+  const shown = rest.slice(0, OTHER_MATCH_CAP);
+  const hiddenCount = rest.length - shown.length;
+  const more = rest.length > 0
+    ? `<div class="syl-other-matches">
+        <div class="syl-other-matches-label">Also reads as (${rest.length} more word${rest.length===1?'':'s'})</div>
+        ${shown.map(m => `<a class="syl-other-match" href="search.html?q=${encodeURIComponent(m[0])}"><b>${m[0]}</b> <span class="dict-py">${m[1]}</span> — ${m[2]}</a>`).join('')}
+        ${hiddenCount > 0 ? `<div class="syl-other-match-overflow">+${hiddenCount} more — see the full list in the Dictionary</div>` : ''}
+      </div>`
+    : '';
+  // The pinyin here needs its own host element (a class already listed in
+  // settings.js's PINYIN_HOSTS, same as .dict-py is on the Dictionary page
+  // itself) rather than living as a bare text node one level down inside
+  // this panel — colorizeTonesIn only ever walks a host's own direct
+  // childNodes, so nested text is invisible to it. See PINYIN_HOSTS's own
+  // comment in settings.js for the .hw-py-text precedent this repeats.
+  panel.innerHTML = `<b>${hz}</b> <span class="dict-py">${py}</span> — ${en}` +
+    `<br><br><a class="btn small ghost" href="search.html?q=${encodeURIComponent(hz)}">Look up ${hz} in the Dictionary →</a>${more}`;
+}
+// Tracks the plain, undecomposed syllable string for the Speak button —
+// #sylOut's own DOM text isn't safe to read back for this once tone-marked
+// vowels are in it: settings.js's glyph fix splits each one into a visible
+// "e"+mark pair plus an invisible-but-real .py-copy duplicate for
+// copy/paste, and .textContent walks both, so element.textContent would
+// hand speak() a mangled "eˇ...è"-style string instead of the real syllable.
+let currentSyllable = '—';
+// Speaks whatever is currently picked — the only place any audio plays from
+// on this page. Priority order, richest to sparsest:
+//  1. A complete syllable that spells a real dictionary word (currentSpeakHz,
+//     set by renderSyllableLookup) — speakDelayed(hz), the real character
+//     text, the exact same call the Dictionary's own per-word speak button
+//     uses, so it sounds exactly like clicking that word's audio button on
+//     search.html would.
+//  2. A final is picked (with or without an initial and/or tone, even if the
+//     resulting syllable isn't a real word) — currentSyllable already holds
+//     the right romanized text for all of those combinations (see
+//     updateSyllableCombo), so just read that aloud.
+//  3. Only an initial is picked, no final yet — a bare consonant isn't
+//     pronounceable alone, so use its conventional demo reading
+//     (INITIAL_DEMO_READING) instead of the raw letter.
+//  4. Only a tone is picked, nothing else — read that tone's own canonical
+//     example character (tones[].hz) instead, since there's no syllable text
+//     to fall back to at all.
+//  5. Nothing picked yet — no-op.
+function speakBuiltSyllable(){
+  if(currentSpeakHz){ speakDelayed(currentSpeakHz); return; }
+  if(pickedFinal){ speak(currentSyllable); return; }
+  if(pickedInitial){ speak(INITIAL_DEMO_READING[pickedInitial] || pickedInitial); return; }
+  if(pickedTone){
+    const t = tones.find(x => x.num === pickedTone);
+    if(t) speak(t.hz);
+  }
+}
+function updateSyllableCombo(){
+  const out = document.getElementById('sylOut');
+  if(!pickedInitial && !pickedFinal){
+    currentSyllable = '—';
+    out.textContent = currentSyllable;
+    renderSyllableLookup('');
+    return;
+  }
+  const finalText = pickedTone ? applyToneMark(pickedFinal || '', pickedTone) : (pickedFinal || '');
+  currentSyllable = ((pickedInitial||'') + finalText) || '—';
+  out.textContent = currentSyllable;
+  // An initial is optional, not required — plenty of real syllables have
+  // none at all (e.g. "ài" 爱 is just the "ai" final + 4th tone, no
+  // initial). Gating completion on pickedInitial too meant a zero-initial
+  // final could never be looked up or spoken here at all.
+  if(pickedFinal && pickedTone){
+    renderSyllableLookup(currentSyllable); // sets currentSpeakHz, if this syllable spells a real word — no auto-speak here, the Speak button is the only way to hear it now
+  } else {
+    document.getElementById('tonePanel').innerHTML = pickedTone
+      ? 'Pick a final to complete the syllable.'
+      : 'Pick a tone to complete the syllable and look it up.';
+  }
+}
+// How each bare initial is conventionally read aloud on its own — the same
+// "name" every pinyin table/Zhuyin chart teaches it by (b as "bo", zh as
+// "zhi", and so on), since a consonant alone isn't really pronounceable in
+// isolation. Matches Zhuyin's own bopomofo naming 1:1 (ㄅ=bo, ㄓ=zhi, etc).
+const INITIAL_DEMO_READING = {
+  b:'bo', p:'po', m:'mo', f:'fo', d:'de', t:'te', n:'ne', l:'le',
+  g:'ge', k:'ke', h:'he', j:'ji', q:'qi', x:'xi',
+  zh:'zhi', ch:'chi', sh:'shi', r:'ri', z:'zi', c:'ci', s:'si',
+  y:'yi', w:'wu',
+};
+function pickChip(kind, val, el){
+  const container = el.parentElement;
+  const alreadyPicked = el.classList.contains('picked');
+  container.querySelectorAll('.keycap').forEach(c=>c.classList.remove('picked'));
+  if(alreadyPicked){
+    if(kind==='initial') pickedInitial = ''; else pickedFinal = '';
+  } else {
+    el.classList.add('picked');
+    if(kind==='initial') pickedInitial = val; else pickedFinal = val;
+    // No auto-play here — picking a chip only updates the combo/state;
+    // sounding it out (alone or as part of a syllable) happens solely via
+    // the Speak button — see speakBuiltSyllable.
+    // Switching to a new pick on one side can leave the OTHER side's
+    // existing pick invalid (e.g. finalizing "b" while "ü" was already
+    // selected) — clear it rather than leave an impossible pair standing.
+    if(kind==='initial' && pickedFinal && !initialAllowsFinal(pickedInitial, pickedFinal)){
+      pickedFinal = '';
+      const finalEl = document.querySelector(`#finalsGrid .keycap.picked`);
+      if(finalEl) finalEl.classList.remove('picked');
+    }
+    if(kind==='final' && pickedInitial && !initialAllowsFinal(pickedInitial, pickedFinal)){
+      pickedInitial = '';
+      const initEl = document.querySelector(`#initialsGrid .keycap.picked`);
+      if(initEl) initEl.classList.remove('picked');
+    }
+  }
+  refreshChipAvailability();
+  updateSyllableCombo();
+}
+renderSyllableBuilder();
+refreshChipAvailability();
+</script>
+</body>
+</html>
