@@ -1,0 +1,104 @@
+/* Selection policy, sitewide (linked from every page's <head>).
+ *
+ * Only three kinds of content may be selected / copied: hanzi, pinyin, and
+ * definitions. Everything else — headings, instructions, labels, buttons,
+ * counters, nav, prose — is not selectable. Besides keeping copy/paste to the
+ * useful content, this is also what stops the blinking text caret (caret
+ * browsing) and stray highlights from appearing on interface text: neither can
+ * land on text that isn't selectable.
+ *
+ * Default is "none"; the allow-list below opts content back in. Real input
+ * fields and contenteditable editors always stay selectable/typable.
+ *
+ * This file only ever touches user-select / touch-callout — never layout,
+ * fonts, colours or positioning — so it cannot move or restyle any hanzi or
+ * pinyin. (The old per-page "[onclick]:not(input)" block it replaces was
+ * inline in every page's <head>.)
+ */
+html, body{
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+}
+
+/* ---- editable fields ---- */
+input, textarea,
+[contenteditable=""], [contenteditable="true"],
+[contenteditable=""] *, [contenteditable="true"] *{
+  -webkit-user-select:text;
+  user-select:text;
+}
+
+/* ---- allow-list: hanzi, pinyin, definitions ---- */
+
+/* Dictionary-style rows (Word Bank, Search, list results, multiple-choice card) */
+.dict-hz, .dict-hz *,
+.dict-py, .dict-py *,
+.dict-en, .dict-en *,
+.suggested-hz, .suggested-py, .suggested-en,
+.char-hz, .char-py, .char-en, .char-part-chip .glyph,
+.mc-hz, .mc-py, .mc-py *, .mc-en,
+
+/* Cards: radicals, strokes, lessons, grammar examples, culture/history/geography headers */
+.radical-alt, .radical-face.front .py, .radical-face.back .mean,
+.stroke-card b, .stroke-card span,
+.lesson-vocab .word .cn, .lesson-vocab .word .py,
+.gram-ex-hz, .gram-ex-py, .gram-ex-py *, .gram-ex-en,
+.cc-head .cn, .cc-head b, .cc-teaser,
+.dyn-head .cn, .dyn-head b,
+.pd-head .cn, .pd-head .en,
+
+/* Practice pages: prompts, reveals, results */
+#tsHzGlyph, #translateEnPrompt, #translateReveal, #translateReveal *,
+#ptCharGlyph, #ptReveal, #ptReveal *,
+#dtRevealText, #dtRevealText *,
+#mpCharGlyph, #mpMean, #mpTarget,
+.hw-py-text, .hw-py-text *, .hw-mean, .hw-slot, .hw-focused-chip,
+.read-passage, .read-passage *, #readExplain,
+#sylOut, #sylOut *, #tonePanel > b, #tonePanel .dict-py, #tonePanel .dict-py *, .cc-def,
+a.syl-other-match b,
+
+/* Landing page demo */
+.demo-search-result-hz{
+  -webkit-user-select:text;
+  user-select:text;
+  -webkit-touch-callout:default;
+}
+
+/* Oracle-bone hanzi are interactive per-character toggles (click to reveal),
+   and reveal adds a text-bearing ghost clone — leave them unselectable exactly
+   as before (each row has its own Copy button for the hanzi). */
+.dict-hz .ob-char, .dict-hz .ob-char *, .dict-hz .ob-char-ghost{
+  -webkit-user-select:none;
+  user-select:none;
+}
+
+/* A hanzi prompt is one atomic thing: selecting it selects exactly the glyph,
+   with no trailing newline / extra "space" highlight to the right of it. */
+#tsHzGlyph, #ptCharGlyph, #mpCharGlyph{
+  -webkit-user-select:all;
+  user-select:all;
+}
+
+/* The reworked-pinyin "visual" layer must stay unselectable even inside an
+   allow-listed host (otherwise a copy would pick up both it and the hidden
+   true-character layer, e.g. "zheˋè"). Extra specificity so no host rule above,
+   including the #id ones, can re-enable it. */
+.py-visual:not(#ccSel), .py-visual:not(#ccSel) *{
+  -webkit-user-select:none;
+  user-select:none;
+}
+
+/* Buttons keep their text unselectable even where it contains hanzi/pinyin
+   (answer choices are click targets, not copy targets). :not(#ccSel) only
+   raises specificity above the allow-list classes above. */
+button:not(#ccSel), button:not(#ccSel) *,
+select:not(#ccSel), label:not(#ccSel){
+  -webkit-user-select:none;
+  user-select:none;
+}
+/* ...except a label wrapping a real field (clicking must still focus it). */
+label:not(#ccSel) input, label:not(#ccSel) textarea{
+  -webkit-user-select:text;
+  user-select:text;
+}

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In — Context Chinese</title>
+
+<link rel="stylesheet" href="selection.css?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDE4D2;
+  --paper-deep:#E1D4B9;
+  --paper-shadow:#cbbb96;
+  --ink:#22241F;
+  --ink-soft:#514E42;
+  --seal:#AE3B1C;
+  --seal-dark:#8C2E15;
+  --jade:#3E6B5B;
+  --jade-dark:#2E5346;
+  --gold:#A9832E;
+  --slate:#4C6169;
+  --paper-rgb:237,228,210;
+  --radius:2px;
+  --serif-cn:'Noto Serif SC', serif;
+  --serif-en:'Zilla Slab', 'Noto Serif', serif;
+  --sans:'Inter', sans-serif;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(0,0,0,0.025) 0, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(0,0,0,0.03) 0, transparent 50%);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.5;
+}
+::selection{background:var(--seal); color:var(--paper);}
+button{font-family:inherit;}
+:focus-visible{outline:2px solid var(--seal); outline-offset:2px;}
+
+.login-wrap{width:100%; max-width:380px; padding:24px;}
+.login-brand{display:flex; flex-direction:column; align-items:center; gap:12px; margin:0 auto 28px;}
+.login-brand .seal-mark{
+  width:52px; height:52px; background:var(--seal); color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif-cn); font-size:28px; font-weight:700;
+  border-radius:3px; transform:rotate(-3deg);
+  box-shadow:2px 2px 0 rgba(0,0,0,0.15);
+}
+.login-brand b{font-family:var(--serif-en); font-size:22px; letter-spacing:0.3px;}
+
+.login-card{
+  background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow);
+  border-radius:2px; padding:32px 28px; max-width:380px; margin:0 auto;
+}
+
+.login-field{margin-bottom:16px;}
+.login-field label{
+  display:block; font-size:12px; text-transform:uppercase; letter-spacing:1px;
+  color:var(--ink-soft); margin-bottom:6px; font-weight:600;
+}
+.login-field input{
+  width:100%; padding:10px 14px; border:1.5px solid var(--paper-shadow); border-radius:2px;
+  background:rgba(255,255,255,0.6); font-size:15px; font-family:var(--sans); outline:none;
+  color:var(--ink);
+}
+.login-field input:focus{border-color:var(--ink);}
+
+.btn{
+  background:var(--ink); color:var(--paper); border:none; cursor:pointer;
+  padding:10px 18px; font-weight:600; font-size:13.5px; border-radius:2px;
+  letter-spacing:0.3px; transition:transform .12s, background .12s;
+}
+.btn:hover{background:var(--seal-dark);}
+.btn:active{transform:scale(0.97);}
+.btn:disabled{opacity:0.5; cursor:not-allowed;}
+.login-submit{width:100%; margin-top:6px;}
+
+.login-error{color:var(--seal-dark); font-size:13px; margin-top:12px; min-height:18px;}
+.login-toggle{text-align:center; margin-top:18px; font-size:13px; color:var(--ink-soft);}
+.login-toggle button{
+  background:none; border:none; color:var(--seal); font-weight:700; cursor:pointer;
+  text-decoration:underline; padding:0; font-size:13px; font-family:inherit;
+}
+/* Same look as .login-toggle button above, just reused standalone for the
+   "Forgot password?" link — that one sits right under its own field
+   instead of in the bottom toggle row. */
+.link-btn{
+  background:none; border:none; color:var(--seal); font-weight:700; cursor:pointer;
+  text-decoration:underline; padding:0; font-size:12.5px; font-family:inherit;
+}
+.forgot-link-row{text-align:right; margin:-10px 0 16px;}
+.mode-heading{font-size:13.5px; color:var(--ink-soft); margin:0 0 20px; line-height:1.5;}
+</style>
+</head>
+<body>
+
+<div class="login-wrap">
+  <div class="login-brand">
+    <div class="seal-mark">境</div>
+    <b>Context Chinese</b>
+  </div>
+
+  <div class="login-card">
+    <!-- Only shown in 'forgot'/'reset' modes — login/signup are already
+         self-explanatory from their own field labels and the toggle row
+         below, but landing on a bare email-only (or password-only) form
+         with no context reads as broken rather than as its own step. -->
+    <p class="mode-heading" id="modeHeading" style="display:none;"></p>
+    <div class="login-field" id="emailField">
+      <label for="loginEmail">Email</label>
+      <input type="email" id="loginEmail" autocomplete="email">
+    </div>
+    <div class="login-field" id="passwordField">
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" autocomplete="current-password">
+    </div>
+    <!-- 'reset' mode only — set alongside the (relabeled, see setMode)
+         #loginPassword field above, which becomes the NEW password field
+         rather than needing a third input. -->
+    <div class="login-field" id="confirmField" style="display:none;">
+      <label for="loginConfirmPassword">Confirm New Password</label>
+      <input type="password" id="loginConfirmPassword" autocomplete="new-password">
+    </div>
+    <!-- 'login' mode only. -->
+    <div class="forgot-link-row" id="forgotLinkRow">
+      <button type="button" class="link-btn" onclick="setMode('forgot')">Forgot password?</button>
+    </div>
+    <button class="btn login-submit" id="submitBtn" onclick="submitAuth()">Log In</button>
+    <div class="login-error" id="loginError"></div>
+    <div class="login-toggle">
+      <span id="toggleText">Need an account?</span>
+      <button id="toggleBtn">Sign up</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+let mode = 'login'; // 'login' | 'signup' | 'forgot' | 'reset'
+
+// Replaces the old binary toggleMode() now that there are four modes, not
+// two — 'forgot' (request a reset email) and 'reset' (actually set a new
+// password, landed on via the emailed link — see the PASSWORD_RECOVERY
+// listener below) reuse the same email/password fields and submit button
+// rather than being separate pages, matching how login/signup already
+// share this one form.
+const MODE_HEADINGS = {
+  forgot: "Enter your email and we'll send you a link to reset your password.",
+  reset: 'Choose a new password for your account.',
+};
+function setMode(newMode){
+  mode = newMode;
+  document.getElementById('loginError').textContent = '';
+  const heading = document.getElementById('modeHeading');
+  heading.textContent = MODE_HEADINGS[mode] || '';
+  heading.style.display = MODE_HEADINGS[mode] ? '' : 'none';
+
+  document.getElementById('emailField').style.display = mode === 'reset' ? 'none' : '';
+  document.getElementById('passwordField').style.display = mode === 'forgot' ? 'none' : '';
+  document.getElementById('confirmField').style.display = mode === 'reset' ? '' : 'none';
+  document.getElementById('forgotLinkRow').style.display = mode === 'login' ? '' : 'none';
+  document.querySelector('label[for="loginPassword"]').textContent = mode === 'reset' ? 'New Password' : 'Password';
+
+  const submitBtn = document.getElementById('submitBtn');
+  const toggleText = document.getElementById('toggleText');
+  const toggleBtn = document.getElementById('toggleBtn');
+  const toggleRow = document.querySelector('.login-toggle');
+  if(mode === 'login'){
+    submitBtn.textContent = 'Log In';
+    toggleRow.style.display = '';
+    toggleText.textContent = 'Need an account?';
+    toggleBtn.textContent = 'Sign up';
+    toggleBtn.onclick = function(){ setMode('signup'); };
+  } else if(mode === 'signup'){
+    submitBtn.textContent = 'Sign Up';
+    toggleRow.style.display = '';
+    toggleText.textContent = 'Already have an account?';
+    toggleBtn.textContent = 'Log in';
+    toggleBtn.onclick = function(){ setMode('login'); };
+  } else if(mode === 'forgot'){
+    submitBtn.textContent = 'Send Reset Link';
+    toggleRow.style.display = '';
+    toggleText.textContent = '';
+    toggleBtn.textContent = 'Back to log in';
+    toggleBtn.onclick = function(){ setMode('login'); };
+  } else if(mode === 'reset'){
+    submitBtn.textContent = 'Set New Password';
+    // No escape hatch back to login here on purpose — arriving in this mode
+    // means Supabase already exchanged the emailed link for a real (if
+    // short-lived) recovery session, and navigating away would just strand
+    // that session unused rather than actually canceling anything.
+    toggleRow.style.display = 'none';
+  }
+}
+
+function getRedirectTarget(){
+  const params = new URLSearchParams(location.search);
+  return params.get('redirect') || 'index.html';
+}
+
+// 'forgot': just asks Supabase to email a reset link — resolves with
+// {data, error} the same way sign-in/sign-up do (see submitAuth's own
+// comment on that below), never a rejected promise. redirectTo is set
+// explicitly to THIS page's own current origin, not left to whatever the
+// Supabase project's dashboard "Site URL" happens to be — that's what
+// broke last time (still pointed at a local dev address), and pinning it
+// here means the link always lands back on whichever environment (local
+// dev, production) actually sent the email, as long as that exact URL is
+// also in the dashboard's Redirect URLs allowlist.
+function submitForgotPassword(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const errorEl = document.getElementById('loginError');
+  errorEl.textContent = ''; errorEl.style.color = '';
+  if(!email){ errorEl.textContent = 'Enter your email.'; return; }
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname }).then(function(result){
+    submitBtn.disabled = false;
+    if(result.error){ errorEl.textContent = result.error.message; return; }
+    errorEl.style.color = 'var(--jade-dark)';
+    errorEl.textContent = 'Check your email for a link to reset your password.';
+  });
+}
+// 'reset': the recovery link's own session (see the PASSWORD_RECOVERY
+// listener below) is what authorizes this — updateUser() acts on
+// "whoever's session is currently active," no separate token needed here.
+function submitResetPassword(){
+  const pw = document.getElementById('loginPassword').value;
+  const confirm = document.getElementById('loginConfirmPassword').value;
+  const errorEl = document.getElementById('loginError');
+  errorEl.textContent = ''; errorEl.style.color = '';
+  if(!pw || pw.length < 6){ errorEl.textContent = 'Password must be at least 6 characters.'; return; }
+  if(pw !== confirm){ errorEl.textContent = 'Passwords do not match.'; return; }
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  supabaseClient.auth.updateUser({ password: pw }).then(function(result){
+    if(result.error){
+      submitBtn.disabled = false;
+      errorEl.textContent = result.error.message;
+      return;
+    }
+    errorEl.style.color = 'var(--jade-dark)';
+    errorEl.textContent = 'Password updated — taking you in…';
+    setTimeout(function(){ location.replace(getRedirectTarget()); }, 1200);
+  });
+}
+function submitAuth(){
+  if(mode === 'forgot') return submitForgotPassword();
+  if(mode === 'reset') return submitResetPassword();
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errorEl = document.getElementById('loginError');
+  errorEl.textContent = '';
+  errorEl.style.color = '';
+  if(!email || !password){
+    errorEl.textContent = 'Enter both an email and a password.';
+    return;
+  }
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  try{
+    const action = mode === 'login'
+      ? supabaseClient.auth.signInWithPassword({ email: email, password: password })
+      : supabaseClient.auth.signUp({ email: email, password: password });
+    // Unlike Firebase's signInWithEmailAndPassword/createUserWithEmailAndPassword
+    // (which reject the promise on failure), Supabase always RESOLVES with
+    // {data, error} — a wrong password or a duplicate signup shows up as
+    // result.error, never a caught exception.
+    action.then(function(result){
+      if(result.error){
+        errorEl.textContent = result.error.message;
+        submitBtn.disabled = false;
+        return;
+      }
+      // If this Supabase project has email confirmation turned on (Dashboard >
+      // Authentication > Providers > Email), signUp() succeeds but returns no
+      // active session yet — unlike Firebase's createUserWithEmailAndPassword,
+      // which always signs someone in immediately with no verification step.
+      if(mode === 'signup' && !result.data.session){
+        errorEl.style.color = 'var(--jade-dark)';
+        errorEl.textContent = 'Check your email to confirm your account, then log in.';
+        submitBtn.disabled = false;
+        return;
+      }
+      location.replace(getRedirectTarget());
+    });
+  }catch(e){
+    errorEl.textContent = 'Supabase is not set up yet — check supabase-config.js.';
+    submitBtn.disabled = false;
+  }
+}
+
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Enter') submitAuth();
+});
+
+// setMode also wires up #toggleBtn's own onclick (no inline handler in the
+// markup any more, since where it should point now depends on the mode) —
+// this first call is what does that initial wiring, same as if a visitor
+// had actually clicked through to 'login' themselves.
+setMode('login');
+// A link can arrive here already wanting the sign-up form open — landing.html's
+// primary CTA does this (login.html?mode=signup) so a new visitor isn't
+// dropped onto the Log In form and forced to notice/click "Sign up" first.
+if(new URLSearchParams(location.search).get('mode') === 'signup') setMode('signup');
+
+// Password-recovery links land here with #access_token=...&type=recovery
+// in the URL hash — supabase-js auto-detects that on load (detectSessionInUrl,
+// on by default) and exchanges it for a real, if short-lived, session, then
+// fires this event once that's done. Checked synchronously up front too
+// (inRecoveryFlow), not just via this event: the getSession()-based
+// "already logged in, skip straight past login" redirect further below
+// runs immediately on load, and would otherwise fire and navigate away
+// before this async event ever gets a chance to switch to 'reset' mode.
+let inRecoveryFlow = location.hash.indexOf('type=recovery') !== -1;
+try{
+  supabaseClient.auth.onAuthStateChange(function(event){
+    if(event === 'PASSWORD_RECOVERY'){
+      inRecoveryFlow = true;
+      setMode('reset');
+    }
+  });
+}catch(e){}
+
+try{
+  if(!inRecoveryFlow){
+    supabaseClient.auth.getSession().then(function(result){
+      if(result.data.session) location.replace(getRedirectTarget());
+    });
+  }
+}catch(e){
+  document.getElementById('loginError').textContent = 'Supabase is not set up yet — check supabase-config.js.';
+}
+</script>
+</body>
+</html>

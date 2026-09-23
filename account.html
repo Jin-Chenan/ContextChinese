@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>html{visibility:hidden;}</style>
+<title>Account — Context Chinese</title>
+<link rel="stylesheet" href="selection.css?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDE4D2;
+  --paper-deep:#E1D4B9;
+  --paper-shadow:#cbbb96;
+  --ink:#22241F;
+  --ink-soft:#514E42;
+  --seal:#AE3B1C;
+  --seal-dark:#8C2E15;
+  --jade:#3E6B5B;
+  --jade-dark:#2E5346;
+  --gold:#A9832E;
+  --slate:#4C6169;
+  --paper-rgb:237,228,210;
+  --radius:2px;
+  --serif-cn:'Noto Serif SC', serif;
+  --serif-en:'Zilla Slab', 'Noto Serif', serif;
+  --sans:'Inter', sans-serif;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; min-height:100vh;
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(0,0,0,0.025) 0, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(0,0,0,0.03) 0, transparent 50%);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.5;
+  padding:48px 20px;
+}
+::selection{background:var(--seal); color:var(--paper);}
+button{font-family:inherit;}
+:focus-visible{outline:2px solid var(--seal); outline-offset:2px;}
+a{color:var(--seal);}
+
+.account-wrap{max-width:460px; margin:0 auto;}
+.account-brand{display:flex; flex-direction:column; align-items:center; gap:12px; margin-bottom:8px;}
+.account-brand .seal-mark{
+  width:52px; height:52px; background:var(--seal); color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif-cn); font-size:28px; font-weight:700;
+  border-radius:3px; transform:rotate(-3deg);
+  box-shadow:2px 2px 0 rgba(0,0,0,0.15);
+}
+.account-brand b{font-family:var(--serif-en); font-size:22px; letter-spacing:0.3px;}
+.account-back{display:block; text-align:center; font-size:13px; color:var(--ink-soft); margin-bottom:28px;}
+
+h1{font-family:var(--serif-en); font-size:22px; text-align:center; margin:0 0 24px;}
+
+.account-card{
+  background:rgba(255,255,255,0.5); border:1px solid var(--paper-shadow); border-radius:2px;
+  padding:26px 24px; margin-bottom:16px;
+}
+.account-row{display:flex; justify-content:space-between; align-items:baseline; padding:8px 0; font-size:14px;}
+.account-row + .account-row{border-top:1px solid var(--paper-shadow);}
+.account-row .label{color:var(--ink-soft);}
+.account-row .value{font-weight:600;}
+.status-pill{
+  display:inline-block; padding:2px 10px; border-radius:999px; font-size:12px; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.4px;
+}
+.status-active{background:rgba(62,107,91,0.16); color:var(--jade-dark);}
+.status-inactive{background:rgba(174,59,28,0.12); color:var(--seal-dark);}
+.status-pending{background:rgba(169,131,46,0.16); color:var(--gold);}
+
+.account-empty{font-size:13.5px; color:var(--ink-soft); margin:0 0 16px;}
+
+.btn{
+  background:var(--ink); color:var(--paper); border:none; cursor:pointer;
+  padding:10px 18px; font-weight:600; font-size:13.5px; border-radius:2px;
+  letter-spacing:0.3px; transition:transform .12s, background .12s; width:100%;
+}
+.btn:hover{background:var(--seal-dark);}
+.btn:active{transform:scale(0.97);}
+.btn:disabled{opacity:0.5; cursor:not-allowed;}
+.btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--paper-shadow);}
+.btn.ghost:hover{background:rgba(0,0,0,0.05); color:var(--ink);}
+
+.account-error{color:var(--seal-dark); font-size:13px; text-align:center; margin-top:12px; min-height:18px;}
+</style>
+</head>
+<body>
+
+<div class="account-wrap">
+  <div class="account-brand">
+    <div class="seal-mark">境</div>
+    <b>Context Chinese</b>
+  </div>
+  <a class="account-back" href="index.html">← Back to the site</a>
+
+  <h1>Your account</h1>
+
+  <div class="account-card" id="statusCard">
+    <p class="account-empty" id="statusLoading">Loading your subscription…</p>
+  </div>
+
+  <button class="btn" id="portalBtn" style="display:none;" onclick="manageBilling()">Manage billing</button>
+  <button class="btn ghost" style="margin-top:10px;" onclick="signOutUser()">Log out</button>
+  <div class="account-error" id="accountError"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+function revealPage(){ document.documentElement.style.visibility = 'visible'; }
+
+function showError(msg){
+  document.getElementById('accountError').textContent = msg;
+}
+
+function signOutUser(){
+  supabaseClient.auth.signOut().then(function(){ location.replace('login.html'); });
+}
+
+const PLAN_LABELS = { student: 'Student', general: 'General', comped: 'Complimentary' };
+// 'comped' is never set by Stripe/the webhook — it's a manually-granted
+// free-access status (see supabase/README.md's "Granting complimentary
+// access" section) for accounts that should skip billing entirely (e.g. the
+// site owner's own account, or anyone else granted a free pass by hand).
+const ACTIVE_STATUSES = ['active', 'trialing', 'comped'];
+// Right after a real Stripe Checkout redirect, the webhook that marks the
+// subscription active can land a few seconds after this page does — poll
+// briefly instead of telling a just-paid user they have no subscription.
+const justCheckedOut = new URLSearchParams(location.search).get('checkout') === 'success';
+let pollsLeft = justCheckedOut ? 6 : 0;
+
+// Column names are snake_case (stripe_customer_id, current_period_end,
+// cancel_at_period_end) — Postgres/PostgREST's own convention.
+function renderStatus(sub){
+  const card = document.getElementById('statusCard');
+  const portalBtn = document.getElementById('portalBtn');
+
+  if(!sub || !ACTIVE_STATUSES.includes(sub.status)){
+    if(pollsLeft > 0){
+      pollsLeft--;
+      card.innerHTML = '<p class="account-empty">Payment received — finalizing your subscription…</p>';
+      setTimeout(loadSubscription, 2000);
+      return;
+    }
+    card.innerHTML = '<p class="account-empty">No active subscription yet.</p><a class="btn" href="pricing.html" style="display:block; text-align:center; text-decoration:none;">See plans</a>';
+    portalBtn.style.display = sub && sub.stripe_customer_id ? 'block' : 'none';
+    return;
+  }
+
+  const statusClass = (sub.status === 'active' || sub.status === 'comped') ? 'status-active' : 'status-pending';
+  // A comped account has no Stripe subscription behind it at all — no
+  // customer, no period, nothing to renew or cancel — so it skips the
+  // renews/access-until row entirely rather than showing a confusing "—".
+  const periodRow = sub.status === 'comped' ? '' :
+    '<div class="account-row"><span class="label">' + (sub.cancel_at_period_end ? 'Access until' : 'Renews') + '</span><span class="value">' +
+    (sub.current_period_end ? new Date(sub.current_period_end * 1000).toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' }) : '—') +
+    '</span></div>';
+  card.innerHTML =
+    '<div class="account-row"><span class="label">Plan</span><span class="value">' + (PLAN_LABELS[sub.plan] || sub.plan || '—') + '</span></div>' +
+    '<div class="account-row"><span class="label">Status</span><span class="value"><span class="status-pill ' + statusClass + '">' + sub.status + '</span></span></div>' +
+    periodRow;
+  // Only meaningful with a real Stripe customer behind it — a comped account
+  // has none, and clicking through would just hit create-portal-session's
+  // own "you don't have a subscription yet" error.
+  portalBtn.style.display = sub.stripe_customer_id ? 'block' : 'none';
+}
+
+function loadSubscription(){
+  supabaseClient.auth.getSession().then(function(sessionResult){
+    const user = sessionResult.data.session && sessionResult.data.session.user;
+    if(!user) return;
+    // maybeSingle() — a user with no subscriptions row yet is the common
+    // case, not an error.
+    supabaseClient.from('subscriptions').select('*').eq('user_id', user.id).maybeSingle()
+      .then(function(result){
+        if(result.error){
+          document.getElementById('statusCard').innerHTML = '';
+          showError('Could not load your subscription: ' + result.error.message);
+          return;
+        }
+        renderStatus(result.data);
+      });
+  });
+}
+
+function manageBilling(){
+  const btn = document.getElementById('portalBtn');
+  btn.disabled = true;
+  showError('');
+  supabaseClient.functions.invoke('create-portal-session', { body: { origin: location.origin } })
+    .then(function(result){
+      const err = result.error || (result.data && result.data.error);
+      if(err){ showError((err && err.message) || err || 'Could not open billing management.'); btn.disabled = false; return; }
+      location.href = result.data.url;
+    });
+}
+
+supabaseClient.auth.getSession().then(function(result){
+  const user = result.data.session && result.data.session.user;
+  if(!user){
+    location.replace('login.html?redirect=' + encodeURIComponent(location.pathname + location.search));
+    return;
+  }
+  revealPage();
+  loadSubscription();
+});
+</script>
+</body>
+</html>
